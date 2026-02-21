@@ -289,12 +289,39 @@ const normalizedCode = displayCode
           });
         }
 
+        // Apply stored preference on init (sync with other blocks on page)
+        const PM_STORAGE_KEY = "bearnie-pm";
+        if (pmTabs.length > 0) {
+          try {
+            const stored = sessionStorage.getItem(PM_STORAGE_KEY);
+            if (stored && Array.from(pmTabs).some((t) => t.getAttribute("data-pm-tab") === stored)) {
+              setActivePmTab(stored);
+            }
+          } catch (_) {}
+        }
+
         pmTabs.forEach((tab) => {
           tab.addEventListener("click", () => {
             const value = tab.getAttribute("data-pm-tab");
-            if (value) setActivePmTab(value);
+            if (value) {
+              setActivePmTab(value);
+              try {
+                sessionStorage.setItem(PM_STORAGE_KEY, value);
+                document.dispatchEvent(new CustomEvent("bearnie-pm-change", { detail: value }));
+              } catch (_) {}
+            }
           });
         });
+
+        // Sync when user selects a PM in another block on the page
+        if (pmTabs.length > 0) {
+          document.addEventListener("bearnie-pm-change", (e: Event) => {
+            const value = (e as CustomEvent<string>).detail;
+            if (Array.from(pmTabs).some((t) => t.getAttribute("data-pm-tab") === value)) {
+              setActivePmTab(value);
+            }
+          });
+        }
 
         // Copy functionality
         copyButtons.forEach((copyButton) => {
