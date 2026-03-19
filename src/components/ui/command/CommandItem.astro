@@ -5,10 +5,11 @@ import type { HTMLAttributes } from 'astro/types';
 export interface Props extends HTMLAttributes<'div'> {
   value?: string;
   disabled?: boolean;
-  id?: string;
+  id?: string | null;
 }
 
 const { value, disabled = false, class: className, id, ...props } = Astro.props;
+const itemId = id ?? undefined;
 
 const classes = cn(
   'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none',
@@ -27,7 +28,7 @@ const classes = cn(
   role="option"
   aria-selected="false"
   aria-disabled={disabled ? 'true' : undefined}
-  id={id}
+  id={itemId}
   {...props}
 >
   <slot />

@@ -1,14 +1,31 @@
 ---
+type VariantName = "default" | "accent" | "muted" | "none";
+type SizeName = "xxs" | "xs" | "sm" | "base" | "md" | "lg" | "xl";
+type GapName = "xs" | "sm" | "base" | "md" | "lg";
+
+export interface Props {
+  variant?: VariantName;
+  size?: SizeName;
+  onlyIconSize?: SizeName;
+  iconOnly?: boolean;
+  gap?: GapName;
+  isLink?: boolean;
+  class?: string;
+  href?: string;
+}
+
 const {
-  variant,
-  size,
-  onlyIconSize,
+  variant = "default",
+  size = "base",
+  onlyIconSize: _unusedOnlyIconSize,
   iconOnly = false,
   gap,
   isLink = false,
   class: className,
   ...rest
 } = Astro.props;
+
+void _unusedOnlyIconSize;
 const defaultClass = [
   "text-white",
   "bg-linear-to-t",
@@ -65,8 +82,10 @@ const variantClass = {
   muted: mutedClass,
   none: [],
 };
-const sizeClass = iconOnly ? iconSizes[size] : sizes[size] || [];
-const gapClass = !iconOnly && gap ? gapMap[gap] : [];
+const sizeClass = iconOnly
+  ? iconSizes[size]
+  : sizes[size] || [];
+const gapClass = !iconOnly && gap != null ? gapMap[gap] : [];
 const additionalClasses = className ? className.split(" ") : [];
 const baseClass = [
   "flex",
@@ -89,7 +108,7 @@ const baseClass = [
       href={rest.href}
       class:list={[
         ...baseClass,
-        ...(variantClass[variant] || []),
+        ...(variantClass[variant as VariantName] || []),
         ...sizeClass,
         ...gapClass,
         ...additionalClasses,
@@ -110,7 +129,7 @@ const baseClass = [
     <button
       class:list={[
         ...baseClass,
-        ...(variantClass[variant] || []),
+        ...(variantClass[variant as VariantName] || []),
         ...sizeClass,
         ...gapClass,
         ...additionalClasses,

@@ -13,6 +13,7 @@ const {
   align = "start",
   side = "bottom",
   class: className,
+  id,
   ...props
 } = Astro.props;
 ---
@@ -20,6 +21,7 @@ const {
 <PopoverContent
   align={align}
   side={side}
+  id={id ?? undefined}
   class={cn("w-full min-w-[220px] p-0", className)}
   {...props}
 >

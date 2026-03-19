@@ -46,10 +46,6 @@ const { navigation, currentPath } = Astro.props;
     </button>
   </div>
   <div class="h-[calc(100vh-3.5rem)] overflow-y-auto">
-    <SidebarNav
-      navigation={navigation}
-      currentPath={currentPath}
-      themeToggleSize="xs"
-    />
+    <SidebarNav navigation={navigation} currentPath={currentPath} />
   </div>
 </aside>

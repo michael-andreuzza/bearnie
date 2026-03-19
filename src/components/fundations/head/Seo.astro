@@ -4,6 +4,7 @@
  * Handles meta tags, Open Graph, and Twitter Cards
  */
 import { AstroSeo } from "@lexingtonthemes/seo";
+import type { MetaTag } from "@lexingtonthemes/seo/types";
 import { siteConfig } from "@/config/site";
 
 export interface Props {
@@ -93,22 +94,24 @@ if (type === "article") {
     site: siteConfig.author.twitter,
     cardType: "summary_large_image",
   }}
-  additionalMetaTags={[
-    {
-      name: "author",
-      content: author,
-    },
-    {
-      name: "theme-color",
-      content: "#ffffff",
-      media: "(prefers-color-scheme: light)",
-    },
-    {
-      name: "theme-color",
-      content: "#0a0a0a",
-      media: "(prefers-color-scheme: dark)",
-    },
-  ]}
+  additionalMetaTags={
+    [
+      {
+        name: "author",
+        content: author,
+      },
+      {
+        name: "theme-color",
+        content: "#ffffff",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        name: "theme-color",
+        content: "#0a0a0a",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ] as unknown as MetaTag[]
+  }
   additionalLinkTags={[
     {
       rel: "icon",

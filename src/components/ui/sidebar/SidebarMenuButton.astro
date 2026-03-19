@@ -2,12 +2,19 @@
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
 
-export interface Props extends HTMLAttributes<"a"> {
+export interface Props extends Omit<HTMLAttributes<"a">, "type"> {
   href?: string;
   isActive?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
-const { href, isActive = false, class: className, ...props } = Astro.props;
+const {
+  href,
+  isActive = false,
+  class: className,
+  type: buttonType = "button",
+  ...props
+} = Astro.props;
 
 const classes = cn(
   "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium outline-none transition-colors",
@@ -24,7 +31,7 @@ const classes = cn(
     <slot />
   </a>
 ) : (
-  <button type="button" class={classes} data-sidebar-menu-button data-active={isActive ? "true" : undefined} {...props}>
+  <button type={buttonType} class={classes} data-sidebar-menu-button data-active={isActive ? "true" : undefined} {...props}>
     <slot />
   </button>
 )}

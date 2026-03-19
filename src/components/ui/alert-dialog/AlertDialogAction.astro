@@ -1,20 +1,28 @@
 ---
 import Button from '@/components/ui/button/Button.astro';
-import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends HTMLAttributes<'button'> {
-  variant?: 'default' | 'destructive';
+export interface Props {
+  variant?: "default" | "destructive";
+  class?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
-const { variant = 'default', class: className, ...props } = Astro.props;
+const {
+  variant = "default",
+  class: className,
+  disabled,
+  type = "button",
+} = Astro.props;
 ---
 
 <Button
   variant={variant}
   size="sm"
   class={className}
+  disabled={disabled}
+  type={type}
   data-alert-dialog-action
-  {...props}
 >
   <slot />
 </Button>

@@ -54,8 +54,12 @@ const variants = {
   },
 };
 
-const variantKey = Object.prototype.hasOwnProperty.call(variants, variant)
-  ? variant
+type VariantName = keyof typeof variants;
+const variantKey: VariantName = Object.prototype.hasOwnProperty.call(
+  variants,
+  variant,
+)
+  ? (variant as VariantName)
   : "info";
 const variantConfig = variants[variantKey];
 const Icon = variantConfig.icon;

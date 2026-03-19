@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
     "generate-registry": "npx tsx scripts/generate-registry.ts",
@@ -22,23 +23,25 @@
     "@lucide/astro": "^0.577.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.19",
-    "astro": "^6.0.0",
+    "astro": "^6.0.6",
     "clsx": "^2.1.1",
     "html-to-image": "^1.11.13",
     "jszip": "^3.10.1",
     "keen-slider": "^6.8.6",
     "reading-time": "^1.5.0",
-    "shiki": "^4.0.0",
-    "tailwind-merge": "^3.4.0",
+    "shiki": "^4.0.2",
+    "tailwind-merge": "^3.5.0",
     "tailwind-scrollbar-hide": "^4.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.18",
+    "@astrojs/check": "^0.9.8",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^25.2.2",
-    "fs-extra": "^11.3.3",
+    "@types/node": "^25.5.0",
+    "fs-extra": "^11.3.4",
     "prettier": "^3.8.1",
-    "tailwindcss": "^4.1.18",
-    "tsx": "^4.21.0"
+    "tailwindcss": "^4.2.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

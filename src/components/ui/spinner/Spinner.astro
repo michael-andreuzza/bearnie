@@ -10,6 +10,7 @@ export interface Props extends HTMLAttributes<'svg'> {
 const {
   size = 'default',
   class: className,
+  color,
   ...props
 } = Astro.props;
 
@@ -26,4 +27,8 @@ const classes = cn(
 );
 ---
 
-<LoaderCircle class={classes} {...props} />
+<LoaderCircle
+  class={classes}
+  color={color ?? undefined}
+  {...(props as Record<string, string | number | undefined>)}
+/>

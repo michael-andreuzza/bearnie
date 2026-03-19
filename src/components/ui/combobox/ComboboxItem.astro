@@ -18,6 +18,7 @@ const {
   meta,
   disabled = false,
   class: className,
+  id,
   ...props
 } = Astro.props;
 ---
@@ -25,6 +26,7 @@ const {
 <CommandItem
   value={value}
   disabled={disabled}
+  id={id ?? undefined}
   class={className}
   data-combobox-item
   data-label={label}

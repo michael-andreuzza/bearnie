@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'astro/types';
 export interface Props extends HTMLAttributes<'div'> {
   align?: 'start' | 'center' | 'end';
   side?: 'top' | 'right' | 'bottom' | 'left';
-  id?: string;
+  id?: string | null;
 }
 
 const {
@@ -15,6 +15,8 @@ const {
   id,
   ...props
 } = Astro.props;
+
+const contentId = id ?? undefined;
 
 const sideStyles = {
   top: 'bottom-full mb-2',
@@ -42,7 +44,7 @@ const classes = cn(
   data-popover-content
   role="dialog"
   aria-modal="false"
-  id={id}
+  id={contentId}
   hidden
   {...props}
 >

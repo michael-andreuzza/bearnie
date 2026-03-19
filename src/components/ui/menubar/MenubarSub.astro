@@ -24,46 +24,49 @@ const classes = cn("relative", className);
 
       if (!trigger || !content) return;
 
+      const triggerEl = trigger as HTMLElement;
+      const contentEl = content as HTMLElement;
+
       let closeTimeout: ReturnType<typeof setTimeout>;
 
       function openSubmenu() {
         clearTimeout(closeTimeout);
-        content.removeAttribute("hidden");
-        trigger.setAttribute("data-state", "open");
-        trigger.setAttribute("aria-expanded", "true");
+        contentEl.removeAttribute("hidden");
+        triggerEl.setAttribute("data-state", "open");
+        triggerEl.setAttribute("aria-expanded", "true");
       }
 
       function closeSubmenu() {
         closeTimeout = setTimeout(() => {
-          content.setAttribute("hidden", "");
-          trigger.setAttribute("data-state", "closed");
-          trigger.setAttribute("aria-expanded", "false");
+          contentEl.setAttribute("hidden", "");
+          triggerEl.setAttribute("data-state", "closed");
+          triggerEl.setAttribute("aria-expanded", "false");
         }, 100);
       }
 
-      trigger.addEventListener("mouseenter", openSubmenu);
-      trigger.addEventListener("mouseleave", closeSubmenu);
-      content.addEventListener("mouseenter", () => clearTimeout(closeTimeout));
-      content.addEventListener("mouseleave", closeSubmenu);
+      triggerEl.addEventListener("mouseenter", openSubmenu);
+      triggerEl.addEventListener("mouseleave", closeSubmenu);
+      contentEl.addEventListener("mouseenter", () => clearTimeout(closeTimeout));
+      contentEl.addEventListener("mouseleave", closeSubmenu);
 
-      trigger.addEventListener("keydown", (e) => {
+      triggerEl.addEventListener("keydown", (e) => {
         const event = e as KeyboardEvent;
         if (event.key === "ArrowRight" || event.key === "Enter" || event.key === " ") {
           event.preventDefault();
           event.stopPropagation();
           openSubmenu();
-          const firstItem = content.querySelector("[data-menubar-item]:not([data-disabled])") as HTMLElement;
+          const firstItem = contentEl.querySelector("[data-menubar-item]:not([data-disabled])") as HTMLElement;
           if (firstItem) firstItem.focus();
         }
       });
 
-      content.addEventListener("keydown", (e) => {
+      contentEl.addEventListener("keydown", (e) => {
         const event = e as KeyboardEvent;
         if (event.key === "ArrowLeft" || event.key === "Escape") {
           event.preventDefault();
           event.stopPropagation();
           closeSubmenu();
-          (trigger as HTMLElement).focus();
+          triggerEl.focus();
         }
       });
     });

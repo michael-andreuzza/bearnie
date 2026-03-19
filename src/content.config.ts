@@ -20,7 +20,6 @@ const components = defineCollection({
     order: z.number().optional(),
   }),
 });
-
 const docs = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/docs" }),
   schema: z.object({
@@ -30,7 +29,6 @@ const docs = defineCollection({
     order: z.number().optional(),
   }),
 });
-
 const legal = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/legal" }),
   schema: z.object({
@@ -38,7 +36,6 @@ const legal = defineCollection({
     pubDate: z.coerce.date(),
   }),
 });
-
 export const collections = {
   components,
   docs,
