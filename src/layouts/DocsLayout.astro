@@ -1,5 +1,5 @@
 ---
-import { AstroSeo } from "@astrolib/seo";
+import { AstroSeo } from "@lexingtonthemes/seo";
 import { getCollection } from "astro:content";
 import { siteConfig } from "@/config/site";
 // Fundations
@@ -31,13 +31,13 @@ const taglineMap = new Map<string, string>();
 
 // Add docs entries
 docsEntries.forEach((entry) => {
-  const href = entry.slug === "introduction" ? "/docs" : `/docs/${entry.slug}`;
+  const href = entry.id === "introduction" ? "/docs" : `/docs/${entry.id}`;
   taglineMap.set(href, entry.data.tagline || entry.data.description);
 });
 
 // Add component entries
 componentEntries.forEach((entry) => {
-  const href = `/docs/components/${entry.slug}`;
+  const href = `/docs/components/${entry.id}`;
   taglineMap.set(href, entry.data.tagline || entry.data.description);
 });
 
@@ -77,7 +77,7 @@ const navigation = [
     items: [
       ...sortedDocs.map((entry) => ({
         title: entry.data.title,
-        href: entry.slug === "introduction" ? "/docs" : `/docs/${entry.slug}`,
+        href: entry.id === "introduction" ? "/docs" : `/docs/${entry.id}`,
       })),
       { title: "Create theme", href: "/create-bearnie-theme" },
       { title: "Code image", href: "/code-image" },
@@ -88,7 +88,7 @@ const navigation = [
     icon: "component" as const,
     items: sortedComponents.map((entry) => ({
       title: entry.data.title,
-      href: `/docs/components/${entry.slug}`,
+      href: `/docs/components/${entry.id}`,
     })),
   },
 ];

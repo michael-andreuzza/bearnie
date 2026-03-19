@@ -8,7 +8,7 @@ const components = await Promise.all(
   (await getCollection("components")).map(async (component) => ({
     title: component.data.title,
     description: component.data.description,
-    slug: component.slug,
+    slug: component.id,
     type: "component",
   })),
 );
@@ -18,7 +18,7 @@ const docs = await Promise.all(
   (await getCollection("docs")).map(async (doc) => ({
     title: doc.data.title,
     description: doc.data.description,
-    slug: doc.slug === "introduction" ? "" : doc.slug,
+    slug: doc.id === "introduction" ? "" : doc.id,
     type: "doc",
   })),
 );

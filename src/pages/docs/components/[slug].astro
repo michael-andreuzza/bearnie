@@ -1,17 +1,17 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 
 export async function getStaticPaths() {
   const components = await getCollection("components");
   return components.map((component) => ({
-    params: { slug: component.slug },
+    params: { slug: component.id },
     props: { component },
   }));
 }
 
 const { component } = Astro.props;
-const { Content } = await component.render();
+const { Content } = await render(component);
 ---
 
 <DocsLayout

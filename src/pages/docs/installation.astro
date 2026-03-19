@@ -1,10 +1,10 @@
 ---
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 
 const doc = await getEntry("docs", "installation");
 if (!doc) throw new Error("Document not found");
-const { Content } = await doc.render();
+const { Content } = await render(doc);
 ---
 
 <DocsLayout title={doc.data.title} description={doc.data.description}>

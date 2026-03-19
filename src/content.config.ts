@@ -1,7 +1,9 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 const components = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/components" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -20,7 +22,7 @@ const components = defineCollection({
 });
 
 const docs = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/docs" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -30,9 +32,10 @@ const docs = defineCollection({
 });
 
 const legal = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/legal" }),
   schema: z.object({
     page: z.string(),
-    pubDate: z.date(),
+    pubDate: z.coerce.date(),
   }),
 });
 
