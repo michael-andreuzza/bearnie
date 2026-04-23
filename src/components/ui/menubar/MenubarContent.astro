@@ -5,9 +5,16 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends HTMLAttributes<"div"> {
   align?: "start" | "center" | "end";
   sideOffset?: number;
+  variant?: "default" | "mega";
 }
 
-const { align = "start", sideOffset = 4, class: className, ...props } = Astro.props;
+const {
+  align = "start",
+  sideOffset = 4,
+  variant = "default",
+  class: className,
+  ...props
+} = Astro.props;
 
 const alignClasses = {
   start: "left-0",
@@ -16,7 +23,9 @@ const alignClasses = {
 };
 
 const classes = cn(
-  "absolute top-full z-50 min-w-48 overflow-visible rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+  variant === "mega"
+    ? "absolute top-full z-50 min-w-[18rem] overflow-visible rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+    : "absolute top-full z-50 min-w-48 overflow-visible rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
   alignClasses[align],
   className
 );
@@ -26,6 +35,7 @@ const classes = cn(
   class={classes}
   style={`margin-top: ${sideOffset}px`}
   data-menubar-content
+  data-menubar-variant={variant}
   role="menu"
   hidden
   {...props}

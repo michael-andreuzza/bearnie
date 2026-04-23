@@ -23,6 +23,8 @@ const classes = cn(
       menubar.setAttribute("data-initialized", "true");
 
       const menus = menubar.querySelectorAll("[data-menubar-menu]");
+      const focusableSelector =
+        "[data-menubar-focusable]:not([data-disabled])";
       let activeMenu: Element | null = null;
       let isMenubarActive = false;
 
@@ -53,7 +55,7 @@ const classes = cn(
         isMenubarActive = true;
 
         // Focus first item
-        const firstItem = content?.querySelector("[data-menubar-item]:not([data-disabled])") as HTMLElement;
+        const firstItem = content?.querySelector(focusableSelector) as HTMLElement;
         if (firstItem) firstItem.focus();
       }
 
@@ -104,7 +106,7 @@ const classes = cn(
         if (content) {
           content.addEventListener("keydown", (e) => {
             const event = e as KeyboardEvent;
-            const items = content.querySelectorAll("[data-menubar-item]:not([data-disabled]), [data-menubar-checkbox-item]:not([data-disabled]), [data-menubar-radio-item]:not([data-disabled]), [data-menubar-sub-trigger]:not([data-disabled])");
+            const items = content.querySelectorAll(focusableSelector);
             const itemArray = Array.from(items) as HTMLElement[];
             const currentIndex = itemArray.indexOf(document.activeElement as HTMLElement);
 
@@ -121,12 +123,20 @@ const classes = cn(
               closeAllMenus();
               (trigger as HTMLElement)?.focus();
             } else if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-              // Check if we're on a sub-trigger
               const focused = document.activeElement;
               if (event.key === "ArrowRight" && focused?.hasAttribute("data-menubar-sub-trigger")) {
                 return; // Let submenu handle it
               }
-              
+
+              if (focused?.hasAttribute("data-menubar-mega-item")) {
+                event.preventDefault();
+                const delta = event.key === "ArrowRight" ? 1 : -1;
+                const nextIndex =
+                  (currentIndex + delta + itemArray.length) % itemArray.length;
+                itemArray[nextIndex]?.focus();
+                return;
+              }
+
               event.preventDefault();
               const menuArray = Array.from(menus);
               const currentMenuIndex = menuArray.indexOf(menu);

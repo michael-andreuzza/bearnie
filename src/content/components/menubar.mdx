@@ -22,9 +22,12 @@ import MenubarLabel from "@/components/ui/menubar/MenubarLabel.astro";
 import MenubarCheckboxItem from "@/components/ui/menubar/MenubarCheckboxItem.astro";
 import MenubarRadioGroup from "@/components/ui/menubar/MenubarRadioGroup.astro";
 import MenubarRadioItem from "@/components/ui/menubar/MenubarRadioItem.astro";
+import MenubarMegaItem from "@/components/ui/menubar/MenubarMegaItem.astro";
 import MenubarSub from "@/components/ui/menubar/MenubarSub.astro";
 import MenubarSubTrigger from "@/components/ui/menubar/MenubarSubTrigger.astro";
 import MenubarSubContent from "@/components/ui/menubar/MenubarSubContent.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Alert02Icon, CircleIcon, Tick02Icon } from "@/lib/hugeicons";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -147,6 +150,7 @@ import MenubarSubContent from "@/components/ui/menubar/MenubarSubContent.astro";
 import {
   Menubar,
   MenubarContent,
+  MenubarMegaItem,
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
@@ -254,6 +258,54 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
 
 <div class="space-y-4">
 <Prose>
+#### Icons
+
+Use `MenubarMegaItem variant="simple"` in a regular `MenubarContent` when you
+just want a compact icon list without the larger mega-menu layout.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>Status</MenubarTrigger>
+    <MenubarContent class="w-56">
+      <MenubarMegaItem variant="simple" title="Backlog">
+        <HugeIcon slot="icon" icon={Alert02Icon} />
+      </MenubarMegaItem>
+      <MenubarMegaItem variant="simple" title="To Do">
+        <HugeIcon slot="icon" icon={CircleIcon} />
+      </MenubarMegaItem>
+      <MenubarMegaItem variant="simple" title="Done">
+        <HugeIcon slot="icon" icon={Tick02Icon} />
+      </MenubarMegaItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+  </Fragment>
+  <Menubar>
+    <MenubarMenu>
+      <MenubarTrigger>Status</MenubarTrigger>
+      <MenubarContent class="w-56">
+        <MenubarMegaItem variant="simple" title="Backlog">
+          <HugeIcon slot="icon" icon={Alert02Icon} />
+        </MenubarMegaItem>
+        <MenubarMegaItem variant="simple" title="To Do">
+          <HugeIcon slot="icon" icon={CircleIcon} />
+        </MenubarMegaItem>
+        <MenubarMegaItem variant="simple" title="Done">
+          <HugeIcon slot="icon" icon={Tick02Icon} />
+        </MenubarMegaItem>
+      </MenubarContent>
+    </MenubarMenu>
+  </Menubar>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
 #### Submenu
 
 Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
@@ -302,6 +354,128 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
   </Menubar>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Mega menu
+
+Use `variant="mega"` on `MenubarContent` with `MenubarMegaItem` when one
+trigger needs grouped navigation links and descriptions.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>Getting started</MenubarTrigger>
+    <MenubarContent variant="mega" class="w-[min(32rem,calc(100vw-2rem))]">
+      <div class="grid gap-1">
+        <MenubarMegaItem
+          title="Introduction"
+          description="Reusable components built with Tailwind CSS."
+          href="/docs"
+        />
+        <MenubarMegaItem
+          title="Installation"
+          description="How to install dependencies and structure your app."
+          href="/docs/installation"
+        />
+        <MenubarMegaItem
+          title="Typography"
+          description="Styles for headings, paragraphs, lists, and more."
+          href="/system/typography"
+        />
+      </div>
+    </MenubarContent>
+  </MenubarMenu>
+
+  <MenubarMenu>
+    <MenubarTrigger>Components</MenubarTrigger>
+    <MenubarContent variant="mega" class="w-[min(40rem,calc(100vw-2rem))]">
+      <div class="grid gap-1 sm:grid-cols-2 sm:gap-x-2 sm:gap-y-1">
+        <MenubarMegaItem
+          title="Alert Dialog"
+          description="A modal dialog that interrupts the user with important content."
+          href="/docs/components/alert-dialog"
+        />
+        <MenubarMegaItem
+          title="Hover Card"
+          description="For sighted users to preview content available behind a link."
+          href="/docs/components/hover-card"
+        />
+        <MenubarMegaItem
+          title="Progress"
+          description="Displays an indicator showing the completion progress of a task."
+          href="/docs/components/progress"
+        />
+        <MenubarMegaItem
+          title="Tooltip"
+          description="A popup that displays information related to an element."
+          href="/docs/components/tooltip"
+        />
+      </div>
+    </MenubarContent>
+  </MenubarMenu>
+
+</Menubar>
+```
+  </Fragment>
+  <Menubar>
+    <MenubarMenu>
+      <MenubarTrigger>Getting started</MenubarTrigger>
+      <MenubarContent variant="mega" class="w-[min(32rem,calc(100vw-2rem))]">
+        <div class="grid gap-1">
+          <MenubarMegaItem
+            title="Introduction"
+            description="Reusable components built with Tailwind CSS."
+            href="/docs"
+          />
+          <MenubarMegaItem
+            title="Installation"
+            description="How to install dependencies and structure your app."
+            href="/docs/installation"
+          />
+          <MenubarMegaItem
+            title="Typography"
+            description="Styles for headings, paragraphs, lists, and more."
+            href="/system/typography"
+          />
+        </div>
+      </MenubarContent>
+    </MenubarMenu>
+
+    <MenubarMenu>
+      <MenubarTrigger>Components</MenubarTrigger>
+      <MenubarContent variant="mega" class="w-[min(40rem,calc(100vw-2rem))]">
+        <div class="grid gap-1 sm:grid-cols-2 sm:gap-x-2 sm:gap-y-1">
+          <MenubarMegaItem
+            title="Alert Dialog"
+            description="A modal dialog that interrupts the user with important content."
+            href="/docs/components/alert-dialog"
+          />
+          <MenubarMegaItem
+            title="Hover Card"
+            description="For sighted users to preview content available behind a link."
+            href="/docs/components/hover-card"
+          />
+          <MenubarMegaItem
+            title="Progress"
+            description="Displays an indicator showing the completion progress of a task."
+            href="/docs/components/progress"
+          />
+          <MenubarMegaItem
+            title="Tooltip"
+            description="A popup that displays information related to an element."
+            href="/docs/components/tooltip"
+          />
+        </div>
+      </MenubarContent>
+    </MenubarMenu>
+
+  </Menubar>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -325,6 +499,7 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 |------|------|---------|-------------|
 | align | "start" \| "center" \| "end" | "start" | Alignment of the content |
 | sideOffset | number | 4 | Offset from the trigger |
+| variant | "default" \| "mega" | "default" | Switches between compact dropdown and wider mega-menu styling |
 | class | string | - | Additional CSS classes |
 
 #### MenubarItem
@@ -356,5 +531,16 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 |------|------|---------|-------------|
 | value | string | - | Value of the radio item |
 | disabled | boolean | false | Disables the item |
+| class | string | - | Additional CSS classes |
+
+#### MenubarMegaItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| title | string | - | Main heading text for the mega-menu entry |
+| description | string | - | Optional supporting description text |
+| href | string | - | Renders the entry as a link when provided |
+| disabled | boolean | false | Disables the item |
+| variant | "default" \| "simple" | "default" | Uses either stacked description rows or a simple inline icon/list layout |
 | class | string | - | Additional CSS classes |
 </Prose>

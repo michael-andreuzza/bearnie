@@ -154,6 +154,7 @@ export { default as MenubarLabel } from "./menubar/MenubarLabel.astro";
 export { default as MenubarCheckboxItem } from "./menubar/MenubarCheckboxItem.astro";
 export { default as MenubarRadioGroup } from "./menubar/MenubarRadioGroup.astro";
 export { default as MenubarRadioItem } from "./menubar/MenubarRadioItem.astro";
+export { default as MenubarMegaItem } from "./menubar/MenubarMegaItem.astro";
 export { default as MenubarSub } from "./menubar/MenubarSub.astro";
 export { default as MenubarSubTrigger } from "./menubar/MenubarSubTrigger.astro";
 export { default as MenubarSubContent } from "./menubar/MenubarSubContent.astro";

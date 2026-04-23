@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "CLI for installing Bearnie UI components",
   "type": "module",
   "license": "MIT",

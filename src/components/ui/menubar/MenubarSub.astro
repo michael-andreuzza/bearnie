@@ -55,7 +55,9 @@ const classes = cn("relative", className);
           event.preventDefault();
           event.stopPropagation();
           openSubmenu();
-          const firstItem = contentEl.querySelector("[data-menubar-item]:not([data-disabled])") as HTMLElement;
+          const firstItem = contentEl.querySelector(
+            "[data-menubar-focusable]:not([data-disabled])",
+          ) as HTMLElement;
           if (firstItem) firstItem.focus();
         }
       });

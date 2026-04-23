@@ -1,0 +1,111 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"a"> {
+  title: string;
+  description?: string;
+  href?: string;
+  disabled?: boolean;
+  variant?: "default" | "simple";
+}
+
+const {
+  title,
+  description,
+  href,
+  disabled = false,
+  variant = "default",
+  class: className,
+  ...props
+} = Astro.props;
+
+const Tag = href && !disabled ? "a" : "div";
+
+const classes = cn(
+  variant === "simple"
+    ? "flex min-w-0 cursor-pointer select-none items-center gap-2.5 rounded-sm px-2 py-1.5 text-left outline-none transition-colors"
+    : "flex min-w-0 cursor-pointer select-none flex-col gap-1 rounded-sm px-2 py-1.5 text-left outline-none transition-colors",
+  "focus:bg-accent focus:text-accent-foreground hover:bg-accent/50",
+  "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+  "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+  className,
+);
+---
+
+<Tag
+  class={classes}
+  href={Tag === "a" ? href : undefined}
+  data-menubar-mega-item
+  data-menubar-focusable
+  data-disabled={disabled ? "" : undefined}
+  role="menuitem"
+  tabindex={disabled ? -1 : 0}
+  {...props}
+>
+  {
+    Astro.slots.has("icon") && (
+      <span
+        class={cn(
+          "inline-flex items-center justify-center text-foreground",
+          variant === "simple"
+            ? "size-4 [&_svg]:size-4"
+            : "mb-1 size-4 [&_svg]:size-4",
+        )}
+      >
+        <slot name="icon" />
+      </span>
+    )
+  }
+  <span class={cn("min-w-0", variant === "simple" ? "flex-1" : "")}>
+    <span
+      class={cn(
+        "block font-medium leading-none",
+        "text-sm",
+      )}
+    >
+      {title}
+    </span>
+    {description && (
+      <span class="mt-1 block text-sm leading-[1.45] text-muted-foreground">
+        {description}
+      </span>
+    )}
+  </span>
+  <slot />
+</Tag>
+
+<script>
+  function initMenubarMegaItems() {
+    document
+      .querySelectorAll("[data-menubar-mega-item]:not([data-disabled])")
+      .forEach((item) => {
+        if (item.hasAttribute("data-mega-initialized")) return;
+        item.setAttribute("data-mega-initialized", "true");
+
+        item.addEventListener("click", () => {
+          const menubar = item.closest("[data-menubar]");
+          if (!menubar) return;
+
+          menubar.querySelectorAll("[data-menubar-content]").forEach((content) => {
+            content.setAttribute("hidden", "");
+          });
+          menubar.querySelectorAll("[data-menubar-trigger]").forEach((trigger) => {
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.setAttribute("data-state", "closed");
+          });
+        });
+
+        item.addEventListener("keydown", (e) => {
+          const event = e as KeyboardEvent;
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            (item as HTMLElement).click();
+          }
+        });
+      });
+  }
+
+  initMenubarMegaItems();
+  document.addEventListener("astro:page-load", initMenubarMegaItems);
+</script>
