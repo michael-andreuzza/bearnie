@@ -1,11 +1,14 @@
 ---
 title: Alert
-description: Contextual messages for user feedback.
+description: Contextual messages for UserIcon feedback.
 tagline: Display important messages
 category: feedback
 status: stable
 order: 2
 ---
+
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { CheckmarkCircle01Icon, CancelCircleIcon, InformationCircleIcon, Rocket01Icon, ShieldQuestionMarkIcon, Alert02Icon, Cancel01Icon } from "@/lib/hugeicons";
 
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
@@ -14,13 +17,12 @@ import Alert from "@/components/ui/alert/Alert.astro";
 import AlertTitle from "@/components/ui/alert/AlertTitle.astro";
 import AlertDescription from "@/components/ui/alert/AlertDescription.astro";
 import Button from "@/components/ui/button/Button.astro";
-import Info from "@lucide/astro/icons/info";
-import CircleCheck from "@lucide/astro/icons/circle-check";
-import TriangleAlert from "@lucide/astro/icons/triangle-alert";
-import CircleX from "@lucide/astro/icons/circle-x";
-import X from "@lucide/astro/icons/x";
-import Rocket from "@lucide/astro/icons/rocket";
-import ShieldAlert from "@lucide/astro/icons/shield-alert";
+
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -82,14 +84,14 @@ import {
   <Fragment slot="code">
 ```html
 <Alert variant="destructive">
-  <CircleX class="size-4" />
+  <HugeIcon icon={CancelCircleIcon} class="size-4" />
   <AlertTitle>Error</AlertTitle>
   <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
 </Alert>
 ```
   </Fragment>
   <Alert variant="destructive">
-    <CircleX class="size-4" />
+    <HugeIcon icon={CancelCircleIcon} class="size-4" />
     <AlertTitle>Error</AlertTitle>
     <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
   </Alert>
@@ -105,14 +107,14 @@ import {
   <Fragment slot="code">
 ```html
 <Alert variant="success">
-  <CircleCheck class="size-4" />
+  <HugeIcon icon={CheckmarkCircle01Icon} class="size-4" />
   <AlertTitle>Success</AlertTitle>
   <AlertDescription>Your changes have been saved successfully.</AlertDescription>
 </Alert>
 ```
   </Fragment>
   <Alert variant="success">
-    <CircleCheck class="size-4" />
+    <HugeIcon icon={CheckmarkCircle01Icon} class="size-4" />
     <AlertTitle>Success</AlertTitle>
     <AlertDescription>Your changes have been saved successfully.</AlertDescription>
   </Alert>
@@ -128,14 +130,14 @@ import {
   <Fragment slot="code">
 ```html
 <Alert variant="warning">
-  <TriangleAlert class="size-4" />
+  <HugeIcon icon={Alert02Icon} class="size-4" />
   <AlertTitle>Warning</AlertTitle>
   <AlertDescription>Your account is about to expire.</AlertDescription>
 </Alert>
 ```
   </Fragment>
   <Alert variant="warning">
-    <TriangleAlert class="size-4" />
+    <HugeIcon icon={Alert02Icon} class="size-4" />
     <AlertTitle>Warning</AlertTitle>
     <AlertDescription>Your account is about to expire.</AlertDescription>
   </Alert>
@@ -151,14 +153,14 @@ import {
   <Fragment slot="code">
 ```html
 <Alert variant="info">
-  <Info class="size-4" />
+  <HugeIcon icon={InformationCircleIcon} class="size-4" />
   <AlertTitle>Info</AlertTitle>
   <AlertDescription>A new version is available for download.</AlertDescription>
 </Alert>
 ```
   </Fragment>
   <Alert variant="info">
-    <Info class="size-4" />
+    <HugeIcon icon={InformationCircleIcon} class="size-4" />
     <AlertTitle>Info</AlertTitle>
     <AlertDescription>A new version is available for download.</AlertDescription>
   </Alert>
@@ -169,14 +171,14 @@ import {
 <Prose>
 #### With Action
 
-Add buttons to alerts for user actions like retry, dismiss, or learn more.
+Add buttons to alerts for UserIcon actions like retry, dismiss, or learn more.
 </Prose>
 
 <ComponentPreview>
   <Fragment slot="code">
 ```html
 <Alert variant="destructive">
-  <CircleX class="size-4" />
+  <HugeIcon icon={CancelCircleIcon} class="size-4" />
   <AlertTitle>Upload failed</AlertTitle>
   <AlertDescription class="flex flex-col gap-3">
     <span>Your file could not be uploaded. Please try again.</span>
@@ -189,7 +191,7 @@ Add buttons to alerts for user actions like retry, dismiss, or learn more.
 ```
   </Fragment>
   <Alert variant="destructive">
-    <CircleX class="size-4" />
+    <HugeIcon icon={CancelCircleIcon} class="size-4" />
     <AlertTitle>Upload failed</AlertTitle>
     <AlertDescription class="flex flex-col gap-3">
       <span>Your file could not be uploaded. Please try again.</span>
@@ -213,7 +215,7 @@ Add a close button to make alerts dismissible.
   <Fragment slot="code">
 ```html
 <Alert class="pr-12">
-  <Info class="size-4" />
+  <HugeIcon icon={InformationCircleIcon} class="size-4" />
   <AlertTitle>New feature available</AlertTitle>
   <AlertDescription>Check out the new dashboard for better insights.</AlertDescription>
   <Button 
@@ -222,13 +224,13 @@ Add a close button to make alerts dismissible.
     iconOnly
     class="absolute top-3 right-3"
   >
-    <X class="size-4" />
+    <HugeIcon icon={Cancel01Icon} class="size-4" />
   </Button>
 </Alert>
 ```
   </Fragment>
   <Alert class="pr-12">
-    <Info class="size-4" />
+    <HugeIcon icon={InformationCircleIcon} class="size-4" />
     <AlertTitle>New feature available</AlertTitle>
     <AlertDescription>Check out the new dashboard for better insights.</AlertDescription>
     <Button 
@@ -237,7 +239,7 @@ Add a close button to make alerts dismissible.
       iconOnly
       class="absolute top-3 right-3"
     >
-      <X class="size-4" />
+      <HugeIcon icon={Cancel01Icon} class="size-4" />
     </Button>
   </Alert>
 </ComponentPreview>
@@ -254,19 +256,19 @@ Include inline links within alert descriptions.
   <Fragment slot="code">
 ```html
 <Alert variant="warning">
-  <TriangleAlert class="size-4" />
+  <HugeIcon icon={Alert02Icon} class="size-4" />
   <AlertTitle>Subscription expiring</AlertTitle>
   <AlertDescription>
-    Your subscription expires in 3 days. <a href="#" class="font-medium underline underline-offset-4 hover:no-underline">Renew now</a> to avoid interruption.
+    Your subscription expires in 3 days. <a href="#" class="font-medium TextUnderlineIcon TextUnderlineIcon-offset-4 hover:no-TextUnderlineIcon">Renew now</a> to avoid interruption.
   </AlertDescription>
 </Alert>
 ```
   </Fragment>
   <Alert variant="warning">
-    <TriangleAlert class="size-4" />
+    <HugeIcon icon={Alert02Icon} class="size-4" />
     <AlertTitle>Subscription expiring</AlertTitle>
     <AlertDescription>
-      Your subscription expires in 3 days. <a href="#" class="font-medium underline underline-offset-4 hover:no-underline">Renew now</a> to avoid interruption.
+      Your subscription expires in 3 days. <a href="#" class="font-medium TextUnderlineIcon TextUnderlineIcon-offset-4 hover:no-TextUnderlineIcon">Renew now</a> to avoid interruption.
     </AlertDescription>
   </Alert>
 </ComponentPreview>
@@ -283,13 +285,13 @@ Compact alert with just a title, no description.
   <Fragment slot="code">
 ```html
 <Alert variant="success">
-  <CircleCheck class="size-4" />
+  <HugeIcon icon={CheckmarkCircle01Icon} class="size-4" />
   <AlertTitle>Payment successful</AlertTitle>
 </Alert>
 ```
   </Fragment>
   <Alert variant="success">
-    <CircleCheck class="size-4" />
+    <HugeIcon icon={CheckmarkCircle01Icon} class="size-4" />
     <AlertTitle>Payment successful</AlertTitle>
   </Alert>
 </ComponentPreview>
@@ -306,7 +308,7 @@ Alert with only a description, no title.
   <Fragment slot="code">
 ```html
 <Alert variant="info">
-  <Rocket class="size-4" />
+  <HugeIcon icon={Rocket01Icon} class="size-4" />
   <AlertDescription>
     Tip: Press <kbd class="px-1.5 py-0.5 text-xs rounded bg-muted font-mono">Ctrl + K</kbd> to open the command menu.
   </AlertDescription>
@@ -314,7 +316,7 @@ Alert with only a description, no title.
 ```
   </Fragment>
   <Alert variant="info">
-    <Rocket class="size-4" />
+    <HugeIcon icon={Rocket01Icon} class="size-4" />
     <AlertDescription>
       Tip: Press <kbd class="px-1.5 py-0.5 text-xs rounded bg-muted font-mono">Ctrl + K</kbd> to open the command menu.
     </AlertDescription>
@@ -333,7 +335,7 @@ Alert containing a list of items for multiple messages or requirements.
   <Fragment slot="code">
 ```html
 <Alert variant="destructive">
-  <ShieldAlert class="size-4" />
+  <HugeIcon icon={ShieldQuestionMarkIcon} class="size-4" />
   <AlertTitle>Password requirements not met</AlertTitle>
   <AlertDescription>
     <ul class="list-disc list-inside space-y-1 pt-2">
@@ -347,7 +349,7 @@ Alert containing a list of items for multiple messages or requirements.
 ```
   </Fragment>
   <Alert variant="destructive">
-    <ShieldAlert class="size-4" />
+    <HugeIcon icon={ShieldQuestionMarkIcon} class="size-4" />
     <AlertTitle>Password requirements not met</AlertTitle>
     <AlertDescription>
       <ul class="list-disc list-inside space-y-1 pt-2">

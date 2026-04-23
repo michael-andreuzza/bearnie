@@ -1,11 +1,14 @@
 ---
 title: Alert Dialog
-description: A modal dialog that interrupts the user with important content and expects a response.
+description: A modal dialog that interrupts the UserIcon with important content and expects a response.
 tagline: Confirmation dialogs
 category: feedback
 status: stable
 order: 2
 ---
+
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { InformationCircleIcon, Delete02Icon, Alert02Icon } from "@/lib/hugeicons";
 
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
@@ -21,9 +24,8 @@ import AlertDialogFooter from "@/components/ui/alert-dialog/AlertDialogFooter.as
 import AlertDialogAction from "@/components/ui/alert-dialog/AlertDialogAction.astro";
 import AlertDialogCancel from "@/components/ui/alert-dialog/AlertDialogCancel.astro";
 import Button from "@/components/ui/button/Button.astro";
-import TriangleAlert from "@lucide/astro/icons/triangle-alert";
-import Info from "@lucide/astro/icons/info";
-import Trash2 from "@lucide/astro/icons/trash-2";
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -194,7 +196,7 @@ Add an icon to the title for visual emphasis.
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle class="flex items-center gap-2">
-        <TriangleAlert class="size-5 text-destructive" />
+        <HugeIcon icon={Alert02Icon} class="size-5 text-destructive" />
         Clear all data?
       </AlertDialogTitle>
       <AlertDialogDescription>
@@ -217,7 +219,7 @@ Add an icon to the title for visual emphasis.
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle class="flex items-center gap-2">
-          <TriangleAlert class="size-5 text-destructive" />
+          <HugeIcon icon={Alert02Icon} class="size-5 text-destructive" />
           Clear all data?
         </AlertDialogTitle>
         <AlertDialogDescription>
@@ -251,7 +253,7 @@ Add lists, inputs, or any custom content to the description area.
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle class="flex items-center gap-2">
-        <Trash2 class="size-5" />
+        <HugeIcon icon={Delete02Icon} class="size-5" />
         Delete selected items?
       </AlertDialogTitle>
       <AlertDialogDescription>
@@ -281,7 +283,7 @@ Add lists, inputs, or any custom content to the description area.
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle class="flex items-center gap-2">
-          <Trash2 class="size-5" />
+          <HugeIcon icon={Delete02Icon} class="size-5" />
           Delete selected items?
         </AlertDialogTitle>
         <AlertDialogDescription>
@@ -315,7 +317,7 @@ Alert Dialog is specifically designed for confirmation actions:
 - **Focused interaction** - Emphasizes the confirm/cancel pattern
 - **Uses `role="alertdialog"`** - Proper accessibility semantics
 
-Use Alert Dialog when you need user confirmation before a destructive or important action.
+Use Alert Dialog when you need UserIcon confirmation before a destructive or important action.
 </Prose>
 
 <Prose>

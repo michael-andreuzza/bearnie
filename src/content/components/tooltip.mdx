@@ -1,11 +1,14 @@
 ---
 title: Tooltip
-description: Brief info shown on hover or focus.
+description: Brief information shown on hover or focus.
 tagline: Hover information
 category: feedback
 status: stable
 order: 21
 ---
+
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { TextBoldIcon, TextItalicIcon, PlusSignIcon, TextUnderlineIcon } from "@/lib/hugeicons";
 
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
@@ -14,10 +17,9 @@ import Button from "@/components/ui/button/Button.astro";
 import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
 import TooltipTrigger from "@/components/ui/tooltip/TooltipTrigger.astro";
 import TooltipContent from "@/components/ui/tooltip/TooltipContent.astro";
-import Plus from "@lucide/astro/icons/plus";
-import Bold from "@lucide/astro/icons/bold";
-import Italic from "@lucide/astro/icons/italic";
-import Underline from "@lucide/astro/icons/underline";
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -207,7 +209,7 @@ import {
 <Tooltip>
   <TooltipTrigger>
     <Button iconOnly variant="outline">
-      <Plus />
+      <HugeIcon icon={PlusSignIcon} />
     </Button>
   </TooltipTrigger>
   <TooltipContent>
@@ -219,7 +221,7 @@ import {
   <Tooltip>
     <TooltipTrigger>
       <Button iconOnly variant="outline">
-        <Plus />
+        <HugeIcon icon={PlusSignIcon} />
       </Button>
     </TooltipTrigger>
     <TooltipContent>
@@ -241,7 +243,7 @@ import {
   <Tooltip>
     <TooltipTrigger>
       <Button iconOnly variant="ghost" size="sm">
-        <Bold />
+        <HugeIcon icon={TextBoldIcon} />
       </Button>
     </TooltipTrigger>
     <TooltipContent>
@@ -251,7 +253,7 @@ import {
   <Tooltip>
     <TooltipTrigger>
       <Button iconOnly variant="ghost" size="sm">
-        <Italic />
+        <HugeIcon icon={TextItalicIcon} />
       </Button>
     </TooltipTrigger>
     <TooltipContent>
@@ -261,7 +263,7 @@ import {
   <Tooltip>
     <TooltipTrigger>
       <Button iconOnly variant="ghost" size="sm">
-        <Underline />
+        <HugeIcon icon={TextUnderlineIcon} />
       </Button>
     </TooltipTrigger>
     <TooltipContent>
@@ -275,7 +277,7 @@ import {
     <Tooltip>
       <TooltipTrigger>
         <Button iconOnly variant="ghost" size="sm">
-          <Bold />
+          <HugeIcon icon={TextBoldIcon} />
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -285,7 +287,7 @@ import {
     <Tooltip>
       <TooltipTrigger>
         <Button iconOnly variant="ghost" size="sm">
-          <Italic />
+          <HugeIcon icon={TextItalicIcon} />
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -295,7 +297,7 @@ import {
     <Tooltip>
       <TooltipTrigger>
         <Button iconOnly variant="ghost" size="sm">
-          <Underline />
+          <HugeIcon icon={TextUnderlineIcon} />
         </Button>
       </TooltipTrigger>
       <TooltipContent>

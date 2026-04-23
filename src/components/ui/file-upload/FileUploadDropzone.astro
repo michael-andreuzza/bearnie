@@ -1,7 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import Upload from "@lucide/astro/icons/upload";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Upload01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'div'> {}
 
@@ -17,7 +18,7 @@ const classes = cn(
 
 <div class={classes} data-file-upload-dropzone {...props}>
   <slot>
-    <Upload class="size-6 text-muted-foreground" />
+    <HugeIcon icon={Upload01Icon} class="size-6 text-muted-foreground" />
     <div class="text-sm text-muted-foreground">
       <span class="font-medium text-foreground">Click to upload</span> or drag and drop
     </div>

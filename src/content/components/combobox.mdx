@@ -12,7 +12,8 @@ import Prose from "@/components/docs/Prose.astro";
 import Combobox from "@/components/ui/combobox/Combobox.astro";
 import InputGroup from "@/components/ui/input-group/InputGroup.astro";
 import InputGroupAddon from "@/components/ui/input-group/InputGroupAddon.astro";
-import Globe from "@/components/fundations/icons/Globe.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Globe02Icon } from "@/lib/hugeicons";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -241,16 +242,16 @@ import { Combobox } from "@/components/bearnie/combobox"
 ```html
 <InputGroup class="w-[320px]">
   <InputGroupAddon align="inline-start">
-    <Globe size="sm" />
+    <HugeIcon icon={Globe02Icon} size="sm" />
   </InputGroupAddon>
   <Combobox
     inputGroupControl
-    value="gmt-minus-5"
+    value="gmt-MinusSignIcon-5"
     options={[
-      { value: "gmt-minus-8", label: "(GMT-8) Los Angeles" },
-      { value: "gmt-minus-5", label: "(GMT-5) New York" },
-      { value: "gmt-plus-0", label: "(GMT+0) London" },
-      { value: "gmt-plus-9", label: "(GMT+9) Tokyo" },
+      { value: "gmt-MinusSignIcon-8", label: "(GMT-8) Los Angeles" },
+      { value: "gmt-MinusSignIcon-5", label: "(GMT-5) New York" },
+      { value: "gmt-PlusSignIcon-0", label: "(GMT+0) London" },
+      { value: "gmt-PlusSignIcon-9", label: "(GMT+9) Tokyo" },
     ]}
     placeholder="Select a timezone"
   />
@@ -260,17 +261,17 @@ import { Combobox } from "@/components/bearnie/combobox"
   <div class="w-[320px]">
     <InputGroup>
       <InputGroupAddon align="inline-start">
-        <Globe size="sm" />
+        <HugeIcon icon={Globe02Icon} size="sm" />
       </InputGroupAddon>
       <Combobox
         inputGroupControl
-        value="gmt-minus-5"
+        value="gmt-MinusSignIcon-5"
         options={[
-          { value: "gmt-minus-8", label: "(GMT-8) Los Angeles" },
-          { value: "gmt-minus-5", label: "(GMT-5) New York" },
-          { value: "gmt-plus-0", label: "(GMT+0) London" },
-          { value: "gmt-plus-1", label: "(GMT+1) Paris" },
-          { value: "gmt-plus-9", label: "(GMT+9) Tokyo" },
+          { value: "gmt-MinusSignIcon-8", label: "(GMT-8) Los Angeles" },
+          { value: "gmt-MinusSignIcon-5", label: "(GMT-5) New York" },
+          { value: "gmt-PlusSignIcon-0", label: "(GMT+0) London" },
+          { value: "gmt-PlusSignIcon-1", label: "(GMT+1) Paris" },
+          { value: "gmt-PlusSignIcon-9", label: "(GMT+9) Tokyo" },
         ]}
         placeholder="Select a timezone"
       />

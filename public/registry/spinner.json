@@ -9,7 +9,7 @@
     {
       "name": "Spinner.astro",
       "path": "spinner/Spinner.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\nimport LoaderCircle from '@lucide/astro/icons/loader-circle';\n\nexport interface Props extends HTMLAttributes<'svg'> {\n  size?: 'sm' | 'default' | 'lg';\n}\n\nconst {\n  size = 'default',\n  class: className,\n  ...props\n} = Astro.props;\n\nconst sizeStyles = {\n  sm: 'size-4',\n  default: 'size-6',\n  lg: 'size-8',\n};\n\nconst classes = cn(\n  'animate-spin text-muted-foreground',\n  sizeStyles[size],\n  className\n);\n---\n\n<LoaderCircle class={classes} {...props} />\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\nimport HugeIcon from \"@/components/fundations/icons/HugeIcon.astro\";\nimport { loaderCircle } from \"@/lib/hugeicons\";\n\nexport interface Props extends HTMLAttributes<'svg'> {\n  size?: 'sm' | 'default' | 'lg';\n}\n\nconst {\n  size = 'default',\n  class: className,\n  color,\n  ...props\n} = Astro.props;\n\nconst sizeStyles = {\n  sm: 'size-4',\n  default: 'size-6',\n  lg: 'size-8',\n};\n\nconst classes = cn(\n  'animate-spin text-muted-foreground',\n  sizeStyles[size],\n  className\n);\n---\n\n<HugeIcon icon={loaderCircle}\n  class={classes}\n  color={color ?? undefined}\n  {...(props as Record<string, string | number | undefined>)}\n/>\n"
     }
   ]
 }

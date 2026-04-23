@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowRight01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"a"> {
   href?: string;
@@ -23,5 +24,5 @@ const classes = cn(
 
 <a href={href} aria-label="Go to next page" class={classes} {...props}>
   <span><slot>Next</slot></span>
-  <ChevronRight class="size-4" />
+  <HugeIcon icon={ArrowRight01Icon} class="size-4" />
 </a>

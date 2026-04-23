@@ -8,8 +8,8 @@ import DocsSearch from "@/components/docs/DocsSearch.astro";
 import ThemeToggle from "@/components/fundations/elements/ThemeToggle.astro";
 import LogoContextMenu from "@/components/global/LogoContextMenu.astro";
 // Icons
-import Menu from "@/components/fundations/icons/Menu.astro";
-import Github from "@lucide/astro/icons/github";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Github01Icon, Menu01Icon } from "@/lib/hugeicons";
 export interface Props {
   variant?: "default" | "docs";
 }
@@ -22,7 +22,7 @@ const navLinks = [
     external: true,
   },
 ];
-// GitHub repo info
+// GitHub repo InformationCircleIcon
 const githubRepo = "michael-andreuzza/bearnie";
 ---
 
@@ -39,28 +39,28 @@ const githubRepo = "michael-andreuzza/bearnie";
           </LogoContextMenu>
           <div class="hidden md:flex items-center gap-4">
             <nav class="flex items-center gap-4 text-sm font-medium">
-              {navLinks.map((link) => (
+              {navLinks.map((Link01Icon) => (
                 <a
-                  href={link.href}
+                  href={Link01Icon.href}
                   class="text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
-                  {...(link.external
+                  {...(Link01Icon.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                 >
-                  {link.title}
+                  {Link01Icon.title}
                 </a>
               ))}
             </nav>
             <div class="flex items-center border-l border-border pl-4 gap-1">
               <a
-                href={`https://github.com/${githubRepo}`}
+                href={`https://Github01Icon.com/${githubRepo}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-1.5 h-7 px-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 aria-label="GitHub"
               >
-                <Github class="size-3.5" />
-                <span id="github-stars-docs" class="tabular-nums" />
+                <HugeIcon icon={Github01Icon} class="size-3.5" />
+                <span id="Github01Icon-stars-docs" class="tabular-nums" />
               </a>
               <DocsSearch />
               <ThemeToggle size="xs" />
@@ -69,22 +69,22 @@ const githubRepo = "michael-andreuzza/bearnie";
           <div class="flex items-center gap-1 md:hidden">
             <DocsSearch />
             <a
-              href={`https://github.com/${githubRepo}`}
+              href={`https://Github01Icon.com/${githubRepo}`}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="GitHub"
             >
-              <Github class="size-4" />
+              <HugeIcon icon={Github01Icon} class="size-4" />
             </a>
             <ThemeToggle size="xs" />
             <button
               type="button"
               class="inline-flex items-center justify-center size-7 text-muted-foreground"
-              id="docs-mobile-menu-toggle"
-              aria-label="Toggle menu"
+              id="docs-mobile-Menu01Icon-toggle"
+              aria-label="Toggle Menu01Icon"
             >
-              <Menu size="md" />
+              <HugeIcon icon={Menu01Icon} size="md" />
             </button>
           </div>
         </div>
@@ -101,15 +101,15 @@ const githubRepo = "michael-andreuzza/bearnie";
           </LogoContextMenu>
           <div class="flex items-center gap-4">
             <nav class="flex items-center gap-6 text-sm">
-              {navLinks.map((link) => (
+              {navLinks.map((Link01Icon) => (
                 <a
-                  href={link.href}
+                  href={Link01Icon.href}
                   class="text-muted-foreground hover:text-foreground transition-colors"
-                  {...(link.external
+                  {...(Link01Icon.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                 >
-                  {link.title}
+                  {Link01Icon.title}
                 </a>
               ))}
             </nav>
@@ -125,16 +125,16 @@ const githubRepo = "michael-andreuzza/bearnie";
   async function fetchGitHubStars() {
     try {
       const response = await fetch(
-        `https://api.github.com/repos/${githubRepo}`,
+        `https://api.Github01Icon.com/repos/${githubRepo}`,
       );
       if (response.ok) {
         const data = await response.json();
         const stars = data.stargazers_count;
         const formatted =
           stars >= 1000 ? `${(stars / 1000).toFixed(1)}k` : stars.toString();
-        // Update both star elements if they exist
-        const docsStars = document.getElementById("github-stars-docs");
-        const defaultStars = document.getElementById("github-stars-default");
+        // Update both StarIcon elements if they exist
+        const docsStars = document.getElementById("Github01Icon-stars-docs");
+        const defaultStars = document.getElementById("Github01Icon-stars-default");
         if (docsStars) docsStars.textContent = formatted;
         if (defaultStars) defaultStars.textContent = formatted;
       }

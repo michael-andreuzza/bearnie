@@ -1,7 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import Check from '@lucide/astro/icons/check';
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'input'> {
   id?: string;
@@ -45,8 +46,8 @@ const inputClasses = cn(
     class={inputClasses}
     {...props}
   />
-  <Check
+  <HugeIcon
+    icon={Tick02Icon}
     class="pointer-events-none absolute size-3 text-primary-foreground opacity-0 peer-checked:opacity-100 transition-opacity"
-    stroke-width={3}
   />
 </span>

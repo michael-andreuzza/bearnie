@@ -7,13 +7,15 @@ status: stable
 order: 1
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowRight01Icon, Loading03Icon, Mail01Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
 import Button from "@/components/ui/button/Button.astro";
-import Mail from "@lucide/astro/icons/mail";
-import LoaderCircle from "@lucide/astro/icons/loader-circle";
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -180,13 +182,13 @@ import { Button } from "@/components/bearnie/button"
   <Fragment slot="code">
 ```html
 <Button>
-  <Mail slot="left-icon" />
+  <HugeIcon icon={Mail01Icon} slot="left-icon" />
   Login with Email
 </Button>
 ```
   </Fragment>
   <Button>
-    <Mail slot="left-icon" />
+    <HugeIcon icon={Mail01Icon} slot="left-icon" />
     Login with Email
   </Button>
 </ComponentPreview>
@@ -202,13 +204,13 @@ import { Button } from "@/components/bearnie/button"
 ```html
 <Button>
   Continue
-  <ChevronRight slot="right-icon" />
+  <HugeIcon icon={ArrowRight01Icon} slot="right-icon" />
 </Button>
 ```
   </Fragment>
   <Button>
     Continue
-    <ChevronRight slot="right-icon" />
+    <HugeIcon icon={ArrowRight01Icon} slot="right-icon" />
   </Button>
 </ComponentPreview>
 </div>
@@ -222,12 +224,12 @@ import { Button } from "@/components/bearnie/button"
   <Fragment slot="code">
 ```html
 <Button iconOnly variant="outline">
-  <ChevronRight />
+  <HugeIcon icon={ArrowRight01Icon} />
 </Button>
 ```
   </Fragment>
   <Button iconOnly variant="outline">
-    <ChevronRight />
+    <HugeIcon icon={ArrowRight01Icon} />
   </Button>
 </ComponentPreview>
 </div>
@@ -256,13 +258,13 @@ import { Button } from "@/components/bearnie/button"
   <Fragment slot="code">
 ```html
 <Button disabled>
-  <LoaderCircle slot="left-icon" class="animate-spin" />
+  <HugeIcon icon={Loading03Icon} slot="left-icon" class="animate-spin" />
   Please wait
 </Button>
 ```
   </Fragment>
   <Button disabled>
-    <LoaderCircle slot="left-icon" class="animate-spin" />
+    <HugeIcon icon={Loading03Icon} slot="left-icon" class="animate-spin" />
     Please wait
   </Button>
 </ComponentPreview>

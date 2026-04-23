@@ -1,6 +1,6 @@
 ---
-import ChevronLeft from "@lucide/astro/icons/chevron-left";
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/hugeicons";
 
 export interface Props {
   prevPage?: { href: string; title: string } | null;
@@ -26,7 +26,7 @@ if (!prevPage && !nextPage) {
           href={prevPage.href}
           data-pagination-prev
         >
-          <ChevronLeft
+          <HugeIcon icon={ArrowLeft01Icon}
             class="size-3 text-muted-foreground/50 group-hover:text-muted-foreground"
             stroke-width="3"
           />
@@ -36,7 +36,7 @@ if (!prevPage && !nextPage) {
         </a>
       ) : (
         <div class="flex items-center justify-between pl-3 pr-6 gap-1.5 opacity-50">
-          <ChevronLeft class="size-3 text-muted-foreground/50" stroke-width="3" />
+          <HugeIcon icon={ArrowLeft01Icon} class="size-3 text-muted-foreground/50" stroke-width="3" />
           <span class="text-muted-foreground font-medium tracking-tight">
             Previous
           </span>
@@ -64,7 +64,7 @@ if (!prevPage && !nextPage) {
               <span class="text-muted-foreground font-medium tracking-tight group-hover:text-foreground">
                 Next
               </span>
-              <ChevronRight
+              <HugeIcon icon={ArrowRight01Icon}
                 class="size-3 text-muted-foreground/50 group-hover:text-muted-foreground"
                 stroke-width="3"
               />
@@ -84,7 +84,7 @@ if (!prevPage && !nextPage) {
               <span class="text-muted-foreground font-medium tracking-tight">
                 Next
               </span>
-              <ChevronRight class="size-3 text-muted-foreground/50" stroke-width="3" />
+              <HugeIcon icon={ArrowRight01Icon} class="size-3 text-muted-foreground/50" stroke-width="3" />
             </div>
           </div>
         </div>

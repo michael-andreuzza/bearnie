@@ -16,11 +16,6 @@ import TableOfContents from "@/components/global/navigation/TableOfContents.astr
 // Docs
 import DocsPagination from "@/components/docs/DocsPagination.astro";
 import PaginationArrows from "@/components/docs/PaginationArrows.astro";
-// Icons
-import ArrowUp from "@lucide/astro/icons/arrow-up";
-import ArrowDown from "@lucide/astro/icons/arrow-down";
-import ArrowLeft from "@lucide/astro/icons/arrow-left";
-import ArrowRight from "@lucide/astro/icons/arrow-right";
 
 // Fetch content collections for taglines
 const docsEntries = await getCollection("docs");
@@ -79,8 +74,6 @@ const navigation = [
         title: entry.data.title,
         href: entry.id === "introduction" ? "/docs" : `/docs/${entry.id}`,
       })),
-      { title: "Create theme", href: "/create-bearnie-theme" },
-      { title: "Code image", href: "/code-image" },
     ],
   },
   {

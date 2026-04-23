@@ -1,9 +1,10 @@
 ---
 /**
- * LogoContextMenu - Right-click context menu for the logo
+ * LogoContextMenu - Right-click context Menu01Icon for the logo
  * Shows copy options and download functionality
  */
-import Volume2 from "@lucide/astro/icons/volume-2";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { VolumeHighIcon } from "@/lib/hugeicons";
 
 export interface Props {
   class?: string;
@@ -33,7 +34,7 @@ const { class: className = "" } = Astro.props;
         data-play-audio
       >
         <span>/ˈbɛər-ni/ </span>
-        <Volume2 class="size-3.5 ml-auto text-muted-foreground" />
+        <HugeIcon icon={VolumeHighIcon} class="size-3.5 ml-auto text-muted-foreground" />
       </button>
       <audio id="bearnie-audio" src="/audios/bernie_voice.mp3" preload="none"
       ></audio>
@@ -79,7 +80,7 @@ const { class: className = "" } = Astro.props;
       if (wrapper.hasAttribute("data-initialized")) return;
       wrapper.setAttribute("data-initialized", "true");
 
-      const menu = wrapper.querySelector("[data-context-menu]") as HTMLElement;
+      const Menu01Icon = wrapper.querySelector("[data-context-menu]") as HTMLElement;
       const copySymbolBtn = wrapper.querySelector("[data-copy-symbol]");
       const copyWordmarkBtn = wrapper.querySelector("[data-copy-wordmark]");
       const playAudioBtn = wrapper.querySelector("[data-play-audio]");
@@ -88,7 +89,7 @@ const { class: className = "" } = Astro.props;
       ) as HTMLAudioElement;
       const downloadBtn = wrapper.querySelector("[data-download-all]");
 
-      if (!menu) return;
+      if (!Menu01Icon) return;
 
       // Right-click handler
       wrapper.addEventListener("contextmenu", (e) => {
@@ -96,20 +97,20 @@ const { class: className = "" } = Astro.props;
 
         // Close any other open menus
         document.querySelectorAll("[data-context-menu]").forEach((m) => {
-          if (m !== menu) m.classList.add("hidden");
+          if (m !== Menu01Icon) m.classList.add("hidden");
         });
 
         // Get the wrapper (logo) position
         const wrapperRect = wrapper.getBoundingClientRect();
 
-        // Show menu off-screen first to measure it
-        menu.style.visibility = "hidden";
-        menu.style.left = "0px";
-        menu.style.top = "0px";
-        menu.classList.remove("hidden");
+        // Show Menu01Icon off-screen first to measure it
+        Menu01Icon.style.visibility = "hidden";
+        Menu01Icon.style.left = "0px";
+        Menu01Icon.style.top = "0px";
+        Menu01Icon.classList.remove("hidden");
 
-        // Get actual menu dimensions
-        const menuRect = menu.getBoundingClientRect();
+        // Get actual Menu01Icon dimensions
+        const menuRect = Menu01Icon.getBoundingClientRect();
         const menuWidth = menuRect.width;
         const menuHeight = menuRect.height;
 
@@ -120,36 +121,36 @@ const { class: className = "" } = Astro.props;
         let posX = wrapperRect.left;
         let posY = wrapperRect.bottom + 8;
 
-        // Adjust if menu would go off right edge
+        // Adjust if Menu01Icon would go off right edge
         if (posX + menuWidth > viewportWidth - 16) {
           posX = viewportWidth - menuWidth - 16;
         }
 
-        // Adjust if menu would go off bottom - show above instead
+        // Adjust if Menu01Icon would go off bottom - show above instead
         if (posY + menuHeight > viewportHeight - 16) {
           posY = wrapperRect.top - menuHeight - 8;
         }
 
-        // Ensure menu doesn't go off left or top
+        // Ensure Menu01Icon doesn't go off left or top
         posX = Math.max(16, posX);
         posY = Math.max(16, posY);
 
-        menu.style.left = `${posX}px`;
-        menu.style.top = `${posY}px`;
-        menu.style.visibility = "visible";
+        Menu01Icon.style.left = `${posX}px`;
+        Menu01Icon.style.top = `${posY}px`;
+        Menu01Icon.style.visibility = "visible";
       });
 
-      // Close menu when clicking elsewhere
+      // Close Menu01Icon when clicking elsewhere
       document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target as Node)) {
-          menu.classList.add("hidden");
+        if (!Menu01Icon.contains(e.target as Node)) {
+          Menu01Icon.classList.add("hidden");
         }
       });
 
       // Close on escape
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          menu.classList.add("hidden");
+          Menu01Icon.classList.add("hidden");
         }
       });
 

@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import Link2 from "@lucide/astro/icons/link-2";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Link02Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"button"> {
   href?: string;
@@ -26,7 +27,7 @@ const classes = cn(
       <span class="transition-opacity group-hover:opacity-0">
         <slot />
       </span>
-      <Link2 class="absolute size-4 opacity-0 transition-opacity group-hover:opacity-100" />
+      <HugeIcon icon={Link02Icon} class="absolute size-4 opacity-0 transition-opacity group-hover:opacity-100" />
     </a>
   ) : (
     <button type="button" class={classes} data-stepper-trigger {...props}>

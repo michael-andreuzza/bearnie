@@ -1,7 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import ChevronRight from '@lucide/astro/icons/chevron-right';
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowRight01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'button'> {}
 
@@ -21,6 +22,6 @@ const classes = cn(
 
 <button type="button" class={classes} data-carousel-next aria-label="Next slide" {...props}>
   <slot>
-    <ChevronRight class="size-4" />
+    <HugeIcon icon={ArrowRight01Icon} class="size-4" />
   </slot>
 </button>

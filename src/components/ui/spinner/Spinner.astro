@@ -1,7 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import LoaderCircle from '@lucide/astro/icons/loader-circle';
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Loading03Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'svg'> {
   size?: 'sm' | 'default' | 'lg';
@@ -27,7 +28,7 @@ const classes = cn(
 );
 ---
 
-<LoaderCircle
+<HugeIcon icon={Loading03Icon}
   class={classes}
   color={color ?? undefined}
   {...(props as Record<string, string | number | undefined>)}

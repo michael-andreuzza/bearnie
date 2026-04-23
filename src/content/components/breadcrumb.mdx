@@ -7,6 +7,9 @@ status: "stable"
 order: 5
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Home01Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -17,7 +20,6 @@ import BreadcrumbLink from "@/components/ui/breadcrumb/BreadcrumbLink.astro";
 import BreadcrumbPage from "@/components/ui/breadcrumb/BreadcrumbPage.astro";
 import BreadcrumbSeparator from "@/components/ui/breadcrumb/BreadcrumbSeparator.astro";
 import BreadcrumbEllipsis from "@/components/ui/breadcrumb/BreadcrumbEllipsis.astro";
-import House from "@lucide/astro/icons/house";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -112,7 +114,7 @@ import {
   <BreadcrumbList>
     <BreadcrumbItem>
       <BreadcrumbLink href="/">
-        <House class="size-4" />
+        <HugeIcon icon={Home01Icon} class="size-4" />
       </BreadcrumbLink>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
@@ -131,7 +133,7 @@ import {
     <BreadcrumbList>
       <BreadcrumbItem>
         <BreadcrumbLink href="/">
-          <House class="size-4" />
+          <HugeIcon icon={Home01Icon} class="size-4" />
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbSeparator />

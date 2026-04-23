@@ -1,8 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
-import Copy from "@lucide/astro/icons/copy";
-import Check from "@lucide/astro/icons/check";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon, Copy01Icon } from "@/lib/hugeicons";
 
 export interface Tab {
   id: string;
@@ -57,8 +57,8 @@ const id = `docs-tabs-${Math.random().toString(36).substring(2, 9)}`;
                 data-copy-button
                 title="Copy code"
               >
-                <Copy size={14} data-copy-icon />
-                <Check size={14} class="hidden" data-check-icon />
+                <HugeIcon icon={Copy01Icon} size={14} data-copy-icon />
+                <HugeIcon icon={Tick02Icon} size={14} class="hidden" data-check-icon />
               </button>
             </div>
             <span class="sr-only" data-code-content>

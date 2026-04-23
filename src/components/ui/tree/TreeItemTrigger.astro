@@ -1,8 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import Folder from "@lucide/astro/icons/folder";
-import FolderOpen from "@lucide/astro/icons/folder-open";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Folder01Icon, FolderOpenIcon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'button'> {
   /** Show folder icons that change based on state */
@@ -28,8 +28,8 @@ const classes = cn(
   <slot>
     {showFolderIcon && (
       <>
-        <Folder class="size-4" data-folder-closed />
-        <FolderOpen class="size-4 hidden" data-folder-open />
+        <HugeIcon icon={Folder01Icon} class="size-4" data-Folder01Icon-closed />
+        <HugeIcon icon={FolderOpenIcon} class="size-4 hidden" data-Folder01Icon-open />
       </>
     )}
   </slot>

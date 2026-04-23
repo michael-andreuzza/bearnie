@@ -4,9 +4,11 @@
  */
 import { Code } from "astro:components";
 import { cn } from "@/utils/cn";
-import Copy from "@lucide/astro/icons/copy";
-import Check from "@lucide/astro/icons/check";
+
+
 import { shikiLightTheme, shikiDarkTheme } from "@/config/shiki-themes";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon, Copy01Icon } from "@/lib/hugeicons";
 
 export interface Props {
   code: string;
@@ -70,8 +72,8 @@ const normalizedCode = normalizeCode(code);
         data-copy-button
         title="Copy to clipboard"
       >
-        <Copy size={16} data-copy-icon />
-        <Check size={16} class="hidden" data-check-icon />
+        <HugeIcon icon={Copy01Icon} size={16} data-copy-icon />
+        <HugeIcon icon={Tick02Icon} size={16} class="hidden" data-check-icon />
       </button>
     )
   }

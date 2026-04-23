@@ -1,6 +1,7 @@
 ---
 import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
-import ChevronDown from "@/components/fundations/icons/ChevronDown.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowDown01Icon } from "@/lib/hugeicons";
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
 
@@ -41,7 +42,8 @@ const {
     <div class="flex items-center gap-1">
       <slot name="clear-icon" />
       <slot name="right-icon">
-        <ChevronDown
+        <HugeIcon
+          icon={ArrowDown01Icon}
           size="sm"
           class="text-muted-foreground"
           data-combobox-chevron

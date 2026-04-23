@@ -7,6 +7,9 @@ status: stable
 order: 28
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { File01Icon, File02Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -15,8 +18,7 @@ import TreeItem from "@/components/ui/tree/TreeItem.astro";
 import TreeItemTrigger from "@/components/ui/tree/TreeItemTrigger.astro";
 import TreeItemContent from "@/components/ui/tree/TreeItemContent.astro";
 import TreeItemChildren from "@/components/ui/tree/TreeItemChildren.astro";
-import File from "@lucide/astro/icons/file";
-import FileText from "@lucide/astro/icons/file-text";
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -36,13 +38,13 @@ import FileText from "@lucide/astro/icons/file-text";
         <TreeItemChildren>
           <TreeItem>
             <TreeItemContent class="ml-6">
-              <File class="size-4" />
+              <HugeIcon icon={File01Icon} class="size-4" />
               <span>Button.astro</span>
             </TreeItemContent>
           </TreeItem>
           <TreeItem>
             <TreeItemContent class="ml-6">
-              <File class="size-4" />
+              <HugeIcon icon={File01Icon} class="size-4" />
               <span>Card.astro</span>
             </TreeItemContent>
           </TreeItem>
@@ -50,7 +52,7 @@ import FileText from "@lucide/astro/icons/file-text";
       </TreeItem>
       <TreeItem>
         <TreeItemContent>
-          <FileText class="size-4" />
+          <HugeIcon icon={File02Icon} class="size-4" />
           <span>index.ts</span>
         </TreeItemContent>
       </TreeItem>
@@ -74,13 +76,13 @@ import FileText from "@lucide/astro/icons/file-text";
           <TreeItemChildren>
             <TreeItem>
               <TreeItemContent class="ml-6">
-                <File class="size-4" />
+                <HugeIcon icon={File01Icon} class="size-4" />
                 <span>Button.astro</span>
               </TreeItemContent>
             </TreeItem>
             <TreeItem>
               <TreeItemContent class="ml-6">
-                <File class="size-4" />
+                <HugeIcon icon={File01Icon} class="size-4" />
                 <span>Card.astro</span>
               </TreeItemContent>
             </TreeItem>
@@ -88,7 +90,7 @@ import FileText from "@lucide/astro/icons/file-text";
         </TreeItem>
         <TreeItem>
           <TreeItemContent>
-            <FileText class="size-4" />
+            <HugeIcon icon={File02Icon} class="size-4" />
             <span>index.ts</span>
           </TreeItemContent>
         </TreeItem>
@@ -159,13 +161,13 @@ import {
     <TreeItemChildren>
       <TreeItem>
         <TreeItemContent class="ml-6">
-          <File class="size-4" />
+          <HugeIcon icon={File01Icon} class="size-4" />
           <span>Resume.pdf</span>
         </TreeItemContent>
       </TreeItem>
       <TreeItem>
         <TreeItemContent class="ml-6">
-          <File class="size-4" />
+          <HugeIcon icon={File01Icon} class="size-4" />
           <span>Cover Letter.docx</span>
         </TreeItemContent>
       </TreeItem>
@@ -179,7 +181,7 @@ import {
     <TreeItemChildren>
       <TreeItem>
         <TreeItemContent class="ml-6">
-          <File class="size-4" />
+          <HugeIcon icon={File01Icon} class="size-4" />
           <span>photo.jpg</span>
         </TreeItemContent>
       </TreeItem>
@@ -197,13 +199,13 @@ import {
       <TreeItemChildren>
         <TreeItem>
           <TreeItemContent class="ml-6">
-            <File class="size-4" />
+            <HugeIcon icon={File01Icon} class="size-4" />
             <span>Resume.pdf</span>
           </TreeItemContent>
         </TreeItem>
         <TreeItem>
           <TreeItemContent class="ml-6">
-            <File class="size-4" />
+            <HugeIcon icon={File01Icon} class="size-4" />
             <span>Cover Letter.docx</span>
           </TreeItemContent>
         </TreeItem>
@@ -217,7 +219,7 @@ import {
       <TreeItemChildren>
         <TreeItem>
           <TreeItemContent class="ml-6">
-            <File class="size-4" />
+            <HugeIcon icon={File01Icon} class="size-4" />
             <span>photo.jpg</span>
           </TreeItemContent>
         </TreeItem>
@@ -244,7 +246,7 @@ import {
     <TreeItemChildren>
       <TreeItem>
         <TreeItemContent class="ml-6">
-          <File class="size-4" />
+          <HugeIcon icon={File01Icon} class="size-4" />
           <span>Visible child</span>
         </TreeItemContent>
       </TreeItem>
@@ -262,7 +264,7 @@ import {
       <TreeItemChildren>
         <TreeItem>
           <TreeItemContent class="ml-6">
-            <File class="size-4" />
+            <HugeIcon icon={File01Icon} class="size-4" />
             <span>Visible child</span>
           </TreeItemContent>
         </TreeItem>
@@ -299,7 +301,7 @@ Expand/collapse button with folder icons that change based on state.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| showFolderIcon | boolean | true | Show folder/folder-open icons |
+| showFolderIcon | boolean | true | Show folder / folder-open icons |
 | class | string | - | Additional CSS classes |
 
 #### TreeItemContent

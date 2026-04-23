@@ -7,6 +7,9 @@ status: stable
 order: 8
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { CalculatorIcon, Calendar03Icon, CreditCardIcon, Search01Icon, Settings01Icon, UserIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -23,12 +26,11 @@ import CommandDialogTrigger from "@/components/ui/command/CommandDialogTrigger.a
 import CommandDialogOverlay from "@/components/ui/command/CommandDialogOverlay.astro";
 import CommandDialogContent from "@/components/ui/command/CommandDialogContent.astro";
 import Button from "@/components/ui/button/Button.astro";
-import Calendar from "@lucide/astro/icons/calendar";
-import Search from "@lucide/astro/icons/search";
-import Calculator from "@lucide/astro/icons/calculator";
-import User from "@lucide/astro/icons/user";
-import CreditCard from "@lucide/astro/icons/credit-card";
-import Settings from "@lucide/astro/icons/settings";
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -39,32 +41,32 @@ import Settings from "@lucide/astro/icons/settings";
     <CommandEmpty>No results found.</CommandEmpty>
     <CommandGroup heading="Suggestions">
       <CommandItem>
-        <Calendar class="mr-2 size-4" />
+        <HugeIcon icon={Calendar03Icon} class="mr-2 size-4" />
         <span>Calendar</span>
       </CommandItem>
       <CommandItem>
-        <Search class="mr-2 size-4" />
+        <HugeIcon icon={Search01Icon} class="mr-2 size-4" />
         <span>Search</span>
       </CommandItem>
       <CommandItem>
-        <Calculator class="mr-2 size-4" />
+        <HugeIcon icon={CalculatorIcon} class="mr-2 size-4" />
         <span>Calculator</span>
       </CommandItem>
     </CommandGroup>
     <CommandSeparator />
     <CommandGroup heading="Settings">
       <CommandItem>
-        <User class="mr-2 size-4" />
+        <HugeIcon icon={UserIcon} class="mr-2 size-4" />
         <span>Profile</span>
         <CommandShortcut>⌘P</CommandShortcut>
       </CommandItem>
       <CommandItem>
-        <CreditCard class="mr-2 size-4" />
+        <HugeIcon icon={CreditCardIcon} class="mr-2 size-4" />
         <span>Billing</span>
         <CommandShortcut>⌘B</CommandShortcut>
       </CommandItem>
       <CommandItem>
-        <Settings class="mr-2 size-4" />
+        <HugeIcon icon={Settings01Icon} class="mr-2 size-4" />
         <span>Settings</span>
         <CommandShortcut>⌘S</CommandShortcut>
       </CommandItem>
@@ -79,32 +81,32 @@ import Settings from "@lucide/astro/icons/settings";
       <CommandEmpty>No results found.</CommandEmpty>
       <CommandGroup heading="Suggestions">
         <CommandItem>
-          <Calendar class="mr-2 size-4" />
+          <HugeIcon icon={Calendar03Icon} class="mr-2 size-4" />
           <span>Calendar</span>
         </CommandItem>
         <CommandItem>
-          <Search class="mr-2 size-4" />
+          <HugeIcon icon={Search01Icon} class="mr-2 size-4" />
           <span>Search</span>
         </CommandItem>
         <CommandItem>
-          <Calculator class="mr-2 size-4" />
+          <HugeIcon icon={CalculatorIcon} class="mr-2 size-4" />
           <span>Calculator</span>
         </CommandItem>
       </CommandGroup>
       <CommandSeparator />
       <CommandGroup heading="Settings">
         <CommandItem>
-          <User class="mr-2 size-4" />
+          <HugeIcon icon={UserIcon} class="mr-2 size-4" />
           <span>Profile</span>
           <CommandShortcut>⌘P</CommandShortcut>
         </CommandItem>
         <CommandItem>
-          <CreditCard class="mr-2 size-4" />
+          <HugeIcon icon={CreditCardIcon} class="mr-2 size-4" />
           <span>Billing</span>
           <CommandShortcut>⌘B</CommandShortcut>
         </CommandItem>
         <CommandItem>
-          <Settings class="mr-2 size-4" />
+          <HugeIcon icon={Settings01Icon} class="mr-2 size-4" />
           <span>Settings</span>
           <CommandShortcut>⌘S</CommandShortcut>
         </CommandItem>
@@ -255,7 +257,7 @@ import {
 <CommandDialog>
   <CommandDialogTrigger>
     <Button variant="outline">
-      <Search class="mr-2 size-4" />
+      <HugeIcon icon={Search01Icon} class="mr-2 size-4" />
       Search...
       <kbd class="ml-4 text-xs text-muted-foreground">⌘K</kbd>
     </Button>
@@ -286,7 +288,7 @@ import {
   <CommandDialog>
     <CommandDialogTrigger>
       <Button variant="outline">
-        <Search class="mr-2 size-4" />
+        <HugeIcon icon={Search01Icon} class="mr-2 size-4" />
         Search...
         <kbd class="ml-4 text-xs text-muted-foreground">⌘K</kbd>
       </Button>

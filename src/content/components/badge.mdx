@@ -7,16 +7,18 @@ status: stable
 order: 4
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Clock01Icon, LinkSquare02Icon, StarIcon, ChartUpIcon, ZapIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
 import Badge from "@/components/ui/badge/Badge.astro";
 import Spinner from "@/components/ui/spinner/Spinner.astro";
-import Zap from "@lucide/astro/icons/zap";
-import Star from "@lucide/astro/icons/star";
-import Clock from "@lucide/astro/icons/clock";
-import TrendingUp from "@lucide/astro/icons/trending-up";
-import ExternalLink from "@lucide/astro/icons/external-link";
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -119,15 +121,15 @@ Use `data-icon="inline-start"` or `data-icon="inline-end"` to position icons.
 ```html
 <div class="flex flex-wrap gap-2">
   <Badge variant="warning">
-    <Zap data-icon="inline-start" />
+    <HugeIcon icon={ZapIcon} data-icon="inline-start" />
     Pro feature
   </Badge>
   <Badge variant="secondary">
-    <Star data-icon="inline-start" />
+    <HugeIcon icon={StarIcon} data-icon="inline-start" />
     Featured
   </Badge>
   <Badge variant="info">
-    <Clock data-icon="inline-start" />
+    <HugeIcon icon={Clock01Icon} data-icon="inline-start" />
     Coming soon
   </Badge>
 </div>
@@ -135,15 +137,15 @@ Use `data-icon="inline-start"` or `data-icon="inline-end"` to position icons.
   </Fragment>
   <div class="flex flex-wrap gap-2">
     <Badge variant="warning">
-      <Zap data-icon="inline-start" />
+      <HugeIcon icon={ZapIcon} data-icon="inline-start" />
       Pro feature
     </Badge>
     <Badge variant="secondary">
-      <Star data-icon="inline-start" />
+      <HugeIcon icon={StarIcon} data-icon="inline-start" />
       Featured
     </Badge>
     <Badge variant="info">
-      <Clock data-icon="inline-start" />
+      <HugeIcon icon={Clock01Icon} data-icon="inline-start" />
       Coming soon
     </Badge>
   </div>
@@ -195,13 +197,13 @@ Use the `href` prop to render a badge as a link.
 ```html
 <Badge href="/docs" variant="outline">
   View docs
-  <ExternalLink data-icon="inline-end" />
+  <HugeIcon icon={LinkSquare02Icon} data-icon="inline-end" />
 </Badge>
 ```
   </Fragment>
   <Badge href="/docs" variant="outline">
     View docs
-    <ExternalLink data-icon="inline-end" />
+    <HugeIcon icon={LinkSquare02Icon} data-icon="inline-end" />
   </Badge>
 </ComponentPreview>
 </div>

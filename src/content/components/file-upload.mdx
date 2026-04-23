@@ -7,6 +7,9 @@ status: stable
 order: 12
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Upload01Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -15,7 +18,6 @@ import FileUploadTrigger from "@/components/ui/file-upload/FileUploadTrigger.ast
 import FileUploadInput from "@/components/ui/file-upload/FileUploadInput.astro";
 import FileUploadDropzone from "@/components/ui/file-upload/FileUploadDropzone.astro";
 import FileUploadPreview from "@/components/ui/file-upload/FileUploadPreview.astro";
-import Upload from "@lucide/astro/icons/upload";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -23,7 +25,7 @@ import Upload from "@lucide/astro/icons/upload";
 <FileUpload class="w-full max-w-md space-y-4">
   <FileUploadInput name="files" multiple />
   <FileUploadDropzone>
-    <Upload class="size-6 text-muted-foreground" />
+    <HugeIcon icon={Upload01Icon} class="size-6 text-muted-foreground" />
     <div class="text-sm text-muted-foreground">
       <span class="font-medium text-foreground">Click to upload</span> or drag and drop
     </div>
@@ -36,7 +38,7 @@ import Upload from "@lucide/astro/icons/upload";
   <FileUpload class="w-full max-w-md space-y-4">
     <FileUploadInput name="files" multiple />
     <FileUploadDropzone>
-      <Upload class="size-6 text-muted-foreground" />
+      <HugeIcon icon={Upload01Icon} class="size-6 text-muted-foreground" />
       <div class="text-sm text-muted-foreground">
         <span class="font-medium text-foreground">Click to upload</span> or drag and drop
       </div>
@@ -94,7 +96,7 @@ import {
 <FileUpload class="inline-flex flex-col items-start gap-3">
   <FileUploadInput name="avatar" accept="image/*" />
   <FileUploadTrigger>
-    <Upload class="mr-2 size-4" />
+    <HugeIcon icon={Upload01Icon} class="mr-2 size-4" />
     Upload Avatar
   </FileUploadTrigger>
   <FileUploadPreview class="mt-0" />
@@ -104,7 +106,7 @@ import {
   <FileUpload class="inline-flex flex-col items-start gap-3">
     <FileUploadInput name="avatar" accept="image/*" />
     <FileUploadTrigger>
-      <Upload class="mr-2 size-4" />
+      <HugeIcon icon={Upload01Icon} class="mr-2 size-4" />
       Upload Avatar
     </FileUploadTrigger>
     <FileUploadPreview class="mt-0" />
@@ -123,7 +125,7 @@ import {
 <FileUpload class="w-full max-w-md space-y-4">
   <FileUploadInput name="document" accept=".pdf,.doc,.docx" />
   <FileUploadDropzone>
-    <Upload class="size-5 text-muted-foreground" />
+    <HugeIcon icon={Upload01Icon} class="size-5 text-muted-foreground" />
     <p class="text-sm text-muted-foreground">Upload a document</p>
     <p class="text-xs text-muted-foreground">PDF, DOC, or DOCX</p>
   </FileUploadDropzone>
@@ -134,7 +136,7 @@ import {
   <FileUpload class="w-full max-w-md space-y-4">
     <FileUploadInput name="document" accept=".pdf,.doc,.docx" />
     <FileUploadDropzone>
-      <Upload class="size-5 text-muted-foreground" />
+      <HugeIcon icon={Upload01Icon} class="size-5 text-muted-foreground" />
       <p class="text-sm text-muted-foreground">Upload a document</p>
       <p class="text-xs text-muted-foreground">PDF, DOC, or DOCX</p>
     </FileUploadDropzone>
@@ -154,7 +156,7 @@ import {
 <FileUpload class="w-full max-w-md space-y-4">
   <FileUploadInput name="photos" multiple accept="image/*" />
   <FileUploadDropzone>
-    <Upload class="size-5 text-muted-foreground" />
+    <HugeIcon icon={Upload01Icon} class="size-5 text-muted-foreground" />
     <p class="text-sm text-muted-foreground">Upload multiple images</p>
     <p class="text-xs text-muted-foreground">Select multiple files or drag them here</p>
   </FileUploadDropzone>
@@ -165,7 +167,7 @@ import {
   <FileUpload class="w-full max-w-md space-y-4">
     <FileUploadInput name="photos" multiple accept="image/*" />
     <FileUploadDropzone>
-      <Upload class="size-5 text-muted-foreground" />
+      <HugeIcon icon={Upload01Icon} class="size-5 text-muted-foreground" />
       <p class="text-sm text-muted-foreground">Upload multiple images</p>
       <p class="text-xs text-muted-foreground">Select multiple files or drag them here</p>
     </FileUploadDropzone>

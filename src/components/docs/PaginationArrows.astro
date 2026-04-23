@@ -1,7 +1,7 @@
 ---
 import Button from "@/components/ui/button/Button.astro";
-import ChevronLeft from "@lucide/astro/icons/chevron-left";
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/hugeicons";
 
 export interface Props {
   prevPage?: { href: string; title: string } | null;
@@ -22,11 +22,11 @@ const { prevPage, nextPage } = Astro.props;
         title={`Previous: ${prevPage.title}`}
         data-pagination-prev
       >
-        <ChevronLeft />
+        <HugeIcon icon={ArrowLeft01Icon} />
       </Button>
     ) : (
       <Button variant="secondary" size="xs" iconOnly disabled>
-        <ChevronLeft />
+        <HugeIcon icon={ArrowLeft01Icon} />
       </Button>
     )
   }
@@ -40,11 +40,11 @@ const { prevPage, nextPage } = Astro.props;
         title={`Next: ${nextPage.title}`}
         data-pagination-next
       >
-        <ChevronRight />
+        <HugeIcon icon={ArrowRight01Icon} />
       </Button>
     ) : (
       <Button variant="secondary" size="xs" iconOnly disabled>
-        <ChevronRight />
+        <HugeIcon icon={ArrowRight01Icon} />
       </Button>
     )
   }

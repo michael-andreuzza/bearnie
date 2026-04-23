@@ -1,8 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
-import Copy from "@lucide/astro/icons/copy";
-import Check from "@lucide/astro/icons/check";
-import SquareTerminal from "@lucide/astro/icons/square-terminal";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon, Copy01Icon, TerminalIcon } from "@/lib/hugeicons";
+
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
 import TooltipTrigger from "@/components/ui/tooltip/TooltipTrigger.astro";
@@ -58,17 +58,17 @@ const id = `preview-${Math.random().toString(36).substring(2, 9)}`;
 // Package manager commands
 const packageManagers = component
   ? [
-      { id: "npx", label: "npx", command: `npx bearnie add ${component}` },
-      { id: "bun", label: "bun", command: `bunx bearnie add ${component}` },
+      { id: "npx", label: "npx", line: `npx bearnie add ${component}` },
+      { id: "bun", label: "bun", line: `bunx bearnie add ${component}` },
       {
         id: "pnpm",
         label: "pnpm",
-        command: `pnpm dlx bearnie add ${component}`,
+        line: `pnpm dlx bearnie add ${component}`,
       },
       {
         id: "yarn",
         label: "yarn",
-        command: `yarn dlx bearnie add ${component}`,
+        line: `yarn dlx bearnie add ${component}`,
       },
     ]
   : [];
@@ -130,8 +130,8 @@ const normalizedCode = displayCode
               class="flex items-center justify-center p-2 text-muted-foreground hover:text-foreground rounded-lg transition-colors"
               data-copy-button
             >
-              <Copy size={16} data-copy-icon />
-              <Check size={16} class="hidden" data-check-icon />
+              <HugeIcon icon={Copy01Icon} size={16} data-copy-icon />
+              <HugeIcon icon={Tick02Icon} size={16} class="hidden" data-check-icon />
             </button>
           </TooltipTrigger>
           <TooltipContent class="dark text-xs px-2 py-1 shadow-none">
@@ -148,7 +148,7 @@ const normalizedCode = displayCode
         <div class="border rounded-lg overflow-hidden">
           <div class="flex items-center justify-between px-4 py-2 border-b bg-background">
             <div class="flex items-center gap-2">
-              <SquareTerminal class="size-4 text-muted-foreground" />
+              <HugeIcon icon={TerminalIcon} class="size-4 text-muted-foreground" />
               {packageManagers.map((pm, index) => (
                 <button
                   type="button"
@@ -167,8 +167,8 @@ const normalizedCode = displayCode
                   class="flex items-center justify-center p-1.5 text-muted-foreground hover:text-foreground rounded-md transition-colors"
                   data-copy-button
                 >
-                  <Copy size={14} data-copy-icon />
-                  <Check size={14} class="hidden" data-check-icon />
+                  <HugeIcon icon={Copy01Icon} size={14} data-copy-icon />
+                  <HugeIcon icon={Tick02Icon} size={14} class="hidden" data-check-icon />
                 </button>
               </TooltipTrigger>
               <TooltipContent class="dark text-xs px-2 py-1 shadow-none">
@@ -180,10 +180,10 @@ const normalizedCode = displayCode
           {packageManagers.map((pm, index) => (
             <div class={index === 0 ? "" : "hidden"} data-pm-panel={pm.id}>
               <span class="sr-only" data-code-content>
-                {pm.command}
+                {pm.line}
               </span>
               <CodeBlock
-                code={pm.command}
+                code={pm.line}
                 lang="bash"
                 class="rounded-none border-0 bg-transparent"
                 showCopy={false}

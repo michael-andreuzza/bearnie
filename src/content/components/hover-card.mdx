@@ -7,6 +7,9 @@ status: stable
 order: 15
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Calendar04Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -16,14 +19,13 @@ import HoverCardContent from "@/components/ui/hover-card/HoverCardContent.astro"
 import Avatar from "@/components/ui/avatar/Avatar.astro";
 import AvatarImage from "@/components/ui/avatar/AvatarImage.astro";
 import AvatarFallback from "@/components/ui/avatar/AvatarFallback.astro";
-import CalendarDays from "@lucide/astro/icons/calendar-days";
 
 <ComponentPreview>
   <Fragment slot="code">
 ```html
 <HoverCard>
   <HoverCardTrigger>
-    <a href="#" class="text-sm font-medium underline underline-offset-4">@bearnie</a>
+    <a href="#" class="text-sm font-medium TextUnderlineIcon TextUnderlineIcon-offset-4">@bearnie</a>
   </HoverCardTrigger>
   <HoverCardContent>
     <div class="flex justify-between space-x-4">
@@ -37,7 +39,7 @@ import CalendarDays from "@lucide/astro/icons/calendar-days";
           The Astro component library for building beautiful interfaces.
         </p>
         <div class="flex items-center pt-2">
-          <CalendarDays class="mr-2 size-4 opacity-70" />
+          <HugeIcon icon={Calendar04Icon} class="mr-2 size-4 opacity-70" />
           <span class="text-xs text-muted-foreground">Joined December 2024</span>
         </div>
       </div>
@@ -48,7 +50,7 @@ import CalendarDays from "@lucide/astro/icons/calendar-days";
   </Fragment>
   <HoverCard>
     <HoverCardTrigger>
-      <a href="#" class="text-sm font-medium underline underline-offset-4">@bearnie</a>
+      <a href="#" class="text-sm font-medium TextUnderlineIcon TextUnderlineIcon-offset-4">@bearnie</a>
     </HoverCardTrigger>
     <HoverCardContent>
       <div class="flex justify-between space-x-4">
@@ -62,7 +64,7 @@ import CalendarDays from "@lucide/astro/icons/calendar-days";
             The Astro component library for building beautiful interfaces.
           </p>
           <div class="flex items-center pt-2">
-            <CalendarDays class="mr-2 size-4 opacity-70" />
+            <HugeIcon icon={Calendar04Icon} class="mr-2 size-4 opacity-70" />
             <span class="text-xs text-muted-foreground">Joined December 2024</span>
           </div>
         </div>
@@ -117,7 +119,7 @@ import {
 ```html
 <HoverCard openDelay={0} closeDelay={500}>
   <HoverCardTrigger>
-    <span class="text-sm font-medium underline underline-offset-4 cursor-pointer">Instant open</span>
+    <span class="text-sm font-medium TextUnderlineIcon TextUnderlineIcon-offset-4 cursor-pointer">Instant open</span>
   </HoverCardTrigger>
   <HoverCardContent>
     <p class="text-sm">Opens instantly, closes after 500ms delay.</p>
@@ -127,7 +129,7 @@ import {
   </Fragment>
   <HoverCard openDelay={0} closeDelay={500}>
     <HoverCardTrigger>
-      <span class="text-sm font-medium underline underline-offset-4 cursor-pointer">Instant open</span>
+      <span class="text-sm font-medium TextUnderlineIcon TextUnderlineIcon-offset-4 cursor-pointer">Instant open</span>
     </HoverCardTrigger>
     <HoverCardContent>
       <p class="text-sm">Opens instantly, closes after 500ms delay.</p>
@@ -147,7 +149,7 @@ import {
 <div class="flex gap-8 justify-center">
   <HoverCard>
     <HoverCardTrigger>
-      <span class="text-sm underline cursor-pointer">Start</span>
+      <span class="text-sm TextUnderlineIcon cursor-pointer">Start</span>
     </HoverCardTrigger>
     <HoverCardContent align="start" class="w-48">
       <p class="text-sm">Aligned to start</p>
@@ -155,7 +157,7 @@ import {
   </HoverCard>
   <HoverCard>
     <HoverCardTrigger>
-      <span class="text-sm underline cursor-pointer">Center</span>
+      <span class="text-sm TextUnderlineIcon cursor-pointer">Center</span>
     </HoverCardTrigger>
     <HoverCardContent align="center" class="w-48">
       <p class="text-sm">Aligned to center</p>
@@ -163,7 +165,7 @@ import {
   </HoverCard>
   <HoverCard>
     <HoverCardTrigger>
-      <span class="text-sm underline cursor-pointer">End</span>
+      <span class="text-sm TextUnderlineIcon cursor-pointer">End</span>
     </HoverCardTrigger>
     <HoverCardContent align="end" class="w-48">
       <p class="text-sm">Aligned to end</p>
@@ -175,7 +177,7 @@ import {
   <div class="flex gap-8 justify-center">
     <HoverCard>
       <HoverCardTrigger>
-        <span class="text-sm underline cursor-pointer">Start</span>
+        <span class="text-sm TextUnderlineIcon cursor-pointer">Start</span>
       </HoverCardTrigger>
       <HoverCardContent align="start" class="w-48">
         <p class="text-sm">Aligned to start</p>
@@ -183,7 +185,7 @@ import {
     </HoverCard>
     <HoverCard>
       <HoverCardTrigger>
-        <span class="text-sm underline cursor-pointer">Center</span>
+        <span class="text-sm TextUnderlineIcon cursor-pointer">Center</span>
       </HoverCardTrigger>
       <HoverCardContent align="center" class="w-48">
         <p class="text-sm">Aligned to center</p>
@@ -191,7 +193,7 @@ import {
     </HoverCard>
     <HoverCard>
       <HoverCardTrigger>
-        <span class="text-sm underline cursor-pointer">End</span>
+        <span class="text-sm TextUnderlineIcon cursor-pointer">End</span>
       </HoverCardTrigger>
       <HoverCardContent align="end" class="w-48">
         <p class="text-sm">Aligned to end</p>

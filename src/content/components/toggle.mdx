@@ -7,24 +7,26 @@ status: stable
 order: 17
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { TextBoldIcon, TextItalicIcon, TextUnderlineIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
 import Toggle from "@/components/ui/toggle/Toggle.astro";
-import Bold from "@lucide/astro/icons/bold";
-import Italic from "@lucide/astro/icons/italic";
-import Underline from "@lucide/astro/icons/underline";
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
 ```html
-<Toggle aria-label="Toggle bold">
-  <Bold class="size-4" />
+<Toggle aria-label="Toggle TextBoldIcon">
+  <HugeIcon icon={TextBoldIcon} class="size-4" />
 </Toggle>
 ```
   </Fragment>
-  <Toggle aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
 </ComponentPreview>
 
@@ -64,21 +66,21 @@ import { Toggle } from "@/components/bearnie/toggle"
   <Fragment slot="code">
 ```html
 <div class="flex items-center gap-2">
-  <Toggle variant="outline" aria-label="Toggle italic">
-    <Italic class="size-4" />
+  <Toggle variant="outline" aria-label="Toggle TextItalicIcon">
+    <HugeIcon icon={TextItalicIcon} class="size-4" />
   </Toggle>
-  <Toggle variant="outline" aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle variant="outline" aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
 </div>
 ```
   </Fragment>
   <div class="flex items-center gap-2">
-    <Toggle variant="outline" aria-label="Toggle italic">
-      <Italic class="size-4" />
+    <Toggle variant="outline" aria-label="Toggle TextItalicIcon">
+      <HugeIcon icon={TextItalicIcon} class="size-4" />
     </Toggle>
-    <Toggle variant="outline" aria-label="Toggle bold">
-      <Bold class="size-4" />
+    <Toggle variant="outline" aria-label="Toggle TextBoldIcon">
+      <HugeIcon icon={TextBoldIcon} class="size-4" />
     </Toggle>
   </div>
 </ComponentPreview>
@@ -92,14 +94,14 @@ import { Toggle } from "@/components/bearnie/toggle"
 <ComponentPreview>
   <Fragment slot="code">
 ```html
-<Toggle aria-label="Toggle italic">
-  <Italic class="size-4" />
+<Toggle aria-label="Toggle TextItalicIcon">
+  <HugeIcon icon={TextItalicIcon} class="size-4" />
   <span>Italic</span>
 </Toggle>
 ```
   </Fragment>
-  <Toggle aria-label="Toggle italic">
-    <Italic class="size-4" />
+  <Toggle aria-label="Toggle TextItalicIcon">
+    <HugeIcon icon={TextItalicIcon} class="size-4" />
     <span>Italic</span>
   </Toggle>
 </ComponentPreview>
@@ -114,27 +116,27 @@ import { Toggle } from "@/components/bearnie/toggle"
   <Fragment slot="code">
 ```html
 <div class="flex items-center gap-2">
-  <Toggle size="sm" aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle size="sm" aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
-  <Toggle size="default" aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle size="default" aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
-  <Toggle size="lg" aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle size="lg" aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
 </div>
 ```
   </Fragment>
   <div class="flex items-center gap-2">
-    <Toggle size="sm" aria-label="Toggle bold">
-      <Bold class="size-4" />
+    <Toggle size="sm" aria-label="Toggle TextBoldIcon">
+      <HugeIcon icon={TextBoldIcon} class="size-4" />
     </Toggle>
-    <Toggle size="default" aria-label="Toggle bold">
-      <Bold class="size-4" />
+    <Toggle size="default" aria-label="Toggle TextBoldIcon">
+      <HugeIcon icon={TextBoldIcon} class="size-4" />
     </Toggle>
-    <Toggle size="lg" aria-label="Toggle bold">
-      <Bold class="size-4" />
+    <Toggle size="lg" aria-label="Toggle TextBoldIcon">
+      <HugeIcon icon={TextBoldIcon} class="size-4" />
     </Toggle>
   </div>
 </ComponentPreview>
@@ -148,13 +150,13 @@ import { Toggle } from "@/components/bearnie/toggle"
 <ComponentPreview>
   <Fragment slot="code">
 ```html
-<Toggle pressed aria-label="Toggle underline">
-  <Underline class="size-4" />
+<Toggle pressed aria-label="Toggle TextUnderlineIcon">
+  <HugeIcon icon={TextUnderlineIcon} class="size-4" />
 </Toggle>
 ```
   </Fragment>
-  <Toggle pressed aria-label="Toggle underline">
-    <Underline class="size-4" />
+  <Toggle pressed aria-label="Toggle TextUnderlineIcon">
+    <HugeIcon icon={TextUnderlineIcon} class="size-4" />
   </Toggle>
 </ComponentPreview>
 </div>
@@ -168,21 +170,21 @@ import { Toggle } from "@/components/bearnie/toggle"
   <Fragment slot="code">
 ```html
 <div class="flex items-center gap-2">
-  <Toggle disabled aria-label="Toggle bold">
-    <Bold class="size-4" />
+  <Toggle disabled aria-label="Toggle TextBoldIcon">
+    <HugeIcon icon={TextBoldIcon} class="size-4" />
   </Toggle>
-  <Toggle disabled pressed aria-label="Toggle italic">
-    <Italic class="size-4" />
+  <Toggle disabled pressed aria-label="Toggle TextItalicIcon">
+    <HugeIcon icon={TextItalicIcon} class="size-4" />
   </Toggle>
 </div>
 ```
   </Fragment>
   <div class="flex items-center gap-2">
-    <Toggle disabled aria-label="Toggle bold">
-      <Bold class="size-4" />
+    <Toggle disabled aria-label="Toggle TextBoldIcon">
+      <HugeIcon icon={TextBoldIcon} class="size-4" />
     </Toggle>
-    <Toggle disabled pressed aria-label="Toggle italic">
-      <Italic class="size-4" />
+    <Toggle disabled pressed aria-label="Toggle TextItalicIcon">
+      <HugeIcon icon={TextItalicIcon} class="size-4" />
     </Toggle>
   </div>
 </ComponentPreview>

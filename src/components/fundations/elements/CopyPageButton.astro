@@ -1,12 +1,11 @@
 ---
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowDown01Icon, Copy01Icon, File02Icon } from "@/lib/hugeicons";
+
 export interface Props {
   contentId?: string;
 }
 const { contentId = "docs-article-content" } = Astro.props;
-
-import Copy from "@lucide/astro/icons/copy";
-import ChevronDown from "@lucide/astro/icons/chevron-down";
-import FileText from "@lucide/astro/icons/file-text";
 ---
 
 <div class="relative inline-flex items-center bg-secondary rounded-md" id="copy-page-dropdown" data-content-id={contentId}>
@@ -16,7 +15,7 @@ import FileText from "@lucide/astro/icons/file-text";
     id="copy-page-button"
   >
     <span id="copy-page-icon">
-      <Copy class="size-3" />
+      <HugeIcon icon={Copy01Icon} class="size-3" />
     </span>
     <span class="hidden sm:inline">Copy Page</span>
   </button>
@@ -26,7 +25,7 @@ import FileText from "@lucide/astro/icons/file-text";
     class="inline-flex items-center justify-center size-7 text-sm font-medium text-secondary-foreground hover:bg-secondary-foreground/10 rounded-r-md transition-colors"
     id="copy-page-trigger"
   >
-    <ChevronDown class="size-3" />
+    <HugeIcon icon={ArrowDown01Icon} class="size-3" />
   </button>
   <div
     class="absolute right-0 top-full mt-2 w-48 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible transition-all duration-200 z-50"
@@ -38,7 +37,7 @@ import FileText from "@lucide/astro/icons/file-text";
         class="w-full flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         data-copy-action="markdown"
       >
-        <FileText class="size-4" />
+        <HugeIcon icon={File02Icon} class="size-4" />
         View as Markdown
       </button>
       <button

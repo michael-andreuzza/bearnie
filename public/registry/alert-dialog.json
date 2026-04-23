@@ -16,12 +16,12 @@
     {
       "name": "AlertDialogAction.astro",
       "path": "alert-dialog/AlertDialogAction.astro",
-      "content": "---\nimport Button from '@/components/ui/button/Button.astro';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'button'> {\n  variant?: 'default' | 'destructive';\n}\n\nconst { variant = 'default', class: className, ...props } = Astro.props;\n---\n\n<Button\n  variant={variant}\n  size=\"sm\"\n  class={className}\n  data-alert-dialog-action\n  {...props}\n>\n  <slot />\n</Button>\n"
+      "content": "---\nimport Button from '@/components/ui/button/Button.astro';\n\nexport interface Props {\n  variant?: \"default\" | \"destructive\";\n  class?: string;\n  disabled?: boolean;\n  type?: \"button\" | \"submit\" | \"reset\";\n}\n\nconst {\n  variant = \"default\",\n  class: className,\n  disabled,\n  type = \"button\",\n} = Astro.props;\n---\n\n<Button\n  variant={variant}\n  size=\"sm\"\n  class={className}\n  disabled={disabled}\n  type={type}\n  data-alert-dialog-action\n>\n  <slot />\n</Button>\n"
     },
     {
       "name": "AlertDialogCancel.astro",
       "path": "alert-dialog/AlertDialogCancel.astro",
-      "content": "---\nimport Button from '@/components/ui/button/Button.astro';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'button'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<Button\n  variant=\"outline\"\n  size=\"sm\"\n  class={className}\n  data-alert-dialog-cancel\n  {...props}\n>\n  <slot />\n</Button>\n"
+      "content": "---\nimport Button from '@/components/ui/button/Button.astro';\n\nexport interface Props {\n  class?: string;\n  disabled?: boolean;\n  type?: \"button\" | \"submit\" | \"reset\";\n}\n\nconst { class: className, disabled, type = \"button\" } = Astro.props;\n---\n\n<Button\n  variant=\"outline\"\n  size=\"sm\"\n  class={className}\n  disabled={disabled}\n  type={type}\n  data-alert-dialog-cancel\n>\n  <slot />\n</Button>\n"
     },
     {
       "name": "AlertDialogContent.astro",

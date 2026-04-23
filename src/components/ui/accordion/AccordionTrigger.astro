@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import ChevronDown from "@lucide/astro/icons/chevron-down";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowDown01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"button"> {
   defaultOpen?: boolean;
@@ -10,7 +11,7 @@ export interface Props extends HTMLAttributes<"button"> {
 const { defaultOpen = false, class: className, ...props } = Astro.props;
 
 const classes = cn(
-  "flex w-full flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+  "flex w-full flex-1 items-center justify-between py-4 font-medium transition-all hover:TextUnderlineIcon [&[data-state=open]>svg]:rotate-180",
   className
 );
 ---
@@ -24,5 +25,5 @@ const classes = cn(
   {...props}
 >
   <slot />
-  <ChevronDown size={16} class="shrink-0 transition-transform duration-200" />
+  <HugeIcon icon={ArrowDown01Icon} size={16} class="shrink-0 transition-transform duration-200" />
 </button>

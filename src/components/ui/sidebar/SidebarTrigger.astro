@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import PanelLeft from "@lucide/astro/icons/panel-left";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { PanelLeftIcon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"button"> {
   for?: string;
@@ -26,7 +27,7 @@ const classes = cn(
   {...props}
 >
   <slot>
-    <PanelLeft class="size-4" />
+    <HugeIcon icon={PanelLeftIcon} class="size-4" />
   </slot>
 </button>
 

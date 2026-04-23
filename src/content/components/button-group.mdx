@@ -7,6 +7,9 @@ status: stable
 order: 2
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { TextBoldIcon, ArrowDown01Icon, Copy01Icon, TextItalicIcon, TextUnderlineIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -15,11 +18,10 @@ import ButtonGroup from "@/components/ui/button-group/ButtonGroup.astro";
 import ButtonGroupSeparator from "@/components/ui/button-group/ButtonGroupSeparator.astro";
 import ButtonGroupText from "@/components/ui/button-group/ButtonGroupText.astro";
 import Input from "@/components/ui/input/Input.astro";
-import ChevronDown from "@lucide/astro/icons/chevron-down";
-import Copy from "@lucide/astro/icons/copy";
-import Bold from "@lucide/astro/icons/bold";
-import Italic from "@lucide/astro/icons/italic";
-import Underline from "@lucide/astro/icons/underline";
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -102,26 +104,26 @@ import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components
 ```html
 <ButtonGroup>
   <Button variant="outline" iconOnly>
-    <Bold />
+    <HugeIcon icon={TextBoldIcon} />
   </Button>
   <Button variant="outline" iconOnly>
-    <Italic />
+    <HugeIcon icon={TextItalicIcon} />
   </Button>
   <Button variant="outline" iconOnly>
-    <Underline />
+    <HugeIcon icon={TextUnderlineIcon} />
   </Button>
 </ButtonGroup>
 ```
   </Fragment>
   <ButtonGroup>
     <Button variant="outline" iconOnly>
-      <Bold />
+      <HugeIcon icon={TextBoldIcon} />
     </Button>
     <Button variant="outline" iconOnly>
-      <Italic />
+      <HugeIcon icon={TextItalicIcon} />
     </Button>
     <Button variant="outline" iconOnly>
-      <Underline />
+      <HugeIcon icon={TextUnderlineIcon} />
     </Button>
   </ButtonGroup>
 </ComponentPreview>
@@ -139,7 +141,7 @@ import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components
   <Button>Save</Button>
   <ButtonGroupSeparator />
   <Button iconOnly>
-    <ChevronDown />
+    <HugeIcon icon={ArrowDown01Icon} />
   </Button>
 </ButtonGroup>
 ```
@@ -148,7 +150,7 @@ import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components
     <Button>Save</Button>
     <ButtonGroupSeparator />
     <Button iconOnly>
-      <ChevronDown />
+      <HugeIcon icon={ArrowDown01Icon} />
     </Button>
   </ButtonGroup>
 </ComponentPreview>
@@ -164,24 +166,24 @@ import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components
 ```html
 <ButtonGroup>
   <Button variant="outline">
-    <Copy slot="left-icon" />
+    <HugeIcon icon={Copy01Icon} slot="left-icon" />
     Copy
   </Button>
   <ButtonGroupSeparator />
   <Button variant="outline" iconOnly>
-    <ChevronDown />
+    <HugeIcon icon={ArrowDown01Icon} />
   </Button>
 </ButtonGroup>
 ```
   </Fragment>
   <ButtonGroup>
     <Button variant="outline">
-      <Copy slot="left-icon" />
+      <HugeIcon icon={Copy01Icon} slot="left-icon" />
       Copy
     </Button>
     <ButtonGroupSeparator />
     <Button variant="outline" iconOnly>
-      <ChevronDown />
+      <HugeIcon icon={ArrowDown01Icon} />
     </Button>
   </ButtonGroup>
 </ComponentPreview>
@@ -239,26 +241,26 @@ import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components
 ```html
 <ButtonGroup>
   <Button variant="secondary" iconOnly>
-    <Bold />
+    <HugeIcon icon={TextBoldIcon} />
   </Button>
   <Button variant="outline" iconOnly>
-    <Italic />
+    <HugeIcon icon={TextItalicIcon} />
   </Button>
   <Button variant="outline" iconOnly>
-    <Underline />
+    <HugeIcon icon={TextUnderlineIcon} />
   </Button>
 </ButtonGroup>
 ```
   </Fragment>
   <ButtonGroup>
     <Button variant="secondary" iconOnly>
-      <Bold />
+      <HugeIcon icon={TextBoldIcon} />
     </Button>
     <Button variant="outline" iconOnly>
-      <Italic />
+      <HugeIcon icon={TextItalicIcon} />
     </Button>
     <Button variant="outline" iconOnly>
-      <Underline />
+      <HugeIcon icon={TextUnderlineIcon} />
     </Button>
   </ButtonGroup>
 </ComponentPreview>

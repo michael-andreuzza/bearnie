@@ -7,6 +7,9 @@ status: stable
 order: 10
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ClipboardIcon, Copy01Icon, FolderAddIcon, PencilEdit01Icon, Scissor01Icon, Share01Icon, Delete02Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -17,13 +20,12 @@ import ContextMenuItem from "@/components/ui/context-menu/ContextMenuItem.astro"
 import ContextMenuSeparator from "@/components/ui/context-menu/ContextMenuSeparator.astro";
 import ContextMenuLabel from "@/components/ui/context-menu/ContextMenuLabel.astro";
 import ContextMenuShortcut from "@/components/ui/context-menu/ContextMenuShortcut.astro";
-import Copy from "@lucide/astro/icons/copy";
-import Scissors from "@lucide/astro/icons/scissors";
-import Clipboard from "@lucide/astro/icons/clipboard";
-import Trash2 from "@lucide/astro/icons/trash-2";
-import FolderPlus from "@lucide/astro/icons/folder-plus";
-import PencilLine from "@lucide/astro/icons/pencil-line";
-import Share from "@lucide/astro/icons/share";
+
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -36,23 +38,23 @@ import Share from "@lucide/astro/icons/share";
   </ContextMenuTrigger>
   <ContextMenuContent>
     <ContextMenuItem>
-      <Copy />
+      <HugeIcon icon={Copy01Icon} />
       Copy
       <ContextMenuShortcut>⌘C</ContextMenuShortcut>
     </ContextMenuItem>
     <ContextMenuItem>
-      <Scissors />
+      <HugeIcon icon={Scissor01Icon} />
       Cut
       <ContextMenuShortcut>⌘X</ContextMenuShortcut>
     </ContextMenuItem>
     <ContextMenuItem>
-      <Clipboard />
+      <HugeIcon icon={ClipboardIcon} />
       Paste
       <ContextMenuShortcut>⌘V</ContextMenuShortcut>
     </ContextMenuItem>
     <ContextMenuSeparator />
     <ContextMenuItem destructive>
-      <Trash2 />
+      <HugeIcon icon={Delete02Icon} />
       Delete
       <ContextMenuShortcut>⌫</ContextMenuShortcut>
     </ContextMenuItem>
@@ -68,23 +70,23 @@ import Share from "@lucide/astro/icons/share";
     </ContextMenuTrigger>
     <ContextMenuContent>
       <ContextMenuItem>
-        <Copy />
+        <HugeIcon icon={Copy01Icon} />
         Copy
         <ContextMenuShortcut>⌘C</ContextMenuShortcut>
       </ContextMenuItem>
       <ContextMenuItem>
-        <Scissors />
+        <HugeIcon icon={Scissor01Icon} />
         Cut
         <ContextMenuShortcut>⌘X</ContextMenuShortcut>
       </ContextMenuItem>
       <ContextMenuItem>
-        <Clipboard />
+        <HugeIcon icon={ClipboardIcon} />
         Paste
         <ContextMenuShortcut>⌘V</ContextMenuShortcut>
       </ContextMenuItem>
       <ContextMenuSeparator />
       <ContextMenuItem destructive>
-        <Trash2 />
+        <HugeIcon icon={Delete02Icon} />
         Delete
         <ContextMenuShortcut>⌫</ContextMenuShortcut>
       </ContextMenuItem>
@@ -184,15 +186,15 @@ import {
   </ContextMenuTrigger>
   <ContextMenuContent>
     <ContextMenuItem>
-      <FolderPlus />
-      New folder
+      <HugeIcon icon={FolderAddIcon} />
+      New Folder
     </ContextMenuItem>
     <ContextMenuItem>
-      <PencilLine />
+      <HugeIcon icon={PencilEdit01Icon} />
       Rename
     </ContextMenuItem>
     <ContextMenuItem>
-      <Share />
+      <HugeIcon icon={Share01Icon} />
       Share
     </ContextMenuItem>
   </ContextMenuContent>
@@ -207,15 +209,15 @@ import {
     </ContextMenuTrigger>
     <ContextMenuContent>
       <ContextMenuItem>
-        <FolderPlus />
-        New folder
+        <HugeIcon icon={FolderAddIcon} />
+        New Folder
       </ContextMenuItem>
       <ContextMenuItem>
-        <PencilLine />
+        <HugeIcon icon={PencilEdit01Icon} />
         Rename
       </ContextMenuItem>
       <ContextMenuItem>
-        <Share />
+        <HugeIcon icon={Share01Icon} />
         Share
       </ContextMenuItem>
     </ContextMenuContent>
@@ -287,7 +289,7 @@ import {
     <ContextMenuItem>Mark as read</ContextMenuItem>
     <ContextMenuSeparator />
     <ContextMenuItem destructive>
-      <Trash2 />
+      <HugeIcon icon={Delete02Icon} />
       Delete permanently
     </ContextMenuItem>
   </ContextMenuContent>
@@ -305,7 +307,7 @@ import {
       <ContextMenuItem>Mark as read</ContextMenuItem>
       <ContextMenuSeparator />
       <ContextMenuItem destructive>
-        <Trash2 />
+        <HugeIcon icon={Delete02Icon} />
         Delete permanently
       </ContextMenuItem>
     </ContextMenuContent>

@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import Dot from "@lucide/astro/icons/dot";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { CircleIcon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"div"> {}
 
@@ -21,6 +22,6 @@ const classes = cn(
   {...props}
 >
   <slot>
-    <Dot class="size-4" />
+    <HugeIcon icon={CircleIcon} class="size-4" />
   </slot>
 </div>

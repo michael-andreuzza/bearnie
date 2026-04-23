@@ -7,6 +7,9 @@ status: stable
 order: 23
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon, CreditCardIcon, Mail01Icon, PackageIcon, Settings01Icon, Shield01Icon, UserIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -16,13 +19,12 @@ import StepperTrigger from "@/components/ui/stepper/StepperTrigger.astro";
 import StepperTitle from "@/components/ui/stepper/StepperTitle.astro";
 import StepperDescription from "@/components/ui/stepper/StepperDescription.astro";
 import StepperSeparator from "@/components/ui/stepper/StepperSeparator.astro";
-import Check from "@lucide/astro/icons/check";
-import User from "@lucide/astro/icons/user";
-import Mail from "@lucide/astro/icons/mail";
-import CreditCard from "@lucide/astro/icons/credit-card";
-import Package from "@lucide/astro/icons/package";
-import Settings from "@lucide/astro/icons/settings";
-import Shield from "@lucide/astro/icons/shield";
+
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -30,7 +32,7 @@ import Shield from "@lucide/astro/icons/shield";
 <Stepper activeStep={1}>
   <StepperItem step={0}>
     <StepperTrigger>
-      <Check class="size-4" />
+      <HugeIcon icon={Tick02Icon} class="size-4" />
     </StepperTrigger>
     <div>
       <StepperTitle>Account</StepperTitle>
@@ -59,7 +61,7 @@ import Shield from "@lucide/astro/icons/shield";
   <Stepper activeStep={1}>
     <StepperItem step={0}>
       <StepperTrigger>
-        <Check class="size-4" />
+        <HugeIcon icon={Tick02Icon} class="size-4" />
       </StepperTrigger>
       <div>
         <StepperTitle>Account</StepperTitle>
@@ -185,7 +187,7 @@ import {
 <Stepper orientation="vertical" activeStep={1}>
   <StepperItem step={0}>
     <StepperTrigger>
-      <Check class="size-4" />
+      <HugeIcon icon={Tick02Icon} class="size-4" />
     </StepperTrigger>
     <div>
       <StepperTitle>Create account</StepperTitle>
@@ -214,7 +216,7 @@ import {
   <Stepper orientation="vertical" activeStep={1}>
     <StepperItem step={0}>
       <StepperTrigger>
-        <Check class="size-4" />
+        <HugeIcon icon={Tick02Icon} class="size-4" />
       </StepperTrigger>
       <div>
         <StepperTitle>Create account</StepperTitle>
@@ -254,21 +256,21 @@ Use icons instead of numbers for a more visual representation.
 <Stepper activeStep={1}>
   <StepperItem step={0}>
     <StepperTrigger>
-      <User class="size-4" />
+      <HugeIcon icon={UserIcon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Account</StepperTitle>
   </StepperItem>
   <StepperSeparator />
   <StepperItem step={1}>
     <StepperTrigger>
-      <Mail class="size-4" />
+      <HugeIcon icon={Mail01Icon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Verify</StepperTitle>
   </StepperItem>
   <StepperSeparator />
   <StepperItem step={2}>
     <StepperTrigger>
-      <Settings class="size-4" />
+      <HugeIcon icon={Settings01Icon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Setup</StepperTitle>
   </StepperItem>
@@ -278,21 +280,21 @@ Use icons instead of numbers for a more visual representation.
   <Stepper activeStep={1}>
     <StepperItem step={0}>
       <StepperTrigger>
-        <User class="size-4" />
+        <HugeIcon icon={UserIcon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Account</StepperTitle>
     </StepperItem>
     <StepperSeparator />
     <StepperItem step={1}>
       <StepperTrigger>
-        <Mail class="size-4" />
+        <HugeIcon icon={Mail01Icon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Verify</StepperTitle>
     </StepperItem>
     <StepperSeparator />
     <StepperItem step={2}>
       <StepperTrigger>
-        <Settings class="size-4" />
+        <HugeIcon icon={Settings01Icon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Setup</StepperTitle>
     </StepperItem>
@@ -472,21 +474,21 @@ Show a checkmark icon for completed steps.
 <Stepper activeStep={2}>
   <StepperItem step={0}>
     <StepperTrigger>
-      <Check class="size-4" />
+      <HugeIcon icon={Tick02Icon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Cart</StepperTitle>
   </StepperItem>
   <StepperSeparator />
   <StepperItem step={1}>
     <StepperTrigger>
-      <Check class="size-4" />
+      <HugeIcon icon={Tick02Icon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Shipping</StepperTitle>
   </StepperItem>
   <StepperSeparator />
   <StepperItem step={2}>
     <StepperTrigger>
-      <CreditCard class="size-4" />
+      <HugeIcon icon={CreditCardIcon} class="size-4" />
     </StepperTrigger>
     <StepperTitle>Payment</StepperTitle>
   </StepperItem>
@@ -501,21 +503,21 @@ Show a checkmark icon for completed steps.
   <Stepper activeStep={2}>
     <StepperItem step={0}>
       <StepperTrigger>
-        <Check class="size-4" />
+        <HugeIcon icon={Tick02Icon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Cart</StepperTitle>
     </StepperItem>
     <StepperSeparator />
     <StepperItem step={1}>
       <StepperTrigger>
-        <Check class="size-4" />
+        <HugeIcon icon={Tick02Icon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Shipping</StepperTitle>
     </StepperItem>
     <StepperSeparator />
     <StepperItem step={2}>
       <StepperTrigger>
-        <CreditCard class="size-4" />
+        <HugeIcon icon={CreditCardIcon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Payment</StepperTitle>
     </StepperItem>
@@ -541,7 +543,7 @@ A complete vertical stepper with icons and detailed descriptions.
 <Stepper orientation="vertical" activeStep={1}>
   <StepperItem step={0}>
     <StepperTrigger>
-      <Check class="size-4" />
+      <HugeIcon icon={Tick02Icon} class="size-4" />
     </StepperTrigger>
     <div>
       <StepperTitle>Create your account</StepperTitle>
@@ -551,7 +553,7 @@ A complete vertical stepper with icons and detailed descriptions.
   <StepperSeparator />
   <StepperItem step={1}>
     <StepperTrigger>
-      <Shield class="size-4" />
+      <HugeIcon icon={Shield01Icon} class="size-4" />
     </StepperTrigger>
     <div>
       <StepperTitle>Verify your identity</StepperTitle>
@@ -561,7 +563,7 @@ A complete vertical stepper with icons and detailed descriptions.
   <StepperSeparator />
   <StepperItem step={2}>
     <StepperTrigger>
-      <Package class="size-4" />
+      <HugeIcon icon={PackageIcon} class="size-4" />
     </StepperTrigger>
     <div>
       <StepperTitle>Choose your plan</StepperTitle>
@@ -574,7 +576,7 @@ A complete vertical stepper with icons and detailed descriptions.
   <Stepper orientation="vertical" activeStep={1}>
     <StepperItem step={0}>
       <StepperTrigger>
-        <Check class="size-4" />
+        <HugeIcon icon={Tick02Icon} class="size-4" />
       </StepperTrigger>
       <div>
         <StepperTitle>Create your account</StepperTitle>
@@ -584,7 +586,7 @@ A complete vertical stepper with icons and detailed descriptions.
     <StepperSeparator />
     <StepperItem step={1}>
       <StepperTrigger>
-        <Shield class="size-4" />
+        <HugeIcon icon={Shield01Icon} class="size-4" />
       </StepperTrigger>
       <div>
         <StepperTitle>Verify your identity</StepperTitle>
@@ -594,7 +596,7 @@ A complete vertical stepper with icons and detailed descriptions.
     <StepperSeparator />
     <StepperItem step={2}>
       <StepperTrigger>
-        <Package class="size-4" />
+        <HugeIcon icon={PackageIcon} class="size-4" />
       </StepperTrigger>
       <div>
         <StepperTitle>Choose your plan</StepperTitle>

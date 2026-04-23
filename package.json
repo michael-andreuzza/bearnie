@@ -16,16 +16,15 @@
     "cli:test": "BEARNIE_REGISTRY_URL=http://localhost:4321/registry bearnie"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.2",
-    "@astrojs/rss": "^4.0.17",
-    "@astrojs/sitemap": "^3.7.1",
-    "@lexingtonthemes/seo": "^0.1.0",
-    "@lucide/astro": "^0.577.0",
+    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@hugeicons/core-free-icons": "^4.1.1",
+    "@lexingtonthemes/seo": "^0.2.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.19",
-    "astro": "^6.0.6",
+    "astro": "^6.1.9",
     "clsx": "^2.1.1",
-    "html-to-image": "^1.11.13",
     "jszip": "^3.10.1",
     "keen-slider": "^6.8.6",
     "reading-time": "^1.5.0",
@@ -35,13 +34,13 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.2.4",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.6.0",
     "fs-extra": "^11.3.4",
-    "prettier": "^3.8.1",
-    "tailwindcss": "^4.2.2",
+    "prettier": "^3.8.3",
+    "tailwindcss": "^4.2.4",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

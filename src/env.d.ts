@@ -1,7 +1,11 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
-declare module "@lucide/astro/icons/*" {
-  const component: any;
-  export default component;
+/** Per-icon modules (deep imports) ship JS only; default export is Hugeicons' SVG tuple data */
+declare module "@hugeicons/core-free-icons/*" {
+  const icon: readonly (readonly [
+    string,
+    Readonly<Record<string, string | number>>,
+  ])[];
+  export default icon;
 }

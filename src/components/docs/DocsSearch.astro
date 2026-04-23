@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import Search from "@lucide/astro/icons/search";
-import Command from "@lucide/astro/icons/command";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { CommandIcon, Search01Icon } from "@/lib/hugeicons";
 
 // Get all docs content
 const components = await Promise.all(
@@ -32,9 +32,9 @@ const allDocs = [...docs, ...components];
   data-docs-search-trigger
   aria-label="Search documentation"
 >
-  <Search size={14} />
+  <HugeIcon icon={Search01Icon} size={14} />
   <kbd class="inline-flex items-center gap-0.5 text-muted-foreground">
-    <Command size={12} /><span class="text-sm font-medium">K</span>
+    <HugeIcon icon={CommandIcon} size={12} /><span class="text-sm font-medium">K</span>
   </kbd>
 </button>
 
@@ -83,7 +83,7 @@ const allDocs = [...docs, ...components];
       var hint = modal.querySelector("[data-search-hint]");
       var closeBtn = modal.querySelector("[data-search-close]");
 
-      function search(query) {
+      function filterDocs(query) {
         if (!query.trim()) return [];
         var q = query.toLowerCase();
         return allDocs.filter(function (doc) {
@@ -197,7 +197,7 @@ const allDocs = [...docs, ...components];
       });
 
       input.addEventListener("input", function (e) {
-        var docs = search(e.target.value);
+        var docs = filterDocs(e.target.value);
         renderResults(docs);
       });
 

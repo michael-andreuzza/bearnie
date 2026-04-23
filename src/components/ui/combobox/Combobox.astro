@@ -2,7 +2,8 @@
 import ComboboxContent from "@/components/ui/combobox/ComboboxContent.astro";
 import ComboboxItem from "@/components/ui/combobox/ComboboxItem.astro";
 import ComboboxTrigger from "@/components/ui/combobox/ComboboxTrigger.astro";
-import X from "@/components/fundations/icons/X.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Cancel01Icon } from "@/lib/hugeicons";
 import CommandEmpty from "@/components/ui/command/CommandEmpty.astro";
 import CommandGroup from "@/components/ui/command/CommandGroup.astro";
 import CommandList from "@/components/ui/command/CommandList.astro";
@@ -93,7 +94,7 @@ const selectedOption = normalizedGroups
         tabindex="0"
         aria-label="Clear selection"
       >
-        <X size="sm" />
+        <HugeIcon icon={Cancel01Icon} size="sm" />
       </span>
     )}
   </ComboboxTrigger>

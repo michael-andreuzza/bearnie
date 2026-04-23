@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import X from "@lucide/astro/icons/x";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Cancel01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"div"> {
   side?: "top" | "right" | "bottom" | "left";
@@ -45,7 +46,7 @@ const classes = cn(
       data-sheet-close
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
     >
-      <X class="size-4" />
+      <HugeIcon icon={Cancel01Icon} class="size-4" />
       <span class="sr-only">Close</span>
     </button>
   )}

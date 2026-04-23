@@ -7,6 +7,9 @@ status: stable
 order: 11
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { FolderOpenIcon, InboxIcon, PlusSignIcon, Upload01Icon, UserMultiple02Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -20,11 +23,10 @@ import Button from "@/components/ui/button/Button.astro";
 import Avatar from "@/components/ui/avatar/Avatar.astro";
 import AvatarImage from "@/components/ui/avatar/AvatarImage.astro";
 import AvatarFallback from "@/components/ui/avatar/AvatarFallback.astro";
-import Inbox from "@lucide/astro/icons/inbox";
-import FolderOpen from "@lucide/astro/icons/folder-open";
-import Users from "@lucide/astro/icons/users";
-import Plus from "@lucide/astro/icons/plus";
-import Upload from "@lucide/astro/icons/upload";
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -32,7 +34,7 @@ import Upload from "@lucide/astro/icons/upload";
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <Inbox />
+      <HugeIcon icon={InboxIcon} />
     </EmptyMedia>
     <EmptyTitle>No messages</EmptyTitle>
     <EmptyDescription>
@@ -48,7 +50,7 @@ import Upload from "@lucide/astro/icons/upload";
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <Inbox />
+        <HugeIcon icon={InboxIcon} />
       </EmptyMedia>
       <EmptyTitle>No messages</EmptyTitle>
       <EmptyDescription>
@@ -117,7 +119,7 @@ import {
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <FolderOpen />
+      <HugeIcon icon={FolderOpenIcon} />
     </EmptyMedia>
     <EmptyTitle>No projects</EmptyTitle>
     <EmptyDescription>
@@ -126,7 +128,7 @@ import {
   </EmptyHeader>
   <EmptyContent>
     <Button size="sm">
-      <Plus />
+      <HugeIcon icon={PlusSignIcon} />
       New project
     </Button>
   </EmptyContent>
@@ -136,7 +138,7 @@ import {
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <FolderOpen />
+        <HugeIcon icon={FolderOpenIcon} />
       </EmptyMedia>
       <EmptyTitle>No projects</EmptyTitle>
       <EmptyDescription>
@@ -145,7 +147,7 @@ import {
     </EmptyHeader>
     <EmptyContent>
       <Button size="sm">
-        <Plus />
+        <HugeIcon icon={PlusSignIcon} />
         New project
       </Button>
     </EmptyContent>
@@ -171,7 +173,7 @@ import {
     </EmptyMedia>
     <EmptyTitle>User offline</EmptyTitle>
     <EmptyDescription>
-      This user is currently offline.
+      This UserIcon is currently offline.
     </EmptyDescription>
   </EmptyHeader>
   <EmptyContent>
@@ -190,7 +192,7 @@ import {
       </EmptyMedia>
       <EmptyTitle>User offline</EmptyTitle>
       <EmptyDescription>
-        This user is currently offline.
+        This UserIcon is currently offline.
       </EmptyDescription>
     </EmptyHeader>
     <EmptyContent>
@@ -211,7 +213,7 @@ import {
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <Upload />
+      <HugeIcon icon={Upload01Icon} />
     </EmptyMedia>
     <EmptyTitle>No files</EmptyTitle>
     <EmptyDescription>
@@ -228,7 +230,7 @@ import {
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <Upload />
+        <HugeIcon icon={Upload01Icon} />
       </EmptyMedia>
       <EmptyTitle>No files</EmptyTitle>
       <EmptyDescription>
@@ -254,7 +256,7 @@ import {
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <Users />
+      <HugeIcon icon={UserMultiple02Icon} />
     </EmptyMedia>
     <EmptyTitle>No team members</EmptyTitle>
     <EmptyDescription>
@@ -267,7 +269,7 @@ import {
   <Empty>
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <Users />
+        <HugeIcon icon={UserMultiple02Icon} />
       </EmptyMedia>
       <EmptyTitle>No team members</EmptyTitle>
       <EmptyDescription>

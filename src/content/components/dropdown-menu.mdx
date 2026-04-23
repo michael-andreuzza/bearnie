@@ -7,6 +7,9 @@ status: "stable"
 order: 10
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { CreditCardIcon, MoreHorizontalIcon, Logout01Icon, Settings01Icon, UserIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -17,11 +20,10 @@ import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuConte
 import DropdownMenuItem from "@/components/ui/dropdown-menu/DropdownMenuItem.astro";
 import DropdownMenuLabel from "@/components/ui/dropdown-menu/DropdownMenuLabel.astro";
 import DropdownMenuSeparator from "@/components/ui/dropdown-menu/DropdownMenuSeparator.astro";
-import User from "@lucide/astro/icons/user";
-import Settings from "@lucide/astro/icons/settings";
-import LogOut from "@lucide/astro/icons/log-out";
-import CreditCard from "@lucide/astro/icons/credit-card";
-import Ellipsis from "@lucide/astro/icons/ellipsis";
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -211,20 +213,20 @@ import {
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuItem>
-      <User class="mr-2 size-4" />
+      <HugeIcon icon={UserIcon} class="mr-2 size-4" />
       Profile
     </DropdownMenuItem>
     <DropdownMenuItem>
-      <CreditCard class="mr-2 size-4" />
+      <HugeIcon icon={CreditCardIcon} class="mr-2 size-4" />
       Billing
     </DropdownMenuItem>
     <DropdownMenuItem>
-      <Settings class="mr-2 size-4" />
+      <HugeIcon icon={Settings01Icon} class="mr-2 size-4" />
       Settings
     </DropdownMenuItem>
     <DropdownMenuSeparator />
     <DropdownMenuItem>
-      <LogOut class="mr-2 size-4" />
+      <HugeIcon icon={Logout01Icon} class="mr-2 size-4" />
       Logout
     </DropdownMenuItem>
   </DropdownMenuContent>
@@ -239,20 +241,20 @@ import {
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
-        <User class="mr-2 size-4" />
+        <HugeIcon icon={UserIcon} class="mr-2 size-4" />
         Profile
       </DropdownMenuItem>
       <DropdownMenuItem>
-        <CreditCard class="mr-2 size-4" />
+        <HugeIcon icon={CreditCardIcon} class="mr-2 size-4" />
         Billing
       </DropdownMenuItem>
       <DropdownMenuItem>
-        <Settings class="mr-2 size-4" />
+        <HugeIcon icon={Settings01Icon} class="mr-2 size-4" />
         Settings
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
-        <LogOut class="mr-2 size-4" />
+        <HugeIcon icon={Logout01Icon} class="mr-2 size-4" />
         Logout
       </DropdownMenuItem>
     </DropdownMenuContent>
@@ -271,7 +273,7 @@ import {
 <DropdownMenu>
   <DropdownMenuTrigger>
     <Button variant="ghost" iconOnly>
-      <Ellipsis />
+      <HugeIcon icon={MoreHorizontalIcon} />
     </Button>
   </DropdownMenuTrigger>
   <DropdownMenuContent>
@@ -286,7 +288,7 @@ import {
   <DropdownMenu>
     <DropdownMenuTrigger>
       <Button variant="ghost" iconOnly>
-        <Ellipsis />
+        <HugeIcon icon={MoreHorizontalIcon} />
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent>

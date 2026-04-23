@@ -1,17 +1,19 @@
 ---
 import { cn } from "@/utils/cn";
-import Copy from "@lucide/astro/icons/copy";
-import Check from "@lucide/astro/icons/check";
-import SquareTerminal from "@lucide/astro/icons/square-terminal";
+
+
+
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
 import TooltipTrigger from "@/components/ui/tooltip/TooltipTrigger.astro";
 import TooltipContent from "@/components/ui/tooltip/TooltipContent.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon, Copy01Icon, TerminalIcon } from "@/lib/hugeicons";
 
 export interface Props {
-  /** The bearnie command (e.g., "init", "add button", "list") */
+  /** The bearnie CLI subcommand (e.g., "init", "add button", "list") */
   command: string;
-  /** Type of command: "run" for npx/bunx/dlx, "create" for npm create/bun create */
+  /** Command style: "run" for npx/bunx/dlx, "create" for npm create/bun create */
   type?: "run" | "create";
   class?: string;
 }
@@ -24,16 +26,16 @@ const id = `install-${Math.random().toString(36).substring(2, 9)}`;
 // Package manager commands based on type
 const packageManagers = type === "create" 
   ? [
-      { id: "npm", label: "npm", command: `npm create bearnie ${command}` },
-      { id: "bun", label: "bun", command: `bun create bearnie ${command}` },
-      { id: "pnpm", label: "pnpm", command: `pnpm create bearnie ${command}` },
-      { id: "yarn", label: "yarn", command: `yarn create bearnie ${command}` },
+      { id: "npm", label: "npm", line: `npm create bearnie ${command}` },
+      { id: "bun", label: "bun", line: `bun create bearnie ${command}` },
+      { id: "pnpm", label: "pnpm", line: `pnpm create bearnie ${command}` },
+      { id: "yarn", label: "yarn", line: `yarn create bearnie ${command}` },
     ]
   : [
-      { id: "npx", label: "npx", command: `npx bearnie ${command}` },
-      { id: "bun", label: "bun", command: `bunx bearnie ${command}` },
-      { id: "pnpm", label: "pnpm", command: `pnpm dlx bearnie ${command}` },
-      { id: "yarn", label: "yarn", command: `yarn dlx bearnie ${command}` },
+      { id: "npx", label: "npx", line: `npx bearnie ${command}` },
+      { id: "bun", label: "bun", line: `bunx bearnie ${command}` },
+      { id: "pnpm", label: "pnpm", line: `pnpm dlx bearnie ${command}` },
+      { id: "yarn", label: "yarn", line: `yarn dlx bearnie ${command}` },
     ];
 ---
 
@@ -41,7 +43,7 @@ const packageManagers = type === "create"
   <div class="border rounded-lg overflow-hidden">
     <div class="flex items-center justify-between px-4 py-2 border-b bg-background">
       <div class="flex items-center gap-2">
-        <SquareTerminal class="size-4 text-muted-foreground" />
+        <HugeIcon icon={TerminalIcon} class="size-4 text-muted-foreground" />
         {packageManagers.map((pm, index) => (
           <button
             type="button"
@@ -60,8 +62,8 @@ const packageManagers = type === "create"
             class="flex items-center justify-center p-1.5 text-muted-foreground hover:text-foreground rounded-md transition-colors"
             data-copy-button
           >
-            <Copy size={14} data-copy-icon />
-            <Check size={14} class="hidden" data-check-icon />
+            <HugeIcon icon={Copy01Icon} size={14} data-copy-icon />
+            <HugeIcon icon={Tick02Icon} size={14} class="hidden" data-check-icon />
           </button>
         </TooltipTrigger>
         <TooltipContent class="dark text-xs px-2 py-1 shadow-none">
@@ -73,10 +75,10 @@ const packageManagers = type === "create"
     {packageManagers.map((pm, index) => (
       <div class={index === 0 ? "" : "hidden"} data-pm-panel={pm.id}>
         <span class="sr-only" data-code-content>
-          {pm.command}
+          {pm.line}
         </span>
         <CodeBlock
-          code={pm.command}
+          code={pm.line}
           lang="bash"
           class="rounded-none border-0 bg-transparent"
           showCopy={false}

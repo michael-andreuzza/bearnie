@@ -7,14 +7,16 @@ status: stable
 order: 11
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Mail01Icon, Search01Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
 import Input from "@/components/ui/input/Input.astro";
 import Label from "@/components/ui/label/Label.astro";
 import Button from "@/components/ui/button/Button.astro";
-import Mail from "@lucide/astro/icons/mail";
-import Search from "@lucide/astro/icons/search";
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -112,13 +114,13 @@ import { Input } from "@/components/bearnie/input"
   <Fragment slot="code">
 ```html
 <div class="relative w-full max-w-sm">
-  <Mail class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+  <HugeIcon icon={Mail01Icon} class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
   <Input type="email" placeholder="Email" class="pl-10" />
 </div>
 ```
   </Fragment>
   <div class="relative w-full max-w-sm">
-    <Mail class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+    <HugeIcon icon={Mail01Icon} class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
     <Input type="email" placeholder="Email" class="pl-10" />
   </div>
 </ComponentPreview>
@@ -134,13 +136,13 @@ import { Input } from "@/components/bearnie/input"
 ```html
 <div class="relative w-full max-w-sm">
   <Input type="search" placeholder="Search..." class="pr-10" />
-  <Search class="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+  <HugeIcon icon={Search01Icon} class="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
 </div>
 ```
   </Fragment>
   <div class="relative w-full max-w-sm">
     <Input type="search" placeholder="Search..." class="pr-10" />
-    <Search class="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+    <HugeIcon icon={Search01Icon} class="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
   </div>
 </ComponentPreview>
 </div>

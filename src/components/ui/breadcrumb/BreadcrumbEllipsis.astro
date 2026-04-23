@@ -1,7 +1,8 @@
 ---
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
-import Ellipsis from '@lucide/astro/icons/ellipsis';
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { MoreHorizontalIcon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<'div'> {}
 
@@ -17,7 +18,7 @@ const { class: className, ...props } = Astro.props;
     aria-haspopup="true"
     aria-label="Show more breadcrumb items"
   >
-    <Ellipsis class="size-4" />
+    <HugeIcon icon={MoreHorizontalIcon} class="size-4" />
     <span class="sr-only">More</span>
   </button>
   <div

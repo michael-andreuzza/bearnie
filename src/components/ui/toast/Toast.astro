@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import X from "@lucide/astro/icons/x";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Cancel01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"div"> {
   variant?: "default" | "destructive";
@@ -28,7 +29,7 @@ const classes = cn(baseStyles, variantStyles[variant], className);
     class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100"
     data-toast-close
   >
-    <X size={16} />
+    <HugeIcon icon={Cancel01Icon} size={16} />
   </button>
 </div>
 

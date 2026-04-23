@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import Ellipsis from "@lucide/astro/icons/ellipsis";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { MoreHorizontalIcon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"span"> {}
 
@@ -14,6 +15,6 @@ const classes = cn(
 ---
 
 <span aria-hidden="true" class={classes} {...props}>
-  <Ellipsis class="size-4" />
+  <HugeIcon icon={MoreHorizontalIcon} class="size-4" />
   <span class="sr-only">More pages</span>
 </span>

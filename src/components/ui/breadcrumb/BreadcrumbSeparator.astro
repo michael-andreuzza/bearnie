@@ -1,7 +1,8 @@
 ---
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
-import ChevronRight from "@lucide/astro/icons/chevron-right";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowRight01Icon } from "@/lib/hugeicons";
 
 export interface Props extends HTMLAttributes<"li"> {}
 
@@ -12,6 +13,6 @@ const classes = cn("[&>svg]:size-3.5", className);
 
 <li role="presentation" aria-hidden="true" class={classes} {...props}>
   <slot>
-    <ChevronRight />
+    <HugeIcon icon={ArrowRight01Icon} />
   </slot>
 </li>

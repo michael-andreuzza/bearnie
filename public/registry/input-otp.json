@@ -19,7 +19,7 @@
     {
       "name": "InputOTPSeparator.astro",
       "path": "input-otp/InputOTPSeparator.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport Dot from \"@lucide/astro/icons/dot\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex items-center justify-center text-muted-foreground\",\n  className\n);\n---\n\n<div\n  class={classes}\n  role=\"separator\"\n  aria-orientation=\"vertical\"\n  data-otp-separator\n  {...props}\n>\n  <slot>\n    <Dot class=\"size-4\" />\n  </slot>\n</div>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"@/components/fundations/icons/HugeIcon.astro\";\nimport { dot } from \"@/lib/hugeicons\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex items-center justify-center text-muted-foreground\",\n  className\n);\n---\n\n<div\n  class={classes}\n  role=\"separator\"\n  aria-orientation=\"vertical\"\n  data-otp-separator\n  {...props}\n>\n  <slot>\n    <HugeIcon icon={dot} class=\"size-4\" />\n  </slot>\n</div>\n"
     },
     {
       "name": "InputOTPSlot.astro",

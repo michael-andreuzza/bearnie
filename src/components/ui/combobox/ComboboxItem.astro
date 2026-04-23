@@ -1,6 +1,7 @@
 ---
 import CommandItem from "@/components/ui/command/CommandItem.astro";
-import Check from "@/components/fundations/icons/Check.astro";
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Tick02Icon } from "@/lib/hugeicons";
 import type { HTMLAttributes } from "astro/types";
 
 export interface Props extends HTMLAttributes<"div"> {
@@ -41,7 +42,8 @@ const {
   </div>
   {meta && <span class="text-xs text-muted-foreground">{meta}</span>}
   <slot name="trailing" />
-  <Check
+  <HugeIcon
+    icon={Tick02Icon}
     size="sm"
     class="text-current opacity-0 transition-opacity"
     data-combobox-item-indicator

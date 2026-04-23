@@ -1,0 +1,82 @@
+---
+/**
+ * Renders a Hugeicons stroke icon from `@hugeicons/core-free-icons` data
+ * (array of [tag, attributes]) in an Astro-friendly way.
+ */
+export type HugeIconData = readonly (readonly [
+  string,
+  Readonly<Record<string, string | number>>,
+])[];
+
+export interface Props {
+  icon: HugeIconData;
+  class?: string;
+  /** Named Tailwind size tokens, or a number (pixels) for width/height */
+  size?: "xs" | "sm" | "base" | "md" | "lg" | "xl" | number;
+  /** Forwarded to the root SVG (e.g. currentColor context) */
+  color?: string;
+}
+
+const xs = ["size-3"];
+const sm = ["size-4"];
+const base = ["size-5"];
+const md = ["size-6"];
+const lg = ["size-7"];
+const xl = ["size-8"];
+
+const { icon, class: className, size, color, ...rest } = Astro.props;
+
+const numericSize =
+  typeof size === "number"
+    ? { width: `${size}px`, height: `${size}px` }
+    : undefined;
+
+function attrsFor(
+  raw: Readonly<Record<string, string | number>>,
+): Record<string, string | number> {
+  const out: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (k === "key") continue;
+    out[k] = v;
+  }
+  return out;
+}
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+  color={color}
+  style={numericSize}
+  class:list={[
+    "icon",
+    typeof size === "string" && size === "xs" && xs,
+    typeof size === "string" && size === "sm" && sm,
+    typeof size === "string" && size === "base" && base,
+    typeof size === "string" && size === "md" && md,
+    typeof size === "string" && size === "lg" && lg,
+    typeof size === "string" && size === "xl" && xl,
+    className,
+  ]}
+  {...rest}
+>
+  {
+    icon.map(([tag, raw]) => {
+      const a = attrsFor(raw);
+      switch (tag) {
+        case "path":
+          return <path {...a} />;
+        case "circle":
+          return <circle {...a} />;
+        case "ellipse":
+          return <ellipse {...a} />;
+        case "rect":
+          return <rect {...a} />;
+        default:
+          return null;
+      }
+    })
+  }
+</svg>

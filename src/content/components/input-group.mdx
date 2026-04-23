@@ -7,6 +7,9 @@ status: "stable"
 order: 14
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowDown01Icon, Copy01Icon, Dollar01Icon, EyeIcon, ViewOffIcon, LockIcon, Mail01Icon, Search01Icon, MailSend01Icon, Cancel01Icon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -18,16 +21,15 @@ import InputGroupText from "@/components/ui/input-group/InputGroupText.astro";
 import InputGroupTextarea from "@/components/ui/input-group/InputGroupTextarea.astro";
 import Button from "@/components/ui/button/Button.astro";
 import Spinner from "@/components/ui/spinner/Spinner.astro";
-import Search from "@lucide/astro/icons/search";
-import Eye from "@lucide/astro/icons/eye";
-import EyeOff from "@lucide/astro/icons/eye-off";
-import Mail from "@lucide/astro/icons/mail";
-import Lock from "@lucide/astro/icons/lock";
-import Send from "@lucide/astro/icons/send";
-import Copy from "@lucide/astro/icons/copy";
-import X from "@lucide/astro/icons/x";
-import ChevronDown from "@lucide/astro/icons/chevron-down";
-import DollarSign from "@lucide/astro/icons/dollar-sign";
+
+
+
+
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -35,7 +37,7 @@ import DollarSign from "@lucide/astro/icons/dollar-sign";
 <InputGroup>
   <InputGroupInput placeholder="Search..." />
   <InputGroupAddon align="inline-start">
-    <Search class="size-4" />
+    <HugeIcon icon={Search01Icon} class="size-4" />
   </InputGroupAddon>
 </InputGroup>
 ```
@@ -43,7 +45,7 @@ import DollarSign from "@lucide/astro/icons/dollar-sign";
   <InputGroup>
     <InputGroupInput placeholder="Search..." />
     <InputGroupAddon align="inline-start">
-      <Search class="size-4" />
+      <HugeIcon icon={Search01Icon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
 </ComponentPreview>
@@ -74,7 +76,7 @@ import {
 <InputGroup>
   <InputGroupInput placeholder="Search..." />
   <InputGroupAddon align="inline-start">
-    <Search class="size-4" />
+    <HugeIcon icon={Search01Icon} class="size-4" />
   </InputGroupAddon>
 </InputGroup>
 ```
@@ -104,7 +106,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
 <InputGroup>
   <InputGroupInput placeholder="Search..." />
   <InputGroupAddon align="inline-start">
-    <Search class="size-4" />
+    <HugeIcon icon={Search01Icon} class="size-4" />
   </InputGroupAddon>
 </InputGroup>
 ```
@@ -112,7 +114,7 @@ Use `align="inline-start"` to position the addon at the start of the input. This
   <InputGroup>
     <InputGroupInput placeholder="Search..." />
     <InputGroupAddon align="inline-start">
-      <Search class="size-4" />
+      <HugeIcon icon={Search01Icon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
 </ComponentPreview>
@@ -131,7 +133,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
 <InputGroup>
   <InputGroupInput type="password" placeholder="Enter password" />
   <InputGroupAddon align="inline-end">
-    <Eye class="size-4" />
+    <HugeIcon icon={EyeIcon} class="size-4" />
   </InputGroupAddon>
 </InputGroup>
 ```
@@ -139,7 +141,7 @@ Use `align="inline-end"` to position the addon at the end of the input.
   <InputGroup>
     <InputGroupInput type="password" placeholder="Enter password" />
     <InputGroupAddon align="inline-end">
-      <Eye class="size-4" />
+      <HugeIcon icon={EyeIcon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
 </ComponentPreview>
@@ -219,19 +221,19 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroup>
     <InputGroupInput placeholder="Search..." />
     <InputGroupAddon align="inline-start">
-      <Search class="size-4" />
+      <HugeIcon icon={Search01Icon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
   <InputGroup>
     <InputGroupInput type="email" placeholder="Email" />
     <InputGroupAddon align="inline-start">
-      <Mail class="size-4" />
+      <HugeIcon icon={Mail01Icon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
   <InputGroup>
     <InputGroupInput type="password" placeholder="Password" />
     <InputGroupAddon align="inline-start">
-      <Lock class="size-4" />
+      <HugeIcon icon={LockIcon} class="size-4" />
     </InputGroupAddon>
   </InputGroup>
 </div>
@@ -241,19 +243,19 @@ Use `align="block-end"` to position the addon below the input.
     <InputGroup>
       <InputGroupInput placeholder="Search..." />
       <InputGroupAddon align="inline-start">
-        <Search class="size-4" />
+        <HugeIcon icon={Search01Icon} class="size-4" />
       </InputGroupAddon>
     </InputGroup>
     <InputGroup>
       <InputGroupInput type="email" placeholder="Email" />
       <InputGroupAddon align="inline-start">
-        <Mail class="size-4" />
+        <HugeIcon icon={Mail01Icon} class="size-4" />
       </InputGroupAddon>
     </InputGroup>
     <InputGroup>
       <InputGroupInput type="password" placeholder="Password" />
       <InputGroupAddon align="inline-start">
-        <Lock class="size-4" />
+        <HugeIcon icon={LockIcon} class="size-4" />
       </InputGroupAddon>
     </InputGroup>
   </div>
@@ -314,7 +316,7 @@ Use `align="block-end"` to position the addon below the input.
     <InputGroupInput placeholder="Enter text to copy..." />
     <InputGroupAddon align="inline-end">
       <InputGroupButton size="icon-xs" aria-label="Copy">
-        <Copy class="size-3.5" />
+        <HugeIcon icon={Copy01Icon} class="size-3.5" />
       </InputGroupButton>
     </InputGroupAddon>
   </InputGroup>
@@ -332,7 +334,7 @@ Use `align="block-end"` to position the addon below the input.
       <InputGroupInput placeholder="Enter text to copy..." />
       <InputGroupAddon align="inline-end">
         <InputGroupButton size="icon-xs" aria-label="Copy">
-          <Copy class="size-3.5" />
+          <HugeIcon icon={Copy01Icon} class="size-3.5" />
         </InputGroupButton>
       </InputGroupAddon>
     </InputGroup>
@@ -427,7 +429,7 @@ Use `align="block-end"` to position the addon below the input.
 <InputGroup>
   <InputGroupInput placeholder="0.00" />
   <InputGroupAddon align="inline-start">
-    <DollarSign class="size-4" />
+    <HugeIcon icon={Dollar01Icon} class="size-4" />
   </InputGroupAddon>
   <InputGroupAddon align="inline-end">
     <InputGroupText>USD</InputGroupText>
@@ -438,7 +440,7 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroup class="w-full max-w-sm">
     <InputGroupInput placeholder="0.00" />
     <InputGroupAddon align="inline-start">
-      <DollarSign class="size-4" />
+      <HugeIcon icon={Dollar01Icon} class="size-4" />
     </InputGroupAddon>
     <InputGroupAddon align="inline-end">
       <InputGroupText>USD</InputGroupText>
@@ -459,7 +461,7 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroupInput placeholder="Type something..." value="Hello World" />
   <InputGroupAddon align="inline-end">
     <InputGroupButton size="icon-xs" aria-label="Clear">
-      <X class="size-3.5" />
+      <HugeIcon icon={Cancel01Icon} class="size-3.5" />
     </InputGroupButton>
   </InputGroupAddon>
 </InputGroup>
@@ -469,7 +471,7 @@ Use `align="block-end"` to position the addon below the input.
     <InputGroupInput placeholder="Type something..." value="Hello World" />
     <InputGroupAddon align="inline-end">
       <InputGroupButton size="icon-xs" aria-label="Clear">
-        <X class="size-3.5" />
+        <HugeIcon icon={Cancel01Icon} class="size-3.5" />
       </InputGroupButton>
     </InputGroupAddon>
   </InputGroup>
@@ -489,7 +491,7 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroupAddon align="block-end" class="justify-end gap-2">
     <InputGroupButton variant="ghost" size="sm">Cancel</InputGroupButton>
     <InputGroupButton variant="default" size="sm">
-      <Send class="size-3.5 mr-1" />
+      <HugeIcon icon={MailSend01Icon} class="size-3.5 mr-1" />
       Send
     </InputGroupButton>
   </InputGroupAddon>
@@ -501,7 +503,7 @@ Use `align="block-end"` to position the addon below the input.
     <InputGroupAddon align="block-end" class="justify-end gap-2">
       <InputGroupButton variant="ghost" size="sm">Cancel</InputGroupButton>
       <InputGroupButton variant="default" size="sm">
-        <Send class="size-3.5 mr-1" />
+        <HugeIcon icon={MailSend01Icon} class="size-3.5 mr-1" />
         Send
       </InputGroupButton>
     </InputGroupAddon>
@@ -585,7 +587,7 @@ Use `align="block-end"` to position the addon below the input.
 
 #### InputGroupInput
 
-All standard input props are supported, plus:
+All standard input props are supported, PlusSignIcon:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -596,7 +598,7 @@ All standard input props are supported, plus:
 
 #### InputGroupTextarea
 
-All standard textarea props are supported, plus:
+All standard textarea props are supported, PlusSignIcon:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|

@@ -7,6 +7,9 @@ status: stable
 order: 1
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { Notification01Icon, Clock01Icon, CreditCardIcon, Mail01Icon, Location01Icon, MinusSignIcon, Call02Icon, PlusSignIcon, Settings01Icon, Shield01Icon, UserIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -16,17 +19,16 @@ import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
 import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
 import Badge from "@/components/ui/badge/Badge.astro";
 import Button from "@/components/ui/button/Button.astro";
-import User from "@lucide/astro/icons/user";
-import CreditCard from "@lucide/astro/icons/credit-card";
-import Bell from "@lucide/astro/icons/bell";
-import Settings from "@lucide/astro/icons/settings";
-import Shield from "@lucide/astro/icons/shield";
-import Plus from "@lucide/astro/icons/plus";
-import Minus from "@lucide/astro/icons/minus";
-import Mail from "@lucide/astro/icons/mail";
-import Phone from "@lucide/astro/icons/phone";
-import MapPin from "@lucide/astro/icons/map-pin";
-import Clock from "@lucide/astro/icons/clock";
+
+
+
+
+
+
+
+
+
+
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -115,7 +117,7 @@ Multiple items can be open simultaneously. Useful when users may need to compare
 <Accordion type="multiple">
   <AccordionItem value="item-1">
     <AccordionTrigger>Personal Information</AccordionTrigger>
-    <AccordionContent>Name, email, and phone number details.</AccordionContent>
+    <AccordionContent>Name, email, and Call02Icon number details.</AccordionContent>
   </AccordionItem>
   <AccordionItem value="item-2">
     <AccordionTrigger>Billing Address</AccordionTrigger>
@@ -131,7 +133,7 @@ Multiple items can be open simultaneously. Useful when users may need to compare
   <Accordion type="multiple" class="w-full">
     <AccordionItem value="item-1">
       <AccordionTrigger>Personal Information</AccordionTrigger>
-      <AccordionContent>Name, email, and phone number details.</AccordionContent>
+      <AccordionContent>Name, email, and Call02Icon number details.</AccordionContent>
     </AccordionItem>
     <AccordionItem value="item-2">
       <AccordionTrigger>Billing Address</AccordionTrigger>
@@ -159,7 +161,7 @@ Add icons to accordion triggers to provide visual context for each section.
   <AccordionItem value="profile">
     <AccordionTrigger>
       <span class="flex items-center gap-2">
-        <User class="size-4" />
+        <HugeIcon icon={UserIcon} class="size-4" />
         Profile Settings
       </span>
     </AccordionTrigger>
@@ -170,7 +172,7 @@ Add icons to accordion triggers to provide visual context for each section.
   <AccordionItem value="billing">
     <AccordionTrigger>
       <span class="flex items-center gap-2">
-        <CreditCard class="size-4" />
+        <HugeIcon icon={CreditCardIcon} class="size-4" />
         Billing
       </span>
     </AccordionTrigger>
@@ -181,7 +183,7 @@ Add icons to accordion triggers to provide visual context for each section.
   <AccordionItem value="notifications">
     <AccordionTrigger>
       <span class="flex items-center gap-2">
-        <Bell class="size-4" />
+        <HugeIcon icon={Notification01Icon} class="size-4" />
         Notifications
       </span>
     </AccordionTrigger>
@@ -196,7 +198,7 @@ Add icons to accordion triggers to provide visual context for each section.
     <AccordionItem value="profile">
       <AccordionTrigger>
         <span class="flex items-center gap-2">
-          <User class="size-4" />
+          <HugeIcon icon={UserIcon} class="size-4" />
           Profile Settings
         </span>
       </AccordionTrigger>
@@ -207,7 +209,7 @@ Add icons to accordion triggers to provide visual context for each section.
     <AccordionItem value="billing">
       <AccordionTrigger>
         <span class="flex items-center gap-2">
-          <CreditCard class="size-4" />
+          <HugeIcon icon={CreditCardIcon} class="size-4" />
           Billing
         </span>
       </AccordionTrigger>
@@ -218,7 +220,7 @@ Add icons to accordion triggers to provide visual context for each section.
     <AccordionItem value="notifications">
       <AccordionTrigger>
         <span class="flex items-center gap-2">
-          <Bell class="size-4" />
+          <HugeIcon icon={Notification01Icon} class="size-4" />
           Notifications
         </span>
       </AccordionTrigger>
@@ -246,7 +248,7 @@ Add a subtitle or description below the main trigger text for additional context
       <div class="flex flex-col items-start gap-1">
         <span>Account</span>
         <span class="text-sm text-muted-foreground font-normal">
-          Manage your account settings
+          Manage your account Settings01Icon
         </span>
       </div>
     </AccordionTrigger>
@@ -264,7 +266,7 @@ Add a subtitle or description below the main trigger text for additional context
       </div>
     </AccordionTrigger>
     <AccordionContent>
-      Manage who can see your profile and activity.
+      Manage who can see your profile and Activity01Icon.
     </AccordionContent>
   </AccordionItem>
   <AccordionItem value="security">
@@ -289,7 +291,7 @@ Add a subtitle or description below the main trigger text for additional context
         <div class="flex flex-col items-start gap-1">
           <span>Account</span>
           <span class="text-sm text-muted-foreground font-normal">
-            Manage your account settings
+            Manage your account Settings01Icon
           </span>
         </div>
       </AccordionTrigger>
@@ -307,7 +309,7 @@ Add a subtitle or description below the main trigger text for additional context
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        Manage who can see your profile and activity.
+        Manage who can see your profile and Activity01Icon.
       </AccordionContent>
     </AccordionItem>
     <AccordionItem value="security">
@@ -341,7 +343,7 @@ Combine icons with descriptions for a rich, informative accordion header.
   <AccordionItem value="profile">
     <AccordionTrigger>
       <div class="flex items-start gap-3">
-        <User class="size-5 mt-0.5 text-muted-foreground" />
+        <HugeIcon icon={UserIcon} class="size-5 mt-0.5 text-muted-foreground" />
         <div class="flex flex-col items-start gap-1">
           <span>Profile</span>
           <span class="text-sm text-muted-foreground font-normal">
@@ -357,7 +359,7 @@ Combine icons with descriptions for a rich, informative accordion header.
   <AccordionItem value="security">
     <AccordionTrigger>
       <div class="flex items-start gap-3">
-        <Shield class="size-5 mt-0.5 text-muted-foreground" />
+        <HugeIcon icon={Shield01Icon} class="size-5 mt-0.5 text-muted-foreground" />
         <div class="flex flex-col items-start gap-1">
           <span>Security</span>
           <span class="text-sm text-muted-foreground font-normal">
@@ -373,7 +375,7 @@ Combine icons with descriptions for a rich, informative accordion header.
   <AccordionItem value="notifications">
     <AccordionTrigger>
       <div class="flex items-start gap-3">
-        <Bell class="size-5 mt-0.5 text-muted-foreground" />
+        <HugeIcon icon={Notification01Icon} class="size-5 mt-0.5 text-muted-foreground" />
         <div class="flex flex-col items-start gap-1">
           <span>Notifications</span>
           <span class="text-sm text-muted-foreground font-normal">
@@ -393,7 +395,7 @@ Combine icons with descriptions for a rich, informative accordion header.
     <AccordionItem value="profile">
       <AccordionTrigger>
         <div class="flex items-start gap-3">
-          <User class="size-5 mt-0.5 text-muted-foreground" />
+          <HugeIcon icon={UserIcon} class="size-5 mt-0.5 text-muted-foreground" />
           <div class="flex flex-col items-start gap-1">
             <span>Profile</span>
             <span class="text-sm text-muted-foreground font-normal">
@@ -409,7 +411,7 @@ Combine icons with descriptions for a rich, informative accordion header.
     <AccordionItem value="security">
       <AccordionTrigger>
         <div class="flex items-start gap-3">
-          <Shield class="size-5 mt-0.5 text-muted-foreground" />
+          <HugeIcon icon={Shield01Icon} class="size-5 mt-0.5 text-muted-foreground" />
           <div class="flex flex-col items-start gap-1">
             <span>Security</span>
             <span class="text-sm text-muted-foreground font-normal">
@@ -425,7 +427,7 @@ Combine icons with descriptions for a rich, informative accordion header.
     <AccordionItem value="notifications">
       <AccordionTrigger>
         <div class="flex items-start gap-3">
-          <Bell class="size-5 mt-0.5 text-muted-foreground" />
+          <HugeIcon icon={Notification01Icon} class="size-5 mt-0.5 text-muted-foreground" />
           <div class="flex flex-col items-start gap-1">
             <span>Notifications</span>
             <span class="text-sm text-muted-foreground font-normal">
@@ -456,7 +458,7 @@ Accordions can be nested inside each other for hierarchical content organization
   <AccordionItem value="general">
     <AccordionTrigger>
       <span class="flex items-center gap-2">
-        <Settings class="size-4" />
+        <HugeIcon icon={Settings01Icon} class="size-4" />
         General Settings
       </span>
     </AccordionTrigger>
@@ -480,7 +482,7 @@ Accordions can be nested inside each other for hierarchical content organization
   <AccordionItem value="notifications">
     <AccordionTrigger>
       <span class="flex items-center gap-2">
-        <Bell class="size-4" />
+        <HugeIcon icon={Notification01Icon} class="size-4" />
         Notification Preferences
       </span>
     </AccordionTrigger>
@@ -508,7 +510,7 @@ Accordions can be nested inside each other for hierarchical content organization
     <AccordionItem value="general">
       <AccordionTrigger>
         <span class="flex items-center gap-2">
-          <Settings class="size-4" />
+          <HugeIcon icon={Settings01Icon} class="size-4" />
           General Settings
         </span>
       </AccordionTrigger>
@@ -532,7 +534,7 @@ Accordions can be nested inside each other for hierarchical content organization
     <AccordionItem value="notifications">
       <AccordionTrigger>
         <span class="flex items-center gap-2">
-          <Bell class="size-4" />
+          <HugeIcon icon={Notification01Icon} class="size-4" />
           Notification Preferences
         </span>
       </AccordionTrigger>
@@ -573,15 +575,15 @@ Accordion content can contain any elements including lists, badges, buttons, and
     <AccordionContent>
       <div class="space-y-3">
         <div class="flex items-center gap-2 text-sm">
-          <Mail class="size-4 text-muted-foreground" />
+          <HugeIcon icon={Mail01Icon} class="size-4 text-muted-foreground" />
           <span>support@example.com</span>
         </div>
         <div class="flex items-center gap-2 text-sm">
-          <Phone class="size-4 text-muted-foreground" />
+          <HugeIcon icon={Call02Icon} class="size-4 text-muted-foreground" />
           <span>+1 (555) 123-4567</span>
         </div>
         <div class="flex items-center gap-2 text-sm">
-          <MapPin class="size-4 text-muted-foreground" />
+          <HugeIcon icon={Location01Icon} class="size-4 text-muted-foreground" />
           <span>123 Main St, City, Country</span>
         </div>
       </div>
@@ -625,15 +627,15 @@ Accordion content can contain any elements including lists, badges, buttons, and
       <AccordionContent>
         <div class="space-y-3">
           <div class="flex items-center gap-2 text-sm">
-            <Mail class="size-4 text-muted-foreground" />
+            <HugeIcon icon={Mail01Icon} class="size-4 text-muted-foreground" />
             <span>support@example.com</span>
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <Phone class="size-4 text-muted-foreground" />
+            <HugeIcon icon={Call02Icon} class="size-4 text-muted-foreground" />
             <span>+1 (555) 123-4567</span>
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <MapPin class="size-4 text-muted-foreground" />
+            <HugeIcon icon={Location01Icon} class="size-4 text-muted-foreground" />
             <span>123 Main St, City, Country</span>
           </div>
         </div>
@@ -802,7 +804,7 @@ Style accordion items as separate cards with rounded corners and background.
   <AccordionItem value="item-2" class="border rounded-lg px-4">
     <AccordionTrigger>Configuration</AccordionTrigger>
     <AccordionContent>
-      Learn how to customize settings to fit your needs.
+      Learn how to customize Settings01Icon to fit your needs.
     </AccordionContent>
   </AccordionItem>
   <AccordionItem value="item-3" class="border rounded-lg px-4">
@@ -824,7 +826,7 @@ Style accordion items as separate cards with rounded corners and background.
     <AccordionItem value="item-2" class="border rounded-lg px-4">
       <AccordionTrigger>Configuration</AccordionTrigger>
       <AccordionContent>
-        Learn how to customize settings to fit your needs.
+        Learn how to customize Settings01Icon to fit your needs.
       </AccordionContent>
     </AccordionItem>
     <AccordionItem value="item-3" class="border rounded-lg px-4">

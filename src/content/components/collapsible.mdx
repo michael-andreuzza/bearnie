@@ -7,6 +7,9 @@ status: stable
 order: 8
 ---
 
+import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
+import { ArrowUpDownIcon } from "@/lib/hugeicons";
+
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
@@ -14,7 +17,6 @@ import Collapsible from "@/components/ui/collapsible/Collapsible.astro";
 import CollapsibleTrigger from "@/components/ui/collapsible/CollapsibleTrigger.astro";
 import CollapsibleContent from "@/components/ui/collapsible/CollapsibleContent.astro";
 import Button from "@/components/ui/button/Button.astro";
-import ChevronsUpDown from "@lucide/astro/icons/chevrons-up-down";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -109,7 +111,7 @@ import {
     <h4 class="text-sm font-semibold">@Mike_Andreuzza starred 3 repositories</h4>
     <CollapsibleTrigger>
       <Button variant="ghost" size="sm" iconOnly>
-        <ChevronsUpDown class="size-4" />
+        <HugeIcon icon={ArrowUpDownIcon} class="size-4" />
       </Button>
     </CollapsibleTrigger>
   </div>
@@ -132,7 +134,7 @@ import {
       <h4 class="text-sm font-semibold">@Mike_Andreuzza starred 3 repositories</h4>
       <CollapsibleTrigger>
         <Button variant="ghost" size="sm" iconOnly>
-          <ChevronsUpDown class="size-4" />
+          <HugeIcon icon={ArrowUpDownIcon} class="size-4" />
         </Button>
       </CollapsibleTrigger>
     </div>
