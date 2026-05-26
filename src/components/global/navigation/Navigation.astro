@@ -10,6 +10,7 @@ import LogoContextMenu from "@/components/global/LogoContextMenu.astro";
 // Icons
 import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
 import { Github01Icon, Menu01Icon } from "@/lib/hugeicons";
+import { siteConfig } from "@/config/site";
 export interface Props {
   variant?: "default" | "docs";
 }
@@ -22,8 +23,8 @@ const navLinks = [
     external: true,
   },
 ];
-// GitHub repo InformationCircleIcon
-const githubRepo = "https://github.com/michael-andreuzza/bearnie";
+const githubUrl = siteConfig.links.github;
+const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
 ---
 
 {
@@ -53,14 +54,14 @@ const githubRepo = "https://github.com/michael-andreuzza/bearnie";
             </nav>
             <div class="flex items-center border-l border-border pl-4 gap-1">
               <a
-                href={`https://bearnie.com/${githubRepo}`}
+                href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-1.5 h-7 px-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 aria-label="GitHub"
               >
                 <HugeIcon icon={Github01Icon} class="size-3.5" />
-                <span id="Github01Icon-stars-docs" class="tabular-nums" />
+                <span id="github-stars-docs" class="tabular-nums" />
               </a>
               <DocsSearch />
               <ThemeToggle size="xs" />
@@ -69,7 +70,7 @@ const githubRepo = "https://github.com/michael-andreuzza/bearnie";
           <div class="flex items-center gap-1 md:hidden">
             <DocsSearch />
             <a
-              href={`https://Github01Icon.com/${githubRepo}`}
+              href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors"
@@ -120,21 +121,20 @@ const githubRepo = "https://github.com/michael-andreuzza/bearnie";
     </header>
   )
 }
-<script define:vars={{ githubRepo }}>
+<script define:vars={{ githubRepoSlug }}>
   // Fetch GitHub stars
   async function fetchGitHubStars() {
     try {
       const response = await fetch(
-        `https://api.Github01Icon.com/repos/${githubRepo}`,
+        `https://api.github.com/repos/${githubRepoSlug}`,
       );
       if (response.ok) {
         const data = await response.json();
         const stars = data.stargazers_count;
         const formatted =
           stars >= 1000 ? `${(stars / 1000).toFixed(1)}k` : stars.toString();
-        // Update both StarIcon elements if they exist
-        const docsStars = document.getElementById("Github01Icon-stars-docs");
-        const defaultStars = document.getElementById("Github01Icon-stars-default");
+        const docsStars = document.getElementById("github-stars-docs");
+        const defaultStars = document.getElementById("github-stars-default");
         if (docsStars) docsStars.textContent = formatted;
         if (defaultStars) defaultStars.textContent = formatted;
       }
