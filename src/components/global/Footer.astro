@@ -23,7 +23,35 @@ import Wrapper from "@/components/fundations/containers/Wrapper.astro";
           href="https://github.com/michael-andreuzza/bearnie">GitHub</a
         >
       </Text>
-     
+      <iframe
+        class="w-fit mx-auto mt-4"
+        id="kobbe-embed-live"
+        src="https://app.kobbe.io/embed/embed_f101ae92949ad5fdab463e7bfb2c0325/live?primaryColor=525252&theme=system"
+        width="288"
+        height="52"
+        style="background:transparent!important;border:none;display:block;width:288px;height:52px;overflow:hidden;"
+        frameborder="0"
+        allowtransparency="true"
+        loading="lazy"
+        title="Kobbe live visitors"
+        scrolling="no"></iframe><script>
+        (function () {
+          var o = "https://app.kobbe.io";
+          window.addEventListener("message", function (e) {
+            if (e.origin !== o) return;
+            var d = e.data;
+            if (
+              !d ||
+              d.type !== "kobbe:embed-widget-height" ||
+              d.kind !== "live" ||
+              typeof d.height !== "number"
+            )
+              return;
+            var f = document.getElementById("kobbe-embed-live");
+            if (f) f.style.height = d.height + "px";
+          });
+        })();
+      </script>
     </div>
   </Wrapper>
 </footer>
