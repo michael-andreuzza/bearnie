@@ -132,6 +132,7 @@ export async function init(options: InitOptions) {
   try {
     await fs.ensureDir(path.join(cwd, config.componentsDir));
     await fs.ensureDir(path.join(cwd, config.utilsDir));
+    await fs.ensureDir(path.join(cwd, config.stylesDir));
     spinner.text = "Creating directories...";
   } catch (error) {
     spinner.fail("Couldn't create directories");
