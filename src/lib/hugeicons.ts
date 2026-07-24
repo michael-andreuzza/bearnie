@@ -87,5 +87,6 @@ export { default as Rocket01Icon } from "@hugeicons/core-free-icons/Rocket01Icon
 export { default as Call02Icon } from "@hugeicons/core-free-icons/Call02Icon";
 export { default as Image01Icon } from "@hugeicons/core-free-icons/Image01Icon";
 export { default as Github01Icon } from "@hugeicons/core-free-icons/Github01Icon";
+export { default as Hamburger01Icon } from "@hugeicons/core-free-icons/Hamburger01Icon";
 export { default as Globe02Icon } from "@hugeicons/core-free-icons/Globe02Icon";
 export { default as Menu01Icon } from "@hugeicons/core-free-icons/Menu01Icon";
