@@ -7,6 +7,7 @@ import { execa } from "execa";
 import {
   getProjectConfig,
   DEFAULT_CONFIG,
+  resolveInstallPath,
 } from "../utils/config.js";
 import {
   getRegistryIndex,
@@ -161,13 +162,12 @@ export async function add(components: string[], options: AddOptions) {
 
       // Write files
       for (const file of component.files) {
-        const isUtilityFile =
-          component.type === "utility" || file.path.startsWith("utils/");
-        const relativePath = isUtilityFile
-          ? file.path.replace(/^utils\//, "")
-          : file.path;
-        const baseDir = isUtilityFile ? config.utilsDir : config.componentsDir;
-        const filePath = path.join(cwd, baseDir, relativePath);
+        const filePath = resolveInstallPath(
+          cwd,
+          config,
+          file.path,
+          component.type
+        );
         const exists = await fs.pathExists(filePath);
 
         if (exists && !options.yes) {

@@ -113,6 +113,7 @@ After running `init`, a `bearnie.json` file is created in your project root:
 {
   "componentsDir": "src/components/bearnie",
   "utilsDir": "src/utils",
+  "stylesDir": "src/styles",
   "typescript": true
 }
 ```
@@ -123,6 +124,7 @@ After running `init`, a `bearnie.json` file is created in your project root:
 | --------------- | --------- | --------------------- | -------------------------------------------- |
 | `componentsDir` | `string`  | `"src/components/bearnie"` | Directory where components will be installed |
 | `utilsDir`      | `string`  | `"src/utils"`         | Directory for utility functions              |
+| `stylesDir`     | `string`  | `"src/styles"`        | Directory for theme styles                   |
 | `typescript`    | `boolean` | `true`                | Whether to use TypeScript                    |
 
 ## Environment Variables

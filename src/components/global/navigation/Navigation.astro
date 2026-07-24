@@ -9,7 +9,7 @@ import ThemeToggle from "@/components/fundations/elements/ThemeToggle.astro";
 import LogoContextMenu from "@/components/global/LogoContextMenu.astro";
 // Icons
 import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
-import { Github01Icon, Menu01Icon } from "@/lib/hugeicons";
+import { Github01Icon, Hamburger01Icon } from "@/lib/hugeicons";
 import { siteConfig } from "@/config/site";
 export interface Props {
   variant?: "default" | "docs";
@@ -82,10 +82,10 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
             <button
               type="button"
               class="inline-flex items-center justify-center size-7 text-muted-foreground"
-              id="docs-mobile-Menu01Icon-toggle"
-              aria-label="Toggle Menu01Icon"
+              id="docs-mobile-menu-toggle"
+              aria-label="Toggle menu"
             >
-              <HugeIcon icon={Menu01Icon} size="md" />
+              <HugeIcon icon={Hamburger01Icon} size="md" />
             </button>
           </div>
         </div>

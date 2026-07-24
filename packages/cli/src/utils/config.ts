@@ -4,6 +4,7 @@ import fs from "fs-extra";
 export interface ProjectConfig {
   componentsDir: string;
   utilsDir: string;
+  stylesDir: string;
   tailwindConfig: string;
   typescript: boolean;
 }
@@ -11,6 +12,7 @@ export interface ProjectConfig {
 export const DEFAULT_CONFIG: ProjectConfig = {
   componentsDir: "src/components/bearnie",
   utilsDir: "src/utils",
+  stylesDir: "src/styles",
   tailwindConfig: "tailwind.config.mjs",
   typescript: true,
 };
@@ -24,7 +26,7 @@ export async function getProjectConfig(
 
   if (await fs.pathExists(configPath)) {
     const content = await fs.readFile(configPath, "utf-8");
-    return JSON.parse(content);
+    return { ...DEFAULT_CONFIG, ...JSON.parse(content) };
   }
 
   return null;
@@ -91,6 +93,28 @@ export async function writeComponentFile(
   await fs.writeFile(fullPath, content);
 
   return { written: true, path: fullPath };
+}
+
+export function resolveInstallPath(
+  cwd: string,
+  config: ProjectConfig,
+  filePath: string,
+  componentType?: string
+): string {
+  const isUtilityFile =
+    componentType === "utility" || filePath.startsWith("utils/");
+  const isStylesFile =
+    componentType === "styles" || filePath.startsWith("styles/");
+
+  if (isUtilityFile) {
+    return path.join(cwd, config.utilsDir, filePath.replace(/^utils\//, ""));
+  }
+
+  if (isStylesFile) {
+    return path.join(cwd, config.stylesDir, filePath.replace(/^styles\//, ""));
+  }
+
+  return path.join(cwd, config.componentsDir, filePath);
 }
 
 export async function writeUtilFile(
