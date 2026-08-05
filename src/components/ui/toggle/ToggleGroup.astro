@@ -23,8 +23,8 @@ const {
 } = Astro.props;
 
 const classes = cn(
-  "inline-flex items-center",
-  orientation === "vertical" && "flex-col",
+  "inline-flex",
+  orientation === "vertical" ? "flex-col items-stretch" : "flex-row items-center",
   className
 );
 ---
@@ -43,6 +43,48 @@ const classes = cn(
 >
   <slot />
 </div>
+
+<style>
+  /* Horizontal orientation - connected buttons */
+  [role="group"][data-toggle-group][data-orientation="horizontal"]
+    > :global(*:not(:first-child):not(:last-child)) {
+    border-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="horizontal"]
+    > :global(*:first-child:not(:last-child)) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="horizontal"]
+    > :global(*:last-child:not(:first-child)) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="horizontal"]
+    > :global(*:not(:first-child)) {
+    margin-left: -1px;
+  }
+
+  /* Vertical orientation - connected buttons */
+  [role="group"][data-toggle-group][data-orientation="vertical"]
+    > :global(*:not(:first-child):not(:last-child)) {
+    border-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="vertical"]
+    > :global(*:first-child:not(:last-child)) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="vertical"]
+    > :global(*:last-child:not(:first-child)) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  [role="group"][data-toggle-group][data-orientation="vertical"]
+    > :global(*:not(:first-child)) {
+    margin-top: -1px;
+  }
+</style>
 
 <script>
   function initToggleGroups() {

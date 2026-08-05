@@ -1,18 +1,39 @@
 {
-  "name": "@bearnie/docs",
+  "name": "bearnie",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "overrides": {
+    "bearnie": {
+      "typescript": "5.7.3"
+    },
+    "create-bearnie": {
+      "typescript": "5.7.3"
+    },
+    "@bearnie/mcp": {
+      "typescript": "5.7.3"
+    }
+  },
   "type": "module",
   "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "npm run generate-registry",
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
     "generate-registry": "npx tsx scripts/generate-registry.ts",
-    "cli:dev": "cd packages/cli && npm run dev",
-    "cli:build": "cd packages/cli && npm run build",
-    "cli:link": "cd packages/cli && npm link",
+    "build:cli": "npm run build -w bearnie",
+    "build:create": "npm run build -w create-bearnie",
+    "build:mcp": "npm run build -w @bearnie/mcp",
+    "build:packages": "npm run build:cli && npm run build:create && npm run build:mcp",
+    "build:all": "npm run build:packages && npm run build",
+    "cli:dev": "npm run dev -w bearnie",
+    "cli:build": "npm run build -w bearnie",
+    "cli:link": "npm link -w bearnie",
     "cli:test": "BEARNIE_REGISTRY_URL=http://localhost:4321/registry bearnie"
   },
   "dependencies": {

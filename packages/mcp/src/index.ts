@@ -1,12 +1,21 @@
 #!/usr/bin/env node
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import fs from "fs-extra";
 import path from "path";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(
+  readFileSync(join(__dirname, "../package.json"), "utf-8"),
+) as { version: string };
+
 const REGISTRY_URL =
   process.env.BEARNIE_REGISTRY_URL || "https://bearnie.dev/registry";
+const REGISTRY_PATH = process.env.BEARNIE_REGISTRY_PATH;
 
 interface ComponentFile {
   name: string;
@@ -16,7 +25,7 @@ interface ComponentFile {
 
 interface ComponentRegistry {
   name: string;
-  type?: "utility" | "component";
+  type?: "utility" | "component" | "styles";
   description: string;
   category?: string;
   files: ComponentFile[];
@@ -35,6 +44,14 @@ interface RegistryIndex {
 // Fetch component data from registry
 async function fetchComponent(name: string): Promise<ComponentRegistry | null> {
   try {
+    if (REGISTRY_PATH) {
+      const componentPath = path.join(REGISTRY_PATH, `${name}.json`);
+      if (await fs.pathExists(componentPath)) {
+        return (await fs.readJson(componentPath)) as ComponentRegistry;
+      }
+      return null;
+    }
+
     const response = await fetch(`${REGISTRY_URL}/${name}.json`);
     if (!response.ok) return null;
     return (await response.json()) as ComponentRegistry;
@@ -46,6 +63,14 @@ async function fetchComponent(name: string): Promise<ComponentRegistry | null> {
 // Fetch registry index
 async function fetchIndex(): Promise<RegistryIndex | null> {
   try {
+    if (REGISTRY_PATH) {
+      const indexPath = path.join(REGISTRY_PATH, "index.json");
+      if (await fs.pathExists(indexPath)) {
+        return (await fs.readJson(indexPath)) as RegistryIndex;
+      }
+      return null;
+    }
+
     const response = await fetch(`${REGISTRY_URL}/index.json`);
     if (!response.ok) return null;
     return (await response.json()) as RegistryIndex;
@@ -66,10 +91,75 @@ function findProjectRoot(startDir: string): string | null {
   return null;
 }
 
+function resolveInstallPath(
+  projectRoot: string,
+  file: ComponentFile,
+  registryItem: ComponentRegistry,
+): string {
+  const relativePath = file.path || file.name;
+
+  if (registryItem.type === "utility" || relativePath.startsWith("utils/")) {
+    return path.join(
+      projectRoot,
+      "src/utils",
+      relativePath.replace(/^utils\//, ""),
+    );
+  }
+
+  if (registryItem.type === "styles" || relativePath.startsWith("styles/")) {
+    return path.join(
+      projectRoot,
+      "src/styles",
+      relativePath.replace(/^styles\//, ""),
+    );
+  }
+
+  return path.join(projectRoot, "src/components/bearnie", relativePath);
+}
+
+function toPascalCase(name: string): string {
+  return name
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+function getUsageExample(component: ComponentRegistry): string {
+  if (component.name === "barrel") {
+    return `\`\`\`astro
+---
+import { Button, Card } from "@/components/bearnie";
+---
+
+<Button>Click me</Button>
+\`\`\``;
+  }
+
+  if (component.type === "styles") {
+    return `\`\`\`css
+@import "tailwindcss";
+@import "./bearnie.css";
+\`\`\``;
+  }
+
+  if (component.type === "utility") {
+    return "Utility added to `src/utils/`. Import it where needed in your components.";
+  }
+
+  const componentName = toPascalCase(component.name);
+  return `\`\`\`astro
+---
+import ${componentName} from "@/components/bearnie/${component.name}/${componentName}.astro";
+---
+
+<${componentName}>Content</${componentName}>
+\`\`\``;
+}
+
 // Create the MCP server
 const server = new McpServer({
   name: "bearnie",
-  version: "0.1.0",
+  version: pkg.version,
 });
 
 // Tool: List all available components
@@ -172,7 +262,7 @@ server.tool(
 // Tool: Add component to project
 server.tool(
   "add_component",
-  "Add a Bearnie component to the current Astro project. This will create the component files in src/components/bearnie/",
+  "Add a Bearnie component to the current Astro project. Creates files in src/components/bearnie/. Add the barrel export last with name 'barrel' after other components are installed.",
   {
     name: z
       .string()
@@ -213,27 +303,13 @@ server.tool(
 
     const results: string[] = [];
 
-    // Helper to determine the correct destination path for a file
-    const getFilePath = (file: ComponentFile, registryItem: ComponentRegistry): string => {
-      // Use the path property which includes folder structure
-      const relativePath = file.path || file.name;
-      
-      // Check if it's a utility
-      if (registryItem.type === "utility" || relativePath.startsWith("utils/")) {
-        return path.join(projectRoot, "src", relativePath);
-      }
-      
-      // Otherwise it's a component
-      return path.join(projectRoot, "src/components/bearnie", relativePath);
-    };
-
     // Add registry dependencies first
     if (component.registryDependencies?.length) {
       for (const dep of component.registryDependencies) {
         const depComponent = await fetchComponent(dep);
         if (depComponent) {
           for (const file of depComponent.files) {
-            const filePath = getFilePath(file, depComponent);
+            const filePath = resolveInstallPath(projectRoot, file, depComponent);
             await fs.ensureDir(path.dirname(filePath));
             await fs.writeFile(filePath, file.content);
             results.push(`✓ Added dependency: ${file.path || file.name}`);
@@ -244,7 +320,7 @@ server.tool(
 
     // Add the main component files
     for (const file of component.files) {
-      const filePath = getFilePath(file, component);
+      const filePath = resolveInstallPath(projectRoot, file, component);
       await fs.ensureDir(path.dirname(filePath));
       await fs.writeFile(filePath, file.content);
       results.push(`✓ Added: ${file.path || file.name}`);
@@ -252,6 +328,11 @@ server.tool(
 
     let output = `# Added ${component.name}\n\n`;
     output += results.join("\n") + "\n\n";
+
+    if (component.name === "barrel") {
+      output +=
+        "Add components first, then install the barrel for named imports from `@/components/bearnie`.\n\n";
+    }
 
     // Warn about npm dependencies
     if (component.dependencies?.length) {
@@ -261,8 +342,7 @@ server.tool(
     }
 
     output += `## Usage\n\n`;
-    const componentName = component.name.charAt(0).toUpperCase() + component.name.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-    output += `\`\`\`astro\n---\nimport { ${componentName} } from "@/components/ui/${name}";\n---\n\n<${componentName}>Content</${componentName}>\n\`\`\``;
+    output += getUsageExample(component);
 
     return {
       content: [{ type: "text", text: output }],

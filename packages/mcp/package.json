@@ -1,6 +1,6 @@
 {
   "name": "@bearnie/mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for Bearnie UI components - enables AI assistants to add components to your project",
   "type": "module",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --clean",
     "dev": "tsup src/index.ts --format esm --watch",
     "typecheck": "tsc --noEmit"
   },
@@ -24,7 +24,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.9",
     "tsup": "^8.1.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.7.3"
   },
   "engines": {
     "node": ">=18"

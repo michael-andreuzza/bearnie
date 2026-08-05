@@ -12,6 +12,7 @@ const COMPONENTS_DIR = path.join(ROOT_DIR, "src/components/ui");
 const UTILS_DIR = path.join(ROOT_DIR, "src/utils");
 const REGISTRY_DIR = path.join(ROOT_DIR, "public/registry");
 const STYLES_PATH = path.join(ROOT_DIR, "src/styles/bearnie.css");
+const BARREL_PATH = path.join(ROOT_DIR, "src/components/ui/index.ts");
 const TEMPLATE_STYLES_PATH = path.join(
   ROOT_DIR,
   "packages/create-bearnie/template/src/styles/bearnie.css",
@@ -276,10 +277,6 @@ const COMPONENT_META: Record<
     description: "A two-state button",
     category: "form",
   },
-  "toggle-group": {
-    description: "A group of toggle buttons",
-    category: "form",
-  },
   tooltip: {
     description: "A popup that displays information on hover or focus",
     category: "display",
@@ -288,6 +285,24 @@ const COMPONENT_META: Record<
   tree: {
     description: "A hierarchical tree view",
     category: "navigation",
+  },
+};
+
+// Registry aliases: docs/CLI names that map to files in another component folder
+const REGISTRY_ALIASES: Record<
+  string,
+  {
+    sourceDir: string;
+    description: string;
+    category: string;
+    includeFiles: (fileName: string) => boolean;
+  }
+> = {
+  "toggle-group": {
+    sourceDir: "toggle",
+    description: "A group of toggle buttons",
+    category: "form",
+    includeFiles: (fileName) => fileName.startsWith("ToggleGroup"),
   },
 };
 
@@ -314,6 +329,52 @@ async function getComponentFiles(
   }
 
   return files;
+}
+
+async function generateRegistryAliases(): Promise<
+  { name: string; description: string; category: string }[]
+> {
+  const entries: { name: string; description: string; category: string }[] =
+    [];
+
+  for (const [aliasName, alias] of Object.entries(REGISTRY_ALIASES)) {
+    const sourcePath = path.join(COMPONENTS_DIR, alias.sourceDir);
+    if (!(await fs.pathExists(sourcePath))) {
+      console.log(`⚠️  Skipping alias ${aliasName} - source not found`);
+      continue;
+    }
+
+    const files = (await getComponentFiles(sourcePath)).filter((file) =>
+      alias.includeFiles(file.name),
+    );
+
+    if (files.length === 0) {
+      console.log(`⚠️  Skipping alias ${aliasName} - no matching files`);
+      continue;
+    }
+
+    const registryEntry = {
+      name: aliasName,
+      description: alias.description,
+      category: alias.category,
+      dependencies: [],
+      devDependencies: [],
+      registryDependencies: [],
+      files,
+    };
+
+    const registryPath = path.join(REGISTRY_DIR, `${aliasName}.json`);
+    await fs.writeJson(registryPath, registryEntry, { spaces: 2 });
+    console.log(`   ✓ Created ${aliasName}.json (alias)`);
+
+    entries.push({
+      name: aliasName,
+      description: alias.description,
+      category: alias.category,
+    });
+  }
+
+  return entries;
 }
 
 async function generateUtilities() {
@@ -376,6 +437,41 @@ async function generateStyles() {
     await fs.copy(STYLES_PATH, TEMPLATE_STYLES_PATH);
     console.log("   ✓ Synced bearnie.css to create-bearnie template");
   }
+}
+
+async function generateBarrel() {
+  if (!(await fs.pathExists(BARREL_PATH))) {
+    console.log("⚠️  Skipping barrel - index.ts not found");
+    return null;
+  }
+
+  const content = await fs.readFile(BARREL_PATH, "utf-8");
+  const registryEntry = {
+    name: "barrel",
+    description:
+      "Barrel export for importing components from @/components/bearnie",
+    category: "meta",
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+    files: [
+      {
+        name: "index.ts",
+        path: "index.ts",
+        content,
+      },
+    ],
+  };
+
+  const registryPath = path.join(REGISTRY_DIR, "barrel.json");
+  await fs.writeJson(registryPath, registryEntry, { spaces: 2 });
+  console.log("   ✓ Created barrel.json");
+
+  return {
+    name: "barrel",
+    description: registryEntry.description,
+    category: registryEntry.category,
+  };
 }
 
 async function generateRegistry() {
@@ -443,12 +539,22 @@ async function generateRegistry() {
     });
   }
 
+  console.log("\n📦 Processing registry aliases...\n");
+  const aliasEntries = await generateRegistryAliases();
+  components.push(...aliasEntries);
+
   // Add styles entry (special - not a component)
   components.unshift({
     name: "styles",
     description: "CSS variables and theme configuration for Bearnie components",
     category: "theme",
   });
+
+  console.log("\n📦 Processing barrel export...\n");
+  const barrelEntry = await generateBarrel();
+  if (barrelEntry) {
+    components.push(barrelEntry);
+  }
 
   // Create index file
   const indexPath = path.join(REGISTRY_DIR, "index.json");

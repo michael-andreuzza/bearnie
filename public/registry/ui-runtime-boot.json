@@ -6,7 +6,7 @@
     {
       "name": "runtime/ui-boot.ts",
       "path": "utils/runtime/ui-boot.ts",
-      "content": "import { initComboboxes } from \"@/utils/runtime/combobox\";\nimport { initCommands, initCommandDialogs } from \"@/utils/runtime/command\";\nimport { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\nimport { initPopovers } from \"@/utils/runtime/popover\";\n\nlet hasBoundPageLoadListener = false;\n\nfunction runUiInit() {\n  initDisclosureTriggers();\n  initPopovers();\n  initCommands();\n  initCommandDialogs();\n  initComboboxes();\n}\n\nexport function bootUiRuntime() {\n  runUiInit();\n\n  if (hasBoundPageLoadListener) return;\n  hasBoundPageLoadListener = true;\n\n  document.addEventListener(\"astro:page-load\", runUiInit);\n}\n"
+      "content": "import { initComboboxes } from \"@/utils/runtime/combobox\";\nimport { initCommands, initCommandDialogs } from \"@/utils/runtime/command\";\nimport { initDialogs } from \"@/utils/runtime/dialog\";\nimport { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\nimport { initDropdowns } from \"@/utils/runtime/dropdown-menu\";\nimport { initPopovers } from \"@/utils/runtime/popover\";\nimport { initTabs } from \"@/utils/runtime/tabs\";\n\nlet hasBoundPageLoadListener = false;\n\nfunction runUiInit() {\n  initDisclosureTriggers();\n  initPopovers();\n  initCommands();\n  initCommandDialogs();\n  initComboboxes();\n  initDialogs();\n  initDropdowns();\n  initTabs();\n}\n\nexport function bootUiRuntime() {\n  runUiInit();\n\n  if (hasBoundPageLoadListener) return;\n  hasBoundPageLoadListener = true;\n\n  document.addEventListener(\"astro:page-load\", runUiInit);\n}\n"
     }
   ]
 }

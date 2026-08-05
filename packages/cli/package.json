@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "CLI for installing Bearnie UI components",
   "type": "module",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --clean",
     "dev": "tsup src/index.ts --format esm --watch",
     "typecheck": "tsc --noEmit"
   },
@@ -27,7 +27,7 @@
     "@types/node": "^20.14.9",
     "@types/prompts": "^2.4.9",
     "tsup": "^8.1.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.7.3"
   },
   "engines": {
     "node": ">=18"

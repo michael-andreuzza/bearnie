@@ -1,6 +1,6 @@
 {
   "name": "create-bearnie",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Create a new Astro project with Bearnie UI components",
   "type": "module",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "template"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --clean",
     "dev": "tsup src/index.ts --format esm --watch"
   },
   "dependencies": {
@@ -25,7 +25,7 @@
     "@types/node": "^20.14.9",
     "@types/prompts": "^2.4.9",
     "tsup": "^8.1.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.7.3"
   },
   "engines": {
     "node": ">=18"

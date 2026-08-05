@@ -139,7 +139,9 @@ The Bearnie MCP server connects your AI assistant directly to the component regi
 | `get_component` | View source code and dependencies |
 | `add_component` | Add component files to your project |
 
-Components go to `src/components/bearnie/`, utilities to `src/utils/`.
+Components go to `src/components/bearnie/`, utilities to `src/utils/`, and theme styles to `src/styles/`.
+
+For named imports from a single path, ask your assistant to add the `barrel` component after other components are installed.
 
 For interactive components, the MCP flow also adds shared runtime files to `src/utils/runtime/` so behavior works out of the box with no extra setup.
 
@@ -151,6 +153,7 @@ If a component needs an npm package, you'll be told what to install.
 
 - "What form components does Bearnie have?"
 - "Add the tabs and accordion components"
+- "Add the barrel export for named imports"
 - "Show me how the dialog component works"
 - "Build a settings page with cards and switches"
 </Prose>
@@ -161,4 +164,5 @@ If a component needs an npm package, you'll be told what to install.
 | Variable | Default |
 |----------|---------|
 | `BEARNIE_REGISTRY_URL` | `https://bearnie.dev/registry` |
+| `BEARNIE_REGISTRY_PATH` | Local registry path for development |
 </Prose>

@@ -15,6 +15,22 @@ const logo = `${amber("🐻")} ${pc.bold("bearnie")}`;
 const link = (text: string, url: string) =>
   `\u001B]8;;${url}\u0007${pc.cyan(text)}\u001B]8;;\u0007`;
 
+interface RegistryFile {
+  name: string;
+  path: string;
+  content: string;
+}
+
+interface RegistryEntry {
+  name: string;
+  type?: string;
+  files: RegistryFile[];
+}
+
+interface RegistryIndex {
+  components: { name: string }[];
+}
+
 // Parse --full flag
 function parseFullArg(): boolean {
   return process.argv.includes("--full");
@@ -23,20 +39,33 @@ function parseFullArg(): boolean {
 // Registry base URL
 const REGISTRY_URL = "https://bearnie.dev/registry";
 
-// Component list for full install
-const COMPONENT_NAMES = [
-  "accordion", "alert", "alert-dialog", "aspect-ratio", "avatar",
-  "badge", "breadcrumb", "button", "button-group", "card", "carousel",
-  "checkbox", "collapsible", "command", "context-menu", "dialog",
-  "dropdown-menu", "empty", "file-upload", "hover-card", "input",
-  "input-group", "input-otp", "kbd", "label", "menubar", "pagination",
-  "popover", "progress", "radio", "scroll-area", "select", "separator",
-  "sheet", "sidebar", "skeleton", "slider", "spinner", "stepper",
-  "switch", "table", "tabs", "textarea", "toast", "toggle", "tooltip", "tree"
+const UTILITY_NAMES = [
+  "focus-trap",
+  "ui-runtime-loader",
+  "ui-runtime-boot",
+  "ui-runtime-disclosure-triggers",
+  "ui-runtime-popover",
+  "ui-runtime-command",
+  "ui-runtime-combobox",
 ];
 
-// Fetch component from registry
-async function fetchComponent(name: string): Promise<{ files: { name: string; content: string }[] } | null> {
+function resolveInstallPath(
+  targetDir: string,
+  filePath: string,
+  type?: string,
+): string {
+  if (type === "utility" || filePath.startsWith("utils/")) {
+    return path.join(targetDir, "src/utils", filePath.replace(/^utils\//, ""));
+  }
+
+  if (type === "styles" || filePath.startsWith("styles/")) {
+    return path.join(targetDir, "src/styles", filePath.replace(/^styles\//, ""));
+  }
+
+  return path.join(targetDir, "src/components/bearnie", filePath);
+}
+
+async function fetchRegistryEntry(name: string): Promise<RegistryEntry | null> {
   try {
     const response = await fetch(`${REGISTRY_URL}/${name}.json`);
     if (!response.ok) return null;
@@ -46,14 +75,22 @@ async function fetchComponent(name: string): Promise<{ files: { name: string; co
   }
 }
 
-// Fetch utility from registry
-async function fetchUtility(name: string): Promise<{ files: { name: string; content: string }[] } | null> {
-  try {
-    const response = await fetch(`${REGISTRY_URL}/${name}.json`);
-    if (!response.ok) return null;
-    return await response.json();
-  } catch {
-    return null;
+async function fetchRegistryIndex(): Promise<RegistryIndex> {
+  const response = await fetch(`${REGISTRY_URL}/index.json`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch registry index");
+  }
+  return await response.json();
+}
+
+async function writeRegistryFiles(
+  targetDir: string,
+  entry: RegistryEntry,
+): Promise<void> {
+  for (const file of entry.files) {
+    const filePath = resolveInstallPath(targetDir, file.path, entry.type);
+    await fs.ensureDir(path.dirname(filePath));
+    await fs.writeFile(filePath, file.content);
   }
 }
 
@@ -69,7 +106,7 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
 
   // Get project name from args (skip flags)
   let projectName = process.argv.find(
-    (arg, index) => index >= 2 && !arg.startsWith("--")
+    (arg, index) => index >= 2 && !arg.startsWith("--"),
   );
 
   if (!projectName) {
@@ -117,7 +154,7 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
 
   // Copy template
   const templateDir = path.join(__dirname, "..", "template");
-  
+
   console.log(`\n  ${pc.dim("Creating project in")} ${pc.cyan(targetDir)}\n`);
 
   await fs.copy(templateDir, targetDir);
@@ -131,23 +168,20 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
   // Install all components if --full flag is provided
   if (fullInstall) {
     console.log(`\n  ${pc.dim("Fetching components from registry...")}\n`);
-    
-    // Create directories
-    await fs.ensureDir(path.join(targetDir, "src", "components", "ui"));
+
+    await fs.ensureDir(path.join(targetDir, "src", "components", "bearnie"));
     await fs.ensureDir(path.join(targetDir, "src", "utils"));
-    
-    // Fetch and install focus-trap utility first
-    const focusTrap = await fetchUtility("focus-trap");
-    if (focusTrap?.files) {
-      for (const file of focusTrap.files) {
-        const filePath = path.join(targetDir, "src", file.name);
-        await fs.ensureDir(path.dirname(filePath));
-        await fs.writeFile(filePath, file.content);
+
+    for (const utilityName of UTILITY_NAMES) {
+      const utility = await fetchRegistryEntry(utilityName);
+      if (utility?.files) {
+        await writeRegistryFiles(targetDir, utility);
+        console.log(`  ${pc.green("✓")} Added ${utilityName} utility`);
+      } else {
+        console.log(`  ${pc.yellow("!")} Failed to fetch ${utilityName} utility`);
       }
-      console.log(`  ${pc.green("✓")} Added focus-trap utility`);
     }
-    
-    // Create cn utility
+
     const cnContent = `import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -157,37 +191,46 @@ export function cn(...inputs: ClassValue[]) {
 `;
     await fs.writeFile(path.join(targetDir, "src", "utils", "cn.ts"), cnContent);
     console.log(`  ${pc.green("✓")} Added cn utility`);
-    
-    // Fetch and install all components
+
+    const registryIndex = await fetchRegistryIndex();
+    const componentNames = registryIndex.components
+      .map((component) => component.name)
+      .filter((name) => name !== "styles" && name !== "barrel");
+
     let installed = 0;
     let failed = 0;
-    
-    for (const componentName of COMPONENT_NAMES) {
-      const component = await fetchComponent(componentName);
+
+    for (const componentName of componentNames) {
+      const component = await fetchRegistryEntry(componentName);
       if (component?.files) {
-        for (const file of component.files) {
-          const filePath = path.join(targetDir, "src", file.name);
-          await fs.ensureDir(path.dirname(filePath));
-          await fs.writeFile(filePath, file.content);
-        }
+        await writeRegistryFiles(targetDir, component);
         installed++;
-        process.stdout.write(`\r  ${pc.green("✓")} Installed ${installed}/${COMPONENT_NAMES.length} components`);
+        process.stdout.write(
+          `\r  ${pc.green("✓")} Installed ${installed}/${componentNames.length} components`,
+        );
       } else {
         failed++;
       }
     }
-    console.log(""); // New line after progress
-    
+    console.log("");
+
+    const barrel = await fetchRegistryEntry("barrel");
+    if (barrel?.files) {
+      await writeRegistryFiles(targetDir, barrel);
+      console.log(`  ${pc.green("✓")} Added barrel export`);
+    } else {
+      console.log(`  ${pc.yellow("!")} Failed to fetch barrel export`);
+    }
+
     if (failed > 0) {
       console.log(`  ${pc.yellow("!")} ${failed} components failed to fetch`);
     }
-    
-    // Update package.json with additional dependencies
+
     const pkgPath2 = path.join(targetDir, "package.json");
     const pkg2 = await fs.readJson(pkgPath2);
     pkg2.dependencies = {
       ...pkg2.dependencies,
-      "clsx": "^2.1.1",
+      clsx: "^2.1.1",
       "tailwind-merge": "^3.3.0",
     };
     await fs.writeJson(pkgPath2, pkg2, { spaces: 2 });
@@ -218,7 +261,7 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
-`
+`,
   );
 
   console.log(`  ${pc.green("✓")} Created project files`);
@@ -234,7 +277,8 @@ Thumbs.db
     ${pc.dim("2.")} npm install
     ${pc.dim("3.")} npm run dev
 
-  ${pc.dim("All components are in")} ${pc.cyan("src/components/ui/")}
+  ${pc.dim("All components are in")} ${pc.cyan("src/components/bearnie/")}
+  ${pc.dim("Import from")} ${pc.cyan("@/components/bearnie")} ${pc.dim("via")} ${pc.cyan("index.ts")}
 
   ${pc.dim("Browse components at")} ${link("bearnie.dev/docs/components", "https://bearnie.dev/docs/components")}
 

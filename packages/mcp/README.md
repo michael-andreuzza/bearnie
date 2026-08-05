@@ -4,7 +4,7 @@ An MCP (Model Context Protocol) server that enables AI assistants like Claude, G
 
 ## Features
 
-- **List Components**: Browse all available Bearnie components
+- **List Components**: Browse all available Bearnie components (including the barrel export)
 - **Search Components**: Find components by name, description, or category
 - **Get Component Details**: View component source code and dependencies
 - **Add Components**: Install components directly to your Astro project
@@ -92,36 +92,46 @@ Get detailed information about a specific component, including its source code.
 
 **Parameters:**
 
-- `name` (string): Component name (e.g., "button", "accordion")
+- `name` (string): Component name (e.g., "button", "accordion", "barrel")
 
 **Example prompt:** "Show me the Bearnie button component"
 
 ### `add_component`
 
-Add a component to your Astro project. Creates files in `src/components/bearnie/`.
+Add a component to your Astro project. Creates files in `src/components/bearnie/`, utilities in `src/utils/`, and styles in `src/styles/`.
 
 **Parameters:**
 
 - `name` (string): Component name to add
 - `cwd` (string, optional): Working directory
 
-**Example prompt:** "Add the accordion component to my project"
+**Example prompts:**
+
+- "Add the accordion component to my project"
+- "Add the barrel export for named imports"
+
+Install components first, then add `barrel` last for `import { Button, Card } from "@/components/bearnie"`.
 
 ## Environment Variables
 
-- `BEARNIE_REGISTRY_URL`: Override the default registry URL (default: `https://bearnie.dev/registry`)
+| Variable | Description |
+| -------- | ----------- |
+| `BEARNIE_REGISTRY_URL` | Override the default registry URL (default: `https://bearnie.dev/registry`) |
+| `BEARNIE_REGISTRY_PATH` | Local file path to registry (for development) |
 
 ## Development
 
+From the monorepo root:
+
 ```bash
-# Install dependencies
 npm install
+npm run build:packages
+```
 
-# Build
-npm run build
+Test with a local registry:
 
-# Development mode (watch)
-npm run dev
+```bash
+BEARNIE_REGISTRY_PATH=./public/registry npx @bearnie/mcp
 ```
 
 ## License

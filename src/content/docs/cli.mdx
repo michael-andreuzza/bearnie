@@ -50,6 +50,28 @@ You own the code.
 
 <div class="space-y-4">
 <Prose>
+### Barrel export
+
+After adding components, install the barrel for named imports from `@/components/bearnie`:
+</Prose>
+
+<InstallTabs command="add barrel" />
+
+<Prose>
+
+```astro
+---
+import { Button, Card } from "@/components/bearnie";
+---
+```
+
+The barrel re-exports all installed components. Add it last, once the components you need are in place. Projects created with `create-bearnie --full` include it automatically.
+
+</Prose>
+</div>
+
+<div class="space-y-4">
+<Prose>
 ### List available components
 </Prose>
 

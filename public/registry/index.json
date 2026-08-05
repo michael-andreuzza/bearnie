@@ -246,6 +246,16 @@
       "name": "tree",
       "description": "A hierarchical tree view",
       "category": "navigation"
+    },
+    {
+      "name": "toggle-group",
+      "description": "A group of toggle buttons",
+      "category": "form"
+    },
+    {
+      "name": "barrel",
+      "description": "Barrel export for importing components from @/components/bearnie",
+      "category": "meta"
     }
   ]
 }

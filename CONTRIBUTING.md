@@ -57,14 +57,22 @@ npm run dev
 
 The site will be available at `http://localhost:4321`
 
-4. **Build the CLI locally**
+4. **Build packages locally**
 
 ```bash
-npm run cli:build
+npm run build:packages
+npm run build
 npm run cli:link
 ```
 
 Now you can test the CLI with `bearnie` command.
+
+To test the MCP server locally:
+
+```bash
+npm run build:packages
+BEARNIE_REGISTRY_PATH=./public/registry npx @bearnie/mcp
+```
 
 ## How to Contribute
 
@@ -188,6 +196,20 @@ Describe what the component does and when to use it.
 - `class` - Additional CSS classes
 ```
 
+### Documentation conventions
+
+When writing component docs in `src/content/components/*.mdx`, use two different import paths:
+
+| Context | Import path | Example |
+| --- | --- | --- |
+| Docs live previews | `@/components/ui/...` | `import Button from "@/components/ui/button/Button.astro"` |
+| Usage snippets (consumer) | `@/components/bearnie/...` | `import { Button } from "@/components/bearnie/button"` |
+
+- The docs site imports **source** components from `src/components/ui/` for live previews.
+- After `bearnie add`, consumers install to `src/components/bearnie/` (CLI default).
+- Keep this split in MDX: live `import` from `ui/`, Usage block from `bearnie/`.
+- For barrel imports (`import { Button, Card } from "@/components/bearnie"`), run `bearnie add barrel` after installing components.
+
 #### Step 5: Test with CLI
 
 ```bash
@@ -233,7 +255,7 @@ git rebase origin/main
 
 ```bash
 npm run build
-npm run cli:build
+npm run build:packages
 ```
 
 3. **Commit with meaningful messages:**
@@ -278,6 +300,7 @@ Use conventional commits:
 
 - Use Tailwind CSS for styling
 - Support color theming via CSS variables
+- Prefer semantic CSS variables over Tailwind `dark:` classes in components
 - Ensure accessibility with proper contrast ratios
 
 ### Accessibility

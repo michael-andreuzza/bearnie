@@ -12,7 +12,7 @@ import InstallTabs from "@/components/docs/InstallTabs.astro";
 <Prose>
 ### Requirements
 
-- Astro 4.0 or later
+- Astro 7 or later
 - Tailwind CSS v4
 </Prose>
 
@@ -42,7 +42,7 @@ Want all components included from the start? Use the `--full` flag:
 npx create-bearnie my-app --full
 ```
 
-This fetches all components from the registry and installs them in your project. Great for exploring or prototyping.
+This fetches all components from the registry, installs them in `src/components/bearnie/`, and adds a barrel export at `src/components/bearnie/index.ts`. Great for exploring or prototyping.
 
 </Prose>
 </div>
@@ -80,6 +80,32 @@ Then add any component:
 
 <Prose>
 When you add interactive components, Bearnie installs shared runtime helpers under `src/utils/runtime/` automatically. No manual runtime wiring is needed.
+
+#### Barrel imports
+
+After adding components, install the barrel export for named imports from a single path:
+
+</Prose>
+
+<InstallTabs command="add barrel" />
+
+<Prose>
+
+```astro
+---
+import { Button, Card, CardHeader, CardTitle } from "@/components/bearnie";
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Welcome</CardTitle>
+  </CardHeader>
+  <Button>Get started</Button>
+</Card>
+```
+
+Run `bearnie add barrel` after your components are installed. The `--full` scaffold includes the barrel automatically.
+
 </Prose>
 </div>
 
@@ -155,6 +181,7 @@ Use the CLI or copy components from `src/components/bearnie/` to your project.
 src/
 ├── components/
 │   └── bearnie/
+│       ├── index.ts
 │       ├── button/
 │       │   └── Button.astro
 │       └── card/

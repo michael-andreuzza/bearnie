@@ -40,15 +40,12 @@ const sizeClasses = {
   lg: "h-10 px-3 min-w-10",
 };
 
-// First and last item rounding, and negative margin to collapse borders
+// Rounded corners and border overlap are handled by ToggleGroup parent styles
 const classes = cn(
   baseClasses,
   variantClasses[variant],
   sizeClasses[size],
-  // Rounded corners for first/last items
-  "first:rounded-l-md last:rounded-r-md rounded-none",
-  // Collapse borders - negative margin to overlap
-  "-ml-px first:ml-0",
+  "rounded-md",
   className
 );
 ---

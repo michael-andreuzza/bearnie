@@ -61,9 +61,6 @@
   /* Surface */
   --color-surface: var(--surface);
 
-  /* Canvas — app shell; matches muted in light, slightly darker in dark */
-  --color-canvas: var(--canvas);
-
   /* Shadows — theme-aware via elevation tokens */
   --shadow-xs: var(--elevation-xs);
   --shadow-sm: var(--elevation-sm);
@@ -109,7 +106,6 @@
 
   --overlay: oklch(0 0 0);
   --surface: oklch(1 0 0);
-  --canvas: var(--muted);
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -198,7 +194,6 @@
 
   --overlay: oklch(0 0 0);
   --surface: oklch(0.19 0 0);
-  --canvas: oklch(0.185 0 0);
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);

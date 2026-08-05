@@ -14,13 +14,15 @@ npx bearnie init
 # 3. Add components
 npx bearnie add button card input
 
-# 4. Use in your Astro pages
+# 4. Optional: add barrel export for named imports
+npx bearnie add barrel
+
+# 5. Use in your Astro pages
 ```
 
 ```astro
 ---
-import Button from "@/components/ui/button/Button.astro";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button, Card, CardHeader, CardTitle, CardContent } from "@/components/bearnie";
 ---
 
 <Card>
@@ -78,6 +80,9 @@ npx bearnie add button card input
 
 # Add all available components
 npx bearnie add --all
+
+# Add barrel export (after components are installed)
+npx bearnie add barrel
 
 # Interactive component selection
 npx bearnie add
@@ -143,15 +148,14 @@ For local development and testing:
 git clone https://github.com/michael-andreuzza/bearnie.git
 cd bearnie
 
-# Install CLI dependencies
-cd packages/cli
+# Install dependencies (npm workspaces)
 npm install
 
-# Build the CLI
-npm run build
+# Build packages
+npm run build:packages
 
-# Link for local testing
-npm link
+# Link CLI for local testing
+npm run cli:link
 
 # Now you can use it
 bearnie add button
@@ -197,7 +201,7 @@ BEARNIE_REGISTRY_URL=http://localhost:4321/registry bearnie add button
 
 ```astro
 ---
-import Button from "@/components/ui/button/Button.astro";
+import Button from "@/components/bearnie/button/Button.astro";
 ---
 
 <Button>Default</Button>
@@ -212,9 +216,9 @@ import Button from "@/components/ui/button/Button.astro";
 
 ```astro
 ---
-import Input from "@/components/ui/input/Input.astro";
-import Label from "@/components/ui/label/Label.astro";
-import Button from "@/components/ui/button/Button.astro";
+import Input from "@/components/bearnie/input/Input.astro";
+import Label from "@/components/bearnie/label/Label.astro";
+import Button from "@/components/bearnie/button/Button.astro";
 ---
 
 <form class="space-y-4">
@@ -234,13 +238,13 @@ import Button from "@/components/ui/button/Button.astro";
 
 ```astro
 ---
-import Card from "@/components/ui/card/Card.astro";
-import CardHeader from "@/components/ui/card/CardHeader.astro";
-import CardTitle from "@/components/ui/card/CardTitle.astro";
-import CardDescription from "@/components/ui/card/CardDescription.astro";
-import CardContent from "@/components/ui/card/CardContent.astro";
-import CardFooter from "@/components/ui/card/CardFooter.astro";
-import Button from "@/components/ui/button/Button.astro";
+import Card from "@/components/bearnie/card/Card.astro";
+import CardHeader from "@/components/bearnie/card/CardHeader.astro";
+import CardTitle from "@/components/bearnie/card/CardTitle.astro";
+import CardDescription from "@/components/bearnie/card/CardDescription.astro";
+import CardContent from "@/components/bearnie/card/CardContent.astro";
+import CardFooter from "@/components/bearnie/card/CardFooter.astro";
+import Button from "@/components/bearnie/button/Button.astro";
 ---
 
 <Card class="w-96">
@@ -261,9 +265,9 @@ import Button from "@/components/ui/button/Button.astro";
 
 ```astro
 ---
-import Alert from "@/components/ui/alert/Alert.astro";
-import AlertTitle from "@/components/ui/alert/AlertTitle.astro";
-import AlertDescription from "@/components/ui/alert/AlertDescription.astro";
+import Alert from "@/components/bearnie/alert/Alert.astro";
+import AlertTitle from "@/components/bearnie/alert/AlertTitle.astro";
+import AlertDescription from "@/components/bearnie/alert/AlertDescription.astro";
 ---
 
 <Alert>
