@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.7 / 0.4.3 / 0.1.3] - 2026-08-05
+
+- Release automation script with changelog, tagging, and optional npm publish
+- CI workflow with build, smoke tests, and registry drift check
+- MCP add_components batch tool with dependency resolution and barrel-last ordering
+- create-bearnie writes bearnie.json on all scaffolds for CLI-ready projects
+- Restored TypeScript declaration builds for bearnie, create-bearnie, and @bearnie/mcp
+- Coordinated registry versioning via registryVersion field
+- CLI list theme/meta categories, barrel discoverability, and docs polish
+- Vertical toggle-group docs with correct align icons
+
+
 ## [0.1.6 / 0.4.2 / 0.1.2] - 2026-08-05
 
 ### Added
