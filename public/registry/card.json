@@ -9,7 +9,7 @@
     {
       "name": "Card.astro",
       "path": "card/Card.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  size?: \"default\" | \"sm\";\n}\n\nconst { size = \"default\", class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"rounded-lg border bg-card text-card-foreground\",\n  className\n);\n---\n\n<div class={classes} data-slot=\"card\" data-size={size} {...props}>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  size?: \"default\" | \"sm\";\n}\n\nconst { size = \"default\", class: className, ...props } = Astro.props;\n\nconst classes = cn(\"rounded-lg border bg-card text-card-foreground\", className);\n---\n\n<div class={classes} data-slot=\"card\" data-size={size} {...props}>\n  <slot />\n</div>\n"
     },
     {
       "name": "CardAction.astro",

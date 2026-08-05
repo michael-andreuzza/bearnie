@@ -1,21 +1,14 @@
-@import "tailwindcss";
-@import "./shiki.css";
-@import "./typography.css";
-@plugin "@tailwindcss/forms";
-@import 'tailwind-scrollbar-hide/v4';
-@import 'tailwindcss-scroll-mask';
 @theme {
   /* Typography */
-  --font-sans: Geist, sans-serif;
+  --font-sans: Inter, sans-serif;
   --font-mono: Geist Mono, monospace;
 
-
   /* Border Radius - Base: 0.625rem (10px) */
-  --radius-sm: calc(var(--radius) - 4px);   /* 6px */
-  --radius-md: calc(var(--radius) - 2px);   /* 8px */
-  --radius-lg: var(--radius);               /* 10px */
-  --radius-xl: calc(var(--radius) + 4px);   /* 14px */
-  --radius-2xl: calc(var(--radius) + 8px);  /* 18px */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
   --radius-full: 9999px;
 }
 
@@ -65,7 +58,7 @@
   /* Overlay */
   --color-overlay: var(--overlay);
 
-  /* Surface — primary content panel; matches background in light, elevated in dark */
+  /* Surface */
   --color-surface: var(--surface);
 
   /* Shadows — theme-aware via elevation tokens */
@@ -111,13 +104,9 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
 
-  /* Overlay */
   --overlay: oklch(0 0 0);
-
-  /* Surface — matches background in light, elevated in dark */
   --surface: oklch(1 0 0);
 
-  /* Sidebar */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -127,7 +116,6 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* Shadows — layered elevation scale */
   --elevation-xs:
     rgba(14, 63, 126, 0.03) 0px 0px 0px 1px,
     rgba(42, 51, 69, 0.03) 0px 1px 1px -0.5px;
@@ -204,13 +192,9 @@
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
 
-  /* Overlay */
   --overlay: oklch(0 0 0);
-
-  /* Surface — elevated content panel in dark mode */
   --surface: oklch(0.19 0 0);
 
-  /* Sidebar */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -220,7 +204,6 @@
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
 
-  /* Shadows — neutral black, stronger for dark backgrounds */
   --elevation-xs:
     rgba(0, 0, 0, 0.12) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 1px 1px -0.5px;
@@ -270,24 +253,7 @@
   border-color: var(--border);
 }
 
-/* Overlay scrollbar - visible on hover */
-.scrollbar-overlay {
-  scrollbar-width: none;
-}
-.scrollbar-overlay::-webkit-scrollbar {
-  width: 0;
-}
-.scrollbar-overlay:hover {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-.scrollbar-overlay:hover::-webkit-scrollbar {
-  width: 6px;
-}
-.scrollbar-overlay:hover::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-.scrollbar-overlay:hover::-webkit-scrollbar-track {
-  background: transparent;
+body {
+  background-color: var(--background);
+  color: var(--foreground);
 }

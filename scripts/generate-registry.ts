@@ -11,6 +11,11 @@ const ROOT_DIR = path.join(__dirname, "..");
 const COMPONENTS_DIR = path.join(ROOT_DIR, "src/components/ui");
 const UTILS_DIR = path.join(ROOT_DIR, "src/utils");
 const REGISTRY_DIR = path.join(ROOT_DIR, "public/registry");
+const STYLES_PATH = path.join(ROOT_DIR, "src/styles/bearnie.css");
+const TEMPLATE_STYLES_PATH = path.join(
+  ROOT_DIR,
+  "packages/create-bearnie/template/src/styles/bearnie.css",
+);
 
 // Utility metadata
 const UTILITY_META: Record<
@@ -343,6 +348,36 @@ async function generateUtilities() {
   }
 }
 
+async function generateStyles() {
+  if (!(await fs.pathExists(STYLES_PATH))) {
+    console.log("⚠️  Skipping styles - bearnie.css not found");
+    return;
+  }
+
+  const content = await fs.readFile(STYLES_PATH, "utf-8");
+  const registryEntry = {
+    name: "styles",
+    type: "styles",
+    description: "CSS variables and theme configuration for Bearnie components",
+    files: [
+      {
+        name: "bearnie.css",
+        path: "styles/bearnie.css",
+        content,
+      },
+    ],
+  };
+
+  const registryPath = path.join(REGISTRY_DIR, "styles.json");
+  await fs.writeJson(registryPath, registryEntry, { spaces: 2 });
+  console.log("   ✓ Created styles.json");
+
+  if (await fs.pathExists(TEMPLATE_STYLES_PATH)) {
+    await fs.copy(STYLES_PATH, TEMPLATE_STYLES_PATH);
+    console.log("   ✓ Synced bearnie.css to create-bearnie template");
+  }
+}
+
 async function generateRegistry() {
   console.log("🔧 Generating component registry...\n");
 
@@ -351,6 +386,9 @@ async function generateRegistry() {
 
   // First generate utilities
   await generateUtilities();
+
+  console.log("\n🎨 Processing styles...\n");
+  await generateStyles();
 
   console.log("\n📦 Processing components...\n");
 

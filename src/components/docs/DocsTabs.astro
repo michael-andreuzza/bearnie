@@ -46,7 +46,7 @@ const id = `docs-tabs-${Math.random().toString(36).substring(2, 9)}`;
       tabs.map((tab, index) => (
         <div class={index === 0 ? "" : "hidden"} data-docs-panel={tab.id}>
           <div class="border border-border rounded-lg overflow-hidden">
-            <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-background">
+            <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-surface">
               {tab.description && (
                 <p class="text-sm text-muted-foreground">{tab.description}</p>
               )}

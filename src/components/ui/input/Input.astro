@@ -26,12 +26,12 @@ const {
 
 const classes = cn(
   'block w-full h-9 px-4 py-2 text-sm leading-tight align-middle',
-  'bg-background border border-border rounded-md',
+  'bg-transparent border border-input rounded-md',
   'placeholder:text-muted-foreground',
   'transition duration-300 ease-in-out',
   'focus:z-10 focus:border-primary focus:ring-[3px] focus:ring-primary/5 focus:outline-none',
   'file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground',
-  'disabled:cursor-not-allowed disabled:opacity-50',
+  'disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50',
   className
 );
 ---
