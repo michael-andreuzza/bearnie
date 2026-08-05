@@ -3,6 +3,7 @@
 @import "./typography.css";
 @plugin "@tailwindcss/forms";
 @import 'tailwind-scrollbar-hide/v4';
+@import 'tailwindcss-scroll-mask';
 @theme {
   /* Typography */
   --font-sans: Geist, sans-serif;

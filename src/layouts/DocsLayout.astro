@@ -172,18 +172,13 @@ const isDocsPage = currentPath.startsWith("/docs");
       class="relative flex flex-1 min-h-0 bg-background rounded-lg lg:rounded-2xl overflow-hidden m-2 lg:m-3 lg:mt-0 mt-0"
     >
       <!-- Desktop Sidebar -->
-      <div class="hidden md:block lg:w-62 shrink-0 relative">
+      <div class="hidden md:block lg:w-62 shrink-0">
         <aside
           id="sidebar-scroll-container"
-          class="h-full overflow-y-auto scrollbar-overlay"
+          class="h-full overflow-y-auto scrollbar-overlay scroll-mask-b-16"
         >
           <SidebarNav navigation={navigation} currentPath={currentPath} />
         </aside>
-        <!-- Bottom blur fade -->
-        <div
-          class="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-background via-background/80 to-transparent"
-        >
-        </div>
       </div>
       <!-- Main Content + TOC wrapped in box -->
       <div

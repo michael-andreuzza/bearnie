@@ -16,31 +16,32 @@
     "cli:test": "BEARNIE_REGISTRY_URL=http://localhost:4321/registry bearnie"
   },
   "dependencies": {
-    "@astrojs/mdx": "^7.0.3",
+    "@astrojs/mdx": "^7.0.5",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@hugeicons/core-free-icons": "^4.2.3",
     "@lexingtonthemes/seo": "^0.4.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.20",
-    "astro": "^7.1.3",
+    "astro": "^7.1.6",
     "clsx": "^2.1.1",
     "jszip": "^3.10.1",
     "keen-slider": "^6.8.6",
     "reading-time": "^1.5.0",
-    "shiki": "^4.3.1",
+    "shiki": "^4.4.2",
     "tailwind-merge": "^3.6.0",
     "tailwind-scrollbar-hide": "^4.0.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "@tailwindcss/vite": "^4.3.3",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.1.2",
     "fs-extra": "^11.4.0",
     "prettier": "^3.9.6",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.23.1",
+    "tailwindcss-scroll-mask": "^0.0.4",
+    "tsx": "^4.23.6",
     "typescript": "^7.0.2"
   }
 }
