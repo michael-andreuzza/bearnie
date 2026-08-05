@@ -3,7 +3,7 @@ import kobbeImage from "@/images/ad/kobbe.png";
 import lexadImage from "@/images/ad/lexad.png";
 
 const utm =
-  "utm_source=Bearnie&utm_medium=click&utm_campaign=Bearnie+Ad&utm_content=sidebar-ad";
+  "utm_source=Bearnie&utm_medium=click&utm_campaign=Bearnie&utm_content=sidebar-ad";
 
 export interface SidebarAd {
   href: string;
