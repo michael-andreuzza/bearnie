@@ -1,4 +1,8 @@
 ---
+import { Image } from "astro:assets";
+import kobbeImage from "@/images/ad/kobbe.png";
+import lexadImage from "@/images/ad/lexad.png";
+
 export interface Props {
   contentId?: string;
 }
@@ -6,7 +10,7 @@ const { contentId = "docs-content" } = Astro.props;
 ---
 
 <aside
-  class="hidden xl:flex flex-col shrink-0 lg:w-62 px-4 pt-8 pb-8 sticky top-0 self-start h-[calc(100vh-3.5rem)]"
+  class="hidden xl:flex flex-col shrink-0 lg:w-48 px-4 pt-8 pb-8 sticky top-0 self-start h-[calc(100vh-3.5rem)]"
 >
   <!-- TOC - scrollable -->
   <div class="flex-1 min-h-0 overflow-y-auto scrollbar-hide pr-1 space-y-3">
@@ -17,51 +21,35 @@ const { contentId = "docs-content" } = Astro.props;
   </div>
 
   <!-- Banner - fixed at bottom -->
-  <div class="shrink-0 pt-6">
-    <iframe
-      id="kobbe-embed-live"
-      src="https://app.kobbe.io/embed/embed_f101ae92949ad5fdab463e7bfb2c0325/live?primaryColor=648ff5&theme=light"
-      width="288"
-      height="52"
-      style="background:transparent!important;border:none;display:block;width:100%;max-width:288px;height:52px;overflow:hidden;"
-      frameborder="0"
-      allowtransparency="true"
-      loading="lazy"
-      title="Kobbe live visitors"
-      scrolling="no"></iframe><script>
-      (function () {
-        var o = "https://app.kobbe.io";
-        window.addEventListener("message", function (e) {
-          if (e.origin !== o) return;
-          var d = e.data;
-          if (
-            !d ||
-            d.type !== "kobbe:embed-widget-height" ||
-            d.kind !== "live" ||
-            typeof d.height !== "number"
-          )
-            return;
-          var f = document.getElementById("kobbe-embed-live");
-          if (f) f.style.height = d.height + "px";
-        });
-      })();
-    </script>
-    <div class="bg-muted/50 rounded-lg border p-4">
-      <h3 class="text-sm font-semibold tracking-tight text-foreground">
-        Premium Astro V7 & Tailwind CSS themes
-      </h3>
-      <p class="mt-2 text-xs text-muted-foreground">
-        3-Year Anniversary — 50% OFF. Full access to all themes . Use code LEX50
-        for just $99.
-      </p>
-      <button
-        type="button"
-        onclick="window.open('http://lexingtonthemes.com/', '_blank', 'noopener,noreferrer')"
-        class="mt-4 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90 transition-colors"
-      >
-        Get Access
-      </button>
-    </div>
+  <div class="shrink-0 pt-6 space-y-4">
+    <a
+      href="https://kobbe.io"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block overflow-hidden rounded-lg transition-opacity hover:opacity-90"
+    >
+      <Image
+        src={kobbeImage}
+        alt="Kobbe — Privacy-first analytics"
+        width={414}
+        height={513}
+        class="w-full h-auto"
+      />
+    </a>
+    <a
+      href="http://lexingtonthemes.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block overflow-hidden rounded-lg transition-opacity hover:opacity-90"
+    >
+      <Image
+        src={lexadImage}
+        alt="Lexington Themes — Premium Astro and Tailwind CSS themes"
+        width={414}
+        height={513}
+        class="w-full h-auto"
+      />
+    </a>
   </div>
 </aside>
 
