@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import kobbeImage from "@/images/ad/kobbe.png";
-import lexadImage from "@/images/ad/lexad.png";
+import { sidebarAds } from "@/config/sidebar-ads";
 
 export interface Props {
   contentId?: string;
@@ -22,34 +21,24 @@ const { contentId = "docs-content" } = Astro.props;
 
   <!-- Banner - fixed at bottom -->
   <div class="shrink-0 pt-6 space-y-4">
-    <a
-      href="https://kobbe.io/?utm_source=Bearnie&utm_medium=click&utm_campaign=Bearnie+Ad&utm_content=sidebar-ad"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="block overflow-hidden rounded-lg transition-opacity hover:opacity-90"
-    >
-      <Image
-        src={kobbeImage}
-        alt="Kobbe, privacy-first analytics"
-        width={414}
-        height={513}
-        class="w-full h-auto"
-      />
-    </a>
-    <a
-      href="https://lexingtonthemes.com/?utm_source=Bearnie&utm_medium=click&utm_campaign=Bearnie+Ad&utm_content=sidebar-ad"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="block overflow-hidden rounded-lg transition-opacity hover:opacity-90"
-    >
-      <Image
-        src={lexadImage}
-        alt="Lexington Themes, premium Astro and Tailwind CSS themes"
-        width={414}
-        height={513}
-        class="w-full h-auto"
-      />
-    </a>
+    {
+      sidebarAds.map((ad) => (
+        <a
+          href={ad.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block overflow-hidden rounded-lg transition-opacity hover:opacity-90"
+        >
+          <Image
+            src={ad.image}
+            alt={ad.alt}
+            width={414}
+            height={513}
+            class="size-auto aspect-square object-cover"
+          />
+        </a>
+      ))
+    }
   </div>
 </aside>
 
