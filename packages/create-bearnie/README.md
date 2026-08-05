@@ -29,6 +29,7 @@ This fetches all components from the registry, installs them in `src/components/
 - Astro 7 with TypeScript
 - Tailwind CSS v4 (via `@tailwindcss/vite`)
 - Bearnie CSS variables and theme
+- `bearnie.json` CLI config at the project root
 - Simple landing page to get started
 - Ready for components via `npx bearnie add`
 

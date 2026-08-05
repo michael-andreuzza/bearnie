@@ -17,6 +17,7 @@
   },
   "type": "module",
   "version": "0.1.0",
+  "registryVersion": "0.2.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -31,6 +32,8 @@
     "build:mcp": "npm run build -w @bearnie/mcp",
     "build:packages": "npm run build:cli && npm run build:create && npm run build:mcp",
     "build:all": "npm run build:packages && npm run build",
+    "release": "npx tsx scripts/release.ts",
+    "test:smoke": "npm run build:packages && npx tsx scripts/smoke-test.ts",
     "cli:dev": "npm run dev -w bearnie",
     "cli:build": "npm run build -w bearnie",
     "cli:link": "npm link -w bearnie",

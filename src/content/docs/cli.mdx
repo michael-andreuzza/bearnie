@@ -16,7 +16,9 @@ import InstallTabs from "@/components/docs/InstallTabs.astro";
 <InstallTabs command="init" />
 
 <Prose>
-Sets up the `cn` utility, path aliases, and theme variables. Run this once before adding components.
+Sets up the `cn` utility, path aliases, and theme variables. Run this once before adding components to an existing Astro project.
+
+Projects created with `create-bearnie` already include a `bearnie.json` config at the project root and can skip init.
 </Prose>
 </div>
 
@@ -78,7 +80,7 @@ The barrel re-exports all installed components. Add it last, once the components
 <InstallTabs command="list" />
 
 <Prose>
-Shows all components grouped by category. Use `--json` for machine-readable output.
+Shows all components grouped by category — including **Theme** (`styles`) and **Meta** (`barrel`). Use `--json` for machine-readable output.
 </Prose>
 </div>
 

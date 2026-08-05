@@ -42,6 +42,12 @@ components.forEach((component) => {
   title="Components"
   description="Browse all available components in the library, organized by category."
 >
+  <div class="mb-8 rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+    After installing components with the CLI, run
+    <code class="mx-1 rounded bg-background px-1.5 py-0.5 text-foreground">bearnie add barrel</code>
+    for named imports from
+    <code class="mx-1 rounded bg-background px-1.5 py-0.5 text-foreground">@/components/bearnie</code>.
+  </div>
   <div class="space-y-8">
     {
       Object.entries(categories).map(

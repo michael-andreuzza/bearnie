@@ -8,7 +8,7 @@ order: 18
 ---
 
 import HugeIcon from "@/components/fundations/icons/HugeIcon.astro";
-import { AlignHorizontalCenterIcon, AlignHorizontalJustifyEndIcon, AlignHorizontalJustifyStartIcon, TextBoldIcon, TextItalicIcon, TextUnderlineIcon } from "@/lib/hugeicons";
+import { AlignHorizontalCenterIcon, AlignHorizontalJustifyEndIcon, AlignHorizontalJustifyStartIcon, AlignVerticalJustifyCenterIcon, AlignVerticalJustifyEndIcon, AlignVerticalJustifyStartIcon, TextBoldIcon, TextItalicIcon, TextUnderlineIcon } from "@/lib/hugeicons";
 
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
@@ -243,27 +243,27 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/bearnie/toggle"
   <Fragment slot="code">
 ```html
 <ToggleGroup type="single" orientation="vertical" defaultValue="center">
-  <ToggleGroupItem value="left" aria-label="Align left">
-    <HugeIcon icon={AlignHorizontalJustifyStartIcon} class="size-4" />
+  <ToggleGroupItem value="top" aria-label="Align top">
+    <HugeIcon icon={AlignVerticalJustifyStartIcon} class="size-4" />
   </ToggleGroupItem>
   <ToggleGroupItem value="center" aria-label="Align center">
-    <HugeIcon icon={AlignHorizontalCenterIcon} class="size-4" />
+    <HugeIcon icon={AlignVerticalJustifyCenterIcon} class="size-4" />
   </ToggleGroupItem>
-  <ToggleGroupItem value="right" aria-label="Align right">
-    <HugeIcon icon={AlignHorizontalJustifyEndIcon} class="size-4" />
+  <ToggleGroupItem value="bottom" aria-label="Align bottom">
+    <HugeIcon icon={AlignVerticalJustifyEndIcon} class="size-4" />
   </ToggleGroupItem>
 </ToggleGroup>
 ```
   </Fragment>
   <ToggleGroup type="single" orientation="vertical" defaultValue="center">
-    <ToggleGroupItem value="left" aria-label="Align left">
-      <HugeIcon icon={AlignHorizontalJustifyStartIcon} class="size-4" />
+    <ToggleGroupItem value="top" aria-label="Align top">
+      <HugeIcon icon={AlignVerticalJustifyStartIcon} class="size-4" />
     </ToggleGroupItem>
     <ToggleGroupItem value="center" aria-label="Align center">
-      <HugeIcon icon={AlignHorizontalCenterIcon} class="size-4" />
+      <HugeIcon icon={AlignVerticalJustifyCenterIcon} class="size-4" />
     </ToggleGroupItem>
-    <ToggleGroupItem value="right" aria-label="Align right">
-      <HugeIcon icon={AlignHorizontalJustifyEndIcon} class="size-4" />
+    <ToggleGroupItem value="bottom" aria-label="Align bottom">
+      <HugeIcon icon={AlignVerticalJustifyEndIcon} class="size-4" />
     </ToggleGroupItem>
   </ToggleGroup>
 </ComponentPreview>

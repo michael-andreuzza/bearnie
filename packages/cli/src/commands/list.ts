@@ -40,6 +40,8 @@ export async function list(options: ListOptions) {
 
     // Category config with emojis
     const categoryConfig: Record<string, { emoji: string; label: string }> = {
+      theme: { emoji: "🎨", label: "Theme" },
+      meta: { emoji: "📦", label: "Meta" },
       foundation: { emoji: "🎨", label: "Foundation" },
       form: { emoji: "📝", label: "Form" },
       layout: { emoji: "📐", label: "Layout" },
@@ -51,6 +53,8 @@ export async function list(options: ListOptions) {
     };
 
     const categoryOrder = [
+      "theme",
+      "meta",
       "foundation",
       "form",
       "layout",
@@ -88,6 +92,7 @@ export async function list(options: ListOptions) {
     console.log(`  ${brand.muted("→")} Add a component:    ${chalk.cyan("npx bearnie add button")}`);
     console.log(`  ${brand.muted("→")} Add everything:     ${chalk.cyan("npx bearnie add --all")}`);
     console.log(`  ${brand.muted("→")} Add CSS variables:  ${chalk.cyan("npx bearnie add styles")}`);
+    console.log(`  ${brand.muted("→")} Add barrel export:  ${chalk.cyan("npx bearnie add barrel")}`);
     print.newline();
 
   } catch (error) {

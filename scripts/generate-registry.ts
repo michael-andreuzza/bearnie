@@ -557,15 +557,19 @@ async function generateRegistry() {
   }
 
   // Create index file
+  const rootPkg = await fs.readJson(path.join(ROOT_DIR, "package.json"));
+  const registryVersion =
+    (rootPkg as { registryVersion?: string }).registryVersion ?? "0.2.0";
+
   const indexPath = path.join(REGISTRY_DIR, "index.json");
   await fs.writeJson(
     indexPath,
     {
       name: "bearnie",
-      version: "0.1.0",
+      version: registryVersion,
       components: components,
     },
-    { spaces: 2 }
+    { spaces: 2 },
   );
 
   console.log(`\n✅ Generated registry with ${components.length} components (including styles)`);

@@ -7,11 +7,12 @@
   "bin": {
     "bearnie-mcp": "dist/index.js"
   },
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --clean",
+    "build": "tsup src/index.ts --format esm --clean && tsc --emitDeclarationOnly",
     "dev": "tsup src/index.ts --format esm --watch",
     "typecheck": "tsc --noEmit"
   },

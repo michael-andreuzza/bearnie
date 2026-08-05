@@ -62,6 +62,8 @@ This will:
 - Create the `cn()` utility function
 - Install `clsx`, `tailwind-merge`, and `tailwindcss` dependencies
 
+Projects created with `create-bearnie` already include `bearnie.json` and can skip init.
+
 **Options:**
 
 - `-y, --yes` - Skip confirmation prompts and use defaults
@@ -105,6 +107,8 @@ npx bearnie list
 # Output as JSON
 npx bearnie list --json
 ```
+
+Components are grouped by category, including **Theme** (`styles`) and **Meta** (`barrel`).
 
 **Options:**
 

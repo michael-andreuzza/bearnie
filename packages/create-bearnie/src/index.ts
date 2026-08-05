@@ -36,8 +36,18 @@ function parseFullArg(): boolean {
   return process.argv.includes("--full");
 }
 
-// Registry base URL
-const REGISTRY_URL = "https://bearnie.dev/registry";
+// Registry configuration
+const REGISTRY_URL =
+  process.env.BEARNIE_REGISTRY_URL || "https://bearnie.dev/registry";
+const REGISTRY_PATH = process.env.BEARNIE_REGISTRY_PATH;
+
+const BEARNIE_CONFIG = {
+  componentsDir: "src/components/bearnie",
+  utilsDir: "src/utils",
+  stylesDir: "src/styles",
+  tailwindConfig: "tailwind.config.mjs",
+  typescript: true,
+} as const;
 
 const UTILITY_NAMES = [
   "focus-trap",
@@ -67,6 +77,14 @@ function resolveInstallPath(
 
 async function fetchRegistryEntry(name: string): Promise<RegistryEntry | null> {
   try {
+    if (REGISTRY_PATH) {
+      const entryPath = path.join(REGISTRY_PATH, `${name}.json`);
+      if (await fs.pathExists(entryPath)) {
+        return await fs.readJson(entryPath);
+      }
+      return null;
+    }
+
     const response = await fetch(`${REGISTRY_URL}/${name}.json`);
     if (!response.ok) return null;
     return await response.json();
@@ -76,11 +94,25 @@ async function fetchRegistryEntry(name: string): Promise<RegistryEntry | null> {
 }
 
 async function fetchRegistryIndex(): Promise<RegistryIndex> {
+  if (REGISTRY_PATH) {
+    const indexPath = path.join(REGISTRY_PATH, "index.json");
+    if (await fs.pathExists(indexPath)) {
+      return await fs.readJson(indexPath);
+    }
+    throw new Error(`Failed to fetch registry index at ${indexPath}`);
+  }
+
   const response = await fetch(`${REGISTRY_URL}/index.json`);
   if (!response.ok) {
     throw new Error("Failed to fetch registry index");
   }
   return await response.json();
+}
+
+async function writeBearnieConfig(targetDir: string): Promise<void> {
+  await fs.writeJson(path.join(targetDir, "bearnie.json"), BEARNIE_CONFIG, {
+    spaces: 2,
+  });
 }
 
 async function writeRegistryFiles(
@@ -164,6 +196,8 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
   const pkg = await fs.readJson(pkgPath);
   pkg.name = finalName;
   await fs.writeJson(pkgPath, pkg, { spaces: 2 });
+
+  await writeBearnieConfig(targetDir);
 
   // Install all components if --full flag is provided
   if (fullInstall) {

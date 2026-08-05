@@ -74,6 +74,29 @@ npm run build:packages
 BEARNIE_REGISTRY_PATH=./public/registry npx @bearnie/mcp
 ```
 
+Run smoke tests:
+
+```bash
+npm run test:smoke
+```
+
+## Releasing
+
+Use the release script to bump package versions, update the changelog, rebuild, and tag a release:
+
+```bash
+# Preview changes
+npm run release -- --dry-run
+
+# Bump patch versions, build, commit, and tag
+npm run release
+
+# Publish to npm (OTP prompted interactively)
+npm run release -- --publish
+```
+
+Flags: `--bump patch|minor|major`, `--no-git`, `--notes "..."`.
+
 ## How to Contribute
 
 ### Reporting Bugs
@@ -166,6 +189,10 @@ Edit `scripts/generate-registry.ts` and add to `COMPONENT_META`:
 npm run generate-registry
 ```
 
+Commit the updated files under `public/registry/`. CI runs `generate-registry` and fails if the registry is out of sync.
+
+When you change registry schema or metadata in ways that affect consumers, bump `registryVersion` in the root `package.json` (the release script keeps this in sync with package versions).
+
 #### Step 4: Create Documentation
 
 Create `src/content/components/my-component.mdx`:
@@ -256,7 +283,10 @@ git rebase origin/main
 ```bash
 npm run build
 npm run build:packages
+npm run test:smoke
 ```
+
+CI runs `build:all`, smoke tests, and a registry drift check on every push and pull request.
 
 3. **Commit with meaningful messages:**
 

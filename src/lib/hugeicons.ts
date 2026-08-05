@@ -6,6 +6,9 @@ export { default as Activity01Icon } from "@hugeicons/core-free-icons/Activity01
 export { default as AlignHorizontalCenterIcon } from "@hugeicons/core-free-icons/AlignHorizontalCenterIcon";
 export { default as AlignHorizontalJustifyEndIcon } from "@hugeicons/core-free-icons/AlignHorizontalJustifyEndIcon";
 export { default as AlignHorizontalJustifyStartIcon } from "@hugeicons/core-free-icons/AlignHorizontalJustifyStartIcon";
+export { default as AlignVerticalJustifyCenterIcon } from "@hugeicons/core-free-icons/AlignVerticalJustifyCenterIcon";
+export { default as AlignVerticalJustifyEndIcon } from "@hugeicons/core-free-icons/AlignVerticalJustifyEndIcon";
+export { default as AlignVerticalJustifyStartIcon } from "@hugeicons/core-free-icons/AlignVerticalJustifyStartIcon";
 export { default as ArrowDown02Icon } from "@hugeicons/core-free-icons/ArrowDown02Icon";
 export { default as ArrowLeft02Icon } from "@hugeicons/core-free-icons/ArrowLeft02Icon";
 export { default as ArrowRight02Icon } from "@hugeicons/core-free-icons/ArrowRight02Icon";

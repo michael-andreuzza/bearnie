@@ -7,12 +7,13 @@
   "bin": {
     "create-bearnie": "dist/index.js"
   },
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "template"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --clean",
+    "build": "tsup src/index.ts --format esm --clean && tsc --emitDeclarationOnly",
     "dev": "tsup src/index.ts --format esm --watch"
   },
   "dependencies": {

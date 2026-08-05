@@ -112,6 +112,17 @@ Add a component to your Astro project. Creates files in `src/components/bearnie/
 
 Install components first, then add `barrel` last for `import { Button, Card } from "@/components/bearnie"`.
 
+### `add_components`
+
+Add multiple components in one step. Resolves registry dependencies and installs `barrel` last when included.
+
+**Parameters:**
+
+- `names` (string[]): Component names to add
+- `cwd` (string, optional): Working directory
+
+**Example prompt:** "Add button, card, and barrel to my project"
+
 ## Environment Variables
 
 | Variable | Description |
