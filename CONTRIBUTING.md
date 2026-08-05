@@ -29,7 +29,7 @@ PRs that appear to be fully AI-generated without human oversight will be closed.
 
 ### Prerequisites
 
-- Node.js 18+ and npm 9+
+- Node.js 22+ and npm 9+
 - Git
 - Basic familiarity with Astro and Tailwind CSS
 
