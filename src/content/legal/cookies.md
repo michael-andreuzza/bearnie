@@ -16,7 +16,7 @@ Cookies are small text files stored on your device when you visit a website. The
 These are required for core functionality such as security, authentication, and basic site operations. Without them, the site will not work properly. Essential cookies are always enabled.
 
 **Analytics cookies (optional)**  
-These help us understand how the site is used—what pages are visited, what features perform well, and where improvements are needed. Analytics data is aggregated and not used to personally identify you. You can disable these through your browser settings or opt out when controls are available.
+These help us understand how the site is used: what pages are visited, what features perform well, and where improvements are needed. Analytics data is aggregated and not used to personally identify you. You can disable these through your browser settings or opt out when controls are available.
 
 ## Your choices and controls
 Most browsers allow you to view, block, or delete cookies. You can usually configure these settings to suit your preferences. Be aware that disabling essential cookies may cause parts of the site to break or behave unpredictably.
