@@ -227,7 +227,9 @@ async function main() {
 
   console.log("\nRelease complete.");
   if (!args.publish) {
-    console.log("Publish manually: npm publish -w bearnie && ...");
+    console.log(
+      `Pushing the ${tag} tag triggers the Publish workflow, which publishes to npm automatically.`,
+    );
   }
   if (!args.noGit) {
     console.log(`Push: git push origin main && git push origin ${tag}`);

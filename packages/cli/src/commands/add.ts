@@ -13,12 +13,15 @@ import {
   getRegistryIndex,
   getComponent,
   resolveComponentDependencies,
+  type RegistryComponent,
 } from "../utils/registry.js";
+import { detectPackageManager, installCommand } from "../utils/pm.js";
 import { brand, messages, print } from "../utils/ui.js";
 
 interface AddOptions {
   yes?: boolean;
   all?: boolean;
+  overwrite?: boolean;
   cwd: string;
 }
 
@@ -146,43 +149,93 @@ export async function add(components: string[], options: AddOptions) {
   const writtenFiles: string[] = [];
   const skippedFiles: string[] = [];
 
-  // Install each component
-  for (const componentName of allComponents) {
-    const spinner = ora({
-      text: messages.installing(componentName),
-      color: "green",
-    }).start();
+  // Fetch everything first so we can warn about existing files up front
+  interface PlannedFile {
+    registryPath: string;
+    absPath: string;
+    content: string;
+    exists: boolean;
+  }
+  const plans: { component: RegistryComponent; files: PlannedFile[] }[] = [];
 
+  for (const componentName of allComponents) {
     try {
       const component = await getComponent(componentName);
-
-      // Collect npm dependencies
       component.dependencies?.forEach((d) => npmDeps.add(d));
       component.devDependencies?.forEach((d) => npmDevDeps.add(d));
 
-      // Write files
+      const files: PlannedFile[] = [];
       for (const file of component.files) {
-        const filePath = resolveInstallPath(
+        const absPath = resolveInstallPath(
           cwd,
           config,
           file.path,
           component.type
         );
-        const exists = await fs.pathExists(filePath);
+        files.push({
+          registryPath: file.path,
+          absPath,
+          content: file.content,
+          exists: await fs.pathExists(absPath),
+        });
+      }
 
-        if (exists && !options.yes) {
-          skippedFiles.push(file.path);
+      plans.push({ component, files });
+    } catch (error) {
+      print.error(`Couldn't fetch ${componentName}`);
+      print.hint(`${error}`);
+    }
+  }
+
+  // Ask before overwriting anything that already exists
+  const existingFiles = plans.flatMap((p) => p.files.filter((f) => f.exists));
+  let overwrite = Boolean(options.yes || options.overwrite);
+
+  if (existingFiles.length > 0 && !overwrite) {
+    print.warning(
+      `${existingFiles.length} file${existingFiles.length > 1 ? "s" : ""} already exist${existingFiles.length > 1 ? "" : "s"}:`
+    );
+    existingFiles.slice(0, 5).forEach((f) => {
+      console.log(brand.muted(`     ${f.registryPath}`));
+    });
+    if (existingFiles.length > 5) {
+      console.log(brand.muted(`     ...and ${existingFiles.length - 5} more`));
+    }
+    print.newline();
+
+    const { confirmOverwrite } = await prompts({
+      type: "confirm",
+      name: "confirmOverwrite",
+      message: "Overwrite existing files?",
+      initial: false,
+    });
+
+    overwrite = Boolean(confirmOverwrite);
+    print.newline();
+  }
+
+  // Install each component
+  for (const { component, files } of plans) {
+    const spinner = ora({
+      text: messages.installing(component.name),
+      color: "green",
+    }).start();
+
+    try {
+      for (const file of files) {
+        if (file.exists && !overwrite) {
+          skippedFiles.push(file.registryPath);
           continue;
         }
 
-        await fs.ensureDir(path.dirname(filePath));
-        await fs.writeFile(filePath, file.content);
-        writtenFiles.push(file.path);
+        await fs.ensureDir(path.dirname(file.absPath));
+        await fs.writeFile(file.absPath, file.content);
+        writtenFiles.push(file.registryPath);
       }
 
-      spinner.succeed(messages.installed(componentName));
+      spinner.succeed(messages.installed(component.name));
     } catch (error) {
-      spinner.fail(`Couldn't add ${componentName}`);
+      spinner.fail(`Couldn't add ${component.name}`);
       print.hint(`${error}`);
     }
   }
@@ -192,6 +245,7 @@ export async function add(components: string[], options: AddOptions) {
   const allDevDeps = [...npmDevDeps];
 
   if (allDeps.length > 0 || allDevDeps.length > 0) {
+    const pm = detectPackageManager(cwd);
     const depsSpinner = ora({
       text: messages.installingDeps(),
       color: "green",
@@ -209,14 +263,16 @@ export async function add(components: string[], options: AddOptions) {
       const newDevDeps = allDevDeps.filter((d) => !(d in existingDeps));
 
       if (newDeps.length > 0) {
-        await execa("npm", ["install", ...newDeps], { cwd });
+        const { command, args } = installCommand(pm, newDeps);
+        await execa(command, args, { cwd });
       }
 
       if (newDevDeps.length > 0) {
-        await execa("npm", ["install", "-D", ...newDevDeps], { cwd });
+        const { command, args } = installCommand(pm, newDevDeps, true);
+        await execa(command, args, { cwd });
       }
 
-      depsSpinner.succeed("Dependencies installed");
+      depsSpinner.succeed(`Dependencies installed ${brand.muted(`(${pm})`)}`);
     } catch {
       depsSpinner.fail("Some dependencies couldn't be installed");
       print.hint("You might need to install them manually.");
@@ -243,7 +299,7 @@ export async function add(components: string[], options: AddOptions) {
     console.log(
       `  ${brand.warning("⚠")} Skipped ${skippedFiles.length} existing file${skippedFiles.length > 1 ? "s" : ""}`
     );
-    print.hint(`Use ${chalk.cyan("--yes")} to overwrite.`);
+    print.hint(`Use ${chalk.cyan("--overwrite")} to replace them.`);
   }
 
   // Done!

@@ -38,6 +38,28 @@ function parseFullArg(): boolean {
   return process.argv.includes("--full");
 }
 
+// Detect the package manager from how the user invoked us
+// (npx / pnpm dlx / yarn dlx / bunx set npm_config_user_agent)
+type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
+
+function detectPackageManager(): PackageManager {
+  const userAgent = process.env.npm_config_user_agent ?? "";
+  if (userAgent.startsWith("pnpm")) return "pnpm";
+  if (userAgent.startsWith("yarn")) return "yarn";
+  if (userAgent.startsWith("bun")) return "bun";
+  return "npm";
+}
+
+const PM_COMMANDS: Record<
+  PackageManager,
+  { install: string; dev: string; dlx: string }
+> = {
+  npm: { install: "npm install", dev: "npm run dev", dlx: "npx" },
+  pnpm: { install: "pnpm install", dev: "pnpm dev", dlx: "pnpm dlx" },
+  yarn: { install: "yarn", dev: "yarn dev", dlx: "yarn dlx" },
+  bun: { install: "bun install", dev: "bun run dev", dlx: "bunx" },
+};
+
 // Registry configuration
 const REGISTRY_URL =
   process.env.BEARNIE_REGISTRY_URL || "https://bearnie.dev/registry";
@@ -321,6 +343,8 @@ Thumbs.db
   console.log(`  ${pc.green("✓")} Created project files`);
 
   // Success message
+  const pmCommands = PM_COMMANDS[detectPackageManager()];
+
   if (fullInstall) {
     console.log(`
   ${pc.green("Done!")} Your Bearnie project is ready with all components.
@@ -328,8 +352,8 @@ Thumbs.db
   ${pc.bold("Next steps:")}
 
     ${pc.dim("1.")} cd ${pc.cyan(finalName)}
-    ${pc.dim("2.")} npm install
-    ${pc.dim("3.")} npm run dev
+    ${pc.dim("2.")} ${pmCommands.install}
+    ${pc.dim("3.")} ${pmCommands.dev}
 
   ${pc.dim("All components are in")} ${pc.cyan("src/components/bearnie/")}
   ${pc.dim("Import from")} ${pc.cyan("@/components/bearnie")} ${pc.dim("via")} ${pc.cyan("index.ts")}
@@ -345,12 +369,12 @@ Thumbs.db
   ${pc.bold("Next steps:")}
 
     ${pc.dim("1.")} cd ${pc.cyan(finalName)}
-    ${pc.dim("2.")} npm install
-    ${pc.dim("3.")} npx bearnie add button card
-    ${pc.dim("4.")} npm run dev
+    ${pc.dim("2.")} ${pmCommands.install}
+    ${pc.dim("3.")} ${pmCommands.dlx} bearnie add button card
+    ${pc.dim("4.")} ${pmCommands.dev}
 
   ${pc.dim("Or use")} ${pc.cyan("--full")} ${pc.dim("to include all components:")}
-    npx create-bearnie my-app --full
+    ${pmCommands.dlx} create-bearnie my-app --full
 
   ${pc.dim("Browse components at")} ${link("bearnie.dev/docs/components", "https://bearnie.dev/docs/components")}
 

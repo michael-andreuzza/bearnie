@@ -65,6 +65,36 @@ export interface RegistryIndex {
     description: string;
     category: string;
   }>;
+  utilities?: Array<{
+    name: string;
+    description: string;
+  }>;
+}
+
+export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
+
+/** Detects the project's package manager from its lockfile. */
+export function detectPackageManager(projectRoot: string): PackageManager {
+  if (fs.existsSync(path.join(projectRoot, "pnpm-lock.yaml"))) return "pnpm";
+  if (
+    fs.existsSync(path.join(projectRoot, "bun.lock")) ||
+    fs.existsSync(path.join(projectRoot, "bun.lockb"))
+  ) {
+    return "bun";
+  }
+  if (fs.existsSync(path.join(projectRoot, "yarn.lock"))) return "yarn";
+  return "npm";
+}
+
+/** The install command for the given package manager, e.g. `npm install`. */
+export function installCommandFor(pm: PackageManager): {
+  command: string;
+  args: string[];
+} {
+  if (pm === "npm") {
+    return { command: "npm", args: ["install", "--no-audit", "--no-fund"] };
+  }
+  return { command: pm, args: ["add"] };
 }
 
 export async function fetchComponent(
@@ -254,8 +284,11 @@ export async function installNpmDependencies(
   const missing = dependencies.filter((dep) => !(dep in existing));
   if (missing.length === 0) return { installed: [] };
 
+  const pm = detectPackageManager(projectRoot);
+  const { command, args } = installCommandFor(pm);
+
   try {
-    execFileSync("npm", ["install", "--no-audit", "--no-fund", ...missing], {
+    execFileSync(command, [...args, ...missing], {
       cwd: projectRoot,
       stdio: "pipe",
       timeout: 300_000,
@@ -264,9 +297,74 @@ export async function installNpmDependencies(
   } catch (error) {
     return {
       installed: [],
-      error: `npm install failed: ${error instanceof Error ? error.message : String(error)}`,
+      error: `${command} install failed: ${error instanceof Error ? error.message : String(error)}`,
     };
   }
+}
+
+export type InstalledStatus = "up-to-date" | "modified" | "incomplete";
+
+export interface InstalledComponent {
+  name: string;
+  type: string;
+  status: InstalledStatus;
+  changedFiles: string[];
+}
+
+/**
+ * Scans the project for installed registry entries and compares each file
+ * against the registry version.
+ */
+export async function listInstalledComponents(
+  projectRoot: string,
+): Promise<InstalledComponent[] | null> {
+  const index = await fetchIndex();
+  if (!index) return null;
+
+  const config = await loadProjectConfig(projectRoot);
+  const names = [
+    ...index.components.map((c) => c.name),
+    ...(index.utilities ?? []).map((u) => u.name),
+  ];
+
+  const installed: InstalledComponent[] = [];
+
+  for (const name of names) {
+    const component = await fetchComponent(name);
+    if (!component) continue;
+
+    let anyExists = false;
+    let anyMissing = false;
+    const changedFiles: string[] = [];
+
+    for (const file of component.files) {
+      const filePath = resolveInstallPath(projectRoot, file, component, config);
+      if (await fs.pathExists(filePath)) {
+        anyExists = true;
+        const local = await fs.readFile(filePath, "utf-8");
+        if (local !== file.content) {
+          changedFiles.push(file.path || file.name);
+        }
+      } else {
+        anyMissing = true;
+      }
+    }
+
+    if (!anyExists) continue;
+
+    let status: InstalledStatus = "up-to-date";
+    if (anyMissing) status = "incomplete";
+    else if (changedFiles.length > 0) status = "modified";
+
+    installed.push({
+      name,
+      type: component.type ?? "component",
+      status,
+      changedFiles,
+    });
+  }
+
+  return installed;
 }
 
 export function toPascalCase(name: string): string {

@@ -61,6 +61,9 @@ This will:
 - Set up the `src/components/bearnie` directory
 - Create the `cn()` utility function
 - Install `clsx`, `tailwind-merge`, and `tailwindcss` dependencies
+- Add the `@/*` path alias to `tsconfig.json`
+- Wire `@tailwindcss/vite` into your Astro config (simple configs only — you get a hint otherwise)
+- Install the theme variables to `src/styles/bearnie.css`
 
 Projects created with `create-bearnie` already include `bearnie.json` and can skip init.
 
@@ -90,10 +93,13 @@ npx bearnie add barrel
 npx bearnie add
 ```
 
+If a file already exists, `add` asks before overwriting it (existing files are kept if you decline).
+
 **Options:**
 
-- `-y, --yes` - Skip confirmation prompts
+- `-y, --yes` - Skip confirmation prompts and overwrite existing files
 - `-a, --all` - Add all available components
+- `-o, --overwrite` - Overwrite existing files without asking
 - `--cwd <path>` - Set the working directory
 
 ### `list`
@@ -113,6 +119,52 @@ Components are grouped by category, including **Theme** (`styles`) and **Meta** 
 **Options:**
 
 - `--json` - Output as JSON
+
+### `diff`
+
+See how your installed components differ from the current registry — useful after Bearnie ships fixes.
+
+```bash
+# Check all installed components
+npx bearnie diff
+
+# Check specific components
+npx bearnie diff button dialog
+
+# Just list changed files without the full diff
+npx bearnie diff --name-only
+```
+
+**Options:**
+
+- `--name-only` - Only show which files changed, not the diff
+- `--cwd <path>` - Set the working directory
+
+### `update`
+
+Pull the latest registry version of your installed components. Shows what will change and asks for confirmation first — updating overwrites local edits to those files, so run `diff` first if you've customized components.
+
+```bash
+# Update everything that drifted
+npx bearnie update
+
+# Update specific components
+npx bearnie update button dialog
+
+# Skip the confirmation prompt
+npx bearnie update --yes
+```
+
+Any new npm dependencies the updated components need are installed automatically.
+
+**Options:**
+
+- `-y, --yes` - Skip confirmation prompt
+- `--cwd <path>` - Set the working directory
+
+## Package Managers
+
+The CLI detects your package manager from the lockfile (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`) and uses it for all dependency installs. No configuration needed.
 
 ## Configuration
 

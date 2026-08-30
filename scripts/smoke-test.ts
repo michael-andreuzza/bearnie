@@ -14,7 +14,12 @@ const ROOT = path.join(__dirname, "..");
 
 process.env.BEARNIE_REGISTRY_PATH = path.join(ROOT, "public/registry");
 
-const { installComponents } = await import("../packages/mcp/src/install.ts");
+const { installComponents, listInstalledComponents } = await import(
+  "../packages/mcp/src/install.ts"
+);
+const { detectPackageManager, installCommand } = await import(
+  "../packages/cli/src/utils/pm.ts"
+);
 const REGISTRY_PATH = path.join(ROOT, "public/registry");
 const CLI = path.join(ROOT, "packages/cli/dist/index.js");
 const CREATE = path.join(ROOT, "packages/create-bearnie/dist/index.js");
@@ -31,6 +36,10 @@ function run(cmd: string, cwd: string) {
     env,
     stdio: "pipe",
   });
+}
+
+function runCapture(cmd: string, cwd: string): string {
+  return execSync(cmd, { cwd, env, stdio: "pipe" }).toString();
 }
 
 function createTempDir(prefix: string) {
@@ -56,6 +65,26 @@ test("bearnie init --yes creates config and utilities", () => {
   assert.ok(fs.existsSync(path.join(dir, "bearnie.json")));
   assert.ok(fs.existsSync(path.join(dir, "src/utils/cn.ts")));
   assert.ok(fs.existsSync(path.join(dir, "src/components/bearnie")));
+
+  // Richer init: @/* path alias and base styles
+  const tsconfig = fs.readJsonSync(path.join(dir, "tsconfig.json"));
+  assert.deepEqual(tsconfig.compilerOptions.paths["@/*"], ["./src/*"]);
+  assert.ok(fs.existsSync(path.join(dir, "src/styles/bearnie.css")));
+});
+
+test("bearnie init wires @tailwindcss/vite into a simple astro config", () => {
+  const dir = createTempDir("bearnie-init-tw-");
+  writeMinimalAstroProject(dir);
+  fs.writeFileSync(
+    path.join(dir, "astro.config.mjs"),
+    `import { defineConfig } from "astro/config";\n\nexport default defineConfig({});\n`,
+  );
+
+  run(`node ${CLI} init --yes --cwd ${dir}`, dir);
+
+  const config = fs.readFileSync(path.join(dir, "astro.config.mjs"), "utf-8");
+  assert.ok(config.includes(`import tailwindcss from "@tailwindcss/vite"`));
+  assert.ok(config.includes("plugins: [tailwindcss()]"));
 });
 
 test("bearnie add button barrel --yes installs component files", () => {
@@ -68,6 +97,73 @@ test("bearnie add button barrel --yes installs component files", () => {
     fs.existsSync(path.join(dir, "src/components/bearnie/button/Button.astro")),
   );
   assert.ok(fs.existsSync(path.join(dir, "src/components/bearnie/index.ts")));
+});
+
+test("bearnie diff and update detect and fix drift from the registry", () => {
+  const dir = createTempDir("bearnie-diff-");
+  writeMinimalAstroProject(dir);
+  run(`node ${CLI} init --yes --cwd ${dir}`, dir);
+  run(`node ${CLI} add button --yes --cwd ${dir}`, dir);
+
+  // Fresh install is up to date
+  const clean = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(clean.includes("Everything is up to date"));
+
+  // Local edit shows up in the diff
+  const buttonPath = path.join(
+    dir,
+    "src/components/bearnie/button/Button.astro",
+  );
+  const original = fs.readFileSync(buttonPath, "utf-8");
+  fs.writeFileSync(buttonPath, original.replace("inline-flex", "flex"));
+
+  const drifted = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(drifted.includes("button/Button.astro"));
+  assert.ok(drifted.includes("differs from the registry"));
+
+  // Update restores the registry version
+  run(`node ${CLI} update --yes --cwd ${dir}`, dir);
+  assert.equal(fs.readFileSync(buttonPath, "utf-8"), original);
+
+  const after = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(after.includes("Everything is up to date"));
+});
+
+test("bearnie add skips existing files without --overwrite", () => {
+  const dir = createTempDir("bearnie-overwrite-");
+  writeMinimalAstroProject(dir);
+  run(`node ${CLI} init --yes --cwd ${dir}`, dir);
+  run(`node ${CLI} add button --yes --cwd ${dir}`, dir);
+
+  const buttonPath = path.join(
+    dir,
+    "src/components/bearnie/button/Button.astro",
+  );
+  fs.writeFileSync(buttonPath, "<!-- local -->");
+
+  // Non-interactive prompt defaults to "no" — files must survive
+  run(`node ${CLI} add button --cwd ${dir}`, dir);
+  assert.equal(fs.readFileSync(buttonPath, "utf-8"), "<!-- local -->");
+
+  // Explicit --overwrite replaces them
+  run(`node ${CLI} add button --overwrite --cwd ${dir}`, dir);
+  assert.notEqual(fs.readFileSync(buttonPath, "utf-8"), "<!-- local -->");
+});
+
+test("package manager detection follows lockfiles", () => {
+  const dir = createTempDir("bearnie-pm-");
+  assert.equal(detectPackageManager(dir), "npm");
+
+  fs.writeFileSync(path.join(dir, "pnpm-lock.yaml"), "");
+  assert.equal(detectPackageManager(dir), "pnpm");
+  assert.deepEqual(installCommand("pnpm", ["clsx"], true), {
+    command: "pnpm",
+    args: ["add", "-D", "clsx"],
+  });
+
+  fs.rmSync(path.join(dir, "pnpm-lock.yaml"));
+  fs.writeFileSync(path.join(dir, "bun.lock"), "");
+  assert.equal(detectPackageManager(dir), "bun");
 });
 
 test("create-bearnie scaffolds template with bearnie.json", () => {
@@ -188,4 +284,29 @@ test("MCP installComponents adds button and barrel", async () => {
     fs.existsSync(path.join(dir, "src/components/bearnie/button/Button.astro")),
   );
   assert.ok(fs.existsSync(path.join(dir, "src/components/bearnie/index.ts")));
+});
+
+test("MCP listInstalledComponents reports status against the registry", async () => {
+  const dir = createTempDir("bearnie-mcp-list-");
+  writeMinimalAstroProject(dir);
+
+  await installComponents(dir, ["button"]);
+
+  const installed = await listInstalledComponents(dir);
+  assert.ok(installed !== null);
+
+  const button = installed.find((item) => item.name === "button");
+  assert.equal(button?.status, "up-to-date");
+
+  // Modify the installed file and check it's flagged
+  const buttonPath = path.join(
+    dir,
+    "src/components/bearnie/button/Button.astro",
+  );
+  fs.writeFileSync(buttonPath, "<!-- local -->");
+
+  const after = await listInstalledComponents(dir);
+  const modified = after?.find((item) => item.name === "button");
+  assert.equal(modified?.status, "modified");
+  assert.deepEqual(modified?.changedFiles, ["button/Button.astro"]);
 });

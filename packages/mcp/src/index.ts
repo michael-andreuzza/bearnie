@@ -8,11 +8,14 @@ import { z } from "zod";
 import fs from "fs-extra";
 import path from "path";
 import {
+  detectPackageManager,
   fetchComponent,
   fetchIndex,
   getUsageExample,
+  installCommandFor,
   installComponents,
   installNpmDependencies,
+  listInstalledComponents,
 } from "./install.js";
 
 async function reportNpmInstall(
@@ -24,10 +27,12 @@ async function reportNpmInstall(
   const result = await installNpmDependencies(projectRoot, dependencies);
 
   if (result.error) {
+    const pm = detectPackageManager(projectRoot);
+    const { command, args } = installCommandFor(pm);
     return (
       `## NPM Dependencies\n\n` +
       `Automatic install failed (${result.error}). Install manually:\n\n` +
-      `\`\`\`bash\nnpm install ${dependencies.join(" ")}\n\`\`\`\n\n`
+      `\`\`\`bash\n${command} ${args.join(" ")} ${dependencies.join(" ")}\n\`\`\`\n\n`
     );
   }
 
@@ -269,6 +274,79 @@ server.tool(
     }
 
     output += await reportNpmInstall(projectRoot, result.npmDependencies);
+
+    return {
+      content: [{ type: "text", text: output }],
+    };
+  },
+);
+
+server.tool(
+  "list_installed",
+  "List Bearnie components already installed in the project and whether each is up to date with the registry. Use add_component to update a modified or incomplete component (it overwrites local files with the registry version).",
+  {
+    cwd: z
+      .string()
+      .optional()
+      .describe("The working directory (defaults to current directory)"),
+  },
+  async ({ cwd }) => {
+    const workingDir = cwd || process.cwd();
+    const projectRoot = findProjectRoot(workingDir);
+
+    if (!projectRoot) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Error: Could not find project root (no package.json found). Make sure you're in an Astro project.",
+          },
+        ],
+      };
+    }
+
+    const installed = await listInstalledComponents(projectRoot);
+    if (installed === null) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Error: Could not fetch component registry.",
+          },
+        ],
+      };
+    }
+
+    if (installed.length === 0) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "No Bearnie components are installed in this project yet. Use add_component to install one.",
+          },
+        ],
+      };
+    }
+
+    const statusLabel = {
+      "up-to-date": "up to date",
+      modified: "modified locally",
+      incomplete: "missing files",
+    } as const;
+
+    let output = `# Installed Bearnie components (${installed.length})\n\n`;
+    for (const item of installed) {
+      output += `- **${item.name}** (${item.type}): ${statusLabel[item.status]}`;
+      if (item.changedFiles.length > 0) {
+        output += ` — ${item.changedFiles.join(", ")}`;
+      }
+      output += "\n";
+    }
+
+    const outdated = installed.filter((item) => item.status !== "up-to-date");
+    if (outdated.length > 0) {
+      output += `\nTo update a component to the latest registry version, run add_component with its name (this overwrites local changes).\n`;
+    }
 
     return {
       content: [{ type: "text", text: output }],

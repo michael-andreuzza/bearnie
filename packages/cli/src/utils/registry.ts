@@ -36,6 +36,10 @@ export interface RegistryIndex {
     description: string;
     category: string;
   }[];
+  utilities?: {
+    name: string;
+    description: string;
+  }[];
 }
 
 export async function getRegistryIndex(): Promise<RegistryIndex> {

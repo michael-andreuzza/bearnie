@@ -123,6 +123,23 @@ Add multiple components in one step. Resolves registry dependencies and installs
 
 **Example prompt:** "Add button, card, and barrel to my project"
 
+### `list_installed`
+
+List the Bearnie components already installed in the project, and whether each one is up to date with the registry, modified locally, or missing files. To update an outdated component, run `add_component` with its name (this overwrites local files with the registry version).
+
+**Parameters:**
+
+- `cwd` (string, optional): Working directory
+
+**Example prompts:**
+
+- "Which Bearnie components does this project use?"
+- "Are my Bearnie components up to date?"
+
+## Dependency Installation
+
+When a component needs npm packages, the server installs them automatically using your project's package manager, detected from the lockfile (npm, pnpm, yarn, or bun). It also respects custom directories from `bearnie.json` if present.
+
 ## Environment Variables
 
 | Variable | Description |

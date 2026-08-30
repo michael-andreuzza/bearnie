@@ -12,11 +12,87 @@ import {
   CONFIG_FILE,
   type ProjectConfig,
 } from "../utils/config.js";
+import { getComponent } from "../utils/registry.js";
+import { detectPackageManager, installCommand } from "../utils/pm.js";
 import { brand, messages, print } from "../utils/ui.js";
 
 interface InitOptions {
   yes?: boolean;
   cwd: string;
+}
+
+type SetupResult = "done" | "already" | "manual";
+
+/** Ensures tsconfig.json maps `@/*` to `./src/*` (components import `@/utils/cn`). */
+async function ensureTsconfigPaths(cwd: string): Promise<SetupResult> {
+  const tsconfigPath = path.join(cwd, "tsconfig.json");
+
+  if (!(await fs.pathExists(tsconfigPath))) {
+    await fs.writeJson(
+      tsconfigPath,
+      {
+        extends: "astro/tsconfigs/strict",
+        compilerOptions: {
+          baseUrl: ".",
+          paths: { "@/*": ["./src/*"] },
+        },
+      },
+      { spaces: 2 },
+    );
+    return "done";
+  }
+
+  try {
+    const tsconfig = await fs.readJson(tsconfigPath);
+    const compilerOptions = tsconfig.compilerOptions ?? {};
+
+    if (compilerOptions.paths?.["@/*"]) return "already";
+
+    tsconfig.compilerOptions = {
+      ...compilerOptions,
+      baseUrl: compilerOptions.baseUrl ?? ".",
+      paths: { ...compilerOptions.paths, "@/*": ["./src/*"] },
+    };
+    await fs.writeJson(tsconfigPath, tsconfig, { spaces: 2 });
+    return "done";
+  } catch {
+    // tsconfig with comments or trailing commas — don't risk rewriting it
+    return "manual";
+  }
+}
+
+/** Adds the @tailwindcss/vite plugin to astro.config when it's safe to do so. */
+async function wireTailwindPlugin(cwd: string): Promise<SetupResult> {
+  const candidates = [
+    "astro.config.mjs",
+    "astro.config.ts",
+    "astro.config.mts",
+    "astro.config.js",
+  ];
+
+  for (const name of candidates) {
+    const configPath = path.join(cwd, name);
+    if (!(await fs.pathExists(configPath))) continue;
+
+    let content = await fs.readFile(configPath, "utf-8");
+    if (content.includes("@tailwindcss/vite")) return "already";
+
+    // Only handle the simple case; if a vite block already exists, don't
+    // risk mangling the user's config.
+    if (/vite\s*:/.test(content) || !content.includes("defineConfig({")) {
+      return "manual";
+    }
+
+    content = content.replace(
+      "defineConfig({",
+      "defineConfig({\n  vite: {\n    plugins: [tailwindcss()],\n  },",
+    );
+    content = `import tailwindcss from "@tailwindcss/vite";\n${content}`;
+    await fs.writeFile(configPath, content);
+    return "done";
+  }
+
+  return "manual";
 }
 
 export async function init(options: InitOptions) {
@@ -58,6 +134,8 @@ export async function init(options: InitOptions) {
     }
   }
 
+  const pm = detectPackageManager(cwd);
+
   // Check Tailwind
   const hasTailwind = await hasTailwindInstalled(cwd);
   if (!hasTailwind) {
@@ -79,17 +157,21 @@ export async function init(options: InitOptions) {
       }).start();
 
       try {
-        await execa(
-          "npm",
-          ["install", "-D", "tailwindcss", "@tailwindcss/vite"],
-          { cwd }
+        const { command, args } = installCommand(
+          pm,
+          ["tailwindcss", "@tailwindcss/vite"],
+          true
         );
+        await execa(command, args, { cwd });
         spinner.succeed(brand.success("Tailwind CSS is ready"));
       } catch (error) {
         spinner.fail("Couldn't install Tailwind CSS");
-        print.hint(
-          "Try manually: npm install -D tailwindcss @tailwindcss/vite"
+        const { command, args } = installCommand(
+          pm,
+          ["tailwindcss", "@tailwindcss/vite"],
+          true
         );
+        print.hint(`Try manually: ${command} ${args.join(" ")}`);
       }
     }
   }
@@ -139,8 +221,9 @@ export async function init(options: InitOptions) {
     process.exit(1);
   }
 
-  // Create utility file (cn function)
-  const cnUtilContent = `import { type ClassValue, clsx } from "clsx";
+  // Create utility file (cn function) — prefer the registry version so
+  // `bearnie diff` starts from a clean slate; fall back to a copy offline.
+  const cnFallbackContent = `import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -152,7 +235,15 @@ export function cn(...inputs: ClassValue[]) {
     const utilPath = path.join(cwd, config.utilsDir, "cn.ts");
 
     if (!(await fs.pathExists(utilPath))) {
-      await fs.writeFile(utilPath, cnUtilContent);
+      let cnContent = cnFallbackContent;
+      try {
+        const cnEntry = await getComponent("cn");
+        const cnFile = cnEntry.files.find((f) => f.name === "cn.ts");
+        if (cnFile) cnContent = cnFile.content;
+      } catch {
+        // Offline — the fallback copy works fine
+      }
+      await fs.writeFile(utilPath, cnContent);
 
       // Install clsx and tailwind-merge if not present
       const packageJson = await fs.readJson(path.join(cwd, "package.json"));
@@ -167,7 +258,8 @@ export function cn(...inputs: ClassValue[]) {
 
       if (toInstall.length > 0) {
         spinner.text = "Installing utilities...";
-        await execa("npm", ["install", ...toInstall], { cwd });
+        const { command, args } = installCommand(pm, toInstall);
+        await execa(command, args, { cwd });
       }
     }
   } catch (error) {
@@ -183,14 +275,62 @@ export function cn(...inputs: ClassValue[]) {
     process.exit(1);
   }
 
+  const manualSteps: string[] = [];
+
+  // Make sure `@/*` imports resolve (components import `@/utils/cn`)
+  const tsconfigResult = await ensureTsconfigPaths(cwd);
+  if (tsconfigResult === "done") {
+    print.step(`${brand.success("✓")} Added ${chalk.cyan("@/*")} path alias to tsconfig.json`);
+  } else if (tsconfigResult === "manual") {
+    manualSteps.push(
+      `Add to tsconfig.json: ${chalk.cyan(`"paths": { "@/*": ["./src/*"] }`)} under compilerOptions`
+    );
+  }
+
+  // Wire the Tailwind vite plugin into astro.config
+  const tailwindResult = await wireTailwindPlugin(cwd);
+  if (tailwindResult === "done") {
+    print.step(`${brand.success("✓")} Added ${chalk.cyan("@tailwindcss/vite")} to your Astro config`);
+  } else if (tailwindResult === "manual") {
+    manualSteps.push(
+      `Add ${chalk.cyan("tailwindcss()")} from ${chalk.cyan("@tailwindcss/vite")} to vite.plugins in your Astro config`
+    );
+  }
+
+  // Install the base styles (theme variables)
+  try {
+    const stylesEntry = await getComponent("styles");
+    let stylesWritten = false;
+
+    for (const file of stylesEntry.files) {
+      const stylesPath = path.join(cwd, config.stylesDir, file.name);
+      if (!(await fs.pathExists(stylesPath))) {
+        await fs.ensureDir(path.dirname(stylesPath));
+        await fs.writeFile(stylesPath, file.content);
+        stylesWritten = true;
+      }
+    }
+
+    if (stylesWritten) {
+      print.step(
+        `${brand.success("✓")} Added theme variables to ${chalk.cyan(`${config.stylesDir}/bearnie.css`)}`
+      );
+      manualSteps.push(
+        `Import the styles in your global CSS: ${chalk.cyan(`@import "./bearnie.css";`)} (after ${chalk.cyan(`@import "tailwindcss";`)})`
+      );
+    }
+  } catch {
+    manualSteps.push(`Add theme variables: ${chalk.cyan("npx bearnie add styles")}`);
+  }
+
   // Done!
   print.newline();
   console.log(`  ${messages.initSuccess()}`);
 
   print.nextSteps([
+    ...manualSteps,
     `Add your first component: ${chalk.cyan("npx bearnie add button")}`,
     `Browse all components: ${chalk.cyan("npx bearnie list")}`,
-    `Add CSS variables: ${chalk.cyan("npx bearnie add styles")}`,
   ]);
 
   print.footer();

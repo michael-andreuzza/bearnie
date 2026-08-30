@@ -7,6 +7,8 @@ import chalk from "chalk";
 import { init } from "./commands/init.js";
 import { add } from "./commands/add.js";
 import { list } from "./commands/list.js";
+import { diff } from "./commands/diff.js";
+import { update } from "./commands/update.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
@@ -56,6 +58,7 @@ program
   .argument("[components...]", "Components to add")
   .option("-y, --yes", "Skip prompts and overwrite files")
   .option("-a, --all", "Add all components")
+  .option("-o, --overwrite", "Overwrite existing files without asking")
   .option("--cwd <path>", "Working directory", process.cwd())
   .action(add);
 
@@ -64,6 +67,22 @@ program
   .description("Browse available components")
   .option("--json", "Output as JSON")
   .action(list);
+
+program
+  .command("diff")
+  .description("See how your components differ from the registry")
+  .argument("[components...]", "Components to check (defaults to all installed)")
+  .option("--name-only", "Only show which files changed, not the diff")
+  .option("--cwd <path>", "Working directory", process.cwd())
+  .action(diff);
+
+program
+  .command("update")
+  .description("Update installed components to the latest registry version")
+  .argument("[components...]", "Components to update (defaults to all installed)")
+  .option("-y, --yes", "Skip confirmation prompt")
+  .option("--cwd <path>", "Working directory", process.cwd())
+  .action(update);
 
 // Show help with banner when no command
 program.action(() => {
@@ -77,11 +96,14 @@ program.action(() => {
     ${chalk.cyan("init")}          Set up Bearnie in your project
     ${chalk.cyan("add")} ${chalk.dim("<name>")}    Add a component
     ${chalk.cyan("list")}          Browse all components
+    ${chalk.cyan("diff")}          See what changed in the registry
+    ${chalk.cyan("update")}        Pull the latest component fixes
 
   ${chalk.bold("Examples:")}
     ${chalk.dim("$")} npx bearnie init
     ${chalk.dim("$")} npx bearnie add button card
-    ${chalk.dim("$")} npx bearnie add --all
+    ${chalk.dim("$")} npx bearnie diff
+    ${chalk.dim("$")} npx bearnie update --yes
 
   ${chalk.dim("Run")} ${chalk.cyan("bearnie <command> --help")} ${chalk.dim("for more info")}
 `);

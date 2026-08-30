@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- CLI `diff` command: compare installed components against the registry with per-file diffs
+- CLI `update` command: pull the latest registry version of installed components, with confirmation and automatic npm dependency install
+- CLI `add` now asks before overwriting existing files; new `--overwrite` flag
+- Richer `init`: adds the `@/*` tsconfig path alias, wires `@tailwindcss/vite` into simple Astro configs, and installs `src/styles/bearnie.css`
+- Package-manager detection (npm, pnpm, yarn, bun) across the CLI, create-bearnie, and the MCP server
+- MCP `list_installed` tool: shows installed components and whether each is up to date with the registry
+- Tag-triggered npm publish workflow (`publish.yml`) with a re-runnable `scripts/publish-packages.ts` that only publishes new versions
+
+### Changed
+
+- `init` installs the `cn` utility from the registry so fresh projects start clean in `bearnie diff`
+
 ## [create-bearnie 0.4.4] - 2026-08-05
 
 - Bump create-bearnie to 0.4.4 for canvas token in template
