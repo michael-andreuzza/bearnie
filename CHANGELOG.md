@@ -12,6 +12,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `bearnie init` and `create-bearnie` ask for base and accent; `create-bearnie --theme=<name>` skips the prompts
 - Switching themes via `bearnie add styles-<name> --overwrite` records the choice in `bearnie.json`, keeping `diff`/`update` and the MCP `list_installed` tool comparing against the active palette
 
+### Changed
+
+- **Per-feature UI runtime (registry 0.4.0).** The monolithic `ui-boot.ts` is gone; components now register only the runtime modules they use via `registerUiInit()` in `src/utils/runtime/loader.ts`. Installing e.g. `tabs` no longer pulls in popover, dialog, command, combobox, and dropdown code. The duplicated Enter/Space keyboard shims in `DialogTrigger`, `AlertDialogTrigger`, `SheetTrigger`, and `CollapsibleTrigger` were consolidated into the shared `disclosure-triggers` runtime.
+- Component script fixes: stepper content panels now show/hide with the active step, tree folder icons swap open/closed, buttons default to `type="button"`, file-upload removes files from `input.files`, sliders no longer scroll the page during touch drag, toasts escape user-provided strings, and document-level listeners no longer leak across view-transition navigations (popover, dialog, dropdown, command, sheet, sidebar, carousel).
+
+### Upgrading existing projects
+
+Run `bearnie update` to pull the new loader and component scripts together. A leftover `src/utils/runtime/ui-boot.ts` from older installs is orphaned and safe to delete.
+
 ## [0.2.0 / 0.5.0 / 0.2.0] - 2026-08-30
 
 - bearnie diff and bearnie update commands for pulling registry fixes into existing projects
