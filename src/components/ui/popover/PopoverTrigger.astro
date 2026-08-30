@@ -19,7 +19,10 @@ const { class: className, ...props } = Astro.props;
 </span>
 
 <script>
-  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initPopovers } from "@/utils/runtime/popover";
+  import { initDisclosureTriggers } from "@/utils/runtime/disclosure-triggers";
 
-  ensureUiBootLoaded();
+  registerUiInit(initPopovers);
+  registerUiInit(initDisclosureTriggers);
 </script>

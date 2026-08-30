@@ -23,7 +23,10 @@ const classes = cn(
 </span>
 
 <script>
-  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initCommandDialogs } from "@/utils/runtime/command";
+  import { initDisclosureTriggers } from "@/utils/runtime/disclosure-triggers";
 
-  ensureUiBootLoaded();
+  registerUiInit(initCommandDialogs);
+  registerUiInit(initDisclosureTriggers);
 </script>

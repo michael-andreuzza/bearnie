@@ -6,13 +6,14 @@
   "devDependencies": [],
   "registryDependencies": [
     "cn",
-    "ui-runtime-loader"
+    "ui-runtime-loader",
+    "ui-runtime-tabs"
   ],
   "files": [
     {
       "name": "Tabs.astro",
       "path": "tabs/Tabs.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  defaultValue?: string;\n  orientation?: \"horizontal\" | \"vertical\";\n}\n\nconst {\n  defaultValue,\n  orientation = \"horizontal\",\n  class: className,\n  ...props\n} = Astro.props;\n\nconst classes = cn(\n  \"w-full\",\n  orientation === \"vertical\" && \"grid grid-cols-1 lg:grid-cols-2 gap-4\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-tabs\n  data-default-value={defaultValue}\n  data-orientation={orientation}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  defaultValue?: string;\n  orientation?: \"horizontal\" | \"vertical\";\n}\n\nconst {\n  defaultValue,\n  orientation = \"horizontal\",\n  class: className,\n  ...props\n} = Astro.props;\n\nconst classes = cn(\n  \"w-full\",\n  orientation === \"vertical\" && \"grid grid-cols-1 lg:grid-cols-2 gap-4\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-tabs\n  data-default-value={defaultValue}\n  data-orientation={orientation}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initTabs } from \"@/utils/runtime/tabs\";\n\n  registerUiInit(initTabs);\n</script>\n"
     },
     {
       "name": "TabsContent.astro",

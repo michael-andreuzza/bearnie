@@ -20,7 +20,8 @@ const { class: className, keepOpen = false, ...props } = Astro.props;
 </div>
 
 <script>
-  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initDropdowns } from "@/utils/runtime/dropdown-menu";
 
-  ensureUiBootLoaded();
+  registerUiInit(initDropdowns);
 </script>

@@ -7,18 +7,20 @@
   "registryDependencies": [
     "cn",
     "icon",
-    "ui-runtime-loader"
+    "ui-runtime-loader",
+    "ui-runtime-command",
+    "ui-runtime-disclosure-triggers"
   ],
   "files": [
     {
       "name": "Command.astro",
       "path": "command/Command.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground',\n  className\n);\n---\n\n<div class={classes} data-command {...props}>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground',\n  className\n);\n---\n\n<div class={classes} data-command {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initCommands } from \"@/utils/runtime/command\";\n\n  registerUiInit(initCommands);\n</script>\n"
     },
     {
       "name": "CommandDialog.astro",
       "path": "command/CommandDialog.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div data-command-dialog class={className} {...props}>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div data-command-dialog class={className} {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initCommands, initCommandDialogs } from \"@/utils/runtime/command\";\n\n  registerUiInit(initCommands);\n  registerUiInit(initCommandDialogs);\n</script>\n"
     },
     {
       "name": "CommandDialogContent.astro",
@@ -33,7 +35,7 @@
     {
       "name": "CommandDialogTrigger.astro",
       "path": "command/CommandDialogTrigger.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'inline-block cursor-pointer',\n  className\n);\n---\n\n<span\n  data-command-dialog-trigger\n  class={classes}\n  role=\"button\"\n  tabindex=\"0\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'inline-block cursor-pointer',\n  className\n);\n---\n\n<span\n  data-command-dialog-trigger\n  class={classes}\n  role=\"button\"\n  tabindex=\"0\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initCommandDialogs } from \"@/utils/runtime/command\";\n  import { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\n\n  registerUiInit(initCommandDialogs);\n  registerUiInit(initDisclosureTriggers);\n</script>\n"
     },
     {
       "name": "CommandEmpty.astro",

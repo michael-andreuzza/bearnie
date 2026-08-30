@@ -9,7 +9,7 @@
     {
       "name": "runtime/disclosure-triggers.ts",
       "path": "utils/runtime/disclosure-triggers.ts",
-      "content": "const TRIGGER_SELECTOR = [\n  \"[data-popover-trigger]\",\n  \"[data-command-dialog-trigger]\",\n].join(\", \");\n\nexport function initDisclosureTriggers() {\n  document.querySelectorAll(TRIGGER_SELECTOR).forEach((trigger) => {\n    if (trigger.hasAttribute(\"data-trigger-initialized\")) return;\n    trigger.setAttribute(\"data-trigger-initialized\", \"true\");\n\n    trigger.addEventListener(\"keydown\", (e) => {\n      const event = e as KeyboardEvent;\n      if (event.key === \"Enter\" || event.key === \" \") {\n        event.preventDefault();\n        trigger.dispatchEvent(new MouseEvent(\"click\", { bubbles: true }));\n      }\n    });\n  });\n}\n"
+      "content": "const TRIGGER_SELECTOR = [\n  \"[data-popover-trigger]\",\n  \"[data-command-dialog-trigger]\",\n  \"[data-dialog-trigger]\",\n  \"[data-alert-dialog-trigger]\",\n  \"[data-sheet-trigger]\",\n  \"[data-collapsible-trigger]\",\n].join(\", \");\n\nexport function initDisclosureTriggers() {\n  document.querySelectorAll(TRIGGER_SELECTOR).forEach((trigger) => {\n    if (trigger.hasAttribute(\"data-trigger-initialized\")) return;\n    trigger.setAttribute(\"data-trigger-initialized\", \"true\");\n\n    trigger.addEventListener(\"keydown\", (e) => {\n      const event = e as KeyboardEvent;\n      if (event.key === \"Enter\" || event.key === \" \") {\n        event.preventDefault();\n        trigger.dispatchEvent(new MouseEvent(\"click\", { bubbles: true }));\n      }\n    });\n  });\n}\n"
     }
   ]
 }

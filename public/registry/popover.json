@@ -6,13 +6,15 @@
   "devDependencies": [],
   "registryDependencies": [
     "cn",
-    "ui-runtime-loader"
+    "ui-runtime-loader",
+    "ui-runtime-popover",
+    "ui-runtime-disclosure-triggers"
   ],
   "files": [
     {
       "name": "Popover.astro",
       "path": "popover/Popover.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn('relative inline-block', className)} data-popover {...props}>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn('relative inline-block', className)} data-popover {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initPopovers } from \"@/utils/runtime/popover\";\n  import { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\n\n  registerUiInit(initPopovers);\n  registerUiInit(initDisclosureTriggers);\n</script>\n"
     },
     {
       "name": "PopoverContent.astro",
@@ -22,7 +24,7 @@
     {
       "name": "PopoverTrigger.astro",
       "path": "popover/PopoverTrigger.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  class={cn('inline-block cursor-pointer', className)}\n  data-popover-trigger\n  role=\"button\"\n  tabindex=\"0\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  class={cn('inline-block cursor-pointer', className)}\n  data-popover-trigger\n  role=\"button\"\n  tabindex=\"0\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initPopovers } from \"@/utils/runtime/popover\";\n  import { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\n\n  registerUiInit(initPopovers);\n  registerUiInit(initDisclosureTriggers);\n</script>\n"
     }
   ]
 }

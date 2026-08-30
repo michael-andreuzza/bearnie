@@ -7,13 +7,15 @@
   "registryDependencies": [
     "cn",
     "icon",
-    "ui-runtime-loader"
+    "ui-runtime-loader",
+    "ui-runtime-dialog",
+    "ui-runtime-disclosure-triggers"
   ],
   "files": [
     {
       "name": "Dialog.astro",
       "path": "dialog/Dialog.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst {\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<div data-dialog class={className} {...props}>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst {\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<div data-dialog class={className} {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDialogs } from \"@/utils/runtime/dialog\";\n\n  registerUiInit(initDialogs);\n</script>\n"
     },
     {
       "name": "DialogContent.astro",
@@ -48,7 +50,7 @@
     {
       "name": "DialogTrigger.astro",
       "path": "dialog/DialogTrigger.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst {\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<span \n  data-dialog-trigger\n  class={cn('inline-block cursor-pointer', className)} \n  role=\"button\"\n  tabindex=\"0\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  function initDialogTriggers() {\n    document.querySelectorAll('[data-dialog-trigger]').forEach((trigger) => {\n      if (trigger.hasAttribute('data-trigger-initialized')) return;\n      trigger.setAttribute('data-trigger-initialized', 'true');\n\n      trigger.addEventListener('keydown', (e) => {\n        const event = e as KeyboardEvent;\n        if (event.key === 'Enter' || event.key === ' ') {\n          event.preventDefault();\n          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));\n        }\n      });\n    });\n  }\n\n  initDialogTriggers();\n  document.addEventListener('astro:page-load', initDialogTriggers);\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst {\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<span \n  data-dialog-trigger\n  class={cn('inline-block cursor-pointer', className)} \n  role=\"button\"\n  tabindex=\"0\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\n\n  registerUiInit(initDisclosureTriggers);\n</script>\n"
     }
   ]
 }

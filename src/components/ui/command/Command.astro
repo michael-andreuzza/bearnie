@@ -17,7 +17,8 @@ const classes = cn(
 </div>
 
 <script>
-  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initCommands } from "@/utils/runtime/command";
 
-  ensureUiBootLoaded();
+  registerUiInit(initCommands);
 </script>

@@ -1,17 +1,15 @@
 {
   "name": "ui-runtime-loader",
   "type": "utility",
-  "description": "Loads the shared UI runtime once per page",
+  "description": "Registers per-feature UI runtime initializers (runs on load and after view transitions)",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [
-    "ui-runtime-boot"
-  ],
+  "registryDependencies": [],
   "files": [
     {
       "name": "runtime/loader.ts",
       "path": "utils/runtime/loader.ts",
-      "content": "declare global {\n  interface Window {\n    __bearnieUiBootPromise?: Promise<void>;\n  }\n}\n\nexport function ensureUiBootLoaded() {\n  if (typeof window === \"undefined\") return;\n\n  if (!window.__bearnieUiBootPromise) {\n    window.__bearnieUiBootPromise = import(\"@/utils/runtime/ui-boot\").then(\n      ({ bootUiRuntime }) => {\n        bootUiRuntime();\n      }\n    );\n  }\n}\n"
+      "content": "type UiInit = () => void;\n\ndeclare global {\n  interface Window {\n    __bearnieUiInits?: Set<UiInit>;\n    __bearnieUiPageLoadBound?: boolean;\n  }\n}\n\n/**\n * Registers a UI runtime initializer. The initializer runs immediately and\n * again after every Astro view-transition navigation (`astro:page-load`).\n *\n * Components register only the features they use, so a page ships and runs\n * just the runtime modules its components need. Registration is idempotent:\n * no matter how many component instances import the same initializer, it is\n * registered (and the page-load listener bound) exactly once per session.\n */\nexport function registerUiInit(init: UiInit) {\n  if (typeof window === \"undefined\") return;\n\n  const inits = (window.__bearnieUiInits ??= new Set<UiInit>());\n  if (inits.has(init)) return;\n  inits.add(init);\n  init();\n\n  if (!window.__bearnieUiPageLoadBound) {\n    window.__bearnieUiPageLoadBound = true;\n    document.addEventListener(\"astro:page-load\", () => {\n      window.__bearnieUiInits?.forEach((fn) => fn());\n    });\n  }\n}\n"
     }
   ]
 }

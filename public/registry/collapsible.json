@@ -5,7 +5,9 @@
   "dependencies": [],
   "devDependencies": [],
   "registryDependencies": [
-    "cn"
+    "cn",
+    "ui-runtime-loader",
+    "ui-runtime-disclosure-triggers"
   ],
   "files": [
     {
@@ -21,7 +23,7 @@
     {
       "name": "CollapsibleTrigger.astro",
       "path": "collapsible/CollapsibleTrigger.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  class={cn('cursor-pointer', className)}\n  data-collapsible-trigger\n  role=\"button\"\n  tabindex=\"0\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  function initCollapsibleTriggers() {\n    document.querySelectorAll('[data-collapsible-trigger]').forEach((trigger) => {\n      if (trigger.hasAttribute('data-trigger-initialized')) return;\n      trigger.setAttribute('data-trigger-initialized', 'true');\n\n      // Handle keyboard activation\n      trigger.addEventListener('keydown', (e) => {\n        const event = e as KeyboardEvent;\n        if (event.key === 'Enter' || event.key === ' ') {\n          event.preventDefault();\n          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));\n        }\n      });\n    });\n  }\n\n  initCollapsibleTriggers();\n  document.addEventListener('astro:page-load', initCollapsibleTriggers);\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  class={cn('cursor-pointer', className)}\n  data-collapsible-trigger\n  role=\"button\"\n  tabindex=\"0\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n</span>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDisclosureTriggers } from \"@/utils/runtime/disclosure-triggers\";\n\n  registerUiInit(initDisclosureTriggers);\n</script>\n"
     }
   ]
 }

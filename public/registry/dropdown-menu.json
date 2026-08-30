@@ -6,13 +6,14 @@
   "devDependencies": [],
   "registryDependencies": [
     "cn",
-    "ui-runtime-loader"
+    "ui-runtime-loader",
+    "ui-runtime-dropdown-menu"
   ],
   "files": [
     {
       "name": "DropdownMenu.astro",
       "path": "dropdown-menu/DropdownMenu.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  /** When true, selecting an item does not close the menu (e.g. color pickers). */\n  keepOpen?: boolean;\n}\n\nconst { class: className, keepOpen = false, ...props } = Astro.props;\n---\n\n<div\n  class={cn('relative inline-block text-left', className)}\n  data-dropdown\n  data-dropdown-keep-open={keepOpen ? 'true' : undefined}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { ensureUiBootLoaded } from \"@/utils/runtime/loader\";\n\n  ensureUiBootLoaded();\n</script>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  /** When true, selecting an item does not close the menu (e.g. color pickers). */\n  keepOpen?: boolean;\n}\n\nconst { class: className, keepOpen = false, ...props } = Astro.props;\n---\n\n<div\n  class={cn('relative inline-block text-left', className)}\n  data-dropdown\n  data-dropdown-keep-open={keepOpen ? 'true' : undefined}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDropdowns } from \"@/utils/runtime/dropdown-menu\";\n\n  registerUiInit(initDropdowns);\n</script>\n"
     },
     {
       "name": "DropdownMenuContent.astro",

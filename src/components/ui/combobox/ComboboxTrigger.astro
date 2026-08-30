@@ -59,7 +59,10 @@ const {
 </div>
 
 <script>
-  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initComboboxes } from "@/utils/runtime/combobox";
+  import { initPopovers } from "@/utils/runtime/popover";
 
-  ensureUiBootLoaded();
+  registerUiInit(initPopovers);
+  registerUiInit(initComboboxes);
 </script>

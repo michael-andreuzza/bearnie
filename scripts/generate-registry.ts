@@ -38,22 +38,9 @@ const UTILITY_META: Record<
     file: "focus-trap.ts",
   },
   "ui-runtime-loader": {
-    description: "Loads the shared UI runtime once per page",
+    description:
+      "Registers per-feature UI runtime initializers (runs on load and after view transitions)",
     file: "runtime/loader.ts",
-    registryDependencies: ["ui-runtime-boot"],
-  },
-  "ui-runtime-boot": {
-    description: "Bootstraps interactive UI component behaviors",
-    file: "runtime/ui-boot.ts",
-    registryDependencies: [
-      "ui-runtime-combobox",
-      "ui-runtime-command",
-      "ui-runtime-dialog",
-      "ui-runtime-disclosure-triggers",
-      "ui-runtime-dropdown-menu",
-      "ui-runtime-popover",
-      "ui-runtime-tabs",
-    ],
   },
   "ui-runtime-dialog": {
     description: "Shared dialog initialization runtime",
@@ -123,7 +110,12 @@ const COMPONENT_META: Record<
   "alert-dialog": {
     description: "A modal dialog for important confirmations",
     category: "disclosure",
-    registryDependencies: ["focus-trap", "button"],
+    registryDependencies: [
+      "focus-trap",
+      "button",
+      "ui-runtime-loader",
+      "ui-runtime-disclosure-triggers",
+    ],
   },
   "aspect-ratio": {
     description: "Displays content with a specified aspect ratio",
@@ -168,11 +160,17 @@ const COMPONENT_META: Record<
   collapsible: {
     description: "A component that can expand and collapse content",
     category: "disclosure",
+    registryDependencies: ["ui-runtime-loader", "ui-runtime-disclosure-triggers"],
   },
   command: {
     description: "A command palette for searching and selecting actions",
     category: "navigation",
-    registryDependencies: ["icon", "ui-runtime-loader"],
+    registryDependencies: [
+      "icon",
+      "ui-runtime-loader",
+      "ui-runtime-command",
+      "ui-runtime-disclosure-triggers",
+    ],
   },
   "context-menu": {
     description: "A menu triggered by right-click",
@@ -181,12 +179,17 @@ const COMPONENT_META: Record<
   dialog: {
     description: "A modal dialog that appears on top of the page",
     category: "disclosure",
-    registryDependencies: ["icon", "ui-runtime-loader"],
+    registryDependencies: [
+      "icon",
+      "ui-runtime-loader",
+      "ui-runtime-dialog",
+      "ui-runtime-disclosure-triggers",
+    ],
   },
   "dropdown-menu": {
     description: "A menu that appears when triggered by a button",
     category: "navigation",
-    registryDependencies: ["ui-runtime-loader"],
+    registryDependencies: ["ui-runtime-loader", "ui-runtime-dropdown-menu"],
   },
   empty: {
     description: "A placeholder for empty states",
@@ -234,7 +237,11 @@ const COMPONENT_META: Record<
   popover: {
     description: "Displays floating content when triggered",
     category: "disclosure",
-    registryDependencies: ["ui-runtime-loader"],
+    registryDependencies: [
+      "ui-runtime-loader",
+      "ui-runtime-popover",
+      "ui-runtime-disclosure-triggers",
+    ],
   },
   progress: {
     description: "Displays progress of a task",
@@ -255,7 +262,14 @@ const COMPONENT_META: Record<
   combobox: {
     description: "A searchable dropdown for selecting one option",
     category: "form",
-    registryDependencies: ["command", "popover", "icon", "ui-runtime-loader"],
+    registryDependencies: [
+      "command",
+      "popover",
+      "icon",
+      "ui-runtime-loader",
+      "ui-runtime-combobox",
+      "ui-runtime-popover",
+    ],
   },
   separator: {
     description: "A visual divider between content",
@@ -264,7 +278,12 @@ const COMPONENT_META: Record<
   sheet: {
     description: "A slide-out panel from the edge of the screen",
     category: "disclosure",
-    registryDependencies: ["focus-trap", "icon"],
+    registryDependencies: [
+      "focus-trap",
+      "icon",
+      "ui-runtime-loader",
+      "ui-runtime-disclosure-triggers",
+    ],
   },
   sidebar: {
     description: "A collapsible sidebar navigation",
@@ -300,7 +319,7 @@ const COMPONENT_META: Record<
   tabs: {
     description: "Organizes content into tabbed sections",
     category: "navigation",
-    registryDependencies: ["ui-runtime-loader"],
+    registryDependencies: ["ui-runtime-loader", "ui-runtime-tabs"],
   },
   textarea: {
     description: "A multi-line text input field",

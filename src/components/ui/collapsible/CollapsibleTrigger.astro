@@ -19,22 +19,8 @@ const { class: className, ...props } = Astro.props;
 </span>
 
 <script>
-  function initCollapsibleTriggers() {
-    document.querySelectorAll('[data-collapsible-trigger]').forEach((trigger) => {
-      if (trigger.hasAttribute('data-trigger-initialized')) return;
-      trigger.setAttribute('data-trigger-initialized', 'true');
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initDisclosureTriggers } from "@/utils/runtime/disclosure-triggers";
 
-      // Handle keyboard activation
-      trigger.addEventListener('keydown', (e) => {
-        const event = e as KeyboardEvent;
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-        }
-      });
-    });
-  }
-
-  initCollapsibleTriggers();
-  document.addEventListener('astro:page-load', initCollapsibleTriggers);
+  registerUiInit(initDisclosureTriggers);
 </script>

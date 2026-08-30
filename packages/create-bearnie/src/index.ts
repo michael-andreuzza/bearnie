@@ -111,7 +111,6 @@ const FALLBACK_UTILITY_NAMES = [
   "cn",
   "focus-trap",
   "ui-runtime-loader",
-  "ui-runtime-boot",
   "ui-runtime-dialog",
   "ui-runtime-disclosure-triggers",
   "ui-runtime-dropdown-menu",

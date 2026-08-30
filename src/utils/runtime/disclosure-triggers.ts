@@ -1,6 +1,10 @@
 const TRIGGER_SELECTOR = [
   "[data-popover-trigger]",
   "[data-command-dialog-trigger]",
+  "[data-dialog-trigger]",
+  "[data-alert-dialog-trigger]",
+  "[data-sheet-trigger]",
+  "[data-collapsible-trigger]",
 ].join(", ");
 
 export function initDisclosureTriggers() {

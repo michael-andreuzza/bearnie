@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "components": [
     {
       "name": "styles",
@@ -279,11 +279,7 @@
     },
     {
       "name": "ui-runtime-loader",
-      "description": "Loads the shared UI runtime once per page"
-    },
-    {
-      "name": "ui-runtime-boot",
-      "description": "Bootstraps interactive UI component behaviors"
+      "description": "Registers per-feature UI runtime initializers (runs on load and after view transitions)"
     },
     {
       "name": "ui-runtime-dialog",
