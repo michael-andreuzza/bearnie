@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # npm provenance
+      id-token: write # OIDC for npm trusted publishing + provenance
 
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +21,12 @@ jobs:
           cache: npm
           registry-url: "https://registry.npmjs.org"
 
+      # Trusted publishing requires npm >= 11.5.1
+      - run: npm install -g npm@latest
+
       - run: npm ci
       - run: npm run build:all
       - run: npm run test:smoke
 
       - name: Publish packages with new versions
         run: npx tsx scripts/publish-packages.ts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
