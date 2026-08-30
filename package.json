@@ -4,17 +4,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "overrides": {
-    "bearnie": {
-      "typescript": "5.7.3"
-    },
-    "create-bearnie": {
-      "typescript": "5.7.3"
-    },
-    "@bearnie/mcp": {
-      "typescript": "5.7.3"
-    }
-  },
   "type": "module",
   "version": "0.1.0",
   "registryVersion": "0.3.0",
