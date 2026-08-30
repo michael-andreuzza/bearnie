@@ -330,4 +330,6 @@ export async function add(components: string[], options: AddOptions) {
   // Done!
   print.newline();
   print.success();
+  print.newline();
+  print.footer();
 }
