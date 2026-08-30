@@ -14,13 +14,13 @@ const canonical = `${siteConfig.url}${Astro.url.pathname === "/" ? "" : Astro.ur
 
 <AstroSeo
   title="Bearnie - Build your own component library"
-  description="A set of accessible components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code. Use this to build your own component library."
+  description="50+ accessible, open source components for Astro and Tailwind CSS. Installed as source with one CLI command — customize, extend, and own the code."
   canonical={canonical}
   openGraph={{
     url: canonical,
     title: "Bearnie - Build Your Own Component Library",
     description:
-      "A set of accessible components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code. Use this to build your own component library.",
+      "50+ accessible, open source components for Astro and Tailwind CSS. Installed as source with one CLI command — customize, extend, and own the code.",
     site_name: siteConfig.name,
     type: "website",
     locale: "en_US",
@@ -46,7 +46,7 @@ const canonical = `${siteConfig.url}${Astro.url.pathname === "/" ? "" : Astro.ur
     "@type": "WebSite",
     name: siteConfig.name,
     description:
-      "A set of accessible components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code. Use this to build your own component library.",
+      "50+ accessible, open source components for Astro and Tailwind CSS. Installed as source with one CLI command — customize, extend, and own the code.",
     url: siteConfig.url,
     publisher: {
       "@type": "Organization",
@@ -73,11 +73,12 @@ const canonical = `${siteConfig.url}${Astro.url.pathname === "/" ? "" : Astro.ur
           variant="textXL"
           class="font-medium tracking-tight mt-12"
         >
-          This is not a component library. <br /> This is your component library
+          Astro components, <br /> installed as source
         </Text>
         <Text tag="p" variant="textBase" class="text-muted-foreground mt-4">
-          Accessible components for Astro and Tailwind CSS. Components are added
-          to your project with the CLI. You own and control the code.
+          50+ accessible components for Astro and Tailwind CSS, in any of
+          160+ color palettes. One command copies the code into your project
+          — yours to restyle, extend, and keep.
         </Text>
 
         <div class="flex items-center gap-2.5 mt-12 justify-center">
@@ -86,10 +87,65 @@ const canonical = `${siteConfig.url}${Astro.url.pathname === "/" ? "" : Astro.ur
             >Browse Components</Button
           >
         </div>
-        <code class="mt-8 block text-xs text-muted-foreground font-mono">
+        <button
+          type="button"
+          class="group mt-8 mx-auto flex items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-1.5 font-mono text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+          data-copy-init
+          aria-label="Copy npx bearnie init to clipboard"
+        >
           npx bearnie init
-        </code>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-3.5 opacity-50 group-hover:opacity-100 transition-opacity"
+            aria-hidden="true"
+            data-copy-icon
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+          </svg>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-3.5 hidden"
+            aria-hidden="true"
+            data-check-icon
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </button>
       </div>
     </Wrapper>
   </section>
+  <script>
+    function initCopyInit() {
+      document.querySelectorAll("[data-copy-init]").forEach((button) => {
+        if (button.hasAttribute("data-initialized")) return;
+        button.setAttribute("data-initialized", "true");
+
+        button.addEventListener("click", async () => {
+          await navigator.clipboard.writeText("npx bearnie init");
+          const copyIcon = button.querySelector("[data-copy-icon]");
+          const checkIcon = button.querySelector("[data-check-icon]");
+          copyIcon?.classList.add("hidden");
+          checkIcon?.classList.remove("hidden");
+          setTimeout(() => {
+            copyIcon?.classList.remove("hidden");
+            checkIcon?.classList.add("hidden");
+          }, 1500);
+        });
+      });
+    }
+
+    initCopyInit();
+    document.addEventListener("astro:page-load", initCopyInit);
+  </script>
 </BaseLayout>
