@@ -20,11 +20,31 @@ const { navigation, currentPath } = Astro.props;
 <nav class="space-y-8 py-8 px-6">
   {
     navigation.map((section) => (
-      <div>
-        <h4 class="font-medium text-[0.70rem] text-muted-foreground">
-          {section.title}
+      <div data-sidebar-section={section.title}>
+        <h4>
+          <button
+            type="button"
+            data-sidebar-section-toggle
+            aria-expanded="true"
+            class="flex items-center gap-1 font-medium text-[0.70rem] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            {section.title}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-3 transition-transform duration-200"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
         </h4>
-        <ul class="space-y-0.5 mt-2">
+        <ul class="space-y-0.5 mt-2" data-sidebar-section-items>
           {section.items.map((item) => (
             <li>
               <a
@@ -48,3 +68,58 @@ const { navigation, currentPath } = Astro.props;
     ))
   }
 </nav>
+
+<script>
+  const STORAGE_KEY = "sidebar-collapsed-sections";
+
+  function readCollapsed(): Set<string> {
+    try {
+      return new Set(JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "[]"));
+    } catch {
+      return new Set();
+    }
+  }
+
+  function initSidebarSections() {
+    const collapsed = readCollapsed();
+
+    document.querySelectorAll("[data-sidebar-section]").forEach((sectionEl) => {
+      const name = sectionEl.getAttribute("data-sidebar-section") || "";
+      const toggle = sectionEl.querySelector(
+        "[data-sidebar-section-toggle]"
+      ) as HTMLButtonElement | null;
+      const items = sectionEl.querySelector(
+        "[data-sidebar-section-items]"
+      ) as HTMLElement | null;
+      if (!toggle || !items) return;
+
+      const apply = (isCollapsed: boolean) => {
+        items.hidden = isCollapsed;
+        toggle.setAttribute("aria-expanded", String(!isCollapsed));
+        toggle
+          .querySelector("svg")
+          ?.classList.toggle("-rotate-90", isCollapsed);
+      };
+
+      apply(collapsed.has(name));
+
+      if (sectionEl.hasAttribute("data-initialized")) return;
+      sectionEl.setAttribute("data-initialized", "true");
+
+      toggle.addEventListener("click", () => {
+        const nowCollapsed = !items.hidden;
+        apply(nowCollapsed);
+        const stored = readCollapsed();
+        if (nowCollapsed) {
+          stored.add(name);
+        } else {
+          stored.delete(name);
+        }
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify([...stored]));
+      });
+    });
+  }
+
+  initSidebarSections();
+  document.addEventListener("astro:page-load", initSidebarSections);
+</script>

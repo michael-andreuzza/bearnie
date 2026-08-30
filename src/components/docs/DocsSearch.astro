@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import HugeIcon from "@/components/ui/icon/HugeIcon.astro";
-import { CommandIcon, Search01Icon } from "@/components/ui/icon/icons";
+import { Search01Icon } from "@/components/ui/icon/icons";
 
 // Get all docs content
 const components = await Promise.all(
@@ -33,9 +33,7 @@ const allDocs = [...docs, ...components];
   aria-label="Search documentation"
 >
   <HugeIcon icon={Search01Icon} size={14} />
-  <kbd class="inline-flex items-center gap-0.5 text-muted-foreground">
-    <HugeIcon icon={CommandIcon} size={12} /><span class="text-sm font-medium">K</span>
-  </kbd>
+  <kbd class="inline-flex items-center justify-center size-4.5 rounded-xs border border-border bg-muted text-[10px] font-medium text-muted-foreground">F</kbd>
 </button>
 
 <script is:inline define:vars={{ allDocs }}>
@@ -228,7 +226,17 @@ const allDocs = [...docs, ...components];
 
       // Global keyboard shortcuts
       document.addEventListener("keydown", function (e) {
-        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        if (e.key === "f" || e.key === "F") {
+          // Leave browser find (Cmd/Ctrl+F) and typing in fields alone
+          if (e.metaKey || e.ctrlKey || e.altKey) return;
+          var t = e.target;
+          if (
+            t instanceof HTMLInputElement ||
+            t instanceof HTMLTextAreaElement ||
+            (t && t.isContentEditable)
+          ) {
+            return;
+          }
           e.preventDefault();
           if (modal.classList.contains("hidden")) {
             openModal();

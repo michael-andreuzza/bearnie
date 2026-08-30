@@ -18,10 +18,10 @@ const { navigation, currentPath } = Astro.props;
 </div>
 <!-- Mobile sidebar -->
 <aside
-  class="fixed inset-y-0 left-0 z-50 w-72 bg-muted border-r transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden"
+  class="fixed inset-y-3 left-3 z-50 w-72 bg-background border rounded-xl shadow-lg overflow-hidden transform -translate-x-[calc(100%+0.75rem)] transition-transform duration-300 ease-in-out md:hidden"
   id="docs-mobile-sidebar"
 >
-  <div class="flex items-center justify-between h-14 px-4 border-b">
+  <div class="flex items-center justify-between h-14 px-4">
     <a href="/" class="font-semibold">bearnie</a>
     <button
       type="button"
@@ -45,7 +45,7 @@ const { navigation, currentPath } = Astro.props;
       </svg>
     </button>
   </div>
-  <div class="h-[calc(100vh-3.5rem)] overflow-y-auto scroll-mask-b-16">
+  <div class="h-[calc(100%-3.5rem)] overflow-y-auto scroll-mask-b-16">
     <SidebarNav navigation={navigation} currentPath={currentPath} />
   </div>
 </aside>

@@ -27,10 +27,11 @@ const {
     </BaseHead>
     <ClientRouter />
   </head>
-  <body class={`${bodyClass} text-foreground antialiased flex flex-col min-h-svh`}>
+  <body
+    class={`${bodyClass} text-foreground antialiased flex flex-col min-h-svh`}
+  >
     {showNavigation !== false && <Navigation />}
     <main class="grow"><slot /></main>
     {showFooter !== false && <Footer />}
-   
   </body>
 </html>

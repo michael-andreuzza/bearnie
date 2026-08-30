@@ -9,13 +9,13 @@ import ThemeToggle from "@/components/ui/theme-toggle/ThemeToggle.astro";
 import LogoContextMenu from "@/components/global/LogoContextMenu.astro";
 // Icons
 import HugeIcon from "@/components/ui/icon/HugeIcon.astro";
-import { Github01Icon, Hamburger01Icon } from "@/components/ui/icon/icons";
+import { Github01Icon } from "@/components/ui/icon/icons";
 import { siteConfig } from "@/config/site";
 export interface Props {
   variant?: "default" | "docs";
 }
 const { variant = "default" } = Astro.props;
-const navLinks = [
+const allNavLinks = [
   { title: "Docs", href: "/docs" },
   {
     title: "Astro  themes",
@@ -23,13 +23,18 @@ const navLinks = [
     external: true,
   },
 ];
+// No need for a Docs link while already in the docs
+const navLinks =
+  variant === "docs"
+    ? allNavLinks.filter((link) => link.href !== "/docs")
+    : allNavLinks;
 const githubUrl = siteConfig.links.github;
 const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
 ---
 
 {
   variant === "docs" ? (
-    <header class="sticky top-0 z-50 w-full bg-canvas">
+    <header class="sticky top-0 z-50 w-full bg-background">
       <Wrapper variant="standard">
         <div class="flex py-4 items-center justify-between ">
           <LogoContextMenu>
@@ -85,7 +90,19 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
               id="docs-mobile-menu-toggle"
               aria-label="Toggle menu"
             >
-              <HugeIcon icon={Hamburger01Icon} size="md" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                class="size-5"
+                aria-hidden="true"
+              >
+                <path d="M4 9h16" />
+                <path d="M4 15h16" />
+              </svg>
             </button>
           </div>
         </div>

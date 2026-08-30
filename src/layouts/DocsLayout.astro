@@ -134,7 +134,7 @@ const isDocsPage = currentPath.startsWith("/docs");
 <BaseLayout
   showFooter={false}
   showNavigation={false}
-  bodyClass="bg-muted"
+  bodyClass="bg-background"
   structuredData={{
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -164,25 +164,28 @@ const isDocsPage = currentPath.startsWith("/docs");
     keywords: keywords.length > 0 ? keywords.join(", ") : undefined,
   }}
 >
-  <div class="fixed inset-0 flex flex-col 2xl:max-w-350 mx-auto bg-canvas">
+  <div class="fixed inset-0 flex flex-col 2xl:max-w-350 mx-auto bg-background">
     <Navigation variant="docs" />
     <DocsMobileNavigation navigation={navigation} currentPath={currentPath} />
 
     <div
-      class="relative flex flex-1 min-h-0 bg-background rounded-lg lg:rounded-2xl overflow-hidden m-2 lg:m-3 lg:mt-0 mt-0"
+      class="relative flex flex-1 min-h-0 bg-background overflow-hidden"
     >
       <!-- Desktop Sidebar -->
-      <div class="hidden md:block lg:w-62 shrink-0">
+      <div class="relative hidden md:block lg:w-62 shrink-0">
         <aside
           id="sidebar-scroll-container"
-          class="h-full overflow-y-auto scrollbar-overlay scroll-mask-b-16"
+          class="h-full overflow-y-auto scrollbar-overlay"
         >
           <SidebarNav navigation={navigation} currentPath={currentPath} />
         </aside>
+        <div class="progressive-blur-top"></div>
+        <div class="progressive-blur-bottom"></div>
       </div>
       <!-- Main Content + TOC wrapped in box -->
+      <div class="relative flex-1 min-w-0 min-h-0">
       <div
-        class="flex-1 min-w-0 flex overflow-y-auto overflow-x-hidden scrollbar-styled"
+        class="h-full flex overflow-y-auto overflow-x-hidden scrollbar-styled scroll-smooth"
       >
         <div class="flex-1 min-w-0">
           <div class="max-w-3xl 2xl:max-w-5xl mx-auto">
@@ -256,12 +259,10 @@ const isDocsPage = currentPath.startsWith("/docs");
         <!-- Right Sidebar - Table of Contents -->
         <TableOfContents />
       </div>
-
-      <!-- Border overlay - sits on top of scrollbars -->
-      <div
-        class="pointer-events-none absolute inset-0 rounded-lg lg:rounded-2xl ring-1 ring-inset ring-border"
-      >
+      <div class="progressive-blur-top"></div>
+      <div class="progressive-blur-bottom"></div>
       </div>
+
     </div>
   </div>
   <script>
@@ -279,12 +280,12 @@ const isDocsPage = currentPath.startsWith("/docs");
       mobileMenuToggle.setAttribute("data-initialized", "true");
 
       function openMobileMenu() {
-        mobileSidebar?.classList.remove("-translate-x-full");
+        mobileSidebar?.classList.remove("-translate-x-[calc(100%+0.75rem)]");
         mobileBackdrop?.classList.remove("opacity-0", "pointer-events-none");
         mobileBackdrop?.classList.add("opacity-100", "pointer-events-auto");
       }
       function closeMobileMenu() {
-        mobileSidebar?.classList.add("-translate-x-full");
+        mobileSidebar?.classList.add("-translate-x-[calc(100%+0.75rem)]");
         mobileBackdrop?.classList.add("opacity-0", "pointer-events-none");
         mobileBackdrop?.classList.remove("opacity-100", "pointer-events-auto");
       }

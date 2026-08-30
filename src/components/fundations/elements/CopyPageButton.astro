@@ -101,6 +101,26 @@ const { contentId = "docs-article-content" } = Astro.props;
         </svg>
         Open in ChatGPT
       </button>
+      <button
+        type="button"
+        class="w-full flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        data-copy-action="cursor"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4"
+        >
+          <path d="M12 2 21 7v10l-9 5-9-5V7z" />
+          <path d="M12 2v10m0 0 9 5m-9-5-9 5" />
+        </svg>
+        Open in Cursor
+      </button>
     </div>
   </div>
 </div>
@@ -265,6 +285,10 @@ const { contentId = "docs-article-content" } = Astro.props;
           const prompt = `I'm looking at this documentation: ${pageUrl}\nHelp me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`;
           const encodedContent = encodeURIComponent(prompt);
           window.open(`https://chat.openai.com/?q=${encodedContent}`, "_blank");
+        } else if (action === "cursor") {
+          const prompt = `I'm looking at this documentation: ${pageUrl}\nHelp me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`;
+          const encodedContent = encodeURIComponent(prompt);
+          window.location.href = `cursor://anysphere.cursor-deeplink/prompt?text=${encodedContent}`;
         }
 
         closeCopyMenu();

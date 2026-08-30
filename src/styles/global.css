@@ -13,6 +13,32 @@
   --font-mono: Geist Mono, monospace;
 }
 
+/* Progressive blur overlays for the edges of scroll areas */
+.progressive-blur-top,
+.progressive-blur-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.progressive-blur-top {
+  top: 0;
+  height: 2.5rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to bottom, black 25%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent);
+}
+.progressive-blur-bottom {
+  bottom: 0;
+  height: 3rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to top, black 25%, transparent);
+  -webkit-mask-image: linear-gradient(to top, black 25%, transparent);
+}
+
 /* Overlay scrollbar - visible on hover */
 .scrollbar-overlay {
   scrollbar-width: none;

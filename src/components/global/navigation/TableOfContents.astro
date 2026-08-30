@@ -52,19 +52,34 @@ const { contentId = "docs-content" } = Astro.props;
     const content = document.getElementById(contentId);
     if (!content) return;
 
-    const headings = content.querySelectorAll("h2, h3, h4");
+    const headings = Array.from(
+      content.querySelectorAll<HTMLElement>("h2, h3, h4"),
+    );
     if (headings.length === 0) {
       toc.innerHTML =
         '<p class="text-muted-foreground text-sm">No sections</p>';
       return;
     }
 
-    // Create the list with left border
+    const indentByLevel: Record<string, string> = {
+      H2: "pl-3.5",
+      H3: "pl-6",
+      H4: "pl-8",
+    };
+
     const tocList = document.createElement("ul");
-    tocList.className = "border-l border-border space-y-0.1";
+    tocList.className = "relative border-l border-border";
+
+    // Single indicator that slides to the active item
+    const indicator = document.createElement("span");
+    indicator.className =
+      "absolute -left-px w-0.5 rounded-full bg-foreground opacity-0 transition-all duration-200 ease-out";
+    indicator.setAttribute("aria-hidden", "true");
+    tocList.appendChild(indicator);
+
+    const linkById = new Map<string, HTMLAnchorElement>();
 
     headings.forEach((heading, index) => {
-      // Add ID if not present
       if (!heading.id) {
         heading.id =
           heading.textContent
@@ -72,51 +87,73 @@ const { contentId = "docs-content" } = Astro.props;
             .replace(/\s+/g, "-")
             .replace(/[^\w-]/g, "") || `section-${index}`;
       }
+      // Keep headings clear of the top blur when jumped to
+      heading.style.scrollMarginTop = "1.5rem";
 
       const li = document.createElement("li");
-      li.className = "relative";
-
-      const isH3 = heading.tagName === "H3";
-      li.innerHTML = `
-        <a
-          href="#${heading.id}"
-          class="block py-1 pl-4 ${isH3 ? "pl-6" : ""} text-xs text-muted-foreground hover:text-foreground transition-colors relative"
-        >
-          <span class="absolute left-0 top-0 bottom-0 w-0.5 bg-primary hidden" aria-hidden="true"></span>
-          ${heading.textContent}
-        </a>
-      `;
+      const link = document.createElement("a");
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent;
+      link.className = `block py-1 ${indentByLevel[heading.tagName] || "pl-3.5"} text-xs leading-relaxed text-muted-foreground hover:text-foreground transition-colors`;
+      link.addEventListener("click", () => setActive(heading.id));
+      linkById.set(heading.id, link);
+      li.appendChild(link);
       tocList.appendChild(li);
     });
 
     toc.appendChild(tocList);
 
-    // Scroll spy with indicator
-    const tocLinks = tocList.querySelectorAll("a");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            tocLinks.forEach((link) => {
-              const indicator = link.querySelector("span");
-              if (link.getAttribute("href") === `#${id}`) {
-                link.classList.add("text-primary", "font-medium");
-                link.classList.remove("text-muted-foreground");
-                indicator?.classList.remove("hidden");
-              } else {
-                link.classList.remove("text-primary", "font-medium");
-                link.classList.add("text-muted-foreground");
-                indicator?.classList.add("hidden");
-              }
-            });
-          }
-        });
-      },
-      { rootMargin: "-80px 0px -80% 0px" },
-    );
+    let activeId = "";
 
-    headings.forEach((heading) => observer.observe(heading));
+    function setActive(id: string) {
+      if (id === activeId) return;
+      activeId = id;
+
+      linkById.forEach((link, linkId) => {
+        const isActive = linkId === id;
+        link.classList.toggle("text-foreground", isActive);
+        link.classList.toggle("font-medium", isActive);
+        link.classList.toggle("text-muted-foreground", !isActive);
+      });
+
+      const activeLink = linkById.get(id);
+      if (activeLink) {
+        indicator.style.top = `${activeLink.offsetTop + 5}px`;
+        indicator.style.height = `${activeLink.offsetHeight - 10}px`;
+        indicator.classList.remove("opacity-0");
+      }
+    }
+
+    // Scroll spy: active section is the last heading above the reading line
+    const scroller = content.closest(".scrollbar-styled");
+
+    function updateActive() {
+      const readingLine = 96;
+      let current = headings[0];
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= readingLine) {
+          current = heading;
+        } else {
+          break;
+        }
+      }
+      if (current) setActive(current.id);
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        updateActive();
+      });
+    }
+
+    (scroller || window).addEventListener("scroll", onScroll, {
+      passive: true,
+    });
+    updateActive();
   }
 
   generateTOC();
