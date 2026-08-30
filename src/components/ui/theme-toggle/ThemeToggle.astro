@@ -6,71 +6,114 @@ export interface Props {
 }
 
 const { size = "default" } = Astro.props;
+
+const options = [
+  { mode: "light", label: "Light" },
+  { mode: "dark", label: "Dark" },
+  { mode: "system", label: "System" },
+] as const;
 ---
 
-<Button
-  variant="ghost"
-  size={size}
-  iconOnly
-  data-theme-toggle
-  aria-label="Switch theme (light, dark, system)"
->
-  <!-- Sun: light -->
-  <svg
-    data-theme-icon="light"
-    class="size-4"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
+<div class="relative inline-block" data-theme-toggle>
+  <Button
+    variant="ghost"
+    size={size}
+    iconOnly
+    data-theme-toggle-trigger
+    aria-label="Change theme"
+    aria-haspopup="menu"
+    aria-expanded="false"
   >
-    <circle cx="12" cy="12" r="4"></circle>
-    <path d="M12 2v2"></path>
-    <path d="M12 20v2"></path>
-    <path d="m4.93 4.93 1.41 1.41"></path>
-    <path d="m17.66 17.66 1.41 1.41"></path>
-    <path d="M2 12h2"></path>
-    <path d="M20 12h2"></path>
-    <path d="m6.34 17.66-1.41 1.41"></path>
-    <path d="m19.07 4.93-1.41 1.41"></path>
-  </svg>
-  <!-- Moon: dark -->
-  <svg
-    data-theme-icon="dark"
-    class="size-4 hidden"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
+    <!-- Sun: light -->
+    <svg
+      data-theme-icon="light"
+      class="size-4"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2"></path>
+      <path d="M12 20v2"></path>
+      <path d="m4.93 4.93 1.41 1.41"></path>
+      <path d="m17.66 17.66 1.41 1.41"></path>
+      <path d="M2 12h2"></path>
+      <path d="M20 12h2"></path>
+      <path d="m6.34 17.66-1.41 1.41"></path>
+      <path d="m19.07 4.93-1.41 1.41"></path>
+    </svg>
+    <!-- Moon: dark -->
+    <svg
+      data-theme-icon="dark"
+      class="size-4 hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
+    <!-- Monitor: system -->
+    <svg
+      data-theme-icon="system"
+      class="size-4 hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+      <path d="M8 21h8"></path>
+      <path d="M12 17v4"></path>
+    </svg>
+  </Button>
+  <div
+    data-theme-menu
+    hidden
+    role="menu"
+    class="absolute right-0 top-full z-50 mt-1 w-32 rounded-md border border-border bg-popover p-1 shadow-md"
   >
-    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-  </svg>
-  <!-- Monitor: system -->
-  <svg
-    data-theme-icon="system"
-    class="size-4 hidden"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-    <path d="M8 21h8"></path>
-    <path d="M12 17v4"></path>
-  </svg>
-</Button>
+    {
+      options.map((option) => (
+        <button
+          type="button"
+          role="menuitemradio"
+          data-theme-option={option.mode}
+          class="flex w-full items-center justify-between rounded-sm px-2 py-1.5 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+        >
+          {option.label}
+          <svg
+            data-theme-check
+            class="size-3.5 hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+        </button>
+      ))
+    }
+  </div>
+</div>
 
 <script is:inline>
   // Apply the stored theme before paint to prevent a flash. "system" follows
@@ -109,30 +152,82 @@ const { size = "default" } = Astro.props;
     document.documentElement.classList.toggle("dark", dark);
   };
 
-  const updateButtons = () => {
+  const updateToggles = () => {
     const mode = currentMode();
-    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-      button.querySelectorAll("[data-theme-icon]").forEach((icon) => {
+    document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
+      root.querySelectorAll("[data-theme-icon]").forEach((icon) => {
         icon.classList.toggle(
           "hidden",
           icon.getAttribute("data-theme-icon") !== mode,
         );
       });
-      button.setAttribute("title", `Theme: ${mode}`);
+      root.querySelectorAll("[data-theme-option]").forEach((option) => {
+        const active = option.getAttribute("data-theme-option") === mode;
+        option.setAttribute("aria-checked", String(active));
+        option
+          .querySelector("[data-theme-check]")
+          ?.classList.toggle("hidden", !active);
+      });
+    });
+  };
+
+  const closeMenu = (root: Element) => {
+    const menu = root.querySelector("[data-theme-menu]") as HTMLElement | null;
+    if (menu) menu.hidden = true;
+    root
+      .querySelector("[data-theme-toggle-trigger]")
+      ?.setAttribute("aria-expanded", "false");
+  };
+
+  const closeAllMenus = () => {
+    document.querySelectorAll("[data-theme-toggle]").forEach(closeMenu);
+  };
+
+  // Bound once; resolves live elements at event time so it survives
+  // view-transition navigations without leaking listeners.
+  let documentListenersBound = false;
+  const bindDocumentListeners = () => {
+    if (documentListenersBound) return;
+    documentListenersBound = true;
+
+    document.addEventListener("click", (e) => {
+      document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
+        if (!root.contains(e.target as Node)) closeMenu(root);
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAllMenus();
     });
   };
 
   const init = () => {
-    updateButtons();
-    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-      if (button.hasAttribute("data-initialized")) return;
-      button.setAttribute("data-initialized", "true");
+    bindDocumentListeners();
+    updateToggles();
 
-      button.addEventListener("click", () => {
-        const next = MODES[(MODES.indexOf(currentMode()) + 1) % MODES.length];
-        localStorage.setItem("theme", next);
-        applyMode(next);
-        updateButtons();
+    document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
+      if (root.hasAttribute("data-initialized")) return;
+      root.setAttribute("data-initialized", "true");
+
+      const trigger = root.querySelector("[data-theme-toggle-trigger]");
+      const menu = root.querySelector("[data-theme-menu]") as HTMLElement | null;
+      if (!trigger || !menu) return;
+
+      trigger.addEventListener("click", () => {
+        const open = menu.hidden;
+        closeAllMenus();
+        menu.hidden = !open;
+        trigger.setAttribute("aria-expanded", String(open));
+      });
+
+      root.querySelectorAll("[data-theme-option]").forEach((option) => {
+        option.addEventListener("click", () => {
+          const mode = option.getAttribute("data-theme-option") as Mode;
+          localStorage.setItem("theme", mode);
+          applyMode(mode);
+          updateToggles();
+          closeMenu(root);
+        });
       });
     });
   };
