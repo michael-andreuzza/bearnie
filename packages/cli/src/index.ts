@@ -84,8 +84,21 @@ program
   .option("--cwd <path>", "Working directory", process.cwd())
   .action(update);
 
-// Show help with banner when no command
-program.action(() => {
+// Show help with banner when no command; catch unknown commands ourselves
+// (commander 13+ reports leftovers as "too many arguments" instead of
+// emitting the command:* event)
+program.argument("[args...]").action((args: string[]) => {
+  if (args.length > 0) {
+    console.log(`
+  ${logo}
+
+  ${chalk.yellow("Hmm,")} I don't know that command: ${chalk.red(args.join(" "))}
+
+  Run ${chalk.cyan("npx bearnie --help")} to see what I can do.
+`);
+    process.exit(1);
+  }
+
   console.log(`
   ${logo}
 
@@ -110,15 +123,3 @@ program.action(() => {
 });
 
 program.parse();
-
-// Handle unknown commands
-program.on("command:*", () => {
-  console.log(`
-  ${logo}
-
-  ${chalk.yellow("Hmm,")} I don't know that command: ${chalk.red(program.args.join(" "))}
-
-  Run ${chalk.cyan("npx bearnie --help")} to see what I can do.
-`);
-  process.exit(1);
-});

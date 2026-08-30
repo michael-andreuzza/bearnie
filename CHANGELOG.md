@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - `init` installs the `cn` utility from the registry so fresh projects start clean in `bearnie diff`
+- Updated CLI dependencies to latest majors: chalk 6, commander 15, diff 9, execa 10, ora 9
+- Node requirement raised from >=18 to >=22.12 across all packages, matching Astro 7's own requirement (TypeScript stays on 5.x for `astro check` compatibility)
 
 ## [create-bearnie 0.4.4] - 2026-08-05
 
