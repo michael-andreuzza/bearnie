@@ -2,9 +2,12 @@
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends HTMLAttributes<'div'> {}
+export interface Props extends HTMLAttributes<'div'> {
+  /** Which step this panel belongs to (matches StepperItem's step). */
+  step: number;
+}
 
-const { class: className, ...props } = Astro.props;
+const { step, class: className, ...props } = Astro.props;
 
 const classes = cn(
   'mt-4',
@@ -12,6 +15,6 @@ const classes = cn(
 );
 ---
 
-<div class={classes} data-stepper-content hidden {...props}>
+<div class={classes} data-stepper-content data-step={step} hidden {...props}>
   <slot />
 </div>

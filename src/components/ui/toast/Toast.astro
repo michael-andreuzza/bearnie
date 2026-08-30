@@ -34,12 +34,20 @@ const classes = cn(baseStyles, variantStyles[variant], className);
 </div>
 
 <script>
-  document.querySelectorAll("[data-toast-close]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const toast = btn.closest("[data-toast]");
-      if (toast) {
-        toast.remove();
-      }
+  const initToastCloseButtons = () => {
+    document.querySelectorAll("[data-toast-close]").forEach((btn) => {
+      if (btn.hasAttribute("data-initialized")) return;
+      btn.setAttribute("data-initialized", "true");
+
+      btn.addEventListener("click", () => {
+        const toast = btn.closest("[data-toast]");
+        if (toast) {
+          toast.remove();
+        }
+      });
     });
-  });
+  };
+
+  initToastCloseButtons();
+  document.addEventListener("astro:page-load", initToastCloseButtons);
 </script>

@@ -91,7 +91,7 @@ const classes = cn(
       <slot name="right-icon" />
     </a>
   ) : (
-    <button class={classes} disabled={disabled} {...props}>
+    <button type="button" class={classes} disabled={disabled} {...props}>
       <slot name="left-icon" />
       <slot />
       <slot name="right-icon" />

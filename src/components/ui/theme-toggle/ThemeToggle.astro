@@ -45,6 +45,9 @@ const { size = "default" } = Astro.props;
 <script>
   const init = () => {
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+      if (button.hasAttribute("data-initialized")) return;
+      button.setAttribute("data-initialized", "true");
+
       button.addEventListener("click", () => {
         const isDark = document.documentElement.classList.contains("dark");
         const newTheme = isDark ? "light" : "dark";
@@ -55,4 +58,5 @@ const { size = "default" } = Astro.props;
   };
 
   init();
+  document.addEventListener("astro:page-load", init);
 </script>

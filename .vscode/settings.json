@@ -1,7 +1,4 @@
 {
     "window.title": "${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}[Branch: main]",
-    "workbench.colorCustomizations": {
-        "titleBar.border": "#84CC16"
-    },
-    "pinstripe.color": "#84CC16"
+    "pinstripe.color": "none"
 }

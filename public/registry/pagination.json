@@ -22,7 +22,7 @@
     {
       "name": "PaginationEllipsis.astro",
       "path": "pagination/PaginationEllipsis.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { MoreHorizontalIcon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<\"span\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex size-9 items-center justify-center\",\n  className\n);\n---\n\n<span aria-hidden=\"true\" class={classes} {...props}>\n  <HugeIcon icon={MoreHorizontalIcon} class=\"size-4\" />\n  <span class=\"sr-only\">More pages</span>\n</span>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { MoreHorizontalIcon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<\"span\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex size-9 items-center justify-center\",\n  className\n);\n---\n\n<span class={classes} {...props}>\n  <HugeIcon icon={MoreHorizontalIcon} class=\"size-4\" aria-hidden=\"true\" />\n  <span class=\"sr-only\">More pages</span>\n</span>\n"
     },
     {
       "name": "PaginationItem.astro",

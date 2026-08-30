@@ -44,6 +44,11 @@ const classes = cn(
       const separators = stepper.querySelectorAll('[data-stepper-separator]');
       const totalSteps = items.length;
 
+      // Content panels live next to the stepper, matched by data-step
+      const contents = Array.from(
+        (stepper.parentElement ?? document).querySelectorAll('[data-stepper-content]')
+      ) as HTMLElement[];
+
       // Update ARIA for all items
       const updateAriaStates = (currentStep: number) => {
         items.forEach((item, index) => {
@@ -77,6 +82,12 @@ const classes = cn(
           } else {
             sep.setAttribute('data-state', 'upcoming');
           }
+        });
+
+        // Show the active step's content panel
+        contents.forEach((content) => {
+          const step = parseInt(content.getAttribute('data-step') || '0');
+          content.hidden = step !== currentStep;
         });
       };
 

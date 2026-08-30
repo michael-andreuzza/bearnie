@@ -32,26 +32,34 @@ const classes = cn(
 </div>
 
 <script>
-  document.querySelectorAll("[data-menubar-item]:not([data-disabled])").forEach((item) => {
-    item.addEventListener("click", () => {
-      // Close the menubar after clicking an item
-      const menubar = item.closest("[data-menubar]");
-      if (menubar) {
-        menubar.querySelectorAll("[data-menubar-content]").forEach((content) => {
-          content.setAttribute("hidden", "");
-        });
-        menubar.querySelectorAll("[data-menubar-trigger]").forEach((trigger) => {
-          trigger.setAttribute("aria-expanded", "false");
-          trigger.setAttribute("data-state", "closed");
-        });
-      }
-    });
+  const initMenubarItems = () => {
+    document.querySelectorAll("[data-menubar-item]:not([data-disabled])").forEach((item) => {
+      if (item.hasAttribute("data-initialized")) return;
+      item.setAttribute("data-initialized", "true");
 
-    item.addEventListener("keydown", (e) => {
-      if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") {
-        e.preventDefault();
-        (item as HTMLElement).click();
-      }
+      item.addEventListener("click", () => {
+        // Close the menubar after clicking an item
+        const menubar = item.closest("[data-menubar]");
+        if (menubar) {
+          menubar.querySelectorAll("[data-menubar-content]").forEach((content) => {
+            content.setAttribute("hidden", "");
+          });
+          menubar.querySelectorAll("[data-menubar-trigger]").forEach((trigger) => {
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.setAttribute("data-state", "closed");
+          });
+        }
+      });
+
+      item.addEventListener("keydown", (e) => {
+        if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") {
+          e.preventDefault();
+          (item as HTMLElement).click();
+        }
+      });
     });
-  });
+  };
+
+  initMenubarItems();
+  document.addEventListener("astro:page-load", initMenubarItems);
 </script>

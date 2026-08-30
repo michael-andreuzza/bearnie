@@ -1,5 +1,4 @@
 ---
-import PopoverTrigger from "../popover/PopoverTrigger.astro";
 import HugeIcon from "../icon/HugeIcon.astro";
 import { ArrowDown01Icon } from "../icon/icons";
 import { cn } from "@/utils/cn";
@@ -20,7 +19,11 @@ const {
 } = Astro.props;
 ---
 
-<PopoverTrigger class="w-full">
+{/*
+  The button itself is the popover trigger, and the clear control renders
+  as a sibling — nesting interactive elements inside a button is invalid.
+*/}
+<div class="relative w-full">
   <button
     type="button"
     class={cn(
@@ -33,23 +36,30 @@ const {
         "rounded-none border-0 bg-transparent px-3 focus:ring-0 focus:ring-offset-0",
       className
     )}
+    data-popover-trigger
     data-combobox-trigger
     data-slot={inputGroupControl ? "input-group-control" : undefined}
     disabled={disabled}
     {...props}
   >
     <span class="truncate text-left" data-combobox-value>{placeholder}</span>
-    <div class="flex items-center gap-1">
-      <slot name="clear-icon" />
-      <slot name="right-icon">
-        <HugeIcon
-          icon={ArrowDown01Icon}
-          size="sm"
-          class="text-muted-foreground"
-          data-combobox-chevron
-          aria-hidden="true"
-        />
-      </slot>
-    </div>
+    <slot name="right-icon">
+      <HugeIcon
+        icon={ArrowDown01Icon}
+        size="sm"
+        class="text-muted-foreground"
+        data-combobox-chevron
+        aria-hidden="true"
+      />
+    </slot>
   </button>
-</PopoverTrigger>
+  <span class="absolute right-8 top-1/2 flex -translate-y-1/2 items-center">
+    <slot name="clear-icon" />
+  </span>
+</div>
+
+<script>
+  import { ensureUiBootLoaded } from "@/utils/runtime/loader";
+
+  ensureUiBootLoaded();
+</script>

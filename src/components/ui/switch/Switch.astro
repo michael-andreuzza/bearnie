@@ -50,25 +50,33 @@ const thumbClasses = cn(
 </button>
 
 <script>
-  document.querySelectorAll('[data-switch]').forEach((switchEl) => {
-    switchEl.addEventListener('click', () => {
-      const isChecked = switchEl.getAttribute('aria-checked') === 'true';
-      const newState = !isChecked;
+  const initSwitches = () => {
+    document.querySelectorAll('[data-switch]').forEach((switchEl) => {
+      if (switchEl.hasAttribute('data-initialized')) return;
+      switchEl.setAttribute('data-initialized', 'true');
 
-      switchEl.setAttribute('aria-checked', String(newState));
-      switchEl.setAttribute('data-state', newState ? 'checked' : 'unchecked');
+      switchEl.addEventListener('click', () => {
+        const isChecked = switchEl.getAttribute('aria-checked') === 'true';
+        const newState = !isChecked;
 
-      const thumb = switchEl.querySelector('span');
-      if (thumb) {
-        thumb.setAttribute('data-state', newState ? 'checked' : 'unchecked');
-      }
+        switchEl.setAttribute('aria-checked', String(newState));
+        switchEl.setAttribute('data-state', newState ? 'checked' : 'unchecked');
 
-      const hiddenInput = switchEl.querySelector('[data-switch-input]') as HTMLInputElement;
-      if (hiddenInput) {
-        hiddenInput.value = newState ? 'on' : 'off';
-      }
+        const thumb = switchEl.querySelector('span');
+        if (thumb) {
+          thumb.setAttribute('data-state', newState ? 'checked' : 'unchecked');
+        }
 
-      switchEl.dispatchEvent(new CustomEvent('change', { detail: { checked: newState } }));
+        const hiddenInput = switchEl.querySelector('[data-switch-input]') as HTMLInputElement;
+        if (hiddenInput) {
+          hiddenInput.value = newState ? 'on' : 'off';
+        }
+
+        switchEl.dispatchEvent(new CustomEvent('change', { detail: { checked: newState } }));
+      });
     });
-  });
+  };
+
+  initSwitches();
+  document.addEventListener('astro:page-load', initSwitches);
 </script>

@@ -50,13 +50,8 @@ const trackClasses = cn(
   data-step={step}
   data-name={name}
   class={containerClasses}
-  role="slider"
-  aria-valuemin={min}
-  aria-valuemax={max}
-  aria-valuenow={defaultValue[0]}
-  aria-orientation={orientation}
+  role="group"
   aria-disabled={disabled}
-  tabindex={disabled ? -1 : 0}
   {...props}
 >
   <div class={trackClasses} data-slider-track>
@@ -68,7 +63,7 @@ const trackClasses = cn(
       )}
     ></div>
   </div>
-  {defaultValue.map((_, index) => (
+  {defaultValue.map((value, index) => (
     <div
       data-slider-thumb
       data-index={index}
@@ -79,6 +74,12 @@ const trackClasses = cn(
         "disabled:pointer-events-none disabled:opacity-50",
         "cursor-grab active:cursor-grabbing"
       )}
+      role="slider"
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={value}
+      aria-orientation={orientation}
+      aria-label={isRange ? `Value ${index + 1}` : "Value"}
       tabindex={disabled ? -1 : 0}
     />
   ))}
@@ -141,6 +142,7 @@ const trackClasses = cn(
           } else {
             thumb.style.left = `${percent}%`;
           }
+          thumb.setAttribute('aria-valuenow', String(values[i]));
         });
         
         // Update range
@@ -164,9 +166,6 @@ const trackClasses = cn(
             range.style.width = `${maxPercent - minPercent}%`;
           }
         }
-        
-        // Update ARIA
-        slider.setAttribute('aria-valuenow', values.join(','));
         
         // Dispatch change event
         slider.dispatchEvent(new CustomEvent('change', { detail: { values } }));
