@@ -1,6 +1,6 @@
 {
   "name": "@bearnie/mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server for Bearnie UI components - enables AI assistants to add components to your project",
   "type": "module",
   "license": "MIT",
