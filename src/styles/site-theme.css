@@ -1,0 +1,25 @@
+/*
+ * Site-only color overrides. These restyle bearnie.dev without touching
+ * the default theme users install — the values below are the registry's
+ * amber theme (Bearnie's brand honey).
+ *
+ * Want a different look? Change these values, or copy the variables from
+ * any generated theme in public/registry/styles-<name>.json.
+ */
+:root {
+  --primary: oklch(0.769 0.188 70.08);
+  --primary-foreground: oklch(0.279 0.077 45.635);
+  --ring: oklch(0.769 0.188 70.08);
+  --sidebar-primary: oklch(0.769 0.188 70.08);
+  --sidebar-primary-foreground: oklch(0.279 0.077 45.635);
+  --sidebar-ring: oklch(0.769 0.188 70.08);
+}
+
+.dark {
+  --primary: oklch(0.828 0.189 84.429);
+  --primary-foreground: oklch(0.279 0.077 45.635);
+  --ring: oklch(0.828 0.189 84.429);
+  --sidebar-primary: oklch(0.828 0.189 84.429);
+  --sidebar-primary-foreground: oklch(0.279 0.077 45.635);
+  --sidebar-ring: oklch(0.828 0.189 84.429);
+}

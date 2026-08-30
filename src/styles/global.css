@@ -5,6 +5,7 @@
 @import 'tailwind-scrollbar-hide/v4';
 @import 'tailwindcss-scroll-mask';
 @import "./bearnie.css";
+@import "./site-theme.css";
 
 /* Docs site typography — Geist instead of Inter from bearnie.css */
 @theme {
