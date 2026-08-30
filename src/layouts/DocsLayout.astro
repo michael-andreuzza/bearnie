@@ -52,6 +52,15 @@ const {
 } = Astro.props;
 const currentPath = Astro.url.pathname;
 const canonical = `${siteConfig.url}${currentPath || "/"}`;
+
+// Component pages are the long-tail search surface ("astro button component"),
+// so make sure every description carries the Astro/Tailwind keywords.
+const isComponentPage =
+  currentPath.startsWith("/docs/components/") &&
+  currentPath.replace(/\/$/, "") !== "/docs/components";
+const metaDescription = isComponentPage
+  ? `${description ? `${description} ` : ""}Accessible ${title} component for Astro and Tailwind CSS — install the source with the Bearnie CLI.`
+  : description || `Learn how to use the ${title} component.`;
 // Sort docs by order, then alphabetically
 const sortedDocs = docsEntries.sort((a, b) => {
   const orderA = a.data.order ?? 999;
@@ -106,12 +115,12 @@ const isDocsPage = currentPath.startsWith("/docs");
 
 <AstroSeo
   title={`${title} | ${siteConfig.name}`}
-  description={description || `Learn how to use the ${title} component.`}
+  description={metaDescription}
   canonical={canonical}
   openGraph={{
     url: canonical,
     title: `${title} | ${siteConfig.name}`,
-    description: description || `Learn how to use the ${title} component.`,
+    description: metaDescription,
     site_name: siteConfig.name,
     type: "article",
     locale: "en_US",
@@ -139,8 +148,7 @@ const isDocsPage = currentPath.startsWith("/docs");
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: title,
-    description:
-      description || `${title} - Bearnie component library documentation`,
+    description: metaDescription,
     url: canonical,
     author: {
       "@type": "Organization",

@@ -7,6 +7,7 @@ import Wrapper from "@/components/fundations/containers/Wrapper.astro";
 <footer>
   <Wrapper class="py-8">
     <div class="max-w-2xl mx-auto text-center">
+     
       <Text
         tag="p"
         variant="textSM"
@@ -26,7 +27,7 @@ import Wrapper from "@/components/fundations/containers/Wrapper.astro";
           class="text-foreground hover:text-muted-foreground"
           href="https://github.com/michael-andreuzza/bearnie">GitHub</a
         >
-        . Browse my
+        , 
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -34,35 +35,6 @@ import Wrapper from "@/components/fundations/containers/Wrapper.astro";
           href="https://lexingtonthemes.com/">Astro themes</a
         >
       </Text>
-      <iframe
-        class="mx-auto mt-2"
-        id="kobbe-embed-live"
-        src="https://app.kobbe.io/embed/embed_f101ae92949ad5fdab463e7bfb2c0325/live?primaryColor=648ff5&theme=system"
-        width="288"
-        height="52"
-        style="background:transparent!important;border:none;display:block;width:288px;height:52px;overflow:hidden;"
-        frameborder="0"
-        allowtransparency="true"
-        loading="lazy"
-        title="Kobbe live visitors"
-        scrolling="no"></iframe><script>
-        (function () {
-          var o = "https://app.kobbe.io";
-          window.addEventListener("message", function (e) {
-            if (e.origin !== o) return;
-            var d = e.data;
-            if (
-              !d ||
-              d.type !== "kobbe:embed-widget-height" ||
-              d.kind !== "live" ||
-              typeof d.height !== "number"
-            )
-              return;
-            var f = document.getElementById("kobbe-embed-live");
-            if (f) f.style.height = d.height + "px";
-          });
-        })();
-      </script>
     </div>
   </Wrapper>
 </footer>

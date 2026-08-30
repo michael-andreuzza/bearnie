@@ -44,6 +44,7 @@ const canonical = `${siteConfig.url}${Astro.url.pathname || "/"}`;
 ---
 
 <AstroSeo
+  noindex={true}
   title={`System Colors | ${siteConfig.name}`}
   description="Color palette and tokens."
   canonical={canonical}

@@ -18,5 +18,11 @@ export default defineConfig({
     },
   },
   site: "https://bearnie.dev",
-  integrations: [sitemap(), mdx()],
+  integrations: [
+    sitemap({
+      // Internal design-system pages shouldn't compete in search results
+      filter: (page) => !page.includes("/system/"),
+    }),
+    mdx(),
+  ],
 });

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bearnie.dev/sitemap-index.xml

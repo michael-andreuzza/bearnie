@@ -10,6 +10,7 @@ const canonical = `${siteConfig.url}${Astro.url.pathname || "/"}`;
 ---
 
 <AstroSeo
+  noindex={true}
   title={`System Typography | ${siteConfig.name}`}
   description="Typography scale and styles."
   canonical={canonical}
