@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.0 / 0.5.0 / 0.2.0] - 2026-08-30
+
+- bearnie diff and bearnie update commands for pulling registry fixes into existing projects
+- add now prompts before overwriting existing files; new --overwrite flag
+- Richer init: @/* tsconfig alias, @tailwindcss/vite wiring, base styles install
+- Package-manager detection (npm, pnpm, yarn, bun) across CLI, create-bearnie, and MCP
+- MCP list_installed tool reporting per-component update status
+- Tag-triggered npm publish workflow using trusted publishing (OIDC)
+- Dependency majors: chalk 6, commander 15, diff 9, execa 10, ora 9; Node >=22.12 now required
+
+
 ### Added
 
 - CLI `diff` command: compare installed components against the registry with per-file diffs
