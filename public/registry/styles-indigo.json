@@ -1,7 +1,7 @@
 {
   "name": "styles-indigo",
   "type": "styles",
-  "description": "Bearnie theme with indigo as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with indigo as the primary color",
   "files": [
     {
       "name": "bearnie.css",

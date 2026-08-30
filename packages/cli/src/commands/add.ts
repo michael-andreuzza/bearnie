@@ -106,9 +106,12 @@ export async function add(components: string[], options: AddOptions) {
 
     selectedComponents = selected;
   } else {
-    // Validate provided component names
-    const availableNames = registryIndex.components.map((c) => c.name);
-    const invalid = components.filter((c) => !availableNames.includes(c));
+    // Validate provided component names (themes count too: styles-slate-blue)
+    const availableNames = new Set(registryIndex.components.map((c) => c.name));
+    for (const theme of registryIndex.themes ?? []) {
+      availableNames.add(theme === "default" ? "styles" : `styles-${theme}`);
+    }
+    const invalid = components.filter((c) => !availableNames.has(c));
 
     if (invalid.length > 0) {
       print.error(messages.unknownComponent(invalid));

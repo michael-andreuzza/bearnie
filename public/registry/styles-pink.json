@@ -1,7 +1,7 @@
 {
   "name": "styles-pink",
   "type": "styles",
-  "description": "Bearnie theme with pink as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with pink as the primary color",
   "files": [
     {
       "name": "bearnie.css",

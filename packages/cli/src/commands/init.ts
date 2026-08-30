@@ -13,7 +13,7 @@ import {
   type ProjectConfig,
 } from "../utils/config.js";
 import { getComponent, getRegistryIndex } from "../utils/registry.js";
-import { themeEntryName } from "../utils/config.js";
+import { composeThemeName, themeEntryName } from "../utils/config.js";
 import { detectPackageManager, installCommand } from "../utils/pm.js";
 import { brand, messages, print } from "../utils/ui.js";
 
@@ -186,10 +186,12 @@ export async function init(options: InitOptions) {
     print.newline();
 
     // Theme choices come from the registry; offline just offers the default
-    let themes = ["default"];
+    let themeBases = ["neutral"];
+    let themeAccents = ["default"];
     try {
       const index = await getRegistryIndex();
-      if (index.themes?.length) themes = index.themes;
+      if (index.themeBases?.length) themeBases = index.themeBases;
+      if (index.themeAccents?.length) themeAccents = index.themeAccents;
     } catch {
       // Offline — the default theme ships regardless
     }
@@ -207,15 +209,29 @@ export async function init(options: InitOptions) {
         message: "Utilities directory",
         initial: DEFAULT_CONFIG.utilsDir,
       },
-      ...(themes.length > 1
+      ...(themeBases.length > 1
         ? [
             {
               type: "select" as const,
-              name: "theme",
-              message: "Which theme?",
-              choices: themes.map((theme) => ({
-                title: theme,
-                value: theme,
+              name: "themeBase",
+              message: "Base color (grays and surfaces)",
+              choices: themeBases.map((name) => ({
+                title: name,
+                value: name,
+              })),
+              initial: 0,
+            },
+          ]
+        : []),
+      ...(themeAccents.length > 1
+        ? [
+            {
+              type: "select" as const,
+              name: "themeAccent",
+              message: "Accent color (buttons, focus rings)",
+              choices: themeAccents.map((name) => ({
+                title: name === "default" ? "default (neutral)" : name,
+                value: name,
               })),
               initial: 0,
             },
@@ -223,9 +239,11 @@ export async function init(options: InitOptions) {
         : []),
     ]);
 
+    const { themeBase, themeAccent, ...dirs } = responses;
     config = {
       ...config,
-      ...responses,
+      ...dirs,
+      theme: composeThemeName(themeBase ?? "neutral", themeAccent ?? "default"),
     };
   }
 

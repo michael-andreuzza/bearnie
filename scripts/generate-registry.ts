@@ -499,6 +499,10 @@ const THEME_ACCENTS: Record<string, ThemeAccent> = {
     light: ["oklch(0.852 0.199 91.936)", "oklch(0.286 0.066 53.813)"],
     dark: ["oklch(0.852 0.199 91.936)", "oklch(0.286 0.066 53.813)"],
   },
+  lime: {
+    light: ["oklch(0.648 0.2 131.684)", WHITE],
+    dark: ["oklch(0.768 0.233 130.85)", "oklch(0.274 0.072 132.109)"],
+  },
   green: {
     light: ["oklch(0.627 0.194 149.214)", WHITE],
     dark: ["oklch(0.723 0.219 149.579)", "oklch(0.266 0.065 152.934)"],
@@ -544,6 +548,134 @@ const THEME_ACCENTS: Record<string, ThemeAccent> = {
     dark: ["oklch(0.656 0.241 354.308)", "oklch(0.284 0.109 3.907)"],
   },
 };
+
+/**
+ * The neutral gray shades used throughout bearnie.css. Base themes swap
+ * every occurrence of these for the corresponding shade of another
+ * Tailwind gray scale (slate, zinc, stone, ...).
+ */
+const NEUTRAL_SHADES: Record<string, string> = {
+  "50": "oklch(0.985 0 0)",
+  "100": "oklch(0.97 0 0)",
+  "200": "oklch(0.922 0 0)",
+  "400": "oklch(0.708 0 0)",
+  "500": "oklch(0.556 0 0)",
+  "600": "oklch(0.439 0 0)",
+  "800": "oklch(0.269 0 0)",
+  "900": "oklch(0.205 0 0)",
+  "950": "oklch(0.145 0 0)",
+};
+
+/** Tailwind v4 base-color scales (neutral itself is the file's default). */
+const BASE_SHADES: Record<string, Record<string, string>> = {
+  slate: {
+    "50": "oklch(0.984 0.003 247.858)",
+    "100": "oklch(0.968 0.007 247.896)",
+    "200": "oklch(0.929 0.013 255.508)",
+    "400": "oklch(0.704 0.04 256.788)",
+    "500": "oklch(0.554 0.046 257.417)",
+    "600": "oklch(0.446 0.043 257.281)",
+    "800": "oklch(0.279 0.041 260.031)",
+    "900": "oklch(0.208 0.042 265.755)",
+    "950": "oklch(0.129 0.042 264.695)",
+  },
+  gray: {
+    "50": "oklch(0.985 0.002 247.839)",
+    "100": "oklch(0.967 0.003 264.542)",
+    "200": "oklch(0.928 0.006 264.531)",
+    "400": "oklch(0.707 0.022 261.325)",
+    "500": "oklch(0.551 0.027 264.364)",
+    "600": "oklch(0.446 0.03 256.802)",
+    "800": "oklch(0.278 0.033 256.848)",
+    "900": "oklch(0.21 0.034 264.665)",
+    "950": "oklch(0.13 0.028 261.692)",
+  },
+  zinc: {
+    "50": "oklch(0.985 0 0)",
+    "100": "oklch(0.967 0.001 286.375)",
+    "200": "oklch(0.92 0.004 286.32)",
+    "400": "oklch(0.705 0.015 286.067)",
+    "500": "oklch(0.552 0.016 285.938)",
+    "600": "oklch(0.442 0.017 285.786)",
+    "800": "oklch(0.274 0.006 286.033)",
+    "900": "oklch(0.21 0.006 285.885)",
+    "950": "oklch(0.141 0.005 285.823)",
+  },
+  stone: {
+    "50": "oklch(0.985 0.001 106.423)",
+    "100": "oklch(0.97 0.001 106.424)",
+    "200": "oklch(0.923 0.003 48.717)",
+    "400": "oklch(0.709 0.01 56.259)",
+    "500": "oklch(0.553 0.013 58.071)",
+    "600": "oklch(0.444 0.011 73.639)",
+    "800": "oklch(0.268 0.007 34.298)",
+    "900": "oklch(0.216 0.006 56.043)",
+    "950": "oklch(0.147 0.004 49.25)",
+  },
+  mauve: {
+    "50": "oklch(0.985 0 0)",
+    "100": "oklch(0.96 0.003 325.6)",
+    "200": "oklch(0.922 0.005 325.62)",
+    "400": "oklch(0.711 0.019 323.02)",
+    "500": "oklch(0.542 0.034 322.5)",
+    "600": "oklch(0.435 0.029 321.78)",
+    "800": "oklch(0.263 0.024 320.12)",
+    "900": "oklch(0.212 0.019 322.12)",
+    "950": "oklch(0.145 0.008 326)",
+  },
+  olive: {
+    "50": "oklch(0.988 0.003 106.5)",
+    "100": "oklch(0.966 0.005 106.5)",
+    "200": "oklch(0.93 0.007 106.5)",
+    "400": "oklch(0.737 0.021 106.9)",
+    "500": "oklch(0.58 0.031 107.3)",
+    "600": "oklch(0.466 0.025 107.3)",
+    "800": "oklch(0.286 0.016 107.4)",
+    "900": "oklch(0.228 0.013 107.4)",
+    "950": "oklch(0.153 0.006 107.1)",
+  },
+  mist: {
+    "50": "oklch(0.987 0.002 197.1)",
+    "100": "oklch(0.963 0.002 197.1)",
+    "200": "oklch(0.925 0.005 214.3)",
+    "400": "oklch(0.723 0.014 214.4)",
+    "500": "oklch(0.56 0.021 213.5)",
+    "600": "oklch(0.45 0.017 213.2)",
+    "800": "oklch(0.275 0.011 216.9)",
+    "900": "oklch(0.218 0.008 223.9)",
+    "950": "oklch(0.148 0.004 228.8)",
+  },
+  taupe: {
+    "50": "oklch(0.986 0.002 67.8)",
+    "100": "oklch(0.96 0.002 17.2)",
+    "200": "oklch(0.922 0.005 34.3)",
+    "400": "oklch(0.714 0.014 41.2)",
+    "500": "oklch(0.547 0.021 43.1)",
+    "600": "oklch(0.438 0.017 39.3)",
+    "800": "oklch(0.268 0.011 36.5)",
+    "900": "oklch(0.214 0.009 43.1)",
+    "950": "oklch(0.147 0.004 49.3)",
+  },
+};
+
+/** Swaps every neutral gray in the CSS for the given base color scale. */
+function swapBaseColor(css: string, shades: Record<string, string>): string {
+  let result = css;
+  for (const [shade, neutralValue] of Object.entries(NEUTRAL_SHADES)) {
+    result = result.replaceAll(neutralValue, shades[shade]);
+  }
+  return result;
+}
+
+/**
+ * "neutral" base + "default" accent is the plain `styles` entry; every
+ * other combination gets its own theme name.
+ */
+function composeThemeName(base: string, accent: string): string {
+  if (base === "neutral") return accent;
+  if (accent === "default") return base;
+  return `${base}-${accent}`;
+}
 
 /** Replaces exactly one occurrence, failing loudly if the anchor drifted. */
 function replaceOnce(css: string, from: string, to: string): string {
@@ -626,57 +758,76 @@ function composeThemeCss(base: string, accent: ThemeAccent): string {
 }
 
 /**
- * Each Tailwind accent color becomes a `styles-<name>` registry entry,
- * composed from bearnie.css at build time so themes never drift from the
- * base styles. All theme entries ship the same file path
- * (styles/bearnie.css); bearnie.json records which one is installed.
+ * Every base color (Tailwind gray scale) x accent color (primary)
+ * combination becomes a `styles-<name>` registry entry, composed from
+ * bearnie.css at build time so themes never drift from the base styles.
+ * All theme entries ship the same file path (styles/bearnie.css);
+ * bearnie.json records which one is installed. Theme entries live under
+ * `themes` in the index, not under `components`.
  */
 async function generateThemes(): Promise<{
-  entries: { name: string; description: string; category: string }[];
   themeNames: string[];
+  themeBases: string[];
+  themeAccents: string[];
 }> {
+  const themeBases = ["neutral", ...Object.keys(BASE_SHADES)];
+  const themeAccents = ["default", ...Object.keys(THEME_ACCENTS)];
+
   if (!(await fs.pathExists(STYLES_PATH))) {
-    return { entries: [], themeNames: [] };
+    return { themeNames: [], themeBases, themeAccents };
   }
 
-  const base = await fs.readFile(STYLES_PATH, "utf-8");
-  const entries: { name: string; description: string; category: string }[] =
-    [];
+  const baseCss = await fs.readFile(STYLES_PATH, "utf-8");
   const themeNames: string[] = [];
 
-  for (const [themeName, accent] of Object.entries(THEME_ACCENTS)) {
-    const entryName = `styles-${themeName}`;
-    const description = `Bearnie theme with ${themeName} as the primary color`;
-    const content = composeThemeCss(base, accent);
+  for (const base of themeBases) {
+    for (const accent of themeAccents) {
+      // Neutral + default is the plain `styles` entry
+      if (base === "neutral" && accent === "default") continue;
 
-    const registryEntry = {
-      name: entryName,
-      type: "styles",
-      description,
-      files: [
-        {
-          name: "bearnie.css",
-          path: "styles/bearnie.css",
-          content,
-        },
-      ],
-    };
+      const themeName = composeThemeName(base, accent);
+      const entryName = `styles-${themeName}`;
 
-    await fs.writeJson(
-      path.join(REGISTRY_DIR, `${entryName}.json`),
-      registryEntry,
-      { spaces: 2 },
-    );
+      let content = baseCss;
+      if (accent !== "default") {
+        content = composeThemeCss(content, THEME_ACCENTS[accent]);
+      }
+      if (base !== "neutral") {
+        content = swapBaseColor(content, BASE_SHADES[base]);
+      }
 
-    entries.push({ name: entryName, description, category: "theme" });
-    themeNames.push(themeName);
+      const accentLabel =
+        accent === "default"
+          ? "a neutral primary"
+          : `${accent} as the primary color`;
+      const registryEntry = {
+        name: entryName,
+        type: "styles",
+        description: `Bearnie theme on the ${base} gray scale with ${accentLabel}`,
+        files: [
+          {
+            name: "bearnie.css",
+            path: "styles/bearnie.css",
+            content,
+          },
+        ],
+      };
+
+      await fs.writeJson(
+        path.join(REGISTRY_DIR, `${entryName}.json`),
+        registryEntry,
+        { spaces: 2 },
+      );
+
+      themeNames.push(themeName);
+    }
   }
 
   console.log(
-    `   ✓ Created ${themeNames.length} theme entries (${themeNames.join(", ")})`,
+    `   ✓ Created ${themeNames.length} theme entries (${themeBases.length} bases x ${themeAccents.length} accents)`,
   );
 
-  return { entries, themeNames };
+  return { themeNames, themeBases, themeAccents };
 }
 
 async function generateStyles() {
@@ -755,7 +906,7 @@ async function generateRegistry() {
 
   console.log("\n🎨 Processing styles...\n");
   await generateStyles();
-  const { entries: themeEntries, themeNames } = await generateThemes();
+  const { themeNames, themeBases, themeAccents } = await generateThemes();
 
   console.log("\n📦 Processing components...\n");
 
@@ -820,16 +971,14 @@ async function generateRegistry() {
   const aliasEntries = await generateRegistryAliases();
   components.push(...aliasEntries);
 
-  // Add styles + theme entries (special - not components)
-  components.unshift(
-    {
-      name: "styles",
-      description:
-        "CSS variables and theme configuration for Bearnie components",
-      category: "theme",
-    },
-    ...themeEntries,
-  );
+  // Add styles entry (special - not a component). Theme variants are
+  // listed under `themes` in the index, not here.
+  components.unshift({
+    name: "styles",
+    description:
+      "CSS variables and theme configuration for Bearnie components",
+    category: "theme",
+  });
 
   console.log("\n📦 Processing barrel export...\n");
   const barrelEntry = await generateBarrel();
@@ -851,6 +1000,8 @@ async function generateRegistry() {
       components: components,
       utilities,
       themes: ["default", ...themeNames],
+      themeBases,
+      themeAccents,
     },
     { spaces: 2 },
   );

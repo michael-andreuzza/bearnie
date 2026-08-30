@@ -1,7 +1,7 @@
 {
   "name": "styles-orange",
   "type": "styles",
-  "description": "Bearnie theme with orange as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with orange as the primary color",
   "files": [
     {
       "name": "bearnie.css",

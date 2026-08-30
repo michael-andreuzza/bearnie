@@ -1,7 +1,7 @@
 {
   "name": "styles-emerald",
   "type": "styles",
-  "description": "Bearnie theme with emerald as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with emerald as the primary color",
   "files": [
     {
       "name": "bearnie.css",

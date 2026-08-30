@@ -1,7 +1,7 @@
 {
   "name": "styles-red",
   "type": "styles",
-  "description": "Bearnie theme with red as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with red as the primary color",
   "files": [
     {
       "name": "bearnie.css",

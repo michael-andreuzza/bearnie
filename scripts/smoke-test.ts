@@ -200,6 +200,21 @@ test("create-bearnie --theme applies the palette and stays diff-clean", () => {
   assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "blue");
   const after = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
   assert.ok(after.includes("Everything is up to date"));
+
+  // Base + accent combos work too: slate grays with a blue primary
+  run(`node ${CLI} add styles-slate-blue --overwrite --cwd ${dir}`, dir);
+  assert.equal(
+    fs.readJsonSync(path.join(dir, "bearnie.json")).theme,
+    "slate-blue",
+  );
+  const combo = fs.readFileSync(
+    path.join(dir, "src/styles/bearnie.css"),
+    "utf-8",
+  );
+  assert.ok(combo.includes("oklch(0.129 0.042 264.695)"), "slate-950 applied");
+  assert.ok(combo.includes("oklch(0.546 0.245 262.881)"), "blue-600 applied");
+  const comboDiff = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(comboDiff.includes("Everything is up to date"));
 });
 
 test("create-bearnie rejects unknown themes", () => {

@@ -63,7 +63,7 @@ This will:
 - Install `clsx`, `tailwind-merge`, and `tailwindcss` dependencies
 - Add the `@/*` path alias to `tsconfig.json`
 - Wire `@tailwindcss/vite` into your Astro config (simple configs only — you get a hint otherwise)
-- Ask which theme you want (default or any Tailwind accent color) and install it to `src/styles/bearnie.css`
+- Ask for a base color and an accent color (see Themes below) and install the result to `src/styles/bearnie.css`
 
 Projects created with `create-bearnie` already include `bearnie.json` and can skip init.
 
@@ -164,12 +164,17 @@ Any new npm dependencies the updated components need are installed automatically
 
 ## Themes
 
-Bearnie ships a theme for every Tailwind accent color, built from Tailwind's official palette: `red`, `rose`, `orange`, `amber`, `yellow`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, and `pink` — plus the neutral `default`. Each is a registry entry (`styles-blue`, `styles-rose`, ...) and they all install the same `bearnie.css` file — only the primary color variables differ, so every component works with every theme.
+Themes combine a **base color** (the grays used for backgrounds, text, and borders) with an **accent color** (buttons, focus rings, active states), both from Tailwind's official palette:
 
-Pick one during `init`, or switch later:
+- **Bases:** `neutral` (default), `slate`, `gray`, `zinc`, `stone`, `mauve`, `olive`, `mist`, `taupe`
+- **Accents:** neutral default, `red`, `rose`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`
+
+Every combination is a registry entry: `styles-blue` (neutral base, blue accent), `styles-slate` (slate base, neutral accent), `styles-slate-blue`, and so on. They all install the same `bearnie.css` file, so every component works with every theme.
+
+`init` and `create-bearnie` ask for base and accent. Switch later with:
 
 ```bash
-npx bearnie add styles-blue --overwrite
+npx bearnie add styles-slate-blue --overwrite
 ```
 
 Switching records the theme in `bearnie.json`, so `diff` and `update` compare your CSS against the right palette.

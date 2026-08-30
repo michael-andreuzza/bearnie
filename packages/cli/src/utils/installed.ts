@@ -32,14 +32,17 @@ export interface InstalledEntry {
   hasChanges: boolean;
 }
 
-/** Every name in the registry: components, utilities, styles, barrel. */
+/** Every name in the registry: components, utilities, styles, themes, barrel. */
 export async function getAllRegistryNames(): Promise<string[]> {
   const index = await getRegistryIndex();
-  const names = index.components.map((c) => c.name);
+  const names = new Set(index.components.map((c) => c.name));
   for (const utility of index.utilities ?? []) {
-    names.push(utility.name);
+    names.add(utility.name);
   }
-  return names;
+  for (const theme of index.themes ?? []) {
+    names.add(themeEntryName(theme));
+  }
+  return [...names];
 }
 
 /**

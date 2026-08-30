@@ -1,7 +1,7 @@
 {
   "name": "styles-sky",
   "type": "styles",
-  "description": "Bearnie theme with sky as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with sky as the primary color",
   "files": [
     {
       "name": "bearnie.css",

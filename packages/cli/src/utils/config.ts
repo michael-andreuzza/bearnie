@@ -25,6 +25,17 @@ export function themeEntryName(theme: string): string {
   return theme === "default" ? "styles" : `styles-${theme}`;
 }
 
+/**
+ * Theme name from a base (gray scale) + accent (primary color) pair:
+ * neutral+default -> "default", neutral+blue -> "blue",
+ * slate+default -> "slate", slate+blue -> "slate-blue".
+ */
+export function composeThemeName(base: string, accent: string): string {
+  if (base === "neutral") return accent;
+  if (accent === "default") return base;
+  return `${base}-${accent}`;
+}
+
 /** True for the styles/styles-* entries, which all install the same CSS file. */
 export function isThemeEntry(name: string): boolean {
   return name === "styles" || name.startsWith("styles-");

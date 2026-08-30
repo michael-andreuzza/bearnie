@@ -82,6 +82,9 @@ export interface RegistryIndex {
     name: string;
     description: string;
   }>;
+  themes?: string[];
+  themeBases?: string[];
+  themeAccents?: string[];
 }
 
 export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
@@ -360,10 +363,14 @@ export async function listInstalledComponents(
   // All theme entries install the same CSS file, so only compare against
   // the theme configured in bearnie.json.
   const activeTheme = themeEntryName(config.theme ?? "default");
-  const names = [
+  const allNames = new Set([
     ...index.components.map((c) => c.name),
     ...(index.utilities ?? []).map((u) => u.name),
-  ].filter((name) => !isThemeEntry(name) || name === activeTheme);
+    ...(index.themes ?? []).map((theme) => themeEntryName(theme)),
+  ]);
+  const names = [...allNames].filter(
+    (name) => !isThemeEntry(name) || name === activeTheme,
+  );
 
   const installed: InstalledComponent[] = [];
 

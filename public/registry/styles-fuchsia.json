@@ -1,7 +1,7 @@
 {
   "name": "styles-fuchsia",
   "type": "styles",
-  "description": "Bearnie theme with fuchsia as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with fuchsia as the primary color",
   "files": [
     {
       "name": "bearnie.css",

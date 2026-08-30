@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Theme picker: a theme for every Tailwind accent color (16 of them, plus the neutral default), generated from Tailwind's official oklch palette as registry entries (`styles-*`)
-- `bearnie init` and `create-bearnie` ask which theme to install; `create-bearnie --theme=<name>` skips the prompt
+- Theme picker: every Tailwind base color (9 gray scales) x accent color (17 colors plus a neutral default) combination — 161 themes generated from Tailwind's official oklch palette as registry entries (`styles-blue`, `styles-slate`, `styles-slate-blue`, ...)
+- `bearnie init` and `create-bearnie` ask for base and accent; `create-bearnie --theme=<name>` skips the prompts
 - Switching themes via `bearnie add styles-<name> --overwrite` records the choice in `bearnie.json`, keeping `diff`/`update` and the MCP `list_installed` tool comparing against the active palette
 
 ## [0.2.0 / 0.5.0 / 0.2.0] - 2026-08-30

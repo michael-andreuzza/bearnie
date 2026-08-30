@@ -1,7 +1,7 @@
 {
   "name": "styles-purple",
   "type": "styles",
-  "description": "Bearnie theme with purple as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with purple as the primary color",
   "files": [
     {
       "name": "bearnie.css",

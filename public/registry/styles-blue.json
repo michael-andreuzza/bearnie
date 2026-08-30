@@ -1,7 +1,7 @@
 {
   "name": "styles-blue",
   "type": "styles",
-  "description": "Bearnie theme with blue as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with blue as the primary color",
   "files": [
     {
       "name": "bearnie.css",

@@ -32,6 +32,8 @@ interface RegistryIndex {
   components: { name: string }[];
   utilities?: { name: string }[];
   themes?: string[];
+  themeBases?: string[];
+  themeAccents?: string[];
 }
 
 // Parse --full flag
@@ -56,6 +58,17 @@ function parseThemeArg(): string | null {
 /** True for the styles/styles-* entries, which all install the same CSS file. */
 function isThemeEntry(name: string): boolean {
   return name === "styles" || name.startsWith("styles-");
+}
+
+/**
+ * Theme name from a base (gray scale) + accent (primary color) pair:
+ * neutral+default -> "default", neutral+blue -> "blue",
+ * slate+default -> "slate", slate+blue -> "slate-blue".
+ */
+function composeThemeName(base: string, accent: string): string {
+  if (base === "neutral") return accent;
+  if (accent === "default") return base;
+  return `${base}-${accent}`;
 }
 
 // Detect the package manager from how the user invoked us
@@ -230,11 +243,15 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
   const finalName = projectName as string;
   const targetDir = path.resolve(process.cwd(), finalName);
 
-  // Pick a theme: --theme flag, interactive prompt, or default
+  // Pick a theme: --theme flag, interactive base + accent prompts, or default
   let availableThemes = ["default"];
+  let themeBases = ["neutral"];
+  let themeAccents = ["default"];
   try {
     const index = await fetchRegistryIndex();
     if (index.themes?.length) availableThemes = index.themes;
+    if (index.themeBases?.length) themeBases = index.themeBases;
+    if (index.themeAccents?.length) themeAccents = index.themeAccents;
   } catch {
     // Offline — the template ships the default theme regardless
   }
@@ -243,20 +260,39 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
 
   if (theme && !availableThemes.includes(theme)) {
     console.log(
-      `\n  ${pc.red("Unknown theme:")} ${theme}\n  Available: ${availableThemes.join(", ")}\n`,
+      `\n  ${pc.red("Unknown theme:")} ${theme}\n  Themes combine a base and an accent, e.g. ${pc.cyan("slate-blue")}.\n  Bases: ${themeBases.join(", ")}\n  Accents: ${themeAccents.join(", ")}\n`,
     );
     process.exit(1);
   }
 
-  if (!theme && availableThemes.length > 1 && process.stdin.isTTY) {
-    const response = await prompts({
-      type: "select",
-      name: "theme",
-      message: "Which theme?",
-      choices: availableThemes.map((name) => ({ title: name, value: name })),
-      initial: 0,
-    });
-    theme = response.theme ?? "default";
+  if (
+    !theme &&
+    (themeBases.length > 1 || themeAccents.length > 1) &&
+    process.stdin.isTTY
+  ) {
+    const response = await prompts([
+      {
+        type: "select",
+        name: "base",
+        message: "Base color (grays and surfaces)",
+        choices: themeBases.map((name) => ({ title: name, value: name })),
+        initial: 0,
+      },
+      {
+        type: "select",
+        name: "accent",
+        message: "Accent color (buttons, focus rings)",
+        choices: themeAccents.map((name) => ({
+          title: name === "default" ? "default (neutral)" : name,
+          value: name,
+        })),
+        initial: 0,
+      },
+    ]);
+    theme = composeThemeName(
+      response.base ?? "neutral",
+      response.accent ?? "default",
+    );
   }
 
   theme = theme ?? "default";

@@ -1,7 +1,7 @@
 {
   "name": "styles-amber",
   "type": "styles",
-  "description": "Bearnie theme with amber as the primary color",
+  "description": "Bearnie theme on the neutral gray scale with amber as the primary color",
   "files": [
     {
       "name": "bearnie.css",
