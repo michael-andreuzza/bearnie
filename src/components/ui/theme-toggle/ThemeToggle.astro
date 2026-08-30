@@ -13,10 +13,12 @@ const { size = "default" } = Astro.props;
   size={size}
   iconOnly
   data-theme-toggle
-  aria-label="Toggle theme"
+  aria-label="Switch theme (light, dark, system)"
 >
+  <!-- Sun: light -->
   <svg
-    class="size-7"
+    data-theme-icon="light"
+    class="size-4"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
@@ -24,40 +26,113 @@ const { size = "default" } = Astro.props;
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
+    aria-hidden="true"
   >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-    <path d="M12 3l0 18"></path>
-    <path d="M12 9l4.65 -4.65"></path>
-    <path d="M12 14.3l7.37 -7.37"></path>
-    <path d="M12 19.6l8.85 -8.85"></path>
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+  <!-- Moon: dark -->
+  <svg
+    data-theme-icon="dark"
+    class="size-4 hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+  <!-- Monitor: system -->
+  <svg
+    data-theme-icon="system"
+    class="size-4 hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+    <path d="M8 21h8"></path>
+    <path d="M12 17v4"></path>
   </svg>
 </Button>
 
 <script is:inline>
-  // Initialize theme on page load (runs before hydration to prevent flash)
+  // Apply the stored theme before paint to prevent a flash. "system" follows
+  // the OS preference, including live changes while the page is open.
   (function () {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
     const applyTheme = () => {
-      const stored = localStorage.getItem("theme") || "light";
-      document.documentElement.classList.toggle("dark", stored === "dark");
+      const mode = localStorage.getItem("theme") || "system";
+      const dark = mode === "system" ? media.matches : mode === "dark";
+      document.documentElement.classList.toggle("dark", dark);
     };
     applyTheme();
     // View transitions replace <html> attributes, so re-apply after each swap
     document.addEventListener("astro:after-swap", applyTheme);
+    media.addEventListener("change", () => {
+      if ((localStorage.getItem("theme") || "system") === "system") applyTheme();
+    });
   })();
 </script>
 
 <script>
+  const MODES = ["light", "dark", "system"] as const;
+  type Mode = (typeof MODES)[number];
+
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const currentMode = (): Mode => {
+    const stored = localStorage.getItem("theme");
+    return (MODES as readonly string[]).includes(stored ?? "")
+      ? (stored as Mode)
+      : "system";
+  };
+
+  const applyMode = (mode: Mode) => {
+    const dark = mode === "system" ? media.matches : mode === "dark";
+    document.documentElement.classList.toggle("dark", dark);
+  };
+
+  const updateButtons = () => {
+    const mode = currentMode();
+    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+      button.querySelectorAll("[data-theme-icon]").forEach((icon) => {
+        icon.classList.toggle(
+          "hidden",
+          icon.getAttribute("data-theme-icon") !== mode,
+        );
+      });
+      button.setAttribute("title", `Theme: ${mode}`);
+    });
+  };
+
   const init = () => {
+    updateButtons();
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
       if (button.hasAttribute("data-initialized")) return;
       button.setAttribute("data-initialized", "true");
 
       button.addEventListener("click", () => {
-        const isDark = document.documentElement.classList.contains("dark");
-        const newTheme = isDark ? "light" : "dark";
-        localStorage.setItem("theme", newTheme);
-        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        const next = MODES[(MODES.indexOf(currentMode()) + 1) % MODES.length];
+        localStorage.setItem("theme", next);
+        applyMode(next);
+        updateButtons();
       });
     });
   };
