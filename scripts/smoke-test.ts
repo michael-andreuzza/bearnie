@@ -189,15 +189,15 @@ test("create-bearnie --theme applies the palette and stays diff-clean", () => {
   assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "amber");
 
   const css = fs.readFileSync(path.join(dir, "src/styles/bearnie.css"), "utf-8");
-  assert.ok(css.includes("oklch(0.769 0.165 70.08)"), "amber primary applied");
+  assert.ok(css.includes("oklch(0.769 0.188 70.08)"), "amber primary applied");
 
   // diff must compare against the amber entry, not the default styles
   const diffOutput = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
   assert.ok(diffOutput.includes("Everything is up to date"));
 
   // Switching themes via add records the new theme in bearnie.json
-  run(`node ${CLI} add styles-forest --overwrite --cwd ${dir}`, dir);
-  assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "forest");
+  run(`node ${CLI} add styles-blue --overwrite --cwd ${dir}`, dir);
+  assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "blue");
   const after = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
   assert.ok(after.includes("Everything is up to date"));
 });

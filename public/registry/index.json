@@ -8,18 +8,83 @@
       "category": "theme"
     },
     {
+      "name": "styles-red",
+      "description": "Bearnie theme with red as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-rose",
+      "description": "Bearnie theme with rose as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-orange",
+      "description": "Bearnie theme with orange as the primary color",
+      "category": "theme"
+    },
+    {
       "name": "styles-amber",
-      "description": "Warm honey palette with Bearnie's brand amber as the primary color",
+      "description": "Bearnie theme with amber as the primary color",
       "category": "theme"
     },
     {
-      "name": "styles-forest",
-      "description": "Deep green primary with calm neutral surfaces",
+      "name": "styles-yellow",
+      "description": "Bearnie theme with yellow as the primary color",
       "category": "theme"
     },
     {
-      "name": "styles-midnight",
-      "description": "Indigo primary with slate-tinted neutrals",
+      "name": "styles-green",
+      "description": "Bearnie theme with green as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-emerald",
+      "description": "Bearnie theme with emerald as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-teal",
+      "description": "Bearnie theme with teal as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-cyan",
+      "description": "Bearnie theme with cyan as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-sky",
+      "description": "Bearnie theme with sky as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-blue",
+      "description": "Bearnie theme with blue as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-indigo",
+      "description": "Bearnie theme with indigo as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-violet",
+      "description": "Bearnie theme with violet as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-purple",
+      "description": "Bearnie theme with purple as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-fuchsia",
+      "description": "Bearnie theme with fuchsia as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-pink",
+      "description": "Bearnie theme with pink as the primary color",
       "category": "theme"
     },
     {
@@ -331,8 +396,21 @@
   ],
   "themes": [
     "default",
+    "red",
+    "rose",
+    "orange",
     "amber",
-    "forest",
-    "midnight"
+    "yellow",
+    "green",
+    "emerald",
+    "teal",
+    "cyan",
+    "sky",
+    "blue",
+    "indigo",
+    "violet",
+    "purple",
+    "fuchsia",
+    "pink"
   ]
 }

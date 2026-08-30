@@ -127,7 +127,7 @@ Add multiple components in one step. Resolves registry dependencies and installs
 
 List the Bearnie components already installed in the project, and whether each one is up to date with the registry, modified locally, or missing files. To update an outdated component, run `add_component` with its name (this overwrites local files with the registry version).
 
-Styles are compared against the theme recorded in `bearnie.json` (`default`, `amber`, `forest`, or `midnight`). Installing a theme entry such as `styles-midnight` via `add_component` switches the theme and updates `bearnie.json`.
+Styles are compared against the theme recorded in `bearnie.json` (`default` or any Tailwind accent color, e.g. `blue`, `rose`, `emerald`). Installing a theme entry such as `styles-blue` via `add_component` switches the theme and updates `bearnie.json`.
 
 **Parameters:**
 

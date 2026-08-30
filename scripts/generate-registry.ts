@@ -462,42 +462,192 @@ async function generateUtilities(): Promise<
   return utilities;
 }
 
-const THEMES_DIR = path.join(ROOT_DIR, "src/styles/themes");
+interface ThemeAccent {
+  /** Light mode: [primary, primary-foreground] */
+  light: [string, string];
+  /** Dark mode: [primary, primary-foreground] */
+  dark: [string, string];
+}
 
-const THEME_DESCRIPTIONS: Record<string, string> = {
-  amber: "Warm honey palette with Bearnie's brand amber as the primary color",
-  forest: "Deep green primary with calm neutral surfaces",
-  midnight: "Indigo primary with slate-tinted neutrals",
-};
+const WHITE = "oklch(0.985 0 0)";
 
 /**
- * Each file in src/styles/themes/ becomes a `styles-<name>` registry entry.
- * All theme entries ship the same file path (styles/bearnie.css) so a project
- * always has exactly one theme installed; bearnie.json records which one.
+ * One theme per Tailwind accent color, using Tailwind v4's official oklch
+ * values (the same palette shadcn themes are built from). Light mode uses
+ * the 600 shade with white text; dark mode uses the 500 shade with the 950
+ * shade as text. Amber and yellow are light colors, so they use lighter
+ * shades with dark text in both modes.
+ */
+const THEME_ACCENTS: Record<string, ThemeAccent> = {
+  red: {
+    light: ["oklch(0.577 0.245 27.325)", WHITE],
+    dark: ["oklch(0.637 0.237 25.331)", "oklch(0.258 0.092 26.042)"],
+  },
+  rose: {
+    light: ["oklch(0.586 0.253 17.585)", WHITE],
+    dark: ["oklch(0.645 0.246 16.439)", "oklch(0.271 0.105 12.094)"],
+  },
+  orange: {
+    light: ["oklch(0.646 0.222 41.116)", WHITE],
+    dark: ["oklch(0.705 0.213 47.604)", "oklch(0.266 0.079 36.259)"],
+  },
+  amber: {
+    light: ["oklch(0.769 0.188 70.08)", "oklch(0.279 0.077 45.635)"],
+    dark: ["oklch(0.828 0.189 84.429)", "oklch(0.279 0.077 45.635)"],
+  },
+  yellow: {
+    light: ["oklch(0.852 0.199 91.936)", "oklch(0.286 0.066 53.813)"],
+    dark: ["oklch(0.852 0.199 91.936)", "oklch(0.286 0.066 53.813)"],
+  },
+  green: {
+    light: ["oklch(0.627 0.194 149.214)", WHITE],
+    dark: ["oklch(0.723 0.219 149.579)", "oklch(0.266 0.065 152.934)"],
+  },
+  emerald: {
+    light: ["oklch(0.596 0.145 163.225)", WHITE],
+    dark: ["oklch(0.696 0.17 162.48)", "oklch(0.262 0.051 172.552)"],
+  },
+  teal: {
+    light: ["oklch(0.6 0.118 184.704)", WHITE],
+    dark: ["oklch(0.704 0.14 182.503)", "oklch(0.277 0.046 192.524)"],
+  },
+  cyan: {
+    light: ["oklch(0.609 0.126 221.723)", WHITE],
+    dark: ["oklch(0.715 0.143 215.221)", "oklch(0.302 0.056 229.695)"],
+  },
+  sky: {
+    light: ["oklch(0.588 0.158 241.966)", WHITE],
+    dark: ["oklch(0.685 0.169 237.323)", "oklch(0.293 0.066 243.157)"],
+  },
+  blue: {
+    light: ["oklch(0.546 0.245 262.881)", WHITE],
+    dark: ["oklch(0.623 0.214 259.815)", "oklch(0.282 0.091 267.935)"],
+  },
+  indigo: {
+    light: ["oklch(0.511 0.262 276.966)", WHITE],
+    dark: ["oklch(0.585 0.233 277.117)", "oklch(0.257 0.09 281.288)"],
+  },
+  violet: {
+    light: ["oklch(0.541 0.281 293.009)", WHITE],
+    dark: ["oklch(0.606 0.25 292.717)", "oklch(0.283 0.141 291.089)"],
+  },
+  purple: {
+    light: ["oklch(0.558 0.288 302.321)", WHITE],
+    dark: ["oklch(0.627 0.265 303.9)", "oklch(0.291 0.149 302.717)"],
+  },
+  fuchsia: {
+    light: ["oklch(0.591 0.293 322.896)", WHITE],
+    dark: ["oklch(0.667 0.295 322.15)", "oklch(0.293 0.136 325.661)"],
+  },
+  pink: {
+    light: ["oklch(0.592 0.249 0.584)", WHITE],
+    dark: ["oklch(0.656 0.241 354.308)", "oklch(0.284 0.109 3.907)"],
+  },
+};
+
+/** Replaces exactly one occurrence, failing loudly if the anchor drifted. */
+function replaceOnce(css: string, from: string, to: string): string {
+  const first = css.indexOf(from);
+  if (first === -1 || css.indexOf(from, first + 1) !== -1) {
+    throw new Error(
+      `Theme generation anchor not found exactly once in bearnie.css: ${from.trim()}`,
+    );
+  }
+  return css.replace(from, to);
+}
+
+/** Builds a theme's CSS by swapping the accent variables in the base file. */
+function composeThemeCss(base: string, accent: ThemeAccent): string {
+  const [lightPrimary, lightFg] = accent.light;
+  const [darkPrimary, darkFg] = accent.dark;
+
+  let css = base;
+
+  // Light mode (:root)
+  css = replaceOnce(
+    css,
+    "  --primary: oklch(0.205 0 0);",
+    `  --primary: ${lightPrimary};`,
+  );
+  css = replaceOnce(
+    css,
+    "  --primary-foreground: oklch(0.985 0 0);\n  --secondary",
+    `  --primary-foreground: ${lightFg};\n  --secondary`,
+  );
+  css = replaceOnce(
+    css,
+    "  --ring: oklch(0.708 0 0);\n  --chart-1",
+    `  --ring: ${lightPrimary};\n  --chart-1`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-primary: oklch(0.205 0 0);",
+    `  --sidebar-primary: ${lightPrimary};`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-primary-foreground: oklch(0.985 0 0);\n  --sidebar-accent: oklch(0.97 0 0);",
+    `  --sidebar-primary-foreground: ${lightFg};\n  --sidebar-accent: oklch(0.97 0 0);`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-ring: oklch(0.708 0 0);",
+    `  --sidebar-ring: ${lightPrimary};`,
+  );
+
+  // Dark mode (.dark)
+  css = replaceOnce(
+    css,
+    "  --primary: oklch(0.985 0 0);\n  --primary-foreground: oklch(0.205 0 0);",
+    `  --primary: ${darkPrimary};\n  --primary-foreground: ${darkFg};`,
+  );
+  css = replaceOnce(
+    css,
+    "  --ring: oklch(0.439 0 0);\n  --chart-1",
+    `  --ring: ${darkPrimary};\n  --chart-1`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-primary: oklch(0.488 0.243 264.376);",
+    `  --sidebar-primary: ${darkPrimary};`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-primary-foreground: oklch(0.985 0 0);\n  --sidebar-accent: oklch(0.269 0 0);",
+    `  --sidebar-primary-foreground: ${darkFg};\n  --sidebar-accent: oklch(0.269 0 0);`,
+  );
+  css = replaceOnce(
+    css,
+    "  --sidebar-ring: oklch(0.439 0 0);",
+    `  --sidebar-ring: ${darkPrimary};`,
+  );
+
+  return css;
+}
+
+/**
+ * Each Tailwind accent color becomes a `styles-<name>` registry entry,
+ * composed from bearnie.css at build time so themes never drift from the
+ * base styles. All theme entries ship the same file path
+ * (styles/bearnie.css); bearnie.json records which one is installed.
  */
 async function generateThemes(): Promise<{
   entries: { name: string; description: string; category: string }[];
   themeNames: string[];
 }> {
-  if (!(await fs.pathExists(THEMES_DIR))) {
+  if (!(await fs.pathExists(STYLES_PATH))) {
     return { entries: [], themeNames: [] };
   }
 
-  const files = (await fs.readdir(THEMES_DIR))
-    .filter((file) => file.endsWith(".css"))
-    .sort();
-
+  const base = await fs.readFile(STYLES_PATH, "utf-8");
   const entries: { name: string; description: string; category: string }[] =
     [];
   const themeNames: string[] = [];
 
-  for (const file of files) {
-    const themeName = file.replace(/\.css$/, "");
+  for (const [themeName, accent] of Object.entries(THEME_ACCENTS)) {
     const entryName = `styles-${themeName}`;
-    const description =
-      THEME_DESCRIPTIONS[themeName] ??
-      `${themeName} theme variables for Bearnie components`;
-    const content = await fs.readFile(path.join(THEMES_DIR, file), "utf-8");
+    const description = `Bearnie theme with ${themeName} as the primary color`;
+    const content = composeThemeCss(base, accent);
 
     const registryEntry = {
       name: entryName,
@@ -517,11 +667,14 @@ async function generateThemes(): Promise<{
       registryEntry,
       { spaces: 2 },
     );
-    console.log(`   ✓ Created ${entryName}.json (theme)`);
 
     entries.push({ name: entryName, description, category: "theme" });
     themeNames.push(themeName);
   }
+
+  console.log(
+    `   ✓ Created ${themeNames.length} theme entries (${themeNames.join(", ")})`,
+  );
 
   return { entries, themeNames };
 }
