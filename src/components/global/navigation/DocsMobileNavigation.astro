@@ -45,7 +45,30 @@ const { navigation, currentPath } = Astro.props;
       </svg>
     </button>
   </div>
-  <div class="h-[calc(100%-3.5rem)] overflow-y-auto scroll-mask-b-16">
+  <div class="px-4 pb-2">
+    <a
+      href="https://lexingtonthemes.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+    >
+      Astro themes
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-3.5"
+        aria-hidden="true"
+      >
+        <path d="M7 17 17 7" />
+        <path d="M7 7h10v10" />
+      </svg>
+    </a>
+  </div>
+  <div class="h-[calc(100%-6rem)] overflow-y-auto scroll-mask-b-16">
     <SidebarNav navigation={navigation} currentPath={currentPath} />
   </div>
 </aside>
