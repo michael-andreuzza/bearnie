@@ -7,9 +7,9 @@ export const siteConfig = {
   ogImage: "https://bearnie.dev/images/openGraph/facebook.png",
   twitterImage: "https://bearnie.dev/images/openGraph/twitter.png",
   author: {
-    name: "Bearnie Team",
+    name: "Michael Andreuzza",
     url: "https://bearnie.dev",
-    twitter: "@astroui",
+    twitter: "@mike_andreuzza",
   },
   links: {
     twitter: "https://twitter.com/mike_andreuzza",
@@ -20,7 +20,7 @@ export const siteConfig = {
     name: "Bearnie",
     logo: "https://bearnie.dev/images/logos/symbol.svg",
     sameAs: [
-      "https://twitter.com/astroui",
+      "https://twitter.com/mike_andreuzza",
       "https://github.com/michael-andreuzza/bearnie",
     ],
   },

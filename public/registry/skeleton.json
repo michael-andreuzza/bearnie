@@ -11,7 +11,7 @@
     {
       "name": "Skeleton.astro",
       "path": "skeleton/Skeleton.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'animate-pulse rounded-md bg-muted',\n  className\n);\n---\n\n<div class={classes} {...props} />\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'animate-pulse rounded-md bg-muted',\n  className\n);\n---\n\n<div class={classes} aria-hidden=\"true\" {...props} />\n"
     }
   ]
 }

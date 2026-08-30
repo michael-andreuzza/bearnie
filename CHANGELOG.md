@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [create-bearnie 0.4.4] - 2026-08-05
+
+- Bump create-bearnie to 0.4.4 for canvas token in template
+
 ## [0.1.7 / 0.4.3 / 0.1.3] - 2026-08-05
 
 - Release automation script with changelog, tagging, and optional npm publish

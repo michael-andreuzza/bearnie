@@ -37,6 +37,10 @@
     "url": "https://github.com/michael-andreuzza/bearnie.git",
     "directory": "packages/create-bearnie"
   },
+  "homepage": "https://bearnie.dev",
+  "bugs": {
+    "url": "https://github.com/michael-andreuzza/bearnie/issues"
+  },
   "keywords": [
     "create",
     "bearnie",

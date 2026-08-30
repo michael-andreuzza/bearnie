@@ -29,15 +29,7 @@ const docs = defineCollection({
     order: z.number().optional(),
   }),
 });
-const legal = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/legal" }),
-  schema: z.object({
-    page: z.string(),
-    pubDate: z.coerce.date(),
-  }),
-});
 export const collections = {
   components,
   docs,
-  legal,
 };

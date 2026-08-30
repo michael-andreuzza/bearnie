@@ -169,23 +169,23 @@ async function main() {
 
   await fs.writeJson(
     PACKAGE_PATHS.cli,
-    { ...(await readJson(PACKAGE_PATHS.cli)), version: newVersions.cli },
+    { ...(await readJson<Record<string, unknown>>(PACKAGE_PATHS.cli)), version: newVersions.cli },
     { spaces: 2 },
   );
   await fs.writeJson(
     PACKAGE_PATHS.create,
-    { ...(await readJson(PACKAGE_PATHS.create)), version: newVersions.create },
+    { ...(await readJson<Record<string, unknown>>(PACKAGE_PATHS.create)), version: newVersions.create },
     { spaces: 2 },
   );
   await fs.writeJson(
     PACKAGE_PATHS.mcp,
-    { ...(await readJson(PACKAGE_PATHS.mcp)), version: newVersions.mcp },
+    { ...(await readJson<Record<string, unknown>>(PACKAGE_PATHS.mcp)), version: newVersions.mcp },
     { spaces: 2 },
   );
   await fs.writeJson(
     PACKAGE_PATHS.root,
     {
-      ...(await readJson(PACKAGE_PATHS.root)),
+      ...(await readJson<Record<string, unknown>>(PACKAGE_PATHS.root)),
       registryVersion: newVersions.registry,
     },
     { spaces: 2 },

@@ -67,7 +67,7 @@ Projects created with `create-bearnie` already include `bearnie.json` and can sk
 **Options:**
 
 - `-y, --yes` - Skip confirmation prompts and use defaults
-- `-c, --cwd <path>` - Set the working directory (defaults to current directory)
+- `--cwd <path>` - Set the working directory (defaults to current directory)
 
 ### `add`
 
@@ -94,7 +94,7 @@ npx bearnie add
 
 - `-y, --yes` - Skip confirmation prompts
 - `-a, --all` - Add all available components
-- `-c, --cwd <path>` - Set the working directory
+- `--cwd <path>` - Set the working directory
 
 ### `list`
 
@@ -187,17 +187,25 @@ BEARNIE_REGISTRY_URL=http://localhost:4321/registry bearnie add button
 
 ## Available Components
 
-**Form:** button, input, textarea, label, checkbox, radio, select, switch
+**Form:** button, button-group, checkbox, combobox, file-upload, input, input-group, input-otp, label, radio, select, slider, switch, textarea, toggle, toggle-group
 
-**Layout:** card, separator, scroll-area, aspect-ratio
+**Layout:** aspect-ratio, card, scroll-area, separator
 
-**Navigation:** breadcrumb, tabs, dropdown-menu
+**Navigation:** breadcrumb, command, context-menu, dropdown-menu, menubar, pagination, sidebar, stepper, tabs, tree
 
-**Feedback:** alert, badge, progress, skeleton, spinner, toast, tooltip
+**Feedback:** alert, empty, progress, skeleton, spinner, toast
 
-**Disclosure:** accordion, collapsible, dialog, popover
+**Disclosure:** accordion, alert-dialog, collapsible, dialog, popover, sheet
 
-**Display:** avatar, table
+**Display:** avatar, badge, carousel, hover-card, icon, kbd, table, tooltip
+
+**Theme:** styles, theme-toggle
+
+**Meta:** barrel
+
+Shared utilities (`cn`, `focus-trap`, and the `ui-runtime-*` modules) are installed automatically as dependencies of the components that need them.
+
+Run `npx bearnie list` for the always-current list.
 
 ## Usage Examples
 

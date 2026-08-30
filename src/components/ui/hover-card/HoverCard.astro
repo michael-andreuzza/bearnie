@@ -51,10 +51,21 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
         }, closeDelay);
       };
 
+      const hideImmediately = () => {
+        clearTimeout(openTimeout);
+        clearTimeout(closeTimeout);
+        content.hidden = true;
+      };
+
       trigger.addEventListener('mouseenter', showContent);
       trigger.addEventListener('mouseleave', hideContent);
       trigger.addEventListener('focus', showContent);
       trigger.addEventListener('blur', hideContent);
+      card.addEventListener('keydown', (event) => {
+        if ((event as KeyboardEvent).key === 'Escape') {
+          hideImmediately();
+        }
+      });
 
       content.addEventListener('mouseenter', () => {
         clearTimeout(closeTimeout);

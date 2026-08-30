@@ -6,10 +6,13 @@ import { Loading03Icon } from "../icon/icons";
 
 export interface Props extends HTMLAttributes<'svg'> {
   size?: 'sm' | 'default' | 'lg';
+  /** Accessible loading announcement for screen readers */
+  label?: string;
 }
 
 const {
   size = 'default',
+  label = 'Loading',
   class: className,
   color,
   ...props
@@ -28,8 +31,11 @@ const classes = cn(
 );
 ---
 
-<HugeIcon icon={Loading03Icon}
-  class={classes}
-  color={color ?? undefined}
-  {...(props as Record<string, string | number | undefined>)}
-/>
+<span role="status" class="contents">
+  <HugeIcon icon={Loading03Icon}
+    class={classes}
+    color={color ?? undefined}
+    {...(props as Record<string, string | number | undefined>)}
+  />
+  <span class="sr-only">{label}</span>
+</span>

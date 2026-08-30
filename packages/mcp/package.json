@@ -18,8 +18,11 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "node-fetch": "^3.3.2",
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "zod": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
@@ -35,6 +38,10 @@
     "type": "git",
     "url": "https://github.com/michael-andreuzza/bearnie.git",
     "directory": "packages/mcp"
+  },
+  "homepage": "https://bearnie.dev",
+  "bugs": {
+    "url": "https://github.com/michael-andreuzza/bearnie/issues"
   },
   "keywords": [
     "mcp",
