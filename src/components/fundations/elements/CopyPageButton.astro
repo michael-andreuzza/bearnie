@@ -273,4 +273,5 @@ const { contentId = "docs-article-content" } = Astro.props;
   }
 
   initCopyPageButton();
+  document.addEventListener("astro:page-load", initCopyPageButton);
 </script>

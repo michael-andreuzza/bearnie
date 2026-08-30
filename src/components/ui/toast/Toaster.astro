@@ -56,10 +56,9 @@ const classes = cn(
 
   // Toast manager
   class ToastManager {
-    private container: HTMLElement | null = null;
-
-    constructor() {
-      this.container = document.getElementById("toaster");
+    // Looked up lazily so it stays valid after client-side navigation
+    private get container(): HTMLElement | null {
+      return document.getElementById("toaster");
     }
 
     private getIcon(type: ToastType): string {
@@ -74,7 +73,8 @@ const classes = cn(
     }
 
     show(options: ToastOptions | string) {
-      if (!this.container) return;
+      const container = this.container;
+      if (!container) return;
 
       const opts: ToastOptions =
         typeof options === "string" ? { description: options } : options;
@@ -123,7 +123,7 @@ const classes = cn(
         });
       }
 
-      this.container.appendChild(toast);
+      container.appendChild(toast);
 
       // Auto dismiss
       if (duration > 0) {

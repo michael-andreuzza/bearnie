@@ -37,8 +37,13 @@ const { size = "default" } = Astro.props;
 <script is:inline>
   // Initialize theme on page load (runs before hydration to prevent flash)
   (function () {
-    const stored = localStorage.getItem("theme") || "light";
-    document.documentElement.classList.toggle("dark", stored === "dark");
+    const applyTheme = () => {
+      const stored = localStorage.getItem("theme") || "light";
+      document.documentElement.classList.toggle("dark", stored === "dark");
+    };
+    applyTheme();
+    // View transitions replace <html> attributes, so re-apply after each swap
+    document.addEventListener("astro:after-swap", applyTheme);
   })();
 </script>
 

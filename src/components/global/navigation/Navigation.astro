@@ -122,25 +122,29 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
   )
 }
 <script define:vars={{ githubRepoSlug }}>
-  // Fetch GitHub stars
+  // Fetch GitHub stars (cached so client-side navigation doesn't refetch)
+  let cachedStars = null;
+
   async function fetchGitHubStars() {
     try {
-      const response = await fetch(
-        `https://api.github.com/repos/${githubRepoSlug}`,
-      );
-      if (response.ok) {
+      if (cachedStars === null) {
+        const response = await fetch(
+          `https://api.github.com/repos/${githubRepoSlug}`,
+        );
+        if (!response.ok) return;
         const data = await response.json();
         const stars = data.stargazers_count;
-        const formatted =
+        cachedStars =
           stars >= 1000 ? `${(stars / 1000).toFixed(1)}k` : stars.toString();
-        const docsStars = document.getElementById("github-stars-docs");
-        const defaultStars = document.getElementById("github-stars-default");
-        if (docsStars) docsStars.textContent = formatted;
-        if (defaultStars) defaultStars.textContent = formatted;
       }
+      const docsStars = document.getElementById("github-stars-docs");
+      const defaultStars = document.getElementById("github-stars-default");
+      if (docsStars) docsStars.textContent = cachedStars;
+      if (defaultStars) defaultStars.textContent = cachedStars;
     } catch (error) {
       console.error("Failed to fetch GitHub stars:", error);
     }
   }
   fetchGitHubStars();
+  document.addEventListener("astro:page-load", fetchGitHubStars);
 </script>

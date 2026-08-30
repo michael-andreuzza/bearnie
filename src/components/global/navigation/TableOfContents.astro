@@ -45,7 +45,8 @@ const { contentId = "docs-content" } = Astro.props;
 <script>
   function generateTOC() {
     const toc = document.getElementById("docs-toc");
-    if (!toc) return;
+    if (!toc || toc.hasAttribute("data-toc-initialized")) return;
+    toc.setAttribute("data-toc-initialized", "true");
 
     const contentId = toc.getAttribute("data-content-id") || "docs-content";
     const content = document.getElementById(contentId);
@@ -119,4 +120,5 @@ const { contentId = "docs-content" } = Astro.props;
   }
 
   generateTOC();
+  document.addEventListener("astro:page-load", generateTOC);
 </script>
