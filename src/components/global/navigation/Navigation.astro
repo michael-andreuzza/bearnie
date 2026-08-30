@@ -15,7 +15,8 @@ export interface Props {
   variant?: "default" | "docs";
 }
 const { variant = "default" } = Astro.props;
-const allNavLinks = [
+// The docs header keeps only the essentials; these links show on the landing page
+const navLinks = [
   { title: "Docs", href: "/docs" },
   {
     title: "Astro  themes",
@@ -23,11 +24,6 @@ const allNavLinks = [
     external: true,
   },
 ];
-// No need for a Docs link while already in the docs
-const navLinks =
-  variant === "docs"
-    ? allNavLinks.filter((link) => link.href !== "/docs")
-    : allNavLinks;
 const githubUrl = siteConfig.links.github;
 const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
 ---
@@ -43,34 +39,19 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
               bearnie
             </a>
           </LogoContextMenu>
-          <div class="hidden md:flex items-center gap-4">
-            <nav class="flex items-center gap-4 text-sm font-medium">
-              {navLinks.map((Link01Icon) => (
-                <a
-                  href={Link01Icon.href}
-                  class="text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
-                  {...(Link01Icon.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                >
-                  {Link01Icon.title}
-                </a>
-              ))}
-            </nav>
-            <div class="flex items-center border-l border-border pl-4 gap-1">
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center justify-center gap-1.5 h-7 px-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                aria-label="GitHub"
-              >
-                <HugeIcon icon={Github01Icon} class="size-3.5" />
-                <span id="github-stars-docs" class="tabular-nums" />
-              </a>
-              <DocsSearch />
-              <ThemeToggle size="xs" />
-            </div>
+          <div class="hidden md:flex items-center gap-1">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-1.5 h-7 px-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              aria-label="GitHub"
+            >
+              <HugeIcon icon={Github01Icon} class="size-3.5" />
+              <span id="github-stars-docs" class="tabular-nums" />
+            </a>
+            <DocsSearch />
+            <ThemeToggle size="xs" />
           </div>
           <div class="flex items-center gap-1 md:hidden">
             <DocsSearch />
@@ -78,7 +59,7 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors"
+              class="inline-flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               aria-label="GitHub"
             >
               <HugeIcon icon={Github01Icon} class="size-4" />
@@ -86,7 +67,7 @@ const githubRepoSlug = new URL(githubUrl).pathname.slice(1);
             <ThemeToggle size="xs" />
             <button
               type="button"
-              class="inline-flex items-center justify-center size-7 text-muted-foreground"
+              class="inline-flex items-center justify-center size-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               id="docs-mobile-menu-toggle"
               aria-label="Toggle menu"
             >
