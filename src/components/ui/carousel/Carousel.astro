@@ -159,13 +159,23 @@ const classes = cn('relative', className);
         dot.addEventListener('click', () => slider.moveToIdx(index));
       });
 
-      // Store slider instance for cleanup
+      // Store slider instance and autoplay stopper for cleanup
       (carousel as any).__keenSlider = slider;
+      (carousel as any).__stopAutoplay = stopAutoplay;
     });
   }
 
   initCarousels();
   document.addEventListener('astro:page-load', initCarousels);
+
+  // Kill autoplay timers and slider instances before view-transition swaps,
+  // otherwise every visited carousel keeps an interval running forever.
+  document.addEventListener('astro:before-swap', () => {
+    document.querySelectorAll('[data-carousel-initialized]').forEach((carousel) => {
+      (carousel as any).__stopAutoplay?.();
+      (carousel as any).__keenSlider?.destroy();
+    });
+  });
 </script>
 
 <style is:global>

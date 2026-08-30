@@ -118,7 +118,12 @@ const trackClasses = cn(
       const isDisabled = slider.getAttribute('data-disabled') === 'true';
       const name = slider.getAttribute('data-name');
       
-      let values: number[] = JSON.parse(slider.getAttribute('data-default-value') || '[0]');
+      let values: number[];
+      try {
+        values = JSON.parse(slider.getAttribute('data-default-value') || '[0]');
+      } catch {
+        values = [0];
+      }
       
       if (isDisabled) return;
       
@@ -195,12 +200,14 @@ const trackClasses = cn(
           thumb.focus();
           document.addEventListener('mousemove', onDrag);
           document.addEventListener('mouseup', stopDrag);
-          document.addEventListener('touchmove', onDrag);
+          // passive: false so the drag can stop the page from panning
+          document.addEventListener('touchmove', onDrag, { passive: false });
           document.addEventListener('touchend', stopDrag);
         }
         
         function onDrag(e: MouseEvent | TouchEvent) {
           if (!isDragging) return;
+          if (e.cancelable) e.preventDefault();
           const percent = getPercentFromEvent(e);
           values[index] = getValueFromPercent(percent);
           updateUI();

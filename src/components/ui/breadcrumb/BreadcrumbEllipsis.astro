@@ -32,7 +32,39 @@ const { class: className, ...props } = Astro.props;
 </div>
 
 <script>
+  function closeBreadcrumbDropdown(dropdown: Element) {
+    const trigger = dropdown.querySelector('[data-breadcrumb-dropdown-trigger]');
+    const content = dropdown.querySelector('[data-breadcrumb-dropdown-content]') as HTMLElement | null;
+    if (!content || content.hidden) return;
+    content.hidden = true;
+    trigger?.setAttribute('aria-expanded', 'false');
+  }
+
+  // Document listeners bound once; live dropdowns resolved at event time
+  // so they don't accumulate across view-transition navigations.
+  let documentListenersBound = false;
+
+  function bindDocumentListeners() {
+    if (documentListenersBound) return;
+    documentListenersBound = true;
+
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('[data-breadcrumb-dropdown]').forEach((dropdown) => {
+        if (!dropdown.contains(e.target as Node)) {
+          closeBreadcrumbDropdown(dropdown);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-breadcrumb-dropdown]').forEach(closeBreadcrumbDropdown);
+    });
+  }
+
   function initBreadcrumbDropdowns() {
+    bindDocumentListeners();
+
     document.querySelectorAll('[data-breadcrumb-dropdown]').forEach((dropdown) => {
       if (dropdown.hasAttribute('data-initialized')) return;
       dropdown.setAttribute('data-initialized', 'true');
@@ -53,28 +85,9 @@ const { class: className, ...props } = Astro.props;
         toggleDropdown();
       });
 
-      // Close on click outside
-      document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target as Node) && !content.hidden) {
-          content.hidden = true;
-          trigger.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      // Close on Escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !content.hidden) {
-          content.hidden = true;
-          trigger.setAttribute('aria-expanded', 'false');
-        }
-      });
-
       // Handle item clicks
       content.querySelectorAll('a').forEach((item) => {
-        item.addEventListener('click', () => {
-          content.hidden = true;
-          trigger.setAttribute('aria-expanded', 'false');
-        });
+        item.addEventListener('click', () => closeBreadcrumbDropdown(dropdown));
       });
     });
   }

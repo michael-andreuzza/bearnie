@@ -13,7 +13,23 @@ const { ...props } = Astro.props;
 <script>
   import { trapFocus, generateId } from '@/utils/focus-trap';
 
+  // Single Escape listener, bound once; resolves live sheets at event time
+  // so listeners don't accumulate across view-transition navigations.
+  let escapeListenerBound = false;
+
+  function bindEscapeListener() {
+    if (escapeListenerBound) return;
+    escapeListenerBound = true;
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-sheet]').forEach((sheet) => {
+        (sheet as any).__closeSheet?.();
+      });
+    });
+  }
+
   function initSheets() {
+    bindEscapeListener();
     document.querySelectorAll('[data-sheet]').forEach((sheet) => {
       // Skip if already initialized
       if (sheet.hasAttribute('data-initialized')) return;
@@ -45,8 +61,10 @@ const { ...props } = Astro.props;
 
       let cleanupFocusTrap: (() => void) | null = null;
       
-      // Close function
+      // Close function (no-op when already closed so the shared Escape
+      // handler can call it blindly)
       function closeSheet() {
+        if ((overlay as HTMLElement).hidden) return;
         (overlay as HTMLElement).hidden = true;
         (content as HTMLElement).hidden = true;
         document.body.style.overflow = '';
@@ -56,6 +74,7 @@ const { ...props } = Astro.props;
         // Return focus to trigger
         trigger?.focus();
       }
+      (sheet as any).__closeSheet = closeSheet;
       
       // Open sheet
       trigger.addEventListener('click', () => {
@@ -74,13 +93,6 @@ const { ...props } = Astro.props;
       // Close buttons
       content.querySelectorAll('[data-sheet-close]').forEach(btn => {
         btn.addEventListener('click', closeSheet);
-      });
-      
-      // Close on escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !(overlay as HTMLElement).hidden) {
-          closeSheet();
-        }
       });
     });
   }

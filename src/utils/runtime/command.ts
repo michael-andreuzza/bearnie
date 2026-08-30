@@ -1,4 +1,4 @@
-import { generateId } from "@/utils/focus-trap";
+import { trapFocus, generateId } from "@/utils/focus-trap";
 
 export function initCommands() {
   document.querySelectorAll("[data-command]").forEach((command) => {
@@ -132,64 +132,104 @@ export function initCommands() {
   });
 }
 
+const commandDialogFocusTraps = new WeakMap<Element, () => void>();
+
+function getCommandDialogParts(dialog: Element) {
+  return {
+    trigger: dialog.querySelector(
+      "[data-command-dialog-trigger]"
+    ) as HTMLElement | null,
+    overlay: dialog.querySelector(
+      "[data-command-dialog-overlay]"
+    ) as HTMLElement | null,
+    content: dialog.querySelector(
+      "[data-command-dialog-content]"
+    ) as HTMLElement | null,
+  };
+}
+
+function isCommandDialogOpen(dialog: Element) {
+  const { overlay } = getCommandDialogParts(dialog);
+  return overlay ? !overlay.hidden : false;
+}
+
+function openCommandDialog(dialog: Element) {
+  const { overlay, content } = getCommandDialogParts(dialog);
+  if (overlay) overlay.hidden = false;
+  if (content) {
+    content.hidden = false;
+    commandDialogFocusTraps.set(dialog, trapFocus(content));
+    const input = content.querySelector("[data-command-input]") as
+      | HTMLInputElement
+      | null;
+    input?.focus();
+  }
+  document.body.style.overflow = "hidden";
+}
+
+function closeCommandDialog(dialog: Element) {
+  const { trigger, overlay, content } = getCommandDialogParts(dialog);
+  if (overlay) overlay.hidden = true;
+  if (content) content.hidden = true;
+  commandDialogFocusTraps.get(dialog)?.();
+  commandDialogFocusTraps.delete(dialog);
+  document.body.style.overflow = "";
+
+  const input = content?.querySelector("[data-command-input]") as
+    | HTMLInputElement
+    | null;
+  if (input) {
+    input.value = "";
+    input.dispatchEvent(new Event("input"));
+  }
+
+  trigger?.focus();
+}
+
+// Bound once per session; resolves the live dialog at event time so the
+// shortcut can't act on dialogs detached by view-transition swaps (which
+// previously locked scrolling on unrelated pages).
+let documentListenersBound = false;
+
+function bindCommandDialogListeners() {
+  if (documentListenersBound) return;
+  documentListenersBound = true;
+
+  document.addEventListener("keydown", (e) => {
+    const dialogs = Array.from(
+      document.querySelectorAll("[data-command-dialog]")
+    );
+    if (dialogs.length === 0) return;
+
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      const openDialog = dialogs.find(isCommandDialogOpen);
+      if (openDialog) {
+        closeCommandDialog(openDialog);
+      } else {
+        openCommandDialog(dialogs[0]);
+      }
+    }
+
+    if (e.key === "Escape") {
+      dialogs.filter(isCommandDialogOpen).forEach(closeCommandDialog);
+    }
+  });
+}
+
 export function initCommandDialogs() {
+  bindCommandDialogListeners();
+
   document.querySelectorAll("[data-command-dialog]").forEach((dialog) => {
     if (dialog.hasAttribute("data-dialog-initialized")) return;
     dialog.setAttribute("data-dialog-initialized", "true");
 
-    const trigger = dialog.querySelector("[data-command-dialog-trigger]");
-    const overlay = dialog.querySelector("[data-command-dialog-overlay]") as
-      | HTMLElement
-      | null;
-    const content = dialog.querySelector("[data-command-dialog-content]") as
-      | HTMLElement
-      | null;
+    const { trigger, overlay } = getCommandDialogParts(dialog);
 
-    const openDialog = () => {
-      if (overlay) overlay.hidden = false;
-      if (content) {
-        content.hidden = false;
-        const input = content.querySelector("[data-command-input]") as
-          | HTMLInputElement
-          | null;
-        input?.focus();
-      }
-      document.body.style.overflow = "hidden";
-    };
-
-    const closeDialog = () => {
-      if (overlay) overlay.hidden = true;
-      if (content) content.hidden = true;
-      document.body.style.overflow = "";
-
-      const input = content?.querySelector("[data-command-input]") as
-        | HTMLInputElement
-        | null;
-      if (input) {
-        input.value = "";
-        input.dispatchEvent(new Event("input"));
-      }
-    };
-
-    trigger?.addEventListener("click", openDialog);
+    trigger?.addEventListener("click", () => openCommandDialog(dialog));
 
     overlay?.addEventListener("click", (e) => {
-      if (e.target === overlay) closeDialog();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        if (overlay?.hidden) {
-          openDialog();
-        } else {
-          closeDialog();
-        }
-      }
-
-      if (e.key === "Escape" && overlay && !overlay.hidden) {
-        closeDialog();
-      }
+      if (e.target === overlay) closeCommandDialog(dialog);
     });
   });
 }

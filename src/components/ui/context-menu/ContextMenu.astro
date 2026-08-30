@@ -12,7 +12,52 @@ const { class: className, ...props } = Astro.props;
 </div>
 
 <script>
+  function closeAllContextMenus(except?: Element) {
+    document.querySelectorAll("[data-context-menu-content]").forEach((c) => {
+      if (c !== except) (c as HTMLElement).hidden = true;
+    });
+  }
+
+  // Document listeners bound once; live menus resolved at event time so
+  // they don't accumulate across view-transition navigations.
+  let documentListenersBound = false;
+
+  function bindDocumentListeners() {
+    if (documentListenersBound) return;
+    documentListenersBound = true;
+
+    document.addEventListener("click", (e) => {
+      document.querySelectorAll("[data-context-menu-content]").forEach((c) => {
+        if (!c.contains(e.target as Node)) (c as HTMLElement).hidden = true;
+      });
+    });
+
+    document.addEventListener("contextmenu", (e) => {
+      document.querySelectorAll("[data-context-menu]").forEach((menu) => {
+        const trigger = menu.querySelector("[data-context-menu-trigger]");
+        const content = menu.querySelector("[data-context-menu-content]") as HTMLElement | null;
+        if (content && trigger && !trigger.contains(e.target as Node)) {
+          content.hidden = true;
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      closeAllContextMenus();
+    });
+
+    // capture: true so scrolls inside nested scroll containers also close menus
+    document.addEventListener(
+      "scroll",
+      () => closeAllContextMenus(),
+      { capture: true, passive: true },
+    );
+  }
+
   function initContextMenus() {
+    bindDocumentListeners();
+
     document.querySelectorAll("[data-context-menu]").forEach((menu) => {
       if (menu.hasAttribute("data-initialized")) return;
       menu.setAttribute("data-initialized", "true");
@@ -25,11 +70,7 @@ const { class: className, ...props } = Astro.props;
       // Right-click to open
       trigger.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        
-        // Close any other open context menus
-        document.querySelectorAll("[data-context-menu-content]").forEach((c) => {
-          if (c !== content) (c as HTMLElement).hidden = true;
-        });
+        closeAllContextMenus(content);
 
         // Position at cursor
         const x = (e as MouseEvent).clientX;
@@ -53,34 +94,6 @@ const { class: className, ...props } = Astro.props;
             content.style.top = `${viewportHeight - rect.height - 8}px`;
           }
         });
-      });
-
-      // Close on click outside
-      document.addEventListener("click", (e) => {
-        if (!content.contains(e.target as Node)) {
-          content.hidden = true;
-        }
-      });
-
-      // Close on right-click outside trigger
-      document.addEventListener("contextmenu", (e) => {
-        if (!trigger.contains(e.target as Node) && !content.hidden) {
-          content.hidden = true;
-        }
-      });
-
-      // Close on Escape
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && !content.hidden) {
-          content.hidden = true;
-        }
-      });
-
-      // Close on scroll
-      document.addEventListener("scroll", () => {
-        if (!content.hidden) {
-          content.hidden = true;
-        }
       });
 
       // Handle item clicks

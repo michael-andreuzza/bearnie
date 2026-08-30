@@ -35,24 +35,36 @@ const classes = cn(
 </aside>
 
 <script>
+  // Handle responsive behavior
+  function checkMobile(sidebar: Element) {
+    const isMobile = window.innerWidth < 768;
+    sidebar.setAttribute("data-mobile", isMobile ? "true" : "false");
+
+    // On mobile, sidebar starts closed
+    if (isMobile && sidebar.getAttribute("data-state") === "open") {
+      sidebar.setAttribute("data-state", "closed");
+    }
+  }
+
+  // Single resize listener, bound once; resolves live sidebars at event
+  // time so listeners don't accumulate across view-transition navigations.
+  let resizeListenerBound = false;
+
+  function bindResizeListener() {
+    if (resizeListenerBound) return;
+    resizeListenerBound = true;
+    window.addEventListener("resize", () => {
+      document.querySelectorAll("[data-sidebar]").forEach(checkMobile);
+    });
+  }
+
   function initSidebars() {
+    bindResizeListener();
+
     document.querySelectorAll("[data-sidebar]").forEach((sidebar) => {
       if (sidebar.hasAttribute("data-initialized")) return;
       sidebar.setAttribute("data-initialized", "true");
-
-      // Handle responsive behavior
-      const checkMobile = () => {
-        const isMobile = window.innerWidth < 768;
-        sidebar.setAttribute("data-mobile", isMobile ? "true" : "false");
-        
-        // On mobile, sidebar starts closed
-        if (isMobile && sidebar.getAttribute("data-state") === "open") {
-          sidebar.setAttribute("data-state", "closed");
-        }
-      };
-
-      checkMobile();
-      window.addEventListener("resize", checkMobile);
+      checkMobile(sidebar);
     });
   }
 

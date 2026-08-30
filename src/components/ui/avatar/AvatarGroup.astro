@@ -64,7 +64,7 @@ const classes = cn(
         lg: 'size-12 text-base',
       };
 
-      overflowEl.className = `relative flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-muted text-muted-foreground font-medium ${sizeClasses[size]}`;
+      overflowEl.className = `relative flex shrink-0 items-center justify-center rounded-full border-2 border-background bg-muted text-muted-foreground font-medium ${sizeClasses[size] ?? sizeClasses.default}`;
       overflowEl.textContent = `+${overflow}`;
       group.appendChild(overflowEl);
     });

@@ -14,7 +14,37 @@ const { class: className, ...props } = Astro.props;
 <script>
   import { trapFocus, generateId } from '@/utils/focus-trap';
 
+  const focusTrapCleanups = new WeakMap<Element, () => void>();
+
+  function closeAlertDialog(dialog: Element) {
+    const trigger = dialog.querySelector('[data-alert-dialog-trigger]') as HTMLElement | null;
+    const overlay = dialog.querySelector('[data-alert-dialog-overlay]') as HTMLElement | null;
+    const content = dialog.querySelector('[data-alert-dialog-content]') as HTMLElement | null;
+    if (overlay) overlay.hidden = true;
+    if (content) content.hidden = true;
+    focusTrapCleanups.get(dialog)?.();
+    focusTrapCleanups.delete(dialog);
+    trigger?.focus();
+  }
+
+  // Single document listener, bound once; resolves live dialogs at event
+  // time so it doesn't accumulate across view-transition navigations.
+  let escapeListenerBound = false;
+
+  function bindEscapeListener() {
+    if (escapeListenerBound) return;
+    escapeListenerBound = true;
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-alert-dialog]').forEach((dialog) => {
+        const overlay = dialog.querySelector('[data-alert-dialog-overlay]') as HTMLElement | null;
+        if (overlay && !overlay.hidden) closeAlertDialog(dialog);
+      });
+    });
+  }
+
   function initAlertDialogs() {
+    bindEscapeListener();
     document.querySelectorAll('[data-alert-dialog]').forEach((dialog) => {
       if (dialog.hasAttribute('data-initialized')) return;
       dialog.setAttribute('data-initialized', 'true');
@@ -43,49 +73,24 @@ const { class: className, ...props } = Astro.props;
         if (description?.id) content.setAttribute('aria-describedby', description.id);
       }
 
-      let cleanupFocusTrap: (() => void) | null = null;
-
       // Open dialog
       trigger.addEventListener('click', () => {
         if (overlay) overlay.hidden = false;
         if (content) {
           content.hidden = false;
-          // Set up focus trap
-          cleanupFocusTrap = trapFocus(content);
+          focusTrapCleanups.set(dialog, trapFocus(content));
         }
       });
 
-      // Close dialog
-      const closeDialog = () => {
-        if (overlay) overlay.hidden = true;
-        if (content) content.hidden = true;
-        // Clean up focus trap
-        cleanupFocusTrap?.();
-        cleanupFocusTrap = null;
-        // Return focus to trigger
-        trigger?.focus();
-      };
-
-      // Cancel buttons close the dialog
+      // Cancel and action buttons close the dialog
       cancelButtons.forEach((btn) => {
-        btn.addEventListener('click', closeDialog);
+        btn.addEventListener('click', () => closeAlertDialog(dialog));
       });
-
-      // Action buttons also close the dialog
       actionButtons.forEach((btn) => {
-        btn.addEventListener('click', closeDialog);
+        btn.addEventListener('click', () => closeAlertDialog(dialog));
       });
 
       // Note: No close on overlay click for alert dialogs (intentional)
-
-      // Close on Escape
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape' && overlay && !overlay.hidden) {
-          closeDialog();
-        }
-      };
-
-      document.addEventListener('keydown', handleEscape);
     });
   }
 

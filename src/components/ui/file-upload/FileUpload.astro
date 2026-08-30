@@ -115,8 +115,13 @@ const classes = cn(
           remove.addEventListener('click', (e) => {
             e.stopPropagation();
             item.remove();
-            // Clear input if no more items
-            if (preview.children.length === 0) {
+            // Actually remove the file from the input, not just the preview
+            const dt = new DataTransfer();
+            Array.from(input.files || [])
+              .filter((f) => f !== file)
+              .forEach((f) => dt.items.add(f));
+            input.files = dt.files;
+            if (dt.files.length === 0) {
               input.value = '';
             }
           });

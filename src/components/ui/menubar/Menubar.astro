@@ -17,7 +17,34 @@ const classes = cn(
 </div>
 
 <script>
+  // Document listeners bound once; live menubars resolved at event time so
+  // they don't accumulate across view-transition navigations. Each menubar
+  // exposes its close function on the element.
+  let documentListenersBound = false;
+
+  function bindDocumentListeners() {
+    if (documentListenersBound) return;
+    documentListenersBound = true;
+
+    document.addEventListener("click", (e) => {
+      document.querySelectorAll("[data-menubar]").forEach((menubar) => {
+        if (!menubar.contains(e.target as Node)) {
+          (menubar as any).__closeAllMenus?.();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      document.querySelectorAll("[data-menubar]").forEach((menubar) => {
+        (menubar as any).__closeAllMenus?.();
+      });
+    });
+  }
+
   function initMenubars() {
+    bindDocumentListeners();
+
     document.querySelectorAll("[data-menubar]").forEach((menubar) => {
       if (menubar.hasAttribute("data-initialized")) return;
       menubar.setAttribute("data-initialized", "true");
@@ -149,19 +176,8 @@ const classes = cn(
         }
       });
 
-      // Close on outside click
-      document.addEventListener("click", (e) => {
-        if (!menubar.contains(e.target as Node)) {
-          closeAllMenus();
-        }
-      });
-
-      // Close on escape
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && isMenubarActive) {
-          closeAllMenus();
-        }
-      });
+      // Used by the document-level outside-click and Escape handlers
+      (menubar as any).__closeAllMenus = closeAllMenus;
     });
   }
 

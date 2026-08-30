@@ -1,16 +1,56 @@
 import { generateId } from "@/utils/focus-trap";
 
+function getParts(dropdown: Element) {
+  return {
+    trigger: dropdown.querySelector("[data-dropdown-trigger]") as HTMLElement | null,
+    content: dropdown.querySelector("[data-dropdown-content]") as HTMLElement | null,
+  };
+}
+
+function closeDropdown(dropdown: Element, restoreFocus: boolean) {
+  const { trigger, content } = getParts(dropdown);
+  if (!content || content.hidden) return;
+  content.hidden = true;
+  trigger?.setAttribute("aria-expanded", "false");
+  trigger?.setAttribute("data-state", "closed");
+
+  const side = content.dataset.side;
+  if (side === "left" || side === "right") {
+    content.style.position = "";
+    content.style.top = "";
+    content.style.left = "";
+    content.style.right = "";
+  }
+
+  if (restoreFocus) trigger?.focus();
+}
+
+// Bound once per session; resolves live dropdowns at event time so
+// listeners don't accumulate across view-transition navigations.
+let documentListenersBound = false;
+
+function bindDocumentListeners() {
+  if (documentListenersBound) return;
+  documentListenersBound = true;
+
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll("[data-dropdown]").forEach((dropdown) => {
+      const { content } = getParts(dropdown);
+      if (content && !content.hidden && !dropdown.contains(e.target as Node)) {
+        closeDropdown(dropdown, false);
+      }
+    });
+  });
+}
+
 export function initDropdowns() {
+  bindDocumentListeners();
+
   document.querySelectorAll("[data-dropdown]").forEach((dropdown) => {
     if (dropdown.hasAttribute("data-initialized")) return;
     dropdown.setAttribute("data-initialized", "true");
 
-    const trigger = dropdown.querySelector(
-      "[data-dropdown-trigger]",
-    ) as HTMLElement;
-    const content = dropdown.querySelector(
-      "[data-dropdown-content]",
-    ) as HTMLElement;
+    const { trigger, content } = getParts(dropdown);
 
     if (!trigger || !content) return;
 
@@ -54,28 +94,11 @@ export function initDropdowns() {
       }
     };
 
-    const closeDropdown = () => {
-      content.hidden = true;
-      trigger.setAttribute("aria-expanded", "false");
-      trigger.setAttribute("data-state", "closed");
-      focusedIndex = -1;
-
-      const side = content.dataset.side;
-      if (side === "left" || side === "right") {
-        content.style.position = "";
-        content.style.top = "";
-        content.style.left = "";
-        content.style.right = "";
-      }
-
-      trigger.focus();
-    };
-
     const toggleDropdown = () => {
       if (content.hidden) {
         openDropdown();
       } else {
-        closeDropdown();
+        closeDropdown(dropdown, true);
       }
     };
 
@@ -120,24 +143,18 @@ export function initDropdowns() {
           break;
         case "Escape":
           e.preventDefault();
-          closeDropdown();
+          closeDropdown(dropdown, true);
           break;
         case "Tab":
-          closeDropdown();
+          closeDropdown(dropdown, false);
           break;
-      }
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!dropdown.contains(e.target as Node) && !content.hidden) {
-        closeDropdown();
       }
     });
 
     content.querySelectorAll("[data-dropdown-item]").forEach((item) => {
       item.addEventListener("click", () => {
         if (!dropdown.hasAttribute("data-dropdown-keep-open")) {
-          closeDropdown();
+          closeDropdown(dropdown, true);
         }
       });
     });

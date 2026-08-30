@@ -92,20 +92,41 @@ const classes = cn(
         "pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-lg border bg-background p-4 shadow-lg transition-all";
       toast.setAttribute("role", "alert");
 
-      const icon = this.getIcon(type);
-      const hasIcon = type !== "default";
-
+      // Static markup only — user-provided strings are added via
+      // textContent below so they can't inject HTML.
       toast.innerHTML = `
-        ${hasIcon ? icon : ""}
-        <div class="flex-1 space-y-1">
-          ${title ? `<p class="text-sm font-semibold">${title}</p>` : ""}
-          ${description ? `<p class="text-sm text-muted-foreground">${description}</p>` : ""}
-          ${action ? `<button type="button" class="mt-2 text-sm font-medium underline underline-offset-4 hover:no-underline" data-toast-action>${action.label}</button>` : ""}
-        </div>
+        ${type !== "default" ? this.getIcon(type) : ""}
+        <div class="flex-1 space-y-1" data-toast-body></div>
         <button type="button" class="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none group-hover:opacity-100 hover:opacity-100" data-toast-close>
           <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       `;
+
+      const body = toast.querySelector("[data-toast-body]") as HTMLElement;
+      if (title) {
+        const titleEl = document.createElement("p");
+        titleEl.className = "text-sm font-semibold";
+        titleEl.textContent = title;
+        body.appendChild(titleEl);
+      }
+      if (description) {
+        const descEl = document.createElement("p");
+        descEl.className = "text-sm text-muted-foreground";
+        descEl.textContent = description;
+        body.appendChild(descEl);
+      }
+      if (action) {
+        const actionBtn = document.createElement("button");
+        actionBtn.type = "button";
+        actionBtn.className =
+          "mt-2 text-sm font-medium underline underline-offset-4 hover:no-underline";
+        actionBtn.textContent = action.label;
+        actionBtn.addEventListener("click", () => {
+          action.onClick();
+          this.dismiss(toast);
+        });
+        body.appendChild(actionBtn);
+      }
 
       // Add hover class for close button visibility
       toast.classList.add("group");
@@ -113,15 +134,6 @@ const classes = cn(
       // Close button handler
       const closeBtn = toast.querySelector("[data-toast-close]");
       closeBtn?.addEventListener("click", () => this.dismiss(toast));
-
-      // Action button handler
-      if (action) {
-        const actionBtn = toast.querySelector("[data-toast-action]");
-        actionBtn?.addEventListener("click", () => {
-          action.onClick();
-          this.dismiss(toast);
-        });
-      }
 
       container.appendChild(toast);
 

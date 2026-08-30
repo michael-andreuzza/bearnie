@@ -46,10 +46,17 @@ const classes = cn(
       // Set ARIA attributes for the entire tree
       setAriaAttributes(tree, 1);
 
+      // Find an item's own trigger (not one belonging to a nested item),
+      // shared by state sync and keyboard navigation so they can't disagree
+      const findTrigger = (item: Element): HTMLElement | null =>
+        item.querySelector(
+          ':scope > [data-tree-item-trigger], :scope > * > [data-tree-item-trigger], :scope > * > * > [data-tree-item-trigger]'
+        );
+
       // Sync initial hidden state with data-state for all items
       tree.querySelectorAll('[data-tree-item]').forEach((item) => {
         const children = item.querySelector(':scope > [data-tree-item-children], :scope > * > [data-tree-item-children]') as HTMLElement;
-        const trigger = item.querySelector(':scope > [data-tree-item-trigger], :scope > * > [data-tree-item-trigger], :scope > * > * > [data-tree-item-trigger]');
+        const trigger = findTrigger(item);
         const folderClosed = trigger?.querySelector('[data-folder-closed]') as HTMLElement;
         const folderOpen = trigger?.querySelector('[data-folder-open]') as HTMLElement;
         
@@ -75,7 +82,7 @@ const classes = cn(
         const triggers: HTMLElement[] = [];
         
         const processItem = (item: Element) => {
-          const trigger = item.querySelector(':scope > [data-tree-item-trigger], :scope > * > [data-tree-item-trigger]') as HTMLElement;
+          const trigger = findTrigger(item);
           if (trigger) {
             triggers.push(trigger);
           }
@@ -178,7 +185,7 @@ const classes = cn(
               } else {
                 // Move to parent
                 const parentItem = item.parentElement?.closest('[data-tree-item]');
-                const parentTrigger = parentItem?.querySelector(':scope > [data-tree-item-trigger], :scope > * > [data-tree-item-trigger]') as HTMLElement;
+                const parentTrigger = parentItem ? findTrigger(parentItem) : null;
                 parentTrigger?.focus();
               }
               (e as KeyboardEvent).preventDefault();

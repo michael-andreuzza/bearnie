@@ -53,10 +53,21 @@ const classes = cn(
           }
         });
         observer.observe(content, { attributes: true, subtree: true });
+        (container as any).__thumbnailsObserver = observer;
       }
     });
   }
 
   initCarouselThumbnails();
   document.addEventListener('astro:page-load', initCarouselThumbnails);
+
+  // Disconnect observers before view-transition swaps so old carousel
+  // subtrees can be garbage collected.
+  document.addEventListener('astro:before-swap', () => {
+    document
+      .querySelectorAll('[data-thumbnails-initialized]')
+      .forEach((container) => {
+        (container as any).__thumbnailsObserver?.disconnect();
+      });
+  });
 </script>
