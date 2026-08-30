@@ -24,6 +24,49 @@ Projects created with `create-bearnie` already include a `bearnie.json` config a
 
 <div class="space-y-4">
 <Prose>
+### Pick a theme
+
+During `init` (and `create-bearnie`) you choose two things, both from Tailwind's official palette:
+
+- **Base color** — the grays used for backgrounds, text, and borders: `neutral`, `slate`, `gray`, `zinc`, `stone`, `mauve`, `olive`, `mist`, or `taupe`
+- **Accent color** — the primary used for buttons, focus rings, and active states: a neutral default or any Tailwind color (`red`, `rose`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`)
+
+Your choice is saved as a single theme name in `bearnie.json` — `blue`, `slate`, `slate-blue`, and so on. Every combination installs the same `bearnie.css` file, so all components work with all themes.
+
+Switch anytime:
+</Prose>
+
+<InstallTabs command="add styles-slate-blue --overwrite" />
+
+<Prose>
+Switching updates `bearnie.json`, so `diff` and `update` keep comparing against the palette you actually use.
+</Prose>
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Keep components up to date
+
+Components are copied into your project, so they don't change until you say so. See what differs from the registry:
+</Prose>
+
+<InstallTabs command="diff" />
+
+<Prose>
+Prints a colored per-file diff for every installed component that drifted — whether from your own edits or from registry improvements. Use `--name-only` for a compact summary, or pass component names to check just those.
+
+Pull the latest registry versions:
+</Prose>
+
+<InstallTabs command="update" />
+
+<Prose>
+Shows what will change, warns when you have local edits, and asks before writing. Any new npm dependencies are installed with your package manager. Use `--yes` to skip the confirmation.
+</Prose>
+</div>
+
+<div class="space-y-4">
+<Prose>
 ### Add components
 </Prose>
 
@@ -91,7 +134,9 @@ Shows all components grouped by category, including **Theme** (`styles`) and **M
 | Flag | Description |
 |------|-------------|
 | `-y, --yes` | Skip prompts, overwrite existing files |
+| `-o, --overwrite` | Overwrite existing files (add command) |
 | `-a, --all` | Add all components |
+| `--name-only` | Only list changed files (diff command) |
 | `--cwd <path>` | Set working directory |
 | `--json` | Output as JSON (list command) |
 </Prose>

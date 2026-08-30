@@ -26,6 +26,8 @@ Create a new Astro project with Bearnie pre-configured:
 <InstallTabs type="create" command="my-app" />
 
 <Prose>
+The scaffolder asks for a base color (grays) and an accent color (primary) — see [themes in the CLI docs](/docs/cli) for the full list. Skip the prompts with a flag, e.g. `--theme=slate-blue`.
+
 Then navigate to your project and start developing:
 
 ```bash
@@ -209,13 +211,19 @@ src/
 
 Components and styles are copied to your project. You own them. They don't auto-update when Bearnie releases changes.
 
-To update a component or styles:
+See what changed between your files and the registry:
 </Prose>
 
-<InstallTabs command="add button --yes" />
+<InstallTabs command="diff" />
 
 <Prose>
-If you've customized a component, running this will overwrite your changes. Back up your modifications first, then merge manually after updating.
+Then pull the latest versions when you're ready:
+</Prose>
+
+<InstallTabs command="update" />
+
+<Prose>
+`update` shows what will change and asks before writing — if you've customized a component, review the diff first and merge manually where needed.
 
 This is intentional. You control when updates happen and what gets changed.
 </Prose>
