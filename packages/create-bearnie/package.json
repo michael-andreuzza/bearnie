@@ -1,6 +1,6 @@
 {
   "name": "create-bearnie",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Create a new Astro project with Bearnie UI components",
   "type": "module",
   "license": "MIT",

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0 / 0.6.0 / 0.3.0] - 2026-08-30
+
+- See commit history for details.
+
+
 ### Added
 
 - Theme picker: every Tailwind base color (9 gray scales) x accent color (17 colors plus a neutral default) combination — 161 themes generated from Tailwind's official oklch palette as registry entries (`styles-blue`, `styles-slate`, `styles-slate-blue`, ...)
