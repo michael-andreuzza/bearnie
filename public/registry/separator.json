@@ -4,7 +4,9 @@
   "category": "layout",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
   "files": [
     {
       "name": "Separator.astro",

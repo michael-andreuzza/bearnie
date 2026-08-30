@@ -2,6 +2,17 @@
   "name": "ui-runtime-boot",
   "type": "utility",
   "description": "Bootstraps interactive UI component behaviors",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ui-runtime-combobox",
+    "ui-runtime-command",
+    "ui-runtime-dialog",
+    "ui-runtime-disclosure-triggers",
+    "ui-runtime-dropdown-menu",
+    "ui-runtime-popover",
+    "ui-runtime-tabs"
+  ],
   "files": [
     {
       "name": "runtime/ui-boot.ts",

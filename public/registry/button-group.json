@@ -4,7 +4,9 @@
   "category": "form",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
   "files": [
     {
       "name": "ButtonGroup.astro",

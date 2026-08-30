@@ -2,6 +2,11 @@
   "name": "ui-runtime-loader",
   "type": "utility",
   "description": "Loads the shared UI runtime once per page",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "ui-runtime-boot"
+  ],
   "files": [
     {
       "name": "runtime/loader.ts",

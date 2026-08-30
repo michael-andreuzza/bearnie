@@ -113,6 +113,11 @@
       "category": "display"
     },
     {
+      "name": "icon",
+      "description": "Icon renderer and icon data for Hugeicons stroke icons",
+      "category": "display"
+    },
+    {
       "name": "input",
       "description": "A text input field for forms",
       "category": "form"
@@ -228,6 +233,11 @@
       "category": "form"
     },
     {
+      "name": "theme-toggle",
+      "description": "A light/dark theme toggle button",
+      "category": "theme"
+    },
+    {
       "name": "toast",
       "description": "A notification that appears temporarily",
       "category": "feedback"
@@ -256,6 +266,52 @@
       "name": "barrel",
       "description": "Barrel export for importing components from @/components/bearnie",
       "category": "meta"
+    }
+  ],
+  "utilities": [
+    {
+      "name": "cn",
+      "description": "Class name utility combining clsx and tailwind-merge"
+    },
+    {
+      "name": "focus-trap",
+      "description": "Focus trap utility for modal accessibility"
+    },
+    {
+      "name": "ui-runtime-loader",
+      "description": "Loads the shared UI runtime once per page"
+    },
+    {
+      "name": "ui-runtime-boot",
+      "description": "Bootstraps interactive UI component behaviors"
+    },
+    {
+      "name": "ui-runtime-dialog",
+      "description": "Shared dialog initialization runtime"
+    },
+    {
+      "name": "ui-runtime-disclosure-triggers",
+      "description": "Shared keyboard trigger handlers for disclosure controls"
+    },
+    {
+      "name": "ui-runtime-dropdown-menu",
+      "description": "Shared dropdown menu initialization runtime"
+    },
+    {
+      "name": "ui-runtime-popover",
+      "description": "Shared popover initialization runtime"
+    },
+    {
+      "name": "ui-runtime-command",
+      "description": "Shared command and command dialog initialization runtime"
+    },
+    {
+      "name": "ui-runtime-tabs",
+      "description": "Shared tabs initialization runtime"
+    },
+    {
+      "name": "ui-runtime-combobox",
+      "description": "Shared combobox initialization runtime"
     }
   ]
 }

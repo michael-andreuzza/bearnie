@@ -5,6 +5,7 @@
   "dependencies": [],
   "devDependencies": [],
   "registryDependencies": [
+    "cn",
     "focus-trap"
   ],
   "files": [

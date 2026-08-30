@@ -4,7 +4,9 @@
   "category": "feedback",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
   "files": [
     {
       "name": "Progress.astro",

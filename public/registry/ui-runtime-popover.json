@@ -2,6 +2,11 @@
   "name": "ui-runtime-popover",
   "type": "utility",
   "description": "Shared popover initialization runtime",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "focus-trap"
+  ],
   "files": [
     {
       "name": "runtime/popover.ts",

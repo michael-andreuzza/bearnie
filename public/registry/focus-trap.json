@@ -2,6 +2,9 @@
   "name": "focus-trap",
   "type": "utility",
   "description": "Focus trap utility for modal accessibility",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
   "files": [
     {
       "name": "focus-trap.ts",

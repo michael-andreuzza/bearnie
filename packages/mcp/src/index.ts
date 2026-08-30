@@ -12,7 +12,31 @@ import {
   fetchIndex,
   getUsageExample,
   installComponents,
+  installNpmDependencies,
 } from "./install.js";
+
+async function reportNpmInstall(
+  projectRoot: string,
+  dependencies: string[],
+): Promise<string> {
+  if (dependencies.length === 0) return "";
+
+  const result = await installNpmDependencies(projectRoot, dependencies);
+
+  if (result.error) {
+    return (
+      `## NPM Dependencies\n\n` +
+      `Automatic install failed (${result.error}). Install manually:\n\n` +
+      `\`\`\`bash\nnpm install ${dependencies.join(" ")}\n\`\`\`\n\n`
+    );
+  }
+
+  if (result.installed.length === 0) {
+    return `## NPM Dependencies\n\nAll required packages (${dependencies.join(", ")}) were already installed.\n\n`;
+  }
+
+  return `## NPM Dependencies\n\nInstalled: ${result.installed.join(", ")}\n\n`;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
@@ -184,10 +208,7 @@ server.tool(
         "Add components first, then install the barrel for named imports from `@/components/bearnie`.\n\n";
     }
 
-    if (result.npmDependencies.length > 0) {
-      output += `## Required NPM Dependencies\n\n`;
-      output += `\`\`\`bash\nnpm install ${result.npmDependencies.join(" ")}\n\`\`\`\n\n`;
-    }
+    output += await reportNpmInstall(projectRoot, result.npmDependencies);
 
     if (component) {
       output += `## Usage\n\n`;
@@ -247,10 +268,7 @@ server.tool(
         "Barrel installed last for named imports from `@/components/bearnie`.\n\n";
     }
 
-    if (result.npmDependencies.length > 0) {
-      output += `## Required NPM Dependencies\n\n`;
-      output += `\`\`\`bash\nnpm install ${result.npmDependencies.join(" ")}\n\`\`\`\n\n`;
-    }
+    output += await reportNpmInstall(projectRoot, result.npmDependencies);
 
     return {
       content: [{ type: "text", text: output }],

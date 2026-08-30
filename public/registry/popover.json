@@ -5,13 +5,8 @@
   "dependencies": [],
   "devDependencies": [],
   "registryDependencies": [
-    "focus-trap",
-    "ui-runtime-loader",
-    "ui-runtime-boot",
-    "ui-runtime-disclosure-triggers",
-    "ui-runtime-popover",
-    "ui-runtime-command",
-    "ui-runtime-combobox"
+    "cn",
+    "ui-runtime-loader"
   ],
   "files": [
     {

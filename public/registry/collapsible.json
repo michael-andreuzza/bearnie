@@ -4,7 +4,9 @@
   "category": "disclosure",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
   "files": [
     {
       "name": "Collapsible.astro",

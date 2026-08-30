@@ -69,6 +69,7 @@ export { default as Spinner } from "./spinner/Spinner.astro";
 export { default as Toast } from "./toast/Toast.astro";
 export { default as ToastTitle } from "./toast/ToastTitle.astro";
 export { default as ToastDescription } from "./toast/ToastDescription.astro";
+export { default as Toaster } from "./toast/Toaster.astro";
 
 // Avatar Components
 export { default as Avatar } from "./avatar/Avatar.astro";
@@ -176,6 +177,8 @@ export { default as BreadcrumbItem } from "./breadcrumb/BreadcrumbItem.astro";
 export { default as BreadcrumbLink } from "./breadcrumb/BreadcrumbLink.astro";
 export { default as BreadcrumbPage } from "./breadcrumb/BreadcrumbPage.astro";
 export { default as BreadcrumbSeparator } from "./breadcrumb/BreadcrumbSeparator.astro";
+export { default as BreadcrumbEllipsis } from "./breadcrumb/BreadcrumbEllipsis.astro";
+export { default as BreadcrumbDropdownItem } from "./breadcrumb/BreadcrumbDropdownItem.astro";
 
 // Collapsible Components
 export { default as Collapsible } from "./collapsible/Collapsible.astro";
@@ -260,5 +263,8 @@ export { default as CarouselDots } from "./carousel/CarouselDots.astro";
 export { default as CarouselThumbnails } from "./carousel/CarouselThumbnails.astro";
 export { default as CarouselThumbnail } from "./carousel/CarouselThumbnail.astro";
 
+// Icons
+export { default as HugeIcon } from "./icon/HugeIcon.astro";
+
 // Theme
-export { default as ThemeToggle } from "../fundations/elements/ThemeToggle.astro";
+export { default as ThemeToggle } from "./theme-toggle/ThemeToggle.astro";

@@ -5,7 +5,9 @@
   "dependencies": [],
   "devDependencies": [],
   "registryDependencies": [
-    "focus-trap"
+    "cn",
+    "focus-trap",
+    "icon"
   ],
   "files": [
     {
@@ -26,7 +28,7 @@
     {
       "name": "AccordionTrigger.astro",
       "path": "accordion/AccordionTrigger.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"@/components/fundations/icons/HugeIcon.astro\";\nimport { ArrowDown01Icon } from \"@/lib/hugeicons\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {\n  defaultOpen?: boolean;\n}\n\nconst { defaultOpen = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex w-full flex-1 items-center justify-between py-4 font-medium transition-all hover:TextUnderlineIcon [&[data-state=open]>svg]:rotate-180\",\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  data-accordion-trigger\n  data-state={defaultOpen ? \"open\" : \"closed\"}\n  aria-expanded={defaultOpen}\n  {...props}\n>\n  <slot />\n  <HugeIcon icon={ArrowDown01Icon} size={16} class=\"shrink-0 transition-transform duration-200\" />\n</button>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { ArrowDown01Icon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {\n  defaultOpen?: boolean;\n}\n\nconst { defaultOpen = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex w-full flex-1 items-center justify-between py-4 font-medium transition-all hover:TextUnderlineIcon [&[data-state=open]>svg]:rotate-180\",\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  data-accordion-trigger\n  data-state={defaultOpen ? \"open\" : \"closed\"}\n  aria-expanded={defaultOpen}\n  {...props}\n>\n  <slot />\n  <HugeIcon icon={ArrowDown01Icon} size={16} class=\"shrink-0 transition-transform duration-200\" />\n</button>\n"
     }
   ]
 }

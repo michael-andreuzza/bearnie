@@ -24,8 +24,15 @@ const UTILITY_META: Record<
   {
     description: string;
     file: string;
+    dependencies?: string[];
+    registryDependencies?: string[];
   }
 > = {
+  cn: {
+    description: "Class name utility combining clsx and tailwind-merge",
+    file: "cn.ts",
+    dependencies: ["clsx", "tailwind-merge"],
+  },
   "focus-trap": {
     description: "Focus trap utility for modal accessibility",
     file: "focus-trap.ts",
@@ -33,22 +40,49 @@ const UTILITY_META: Record<
   "ui-runtime-loader": {
     description: "Loads the shared UI runtime once per page",
     file: "runtime/loader.ts",
+    registryDependencies: ["ui-runtime-boot"],
   },
   "ui-runtime-boot": {
     description: "Bootstraps interactive UI component behaviors",
     file: "runtime/ui-boot.ts",
+    registryDependencies: [
+      "ui-runtime-combobox",
+      "ui-runtime-command",
+      "ui-runtime-dialog",
+      "ui-runtime-disclosure-triggers",
+      "ui-runtime-dropdown-menu",
+      "ui-runtime-popover",
+      "ui-runtime-tabs",
+    ],
+  },
+  "ui-runtime-dialog": {
+    description: "Shared dialog initialization runtime",
+    file: "runtime/dialog.ts",
+    registryDependencies: ["focus-trap"],
   },
   "ui-runtime-disclosure-triggers": {
     description: "Shared keyboard trigger handlers for disclosure controls",
     file: "runtime/disclosure-triggers.ts",
   },
+  "ui-runtime-dropdown-menu": {
+    description: "Shared dropdown menu initialization runtime",
+    file: "runtime/dropdown-menu.ts",
+    registryDependencies: ["focus-trap"],
+  },
   "ui-runtime-popover": {
     description: "Shared popover initialization runtime",
     file: "runtime/popover.ts",
+    registryDependencies: ["focus-trap"],
   },
   "ui-runtime-command": {
     description: "Shared command and command dialog initialization runtime",
     file: "runtime/command.ts",
+    registryDependencies: ["focus-trap"],
+  },
+  "ui-runtime-tabs": {
+    description: "Shared tabs initialization runtime",
+    file: "runtime/tabs.ts",
+    registryDependencies: ["focus-trap"],
   },
   "ui-runtime-combobox": {
     description: "Shared combobox initialization runtime",
@@ -66,11 +100,21 @@ const COMPONENT_META: Record<
     registryDependencies?: string[];
   }
 > = {
+  icon: {
+    description: "Icon renderer and icon data for Hugeicons stroke icons",
+    category: "display",
+    dependencies: ["@hugeicons/core-free-icons"],
+  },
+  "theme-toggle": {
+    description: "A light/dark theme toggle button",
+    category: "theme",
+    registryDependencies: ["button"],
+  },
   accordion: {
     description:
       "A vertically stacked set of interactive headings that reveal content",
     category: "disclosure",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "icon"],
   },
   alert: {
     description: "Displays important messages and feedback to users",
@@ -79,7 +123,7 @@ const COMPONENT_META: Record<
   "alert-dialog": {
     description: "A modal dialog for important confirmations",
     category: "disclosure",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "button"],
   },
   "aspect-ratio": {
     description: "Displays content with a specified aspect ratio",
@@ -96,6 +140,7 @@ const COMPONENT_META: Record<
   breadcrumb: {
     description: "Navigation showing the current location within a hierarchy",
     category: "navigation",
+    registryDependencies: ["icon"],
   },
   button: {
     description: "A clickable button component with multiple variants",
@@ -113,10 +158,12 @@ const COMPONENT_META: Record<
     description: "A carousel component built with Keen Slider",
     category: "display",
     dependencies: ["keen-slider"],
+    registryDependencies: ["icon"],
   },
   checkbox: {
     description: "A control for toggling between checked and unchecked states",
     category: "form",
+    registryDependencies: ["icon"],
   },
   collapsible: {
     description: "A component that can expand and collapse content",
@@ -125,15 +172,7 @@ const COMPONENT_META: Record<
   command: {
     description: "A command palette for searching and selecting actions",
     category: "navigation",
-    registryDependencies: [
-      "focus-trap",
-      "ui-runtime-loader",
-      "ui-runtime-boot",
-      "ui-runtime-disclosure-triggers",
-      "ui-runtime-popover",
-      "ui-runtime-command",
-      "ui-runtime-combobox",
-    ],
+    registryDependencies: ["icon", "ui-runtime-loader"],
   },
   "context-menu": {
     description: "A menu triggered by right-click",
@@ -142,12 +181,12 @@ const COMPONENT_META: Record<
   dialog: {
     description: "A modal dialog that appears on top of the page",
     category: "disclosure",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["icon", "ui-runtime-loader"],
   },
   "dropdown-menu": {
     description: "A menu that appears when triggered by a button",
     category: "navigation",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["ui-runtime-loader"],
   },
   empty: {
     description: "A placeholder for empty states",
@@ -156,6 +195,7 @@ const COMPONENT_META: Record<
   "file-upload": {
     description: "A file upload component with drag and drop",
     category: "form",
+    registryDependencies: ["icon"],
   },
   "hover-card": {
     description: "A card that appears on hover",
@@ -172,6 +212,7 @@ const COMPONENT_META: Record<
   "input-otp": {
     description: "A one-time password input",
     category: "form",
+    registryDependencies: ["icon"],
   },
   kbd: {
     description: "Displays keyboard shortcuts",
@@ -188,19 +229,12 @@ const COMPONENT_META: Record<
   pagination: {
     description: "Navigation for paginated content",
     category: "navigation",
+    registryDependencies: ["icon"],
   },
   popover: {
     description: "Displays floating content when triggered",
     category: "disclosure",
-    registryDependencies: [
-      "focus-trap",
-      "ui-runtime-loader",
-      "ui-runtime-boot",
-      "ui-runtime-disclosure-triggers",
-      "ui-runtime-popover",
-      "ui-runtime-command",
-      "ui-runtime-combobox",
-    ],
+    registryDependencies: ["ui-runtime-loader"],
   },
   progress: {
     description: "Displays progress of a task",
@@ -221,7 +255,7 @@ const COMPONENT_META: Record<
   combobox: {
     description: "A searchable dropdown for selecting one option",
     category: "form",
-    registryDependencies: ["command", "popover"],
+    registryDependencies: ["command", "popover", "icon", "ui-runtime-loader"],
   },
   separator: {
     description: "A visual divider between content",
@@ -230,11 +264,12 @@ const COMPONENT_META: Record<
   sheet: {
     description: "A slide-out panel from the edge of the screen",
     category: "disclosure",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "icon"],
   },
   sidebar: {
     description: "A collapsible sidebar navigation",
     category: "navigation",
+    registryDependencies: ["icon"],
   },
   skeleton: {
     description: "A placeholder for loading content",
@@ -247,10 +282,12 @@ const COMPONENT_META: Record<
   spinner: {
     description: "A loading indicator",
     category: "feedback",
+    registryDependencies: ["icon"],
   },
   stepper: {
     description: "A multi-step progress indicator",
     category: "navigation",
+    registryDependencies: ["icon"],
   },
   switch: {
     description: "A toggle control for boolean values",
@@ -263,7 +300,7 @@ const COMPONENT_META: Record<
   tabs: {
     description: "Organizes content into tabbed sections",
     category: "navigation",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["ui-runtime-loader"],
   },
   textarea: {
     description: "A multi-line text input field",
@@ -272,6 +309,7 @@ const COMPONENT_META: Record<
   toast: {
     description: "A notification that appears temporarily",
     category: "feedback",
+    registryDependencies: ["icon"],
   },
   toggle: {
     description: "A two-state button",
@@ -285,6 +323,7 @@ const COMPONENT_META: Record<
   tree: {
     description: "A hierarchical tree view",
     category: "navigation",
+    registryDependencies: ["icon"],
   },
 };
 
@@ -318,7 +357,10 @@ async function getComponentFiles(
     const entryPath = path.join(componentDir, entry);
     const stat = await fs.stat(entryPath);
 
-    if (stat.isFile() && entry.endsWith(".astro")) {
+    if (
+      stat.isFile() &&
+      (entry.endsWith(".astro") || entry.endsWith(".ts"))
+    ) {
       const content = await fs.readFile(entryPath, "utf-8");
       files.push({
         name: entry,
@@ -359,7 +401,7 @@ async function generateRegistryAliases(): Promise<
       category: alias.category,
       dependencies: [],
       devDependencies: [],
-      registryDependencies: [],
+      registryDependencies: ["cn"],
       files,
     };
 
@@ -377,8 +419,12 @@ async function generateRegistryAliases(): Promise<
   return entries;
 }
 
-async function generateUtilities() {
+async function generateUtilities(): Promise<
+  { name: string; description: string }[]
+> {
   console.log("🔧 Generating utility registry...\n");
+
+  const utilities: { name: string; description: string }[] = [];
 
   for (const [name, meta] of Object.entries(UTILITY_META)) {
     const filePath = path.join(UTILS_DIR, meta.file);
@@ -394,6 +440,9 @@ async function generateUtilities() {
       name,
       type: "utility",
       description: meta.description,
+      dependencies: meta.dependencies || [],
+      devDependencies: [],
+      registryDependencies: meta.registryDependencies || [],
       files: [
         {
           name: meta.file,
@@ -406,7 +455,11 @@ async function generateUtilities() {
     const registryPath = path.join(REGISTRY_DIR, `${name}.json`);
     await fs.writeJson(registryPath, registryEntry, { spaces: 2 });
     console.log(`   ✓ Created ${name}.json (utility)`);
+
+    utilities.push({ name, description: meta.description });
   }
+
+  return utilities;
 }
 
 async function generateStyles() {
@@ -481,7 +534,7 @@ async function generateRegistry() {
   await fs.ensureDir(REGISTRY_DIR);
 
   // First generate utilities
-  await generateUtilities();
+  const utilities = await generateUtilities();
 
   console.log("\n🎨 Processing styles...\n");
   await generateStyles();
@@ -516,6 +569,12 @@ async function generateRegistry() {
       continue;
     }
 
+    // Every component imports `@/utils/cn`, so always ship the cn utility
+    const registryDependencies = [
+      "cn",
+      ...(meta.registryDependencies || []),
+    ];
+
     // Create registry JSON
     const registryEntry = {
       name: dir,
@@ -523,7 +582,7 @@ async function generateRegistry() {
       category: meta.category,
       dependencies: meta.dependencies || [],
       devDependencies: [],
-      registryDependencies: meta.registryDependencies || [],
+      registryDependencies,
       files,
     };
 
@@ -568,6 +627,7 @@ async function generateRegistry() {
       name: "bearnie",
       version: registryVersion,
       components: components,
+      utilities,
     },
     { spaces: 2 },
   );

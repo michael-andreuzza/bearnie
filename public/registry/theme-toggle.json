@@ -1,0 +1,18 @@
+{
+  "name": "theme-toggle",
+  "description": "A light/dark theme toggle button",
+  "category": "theme",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn",
+    "button"
+  ],
+  "files": [
+    {
+      "name": "ThemeToggle.astro",
+      "path": "theme-toggle/ThemeToggle.astro",
+      "content": "---\nimport Button from \"../button/Button.astro\";\n\nexport interface Props {\n  size?: \"xs\" | \"sm\" | \"default\" | \"lg\";\n}\n\nconst { size = \"default\" } = Astro.props;\n---\n\n<Button\n  variant=\"ghost\"\n  size={size}\n  iconOnly\n  data-theme-toggle\n  aria-label=\"Toggle theme\"\n>\n  <svg\n    class=\"size-7\"\n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 24 24\"\n    fill=\"none\"\n    stroke=\"currentColor\"\n    stroke-width=\"2\"\n    stroke-linecap=\"round\"\n    stroke-linejoin=\"round\"\n  >\n    <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>\n    <path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"></path>\n    <path d=\"M12 3l0 18\"></path>\n    <path d=\"M12 9l4.65 -4.65\"></path>\n    <path d=\"M12 14.3l7.37 -7.37\"></path>\n    <path d=\"M12 19.6l8.85 -8.85\"></path>\n  </svg>\n</Button>\n\n<script is:inline>\n  // Initialize theme on page load (runs before hydration to prevent flash)\n  (function () {\n    const stored = localStorage.getItem(\"theme\") || \"light\";\n    document.documentElement.classList.toggle(\"dark\", stored === \"dark\");\n  })();\n</script>\n\n<script>\n  const init = () => {\n    document.querySelectorAll(\"[data-theme-toggle]\").forEach((button) => {\n      button.addEventListener(\"click\", () => {\n        const isDark = document.documentElement.classList.contains(\"dark\");\n        const newTheme = isDark ? \"light\" : \"dark\";\n        localStorage.setItem(\"theme\", newTheme);\n        document.documentElement.classList.toggle(\"dark\", newTheme === \"dark\");\n      });\n    });\n  };\n\n  init();\n</script>\n"
+    }
+  ]
+}

@@ -24,11 +24,13 @@ interface RegistryFile {
 interface RegistryEntry {
   name: string;
   type?: string;
+  dependencies?: string[];
   files: RegistryFile[];
 }
 
 interface RegistryIndex {
   components: { name: string }[];
+  utilities?: { name: string }[];
 }
 
 // Parse --full flag
@@ -49,15 +51,29 @@ const BEARNIE_CONFIG = {
   typescript: true,
 } as const;
 
-const UTILITY_NAMES = [
+// Fallback for registries that predate the `utilities` field in index.json
+const FALLBACK_UTILITY_NAMES = [
+  "cn",
   "focus-trap",
   "ui-runtime-loader",
   "ui-runtime-boot",
+  "ui-runtime-dialog",
   "ui-runtime-disclosure-triggers",
+  "ui-runtime-dropdown-menu",
   "ui-runtime-popover",
   "ui-runtime-command",
   "ui-runtime-combobox",
+  "ui-runtime-tabs",
 ];
+
+// Known version ranges for component npm dependencies; anything not listed
+// falls back to "latest" so the scaffolded project still installs.
+const DEP_VERSIONS: Record<string, string> = {
+  clsx: "^2.1.1",
+  "tailwind-merge": "^3.6.0",
+  "keen-slider": "^6.8.6",
+  "@hugeicons/core-free-icons": "^4.2.3",
+};
 
 function resolveInstallPath(
   targetDir: string,
@@ -206,27 +222,24 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
     await fs.ensureDir(path.join(targetDir, "src", "components", "bearnie"));
     await fs.ensureDir(path.join(targetDir, "src", "utils"));
 
-    for (const utilityName of UTILITY_NAMES) {
+    const registryIndex = await fetchRegistryIndex();
+    const npmDependencies = new Set<string>(["clsx", "tailwind-merge"]);
+
+    const utilityNames = registryIndex.utilities?.length
+      ? registryIndex.utilities.map((utility) => utility.name)
+      : FALLBACK_UTILITY_NAMES;
+
+    for (const utilityName of utilityNames) {
       const utility = await fetchRegistryEntry(utilityName);
       if (utility?.files) {
         await writeRegistryFiles(targetDir, utility);
+        utility.dependencies?.forEach((dep) => npmDependencies.add(dep));
         console.log(`  ${pc.green("✓")} Added ${utilityName} utility`);
       } else {
         console.log(`  ${pc.yellow("!")} Failed to fetch ${utilityName} utility`);
       }
     }
 
-    const cnContent = `import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-`;
-    await fs.writeFile(path.join(targetDir, "src", "utils", "cn.ts"), cnContent);
-    console.log(`  ${pc.green("✓")} Added cn utility`);
-
-    const registryIndex = await fetchRegistryIndex();
     const componentNames = registryIndex.components
       .map((component) => component.name)
       .filter((name) => name !== "styles" && name !== "barrel");
@@ -238,6 +251,7 @@ export function cn(...inputs: ClassValue[]) {
       const component = await fetchRegistryEntry(componentName);
       if (component?.files) {
         await writeRegistryFiles(targetDir, component);
+        component.dependencies?.forEach((dep) => npmDependencies.add(dep));
         installed++;
         process.stdout.write(
           `\r  ${pc.green("✓")} Installed ${installed}/${componentNames.length} components`,
@@ -262,13 +276,19 @@ export function cn(...inputs: ClassValue[]) {
 
     const pkgPath2 = path.join(targetDir, "package.json");
     const pkg2 = await fs.readJson(pkgPath2);
+    const addedDeps = Object.fromEntries(
+      [...npmDependencies]
+        .sort()
+        .map((dep) => [dep, DEP_VERSIONS[dep] ?? "latest"]),
+    );
     pkg2.dependencies = {
       ...pkg2.dependencies,
-      clsx: "^2.1.1",
-      "tailwind-merge": "^3.3.0",
+      ...addedDeps,
     };
     await fs.writeJson(pkgPath2, pkg2, { spaces: 2 });
-    console.log(`  ${pc.green("✓")} Added component dependencies`);
+    console.log(
+      `  ${pc.green("✓")} Added ${Object.keys(addedDeps).length} npm dependencies (${Object.keys(addedDeps).join(", ")})`,
+    );
   }
 
   // Create .gitignore

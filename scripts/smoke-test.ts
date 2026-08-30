@@ -96,6 +96,86 @@ test("create-bearnie --full installs components and barrel", () => {
   assert.ok(fs.existsSync(path.join(dir, "src/components/bearnie/index.ts")));
 });
 
+test("create-bearnie --full scaffold compiles with astro build", () => {
+  const parent = createTempDir("bearnie-build-");
+  const appName = "build-app";
+
+  run(`node ${CREATE} ${appName} --full`, parent);
+
+  const dir = path.join(parent, appName);
+
+  // A page that imports the entire barrel and renders the script-heavy
+  // components. This forces Vite to resolve every installed module —
+  // icons, runtime utilities, keen-slider — so any import the registry
+  // fails to ship breaks this build.
+  fs.writeFileSync(
+    path.join(dir, "src/pages/kitchen-sink.astro"),
+    `---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import * as Bearnie from "@/components/bearnie";
+const {
+  Button,
+  Spinner,
+  Toaster,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  ThemeToggle,
+  HugeIcon,
+} = Bearnie;
+---
+
+<BaseLayout title="Kitchen sink">
+  <Button>Button</Button>
+  <Spinner />
+  <ThemeToggle />
+  <Dialog>
+    <DialogTrigger>Open</DialogTrigger>
+    <DialogContent>Dialog body</DialogContent>
+  </Dialog>
+  <Tabs>
+    <TabsList>
+      <TabsTrigger value="one">One</TabsTrigger>
+    </TabsList>
+    <TabsContent value="one">Tab one</TabsContent>
+  </Tabs>
+  <Carousel>
+    <CarouselContent>
+      <CarouselItem>Slide</CarouselItem>
+    </CarouselContent>
+  </Carousel>
+  <Toaster />
+</BaseLayout>
+`,
+  );
+
+  // The registry must declare every npm package the components need —
+  // this build fails on any unresolvable import, which is exactly the
+  // class of bug that file-copy assertions cannot catch.
+  execSync("npm install --no-audit --no-fund", {
+    cwd: dir,
+    env,
+    stdio: "pipe",
+    timeout: 300_000,
+  });
+  execSync("npx astro build", {
+    cwd: dir,
+    env,
+    stdio: "pipe",
+    timeout: 300_000,
+  });
+
+  assert.ok(fs.existsSync(path.join(dir, "dist/index.html")));
+  assert.ok(fs.existsSync(path.join(dir, "dist/kitchen-sink/index.html")));
+});
+
 test("MCP installComponents adds button and barrel", async () => {
   const dir = createTempDir("bearnie-mcp-");
   writeMinimalAstroProject(dir);

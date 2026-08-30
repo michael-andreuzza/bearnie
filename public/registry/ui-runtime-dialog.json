@@ -1,0 +1,17 @@
+{
+  "name": "ui-runtime-dialog",
+  "type": "utility",
+  "description": "Shared dialog initialization runtime",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "focus-trap"
+  ],
+  "files": [
+    {
+      "name": "runtime/dialog.ts",
+      "path": "utils/runtime/dialog.ts",
+      "content": "import { trapFocus, generateId } from \"@/utils/focus-trap\";\n\nexport function initDialogs() {\n  document.querySelectorAll(\"[data-dialog]\").forEach((dialog) => {\n    if (dialog.hasAttribute(\"data-initialized\")) return;\n    dialog.setAttribute(\"data-initialized\", \"true\");\n\n    const trigger = dialog.querySelector(\n      \"[data-dialog-trigger]\",\n    ) as HTMLElement;\n    const overlay = dialog.querySelector(\n      \"[data-dialog-overlay]\",\n    ) as HTMLElement;\n    const content = dialog.querySelector(\n      \"[data-dialog-content]\",\n    ) as HTMLElement;\n    const closeButtons = dialog.querySelectorAll(\"[data-dialog-close]\");\n    const title = dialog.querySelector(\"[data-dialog-title]\") as HTMLElement;\n    const description = dialog.querySelector(\n      \"[data-dialog-description]\",\n    ) as HTMLElement;\n\n    if (!trigger) return;\n\n    if (title && !title.id) {\n      title.id = generateId(\"dialog-title\");\n    }\n    if (description && !description.id) {\n      description.id = generateId(\"dialog-desc\");\n    }\n\n    if (content) {\n      if (title?.id) content.setAttribute(\"aria-labelledby\", title.id);\n      if (description?.id)\n        content.setAttribute(\"aria-describedby\", description.id);\n    }\n\n    let cleanupFocusTrap: (() => void) | null = null;\n\n    trigger.addEventListener(\"click\", () => {\n      if (overlay) overlay.hidden = false;\n      if (content) {\n        content.hidden = false;\n        cleanupFocusTrap = trapFocus(content);\n      }\n    });\n\n    const closeDialog = () => {\n      if (overlay) overlay.hidden = true;\n      if (content) content.hidden = true;\n      cleanupFocusTrap?.();\n      cleanupFocusTrap = null;\n      trigger?.focus();\n    };\n\n    closeButtons.forEach((btn) => {\n      btn.addEventListener(\"click\", closeDialog);\n    });\n\n    overlay?.addEventListener(\"click\", (e) => {\n      if (e.target === overlay) closeDialog();\n    });\n\n    const handleEscape = (e: KeyboardEvent) => {\n      if (e.key === \"Escape\" && overlay && !overlay.hidden) {\n        closeDialog();\n      }\n    };\n\n    document.addEventListener(\"keydown\", handleEscape);\n  });\n}\n"
+    }
+  ]
+}

@@ -2,6 +2,9 @@
   "name": "ui-runtime-disclosure-triggers",
   "type": "utility",
   "description": "Shared keyboard trigger handlers for disclosure controls",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
   "files": [
     {
       "name": "runtime/disclosure-triggers.ts",

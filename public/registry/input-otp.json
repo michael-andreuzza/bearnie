@@ -4,7 +4,10 @@
   "category": "form",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn",
+    "icon"
+  ],
   "files": [
     {
       "name": "InputOTP.astro",
@@ -19,7 +22,7 @@
     {
       "name": "InputOTPSeparator.astro",
       "path": "input-otp/InputOTPSeparator.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"@/components/fundations/icons/HugeIcon.astro\";\nimport { CircleIcon } from \"@/lib/hugeicons\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex items-center justify-center text-muted-foreground\",\n  className\n);\n---\n\n<div\n  class={classes}\n  role=\"separator\"\n  aria-orientation=\"vertical\"\n  data-otp-separator\n  {...props}\n>\n  <slot>\n    <HugeIcon icon={CircleIcon} class=\"size-4\" />\n  </slot>\n</div>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { CircleIcon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"flex items-center justify-center text-muted-foreground\",\n  className\n);\n---\n\n<div\n  class={classes}\n  role=\"separator\"\n  aria-orientation=\"vertical\"\n  data-otp-separator\n  {...props}\n>\n  <slot>\n    <HugeIcon icon={CircleIcon} class=\"size-4\" />\n  </slot>\n</div>\n"
     },
     {
       "name": "InputOTPSlot.astro",

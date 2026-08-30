@@ -4,12 +4,15 @@
   "category": "feedback",
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "cn",
+    "icon"
+  ],
   "files": [
     {
       "name": "Spinner.astro",
       "path": "spinner/Spinner.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\nimport HugeIcon from \"@/components/fundations/icons/HugeIcon.astro\";\nimport { Loading03Icon } from \"@/lib/hugeicons\";\n\nexport interface Props extends HTMLAttributes<'svg'> {\n  size?: 'sm' | 'default' | 'lg';\n}\n\nconst {\n  size = 'default',\n  class: className,\n  color,\n  ...props\n} = Astro.props;\n\nconst sizeStyles = {\n  sm: 'size-4',\n  default: 'size-6',\n  lg: 'size-8',\n};\n\nconst classes = cn(\n  'animate-spin text-muted-foreground',\n  sizeStyles[size],\n  className\n);\n---\n\n<HugeIcon icon={Loading03Icon}\n  class={classes}\n  color={color ?? undefined}\n  {...(props as Record<string, string | number | undefined>)}\n/>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { Loading03Icon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<'svg'> {\n  size?: 'sm' | 'default' | 'lg';\n}\n\nconst {\n  size = 'default',\n  class: className,\n  color,\n  ...props\n} = Astro.props;\n\nconst sizeStyles = {\n  sm: 'size-4',\n  default: 'size-6',\n  lg: 'size-8',\n};\n\nconst classes = cn(\n  'animate-spin text-muted-foreground',\n  sizeStyles[size],\n  className\n);\n---\n\n<HugeIcon icon={Loading03Icon}\n  class={classes}\n  color={color ?? undefined}\n  {...(props as Record<string, string | number | undefined>)}\n/>\n"
     }
   ]
 }

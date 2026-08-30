@@ -1,11 +1,40 @@
 import fs from "fs-extra";
 import path from "path";
+import { execFileSync } from "node:child_process";
 
 const REGISTRY_URL =
   process.env.BEARNIE_REGISTRY_URL || "https://bearnie.dev/registry";
 
 function getRegistryPath(): string | undefined {
   return process.env.BEARNIE_REGISTRY_PATH;
+}
+
+export interface ProjectConfig {
+  componentsDir: string;
+  utilsDir: string;
+  stylesDir: string;
+}
+
+export const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
+  componentsDir: "src/components/bearnie",
+  utilsDir: "src/utils",
+  stylesDir: "src/styles",
+};
+
+/** Reads bearnie.json from the project root, falling back to defaults. */
+export async function loadProjectConfig(
+  projectRoot: string,
+): Promise<ProjectConfig> {
+  const configPath = path.join(projectRoot, "bearnie.json");
+  try {
+    if (await fs.pathExists(configPath)) {
+      const raw = (await fs.readJson(configPath)) as Partial<ProjectConfig>;
+      return { ...DEFAULT_PROJECT_CONFIG, ...raw };
+    }
+  } catch {
+    // Malformed config: fall back to defaults rather than failing the install
+  }
+  return DEFAULT_PROJECT_CONFIG;
 }
 
 export interface ComponentFile {
@@ -82,13 +111,14 @@ export function resolveInstallPath(
   projectRoot: string,
   file: ComponentFile,
   registryItem: ComponentRegistry,
+  config: ProjectConfig = DEFAULT_PROJECT_CONFIG,
 ): string {
   const relativePath = file.path || file.name;
 
   if (registryItem.type === "utility" || relativePath.startsWith("utils/")) {
     return path.join(
       projectRoot,
-      "src/utils",
+      config.utilsDir,
       relativePath.replace(/^utils\//, ""),
     );
   }
@@ -96,12 +126,12 @@ export function resolveInstallPath(
   if (registryItem.type === "styles" || relativePath.startsWith("styles/")) {
     return path.join(
       projectRoot,
-      "src/styles",
+      config.stylesDir,
       relativePath.replace(/^styles\//, ""),
     );
   }
 
-  return path.join(projectRoot, "src/components/bearnie", relativePath);
+  return path.join(projectRoot, config.componentsDir, relativePath);
 }
 
 export async function resolveComponentDependencies(
@@ -143,6 +173,7 @@ function orderWithBarrelLast(names: string[]): string[] {
 async function installSingleComponent(
   projectRoot: string,
   componentName: string,
+  config: ProjectConfig,
 ): Promise<{ files: string[]; npmDependencies: string[]; error?: string }> {
   const component = await fetchComponent(componentName);
   if (!component) {
@@ -154,36 +185,24 @@ async function installSingleComponent(
   }
 
   const files: string[] = [];
-  const npmDependencies = [...(component.dependencies ?? [])];
 
-  const installFiles = async (entry: ComponentRegistry) => {
-    for (const file of entry.files) {
-      const filePath = resolveInstallPath(projectRoot, file, entry);
-      await fs.ensureDir(path.dirname(filePath));
-      await fs.writeFile(filePath, file.content);
-      files.push(file.path || file.name);
-    }
-  };
-
-  if (component.registryDependencies?.length) {
-    for (const dep of component.registryDependencies) {
-      const depComponent = await fetchComponent(dep);
-      if (depComponent) {
-        await installFiles(depComponent);
-        npmDependencies.push(...(depComponent.dependencies ?? []));
-      }
-    }
+  // Registry dependencies are already resolved and ordered by
+  // installComponents, so only this entry's own files are written here.
+  for (const file of component.files) {
+    const filePath = resolveInstallPath(projectRoot, file, component, config);
+    await fs.ensureDir(path.dirname(filePath));
+    await fs.writeFile(filePath, file.content);
+    files.push(file.path || file.name);
   }
 
-  await installFiles(component);
-
-  return { files, npmDependencies };
+  return { files, npmDependencies: [...(component.dependencies ?? [])] };
 }
 
 export async function installComponents(
   projectRoot: string,
   names: string[],
 ): Promise<InstallResult> {
+  const config = await loadProjectConfig(projectRoot);
   const resolved = await resolveComponentDependencies(names);
   const ordered = orderWithBarrelLast(resolved);
 
@@ -192,7 +211,7 @@ export async function installComponents(
   const errors: string[] = [];
 
   for (const name of ordered) {
-    const result = await installSingleComponent(projectRoot, name);
+    const result = await installSingleComponent(projectRoot, name, config);
     if (result.error) {
       errors.push(result.error);
       continue;
@@ -206,6 +225,48 @@ export async function installComponents(
     npmDependencies: [...npmDependencies],
     errors,
   };
+}
+
+/**
+ * Installs npm dependencies that are not already present in the project's
+ * package.json. Returns the packages actually installed, or an error message.
+ */
+export async function installNpmDependencies(
+  projectRoot: string,
+  dependencies: string[],
+): Promise<{ installed: string[]; error?: string }> {
+  if (dependencies.length === 0) return { installed: [] };
+
+  const packageJsonPath = path.join(projectRoot, "package.json");
+  if (!(await fs.pathExists(packageJsonPath))) {
+    return { installed: [], error: "No package.json found in project root" };
+  }
+
+  const packageJson = (await fs.readJson(packageJsonPath)) as {
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
+  };
+  const existing = {
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies,
+  };
+
+  const missing = dependencies.filter((dep) => !(dep in existing));
+  if (missing.length === 0) return { installed: [] };
+
+  try {
+    execFileSync("npm", ["install", "--no-audit", "--no-fund", ...missing], {
+      cwd: projectRoot,
+      stdio: "pipe",
+      timeout: 300_000,
+    });
+    return { installed: missing };
+  } catch (error) {
+    return {
+      installed: [],
+      error: `npm install failed: ${error instanceof Error ? error.message : String(error)}`,
+    };
+  }
 }
 
 export function toPascalCase(name: string): string {

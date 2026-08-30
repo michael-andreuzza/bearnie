@@ -2,6 +2,11 @@
   "name": "ui-runtime-command",
   "type": "utility",
   "description": "Shared command and command dialog initialization runtime",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "focus-trap"
+  ],
   "files": [
     {
       "name": "runtime/command.ts",

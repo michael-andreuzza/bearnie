@@ -2,6 +2,9 @@
   "name": "ui-runtime-combobox",
   "type": "utility",
   "description": "Shared combobox initialization runtime",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
   "files": [
     {
       "name": "runtime/combobox.ts",
