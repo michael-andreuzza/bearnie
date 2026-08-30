@@ -31,11 +31,31 @@ interface RegistryEntry {
 interface RegistryIndex {
   components: { name: string }[];
   utilities?: { name: string }[];
+  themes?: string[];
 }
 
 // Parse --full flag
 function parseFullArg(): boolean {
   return process.argv.includes("--full");
+}
+
+// Parse --theme flag: --theme=amber or --theme amber
+function parseThemeArg(): string | null {
+  const argv = process.argv;
+  for (let i = 2; i < argv.length; i++) {
+    if (argv[i].startsWith("--theme=")) {
+      return argv[i].slice("--theme=".length) || null;
+    }
+    if (argv[i] === "--theme") {
+      return argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[i + 1] : null;
+    }
+  }
+  return null;
+}
+
+/** True for the styles/styles-* entries, which all install the same CSS file. */
+function isThemeEntry(name: string): boolean {
+  return name === "styles" || name.startsWith("styles-");
 }
 
 // Detect the package manager from how the user invoked us
@@ -147,10 +167,15 @@ async function fetchRegistryIndex(): Promise<RegistryIndex> {
   return await response.json();
 }
 
-async function writeBearnieConfig(targetDir: string): Promise<void> {
-  await fs.writeJson(path.join(targetDir, "bearnie.json"), BEARNIE_CONFIG, {
-    spaces: 2,
-  });
+async function writeBearnieConfig(
+  targetDir: string,
+  theme: string,
+): Promise<void> {
+  await fs.writeJson(
+    path.join(targetDir, "bearnie.json"),
+    { ...BEARNIE_CONFIG, theme },
+    { spaces: 2 },
+  );
 }
 
 async function writeRegistryFiles(
@@ -205,6 +230,37 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
   const finalName = projectName as string;
   const targetDir = path.resolve(process.cwd(), finalName);
 
+  // Pick a theme: --theme flag, interactive prompt, or default
+  let availableThemes = ["default"];
+  try {
+    const index = await fetchRegistryIndex();
+    if (index.themes?.length) availableThemes = index.themes;
+  } catch {
+    // Offline — the template ships the default theme regardless
+  }
+
+  let theme = parseThemeArg();
+
+  if (theme && !availableThemes.includes(theme)) {
+    console.log(
+      `\n  ${pc.red("Unknown theme:")} ${theme}\n  Available: ${availableThemes.join(", ")}\n`,
+    );
+    process.exit(1);
+  }
+
+  if (!theme && availableThemes.length > 1 && process.stdin.isTTY) {
+    const response = await prompts({
+      type: "select",
+      name: "theme",
+      message: "Which theme?",
+      choices: availableThemes.map((name) => ({ title: name, value: name })),
+      initial: 0,
+    });
+    theme = response.theme ?? "default";
+  }
+
+  theme = theme ?? "default";
+
   // Check if directory exists
   if (fs.existsSync(targetDir)) {
     const { overwrite } = await prompts({
@@ -235,7 +291,20 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
   pkg.name = finalName;
   await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 
-  await writeBearnieConfig(targetDir);
+  await writeBearnieConfig(targetDir, theme);
+
+  // Swap in the chosen theme (template ships the default palette)
+  if (theme !== "default") {
+    const themeEntry = await fetchRegistryEntry(`styles-${theme}`);
+    if (themeEntry?.files) {
+      await writeRegistryFiles(targetDir, themeEntry);
+      console.log(`  ${pc.green("✓")} Applied ${theme} theme`);
+    } else {
+      console.log(
+        `  ${pc.yellow("!")} Couldn't fetch the ${theme} theme — using default`,
+      );
+    }
+  }
 
   // Install all components if --full flag is provided
   if (fullInstall) {
@@ -264,7 +333,7 @@ ${fullInstall ? `  ${pc.dim("Full install: including all components")}\n` : ""}
 
     const componentNames = registryIndex.components
       .map((component) => component.name)
-      .filter((name) => name !== "styles" && name !== "barrel");
+      .filter((name) => !isThemeEntry(name) && name !== "barrel");
 
     let installed = 0;
     let failed = 0;

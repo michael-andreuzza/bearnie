@@ -63,7 +63,7 @@ This will:
 - Install `clsx`, `tailwind-merge`, and `tailwindcss` dependencies
 - Add the `@/*` path alias to `tsconfig.json`
 - Wire `@tailwindcss/vite` into your Astro config (simple configs only — you get a hint otherwise)
-- Install the theme variables to `src/styles/bearnie.css`
+- Ask which theme you want (`default`, `amber`, `forest`, `midnight`) and install it to `src/styles/bearnie.css`
 
 Projects created with `create-bearnie` already include `bearnie.json` and can skip init.
 
@@ -161,6 +161,18 @@ Any new npm dependencies the updated components need are installed automatically
 
 - `-y, --yes` - Skip confirmation prompt
 - `--cwd <path>` - Set the working directory
+
+## Themes
+
+Bearnie ships four color themes as registry entries: `styles` (default), `styles-amber`, `styles-forest`, and `styles-midnight`. All of them install the same `bearnie.css` file — only the color variables differ, so every component works with every theme.
+
+Pick one during `init`, or switch later:
+
+```bash
+npx bearnie add styles-midnight --overwrite
+```
+
+Switching records the theme in `bearnie.json`, so `diff` and `update` compare your CSS against the right palette.
 
 ## Package Managers
 

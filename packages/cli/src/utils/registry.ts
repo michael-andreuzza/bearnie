@@ -40,6 +40,7 @@ export interface RegistryIndex {
     name: string;
     description: string;
   }[];
+  themes?: string[];
 }
 
 export async function getRegistryIndex(): Promise<RegistryIndex> {

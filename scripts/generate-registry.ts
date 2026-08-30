@@ -462,6 +462,70 @@ async function generateUtilities(): Promise<
   return utilities;
 }
 
+const THEMES_DIR = path.join(ROOT_DIR, "src/styles/themes");
+
+const THEME_DESCRIPTIONS: Record<string, string> = {
+  amber: "Warm honey palette with Bearnie's brand amber as the primary color",
+  forest: "Deep green primary with calm neutral surfaces",
+  midnight: "Indigo primary with slate-tinted neutrals",
+};
+
+/**
+ * Each file in src/styles/themes/ becomes a `styles-<name>` registry entry.
+ * All theme entries ship the same file path (styles/bearnie.css) so a project
+ * always has exactly one theme installed; bearnie.json records which one.
+ */
+async function generateThemes(): Promise<{
+  entries: { name: string; description: string; category: string }[];
+  themeNames: string[];
+}> {
+  if (!(await fs.pathExists(THEMES_DIR))) {
+    return { entries: [], themeNames: [] };
+  }
+
+  const files = (await fs.readdir(THEMES_DIR))
+    .filter((file) => file.endsWith(".css"))
+    .sort();
+
+  const entries: { name: string; description: string; category: string }[] =
+    [];
+  const themeNames: string[] = [];
+
+  for (const file of files) {
+    const themeName = file.replace(/\.css$/, "");
+    const entryName = `styles-${themeName}`;
+    const description =
+      THEME_DESCRIPTIONS[themeName] ??
+      `${themeName} theme variables for Bearnie components`;
+    const content = await fs.readFile(path.join(THEMES_DIR, file), "utf-8");
+
+    const registryEntry = {
+      name: entryName,
+      type: "styles",
+      description,
+      files: [
+        {
+          name: "bearnie.css",
+          path: "styles/bearnie.css",
+          content,
+        },
+      ],
+    };
+
+    await fs.writeJson(
+      path.join(REGISTRY_DIR, `${entryName}.json`),
+      registryEntry,
+      { spaces: 2 },
+    );
+    console.log(`   ✓ Created ${entryName}.json (theme)`);
+
+    entries.push({ name: entryName, description, category: "theme" });
+    themeNames.push(themeName);
+  }
+
+  return { entries, themeNames };
+}
+
 async function generateStyles() {
   if (!(await fs.pathExists(STYLES_PATH))) {
     console.log("⚠️  Skipping styles - bearnie.css not found");
@@ -538,6 +602,7 @@ async function generateRegistry() {
 
   console.log("\n🎨 Processing styles...\n");
   await generateStyles();
+  const { entries: themeEntries, themeNames } = await generateThemes();
 
   console.log("\n📦 Processing components...\n");
 
@@ -602,12 +667,16 @@ async function generateRegistry() {
   const aliasEntries = await generateRegistryAliases();
   components.push(...aliasEntries);
 
-  // Add styles entry (special - not a component)
-  components.unshift({
-    name: "styles",
-    description: "CSS variables and theme configuration for Bearnie components",
-    category: "theme",
-  });
+  // Add styles + theme entries (special - not components)
+  components.unshift(
+    {
+      name: "styles",
+      description:
+        "CSS variables and theme configuration for Bearnie components",
+      category: "theme",
+    },
+    ...themeEntries,
+  );
 
   console.log("\n📦 Processing barrel export...\n");
   const barrelEntry = await generateBarrel();
@@ -628,6 +697,7 @@ async function generateRegistry() {
       version: registryVersion,
       components: components,
       utilities,
+      themes: ["default", ...themeNames],
     },
     { spaces: 2 },
   );

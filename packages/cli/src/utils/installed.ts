@@ -1,6 +1,11 @@
 import fs from "fs-extra";
 import path from "path";
-import { resolveInstallPath, type ProjectConfig } from "./config.js";
+import {
+  isThemeEntry,
+  resolveInstallPath,
+  themeEntryName,
+  type ProjectConfig,
+} from "./config.js";
 import {
   getComponent,
   getRegistryIndex,
@@ -100,7 +105,12 @@ export async function getInstalledEntries(
     }
   }
 
-  const targets = names?.length ? names : allNames;
+  // All theme entries install the same CSS file, so when scanning the whole
+  // project only compare against the theme configured in bearnie.json.
+  const activeTheme = themeEntryName(config.theme ?? "default");
+  const targets = names?.length
+    ? names
+    : allNames.filter((name) => !isThemeEntry(name) || name === activeTheme);
   const installed: InstalledEntry[] = [];
 
   for (const name of targets) {

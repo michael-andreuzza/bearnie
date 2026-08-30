@@ -7,7 +7,9 @@ import { execa } from "execa";
 import {
   getProjectConfig,
   DEFAULT_CONFIG,
+  isThemeEntry,
   resolveInstallPath,
+  saveProjectConfig,
 } from "../utils/config.js";
 import {
   getRegistryIndex,
@@ -35,6 +37,7 @@ export async function add(components: string[], options: AddOptions) {
 
   // Check for config
   let config = await getProjectConfig(cwd);
+  const hadConfig = config !== null;
 
   if (!config) {
     print.warning(
@@ -237,6 +240,25 @@ export async function add(components: string[], options: AddOptions) {
     } catch (error) {
       spinner.fail(`Couldn't add ${component.name}`);
       print.hint(`${error}`);
+    }
+  }
+
+  // If a theme was explicitly installed, record it in bearnie.json so
+  // diff/update compare against the right palette from now on.
+  if (hadConfig) {
+    const themeInstalled = selectedComponents.find((name) =>
+      isThemeEntry(name),
+    );
+    if (themeInstalled) {
+      const theme =
+        themeInstalled === "styles"
+          ? "default"
+          : themeInstalled.replace(/^styles-/, "");
+      if (config.theme !== theme) {
+        config = { ...config, theme };
+        await saveProjectConfig(cwd, config);
+        print.step(`${brand.success("✓")} Theme set to ${chalk.cyan(theme)} in bearnie.json`);
+      }
     }
   }
 

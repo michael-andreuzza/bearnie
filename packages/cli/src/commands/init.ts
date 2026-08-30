@@ -12,7 +12,8 @@ import {
   CONFIG_FILE,
   type ProjectConfig,
 } from "../utils/config.js";
-import { getComponent } from "../utils/registry.js";
+import { getComponent, getRegistryIndex } from "../utils/registry.js";
+import { themeEntryName } from "../utils/config.js";
 import { detectPackageManager, installCommand } from "../utils/pm.js";
 import { brand, messages, print } from "../utils/ui.js";
 
@@ -184,6 +185,15 @@ export async function init(options: InitOptions) {
     console.log(`  ${chalk.bold("Where should things go?")}`);
     print.newline();
 
+    // Theme choices come from the registry; offline just offers the default
+    let themes = ["default"];
+    try {
+      const index = await getRegistryIndex();
+      if (index.themes?.length) themes = index.themes;
+    } catch {
+      // Offline — the default theme ships regardless
+    }
+
     const responses = await prompts([
       {
         type: "text",
@@ -197,6 +207,20 @@ export async function init(options: InitOptions) {
         message: "Utilities directory",
         initial: DEFAULT_CONFIG.utilsDir,
       },
+      ...(themes.length > 1
+        ? [
+            {
+              type: "select" as const,
+              name: "theme",
+              message: "Which theme?",
+              choices: themes.map((theme) => ({
+                title: theme,
+                value: theme,
+              })),
+              initial: 0,
+            },
+          ]
+        : []),
     ]);
 
     config = {
@@ -297,9 +321,9 @@ export function cn(...inputs: ClassValue[]) {
     );
   }
 
-  // Install the base styles (theme variables)
+  // Install the chosen theme's styles
   try {
-    const stylesEntry = await getComponent("styles");
+    const stylesEntry = await getComponent(themeEntryName(config.theme));
     let stylesWritten = false;
 
     for (const file of stylesEntry.files) {
@@ -312,11 +336,17 @@ export function cn(...inputs: ClassValue[]) {
     }
 
     if (stylesWritten) {
+      const themeLabel =
+        config.theme === "default" ? "" : ` (${config.theme} theme)`;
       print.step(
-        `${brand.success("✓")} Added theme variables to ${chalk.cyan(`${config.stylesDir}/bearnie.css`)}`
+        `${brand.success("✓")} Added theme variables to ${chalk.cyan(`${config.stylesDir}/bearnie.css`)}${themeLabel}`
       );
       manualSteps.push(
         `Import the styles in your global CSS: ${chalk.cyan(`@import "./bearnie.css";`)} (after ${chalk.cyan(`@import "tailwindcss";`)})`
+      );
+    } else if (config.theme !== "default") {
+      manualSteps.push(
+        `bearnie.css already exists — switch to the ${config.theme} theme with ${chalk.cyan(`npx bearnie add ${themeEntryName(config.theme)} --overwrite`)}`
       );
     }
   } catch {

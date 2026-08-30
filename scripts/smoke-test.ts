@@ -70,6 +70,7 @@ test("bearnie init --yes creates config and utilities", () => {
   const tsconfig = fs.readJsonSync(path.join(dir, "tsconfig.json"));
   assert.deepEqual(tsconfig.compilerOptions.paths["@/*"], ["./src/*"]);
   assert.ok(fs.existsSync(path.join(dir, "src/styles/bearnie.css")));
+  assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "default");
 });
 
 test("bearnie init wires @tailwindcss/vite into a simple astro config", () => {
@@ -178,6 +179,34 @@ test("create-bearnie scaffolds template with bearnie.json", () => {
   assert.ok(fs.readJsonSync(path.join(dir, "package.json")).dependencies.astro);
 });
 
+test("create-bearnie --theme applies the palette and stays diff-clean", () => {
+  const parent = createTempDir("bearnie-theme-");
+  const appName = "themed-app";
+
+  run(`node ${CREATE} ${appName} --theme=amber`, parent);
+
+  const dir = path.join(parent, appName);
+  assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "amber");
+
+  const css = fs.readFileSync(path.join(dir, "src/styles/bearnie.css"), "utf-8");
+  assert.ok(css.includes("oklch(0.769 0.165 70.08)"), "amber primary applied");
+
+  // diff must compare against the amber entry, not the default styles
+  const diffOutput = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(diffOutput.includes("Everything is up to date"));
+
+  // Switching themes via add records the new theme in bearnie.json
+  run(`node ${CLI} add styles-forest --overwrite --cwd ${dir}`, dir);
+  assert.equal(fs.readJsonSync(path.join(dir, "bearnie.json")).theme, "forest");
+  const after = runCapture(`node ${CLI} diff --cwd ${dir}`, dir);
+  assert.ok(after.includes("Everything is up to date"));
+});
+
+test("create-bearnie rejects unknown themes", () => {
+  const parent = createTempDir("bearnie-badtheme-");
+  assert.throws(() => run(`node ${CREATE} some-app --theme=neon`, parent));
+});
+
 test("create-bearnie --full installs components and barrel", () => {
   const parent = createTempDir("bearnie-full-");
   const appName = "full-app";
@@ -190,6 +219,10 @@ test("create-bearnie --full installs components and barrel", () => {
     fs.existsSync(path.join(dir, "src/components/bearnie/button/Button.astro")),
   );
   assert.ok(fs.existsSync(path.join(dir, "src/components/bearnie/index.ts")));
+
+  // Theme entries must not clobber bearnie.css during --full
+  const css = fs.readFileSync(path.join(dir, "src/styles/bearnie.css"), "utf-8");
+  assert.ok(css.includes("--primary: oklch(0.205 0 0)"), "default palette kept");
 });
 
 test("create-bearnie --full scaffold compiles with astro build", () => {

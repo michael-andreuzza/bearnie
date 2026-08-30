@@ -7,6 +7,8 @@ export interface ProjectConfig {
   stylesDir: string;
   tailwindConfig: string;
   typescript: boolean;
+  /** Which color theme is installed ("default", "amber", ...). */
+  theme: string;
 }
 
 export const DEFAULT_CONFIG: ProjectConfig = {
@@ -15,7 +17,18 @@ export const DEFAULT_CONFIG: ProjectConfig = {
   stylesDir: "src/styles",
   tailwindConfig: "tailwind.config.mjs",
   typescript: true,
+  theme: "default",
 };
+
+/** Registry entry name for a theme: "default" -> styles, "amber" -> styles-amber. */
+export function themeEntryName(theme: string): string {
+  return theme === "default" ? "styles" : `styles-${theme}`;
+}
+
+/** True for the styles/styles-* entries, which all install the same CSS file. */
+export function isThemeEntry(name: string): boolean {
+  return name === "styles" || name.startsWith("styles-");
+}
 
 export const CONFIG_FILE = "bearnie.json";
 

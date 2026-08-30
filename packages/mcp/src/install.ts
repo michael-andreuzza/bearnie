@@ -13,13 +13,26 @@ export interface ProjectConfig {
   componentsDir: string;
   utilsDir: string;
   stylesDir: string;
+  /** Which color theme is installed ("default", "amber", ...). */
+  theme: string;
 }
 
 export const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   componentsDir: "src/components/bearnie",
   utilsDir: "src/utils",
   stylesDir: "src/styles",
+  theme: "default",
 };
+
+/** Registry entry name for a theme: "default" -> styles, "amber" -> styles-amber. */
+export function themeEntryName(theme: string): string {
+  return theme === "default" ? "styles" : `styles-${theme}`;
+}
+
+/** True for the styles/styles-* entries, which all install the same CSS file. */
+export function isThemeEntry(name: string): boolean {
+  return name === "styles" || name.startsWith("styles-");
+}
 
 /** Reads bearnie.json from the project root, falling back to defaults. */
 export async function loadProjectConfig(
@@ -250,6 +263,27 @@ export async function installComponents(
     result.npmDependencies.forEach((dep) => npmDependencies.add(dep));
   }
 
+  // Record an explicitly installed theme in bearnie.json so future
+  // status checks compare against the right palette.
+  const themeInstalled = names.find(
+    (name) => isThemeEntry(name) && installed.includes(name),
+  );
+  if (themeInstalled) {
+    const theme =
+      themeInstalled === "styles"
+        ? "default"
+        : themeInstalled.replace(/^styles-/, "");
+    const configPath = path.join(projectRoot, "bearnie.json");
+    try {
+      if ((await fs.pathExists(configPath)) && config.theme !== theme) {
+        const raw = (await fs.readJson(configPath)) as Record<string, unknown>;
+        await fs.writeJson(configPath, { ...raw, theme }, { spaces: 2 });
+      }
+    } catch {
+      // Malformed bearnie.json — installing still succeeded
+    }
+  }
+
   return {
     installed,
     npmDependencies: [...npmDependencies],
@@ -322,10 +356,14 @@ export async function listInstalledComponents(
   if (!index) return null;
 
   const config = await loadProjectConfig(projectRoot);
+
+  // All theme entries install the same CSS file, so only compare against
+  // the theme configured in bearnie.json.
+  const activeTheme = themeEntryName(config.theme ?? "default");
   const names = [
     ...index.components.map((c) => c.name),
     ...(index.utilities ?? []).map((u) => u.name),
-  ];
+  ].filter((name) => !isThemeEntry(name) || name === activeTheme);
 
   const installed: InstalledComponent[] = [];
 

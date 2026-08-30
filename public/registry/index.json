@@ -8,6 +8,21 @@
       "category": "theme"
     },
     {
+      "name": "styles-amber",
+      "description": "Warm honey palette with Bearnie's brand amber as the primary color",
+      "category": "theme"
+    },
+    {
+      "name": "styles-forest",
+      "description": "Deep green primary with calm neutral surfaces",
+      "category": "theme"
+    },
+    {
+      "name": "styles-midnight",
+      "description": "Indigo primary with slate-tinted neutrals",
+      "category": "theme"
+    },
+    {
       "name": "accordion",
       "description": "A vertically stacked set of interactive headings that reveal content",
       "category": "disclosure"
@@ -313,5 +328,11 @@
       "name": "ui-runtime-combobox",
       "description": "Shared combobox initialization runtime"
     }
+  ],
+  "themes": [
+    "default",
+    "amber",
+    "forest",
+    "midnight"
   ]
 }

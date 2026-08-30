@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Theme picker: four color themes (`default`, `amber`, `forest`, `midnight`) as static registry entries (`styles-*`)
+- `bearnie init` and `create-bearnie` ask which theme to install; `create-bearnie --theme=<name>` skips the prompt
+- Switching themes via `bearnie add styles-<name> --overwrite` records the choice in `bearnie.json`, keeping `diff`/`update` and the MCP `list_installed` tool comparing against the active palette
+
 ## [0.2.0 / 0.5.0 / 0.2.0] - 2026-08-30
 
 - bearnie diff and bearnie update commands for pulling registry fixes into existing projects
