@@ -22,7 +22,8 @@ const {
 
 const classes = cn(
   'stepper flex',
-  orientation === 'horizontal' ? 'flex-row items-center' : 'flex-col',
+  // w-full so the flex-1 separators stretch to connect the steps
+  orientation === 'horizontal' ? 'w-full flex-row items-center' : 'flex-col',
   className
 );
 ---

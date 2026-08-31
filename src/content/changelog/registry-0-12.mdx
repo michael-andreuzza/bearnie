@@ -37,3 +37,11 @@ A before/after image slider with a draggable handle:
 
 - Drag anywhere on the image to move the divider; the before image is clipped with `clip-path`, so there's no layout trickery.
 - The handle is a `role="slider"` button — arrow keys nudge it, Shift-arrow moves in bigger steps, Home/End jump to the edges.
+
+### Stepper
+
+Reworked the separators, which had degraded into disconnected dashes:
+
+- Horizontal connectors now flex to fill the space between steps, so the line actually connects them.
+- Fixed vertical connectors rendering as a wide block — the horizontal width utility was overriding the vertical one.
+- Vertical connectors are centered under the trigger circle with breathing room between steps.

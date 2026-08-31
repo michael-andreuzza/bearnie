@@ -37,7 +37,7 @@ import Button from "@/components/ui/button/Button.astro";
     </StepperTrigger>
     <div>
       <StepperTitle>Account</StepperTitle>
-      <StepperDescription>Create your account</StepperDescription>
+      <StepperDescription>Your details</StepperDescription>
     </div>
   </StepperItem>
   <StepperSeparator />
@@ -45,7 +45,7 @@ import Button from "@/components/ui/button/Button.astro";
     <StepperTrigger>2</StepperTrigger>
     <div>
       <StepperTitle>Profile</StepperTitle>
-      <StepperDescription>Set up your profile</StepperDescription>
+      <StepperDescription>Basic info</StepperDescription>
     </div>
   </StepperItem>
   <StepperSeparator />
@@ -53,7 +53,7 @@ import Button from "@/components/ui/button/Button.astro";
     <StepperTrigger>3</StepperTrigger>
     <div>
       <StepperTitle>Complete</StepperTitle>
-      <StepperDescription>Review and finish</StepperDescription>
+      <StepperDescription>Final review</StepperDescription>
     </div>
   </StepperItem>
 </Stepper>
@@ -66,7 +66,7 @@ import Button from "@/components/ui/button/Button.astro";
       </StepperTrigger>
       <div>
         <StepperTitle>Account</StepperTitle>
-        <StepperDescription>Create your account</StepperDescription>
+        <StepperDescription>Your details</StepperDescription>
       </div>
     </StepperItem>
     <StepperSeparator />
@@ -74,7 +74,7 @@ import Button from "@/components/ui/button/Button.astro";
       <StepperTrigger>2</StepperTrigger>
       <div>
         <StepperTitle>Profile</StepperTitle>
-        <StepperDescription>Set up your profile</StepperDescription>
+        <StepperDescription>Basic info</StepperDescription>
       </div>
     </StepperItem>
     <StepperSeparator />
@@ -82,7 +82,7 @@ import Button from "@/components/ui/button/Button.astro";
       <StepperTrigger>3</StepperTrigger>
       <div>
         <StepperTitle>Complete</StepperTitle>
-        <StepperDescription>Review and finish</StepperDescription>
+        <StepperDescription>Final review</StepperDescription>
       </div>
     </StepperItem>
   </Stepper>
@@ -298,71 +298,6 @@ Use icons instead of numbers for a more visual representation.
         <HugeIcon icon={Settings01Icon} class="size-4" />
       </StepperTrigger>
       <StepperTitle>Setup</StepperTitle>
-    </StepperItem>
-  </Stepper>
-</ComponentPreview>
-</div>
-
-<div class="space-y-4">
-<Prose>
-#### With large titles
-
-Use custom classes to create larger, more prominent titles.
-</Prose>
-
-<ComponentPreview>
-  <Fragment slot="code">
-```html
-<Stepper activeStep={0}>
-  <StepperItem step={0}>
-    <StepperTrigger>1</StepperTrigger>
-    <div>
-      <StepperTitle class="text-lg font-semibold">Getting Started</StepperTitle>
-      <StepperDescription>Begin your journey here</StepperDescription>
-    </div>
-  </StepperItem>
-  <StepperSeparator />
-  <StepperItem step={1}>
-    <StepperTrigger>2</StepperTrigger>
-    <div>
-      <StepperTitle class="text-lg font-semibold">Configuration</StepperTitle>
-      <StepperDescription>Set up your preferences</StepperDescription>
-    </div>
-  </StepperItem>
-  <StepperSeparator />
-  <StepperItem step={2}>
-    <StepperTrigger>3</StepperTrigger>
-    <div>
-      <StepperTitle class="text-lg font-semibold">Launch</StepperTitle>
-      <StepperDescription>Go live with your project</StepperDescription>
-    </div>
-  </StepperItem>
-</Stepper>
-```
-  </Fragment>
-  <Stepper activeStep={0}>
-    <StepperItem step={0}>
-      <StepperTrigger>1</StepperTrigger>
-      <div>
-        <StepperTitle class="text-lg font-semibold">Getting Started</StepperTitle>
-        <StepperDescription>Begin your journey here</StepperDescription>
-      </div>
-    </StepperItem>
-    <StepperSeparator />
-    <StepperItem step={1}>
-      <StepperTrigger>2</StepperTrigger>
-      <div>
-        <StepperTitle class="text-lg font-semibold">Configuration</StepperTitle>
-        <StepperDescription>Set up your preferences</StepperDescription>
-      </div>
-    </StepperItem>
-    <StepperSeparator />
-    <StepperItem step={2}>
-      <StepperTrigger>3</StepperTrigger>
-      <div>
-        <StepperTitle class="text-lg font-semibold">Launch</StepperTitle>
-        <StepperDescription>Go live with your project</StepperDescription>
-      </div>
     </StepperItem>
   </Stepper>
 </ComponentPreview>

@@ -6,11 +6,15 @@ export interface Props extends HTMLAttributes<'div'> {}
 
 const { class: className, ...props } = Astro.props;
 
+// Sizes are scoped per orientation (not base + override) so the horizontal
+// width/height utilities can never win over the vertical ones.
 const classes = cn(
-  'bg-muted data-[state=completed]:bg-primary transition-colors',
-  // shrink + min-w: separators give up width before the row overflows
-  'h-0.5 w-6 min-w-2 shrink mx-4',
-  '[[data-orientation=vertical]_&]:h-6 [[data-orientation=vertical]_&]:w-0.5 [[data-orientation=vertical]_&]:mx-0 [[data-orientation=vertical]_&]:ml-4',
+  'rounded-full bg-border data-[state=completed]:bg-primary transition-colors',
+  // Horizontal: a line that flexes to fill the space between steps,
+  // shrinking down to min-w before anything else gives up room
+  '[[data-orientation=horizontal]_&]:h-0.5 [[data-orientation=horizontal]_&]:flex-1 [[data-orientation=horizontal]_&]:min-w-3 [[data-orientation=horizontal]_&]:mx-3',
+  // Vertical: a short line centered under the size-8 trigger circle
+  '[[data-orientation=vertical]_&]:w-0.5 [[data-orientation=vertical]_&]:h-8 [[data-orientation=vertical]_&]:flex-none [[data-orientation=vertical]_&]:my-1 [[data-orientation=vertical]_&]:ml-[15px]',
   className
 );
 ---

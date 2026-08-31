@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **`timeline` component.** `Timeline`, `TimelineItem` (with `active`), `TimelineTime`, `TimelineTitle`, `TimelineDescription` — a pure HTML/CSS vertical event list for changelogs, roadmaps, and order tracking.
 - **`image-compare` component.** A before/after image slider: pointer dragging anywhere on the image, a `role="slider"` handle with arrow/Home/End keyboard support, and `clip-path`-based clipping.
 
+### Fixed (registry 0.12.0)
+
+- **Stepper separators.** Horizontal connectors now flex to fill the space between steps instead of rendering as short disconnected dashes; vertical connectors no longer render as a wide block (the horizontal width utility was overriding the vertical one) and sit centered under the trigger circle with proper spacing.
+
 ### Added (registry 0.11.x)
 
 - **Calendar `calendar-set` event.** Set the selection programmatically (preset buttons like "Last 7 days") — the view jumps to keep the selection visible and `calendar-change` fires in response.
