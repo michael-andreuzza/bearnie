@@ -1,0 +1,63 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** Rating value; fractions render partially filled stars (e.g. 4.5). */
+  value: number;
+  max?: number;
+  /** Custom accessible label. Defaults to "Rated {value} out of {max}". */
+  label?: string;
+}
+
+const { value, max = 5, label, class: className, ...props } = Astro.props;
+
+const clamped = Math.max(0, Math.min(value, max));
+// Per-star fill fraction: 1 = full, 0 = empty, in between = partial
+const fills = Array.from({ length: max }, (_, i) =>
+  Math.max(0, Math.min(1, clamped - i))
+);
+
+const starPath =
+  "M12 2l2.917 6.256 6.855.834-5.056 4.702 1.325 6.774L12 17.207l-6.041 3.359 1.325-6.774-5.056-4.702 6.855-.834L12 2z";
+---
+
+<div
+  class={cn("inline-flex items-center gap-0.5 [&_svg]:size-4", className)}
+  role="img"
+  aria-label={label ?? `Rated ${clamped} out of ${max}`}
+  data-rating
+  {...props}
+>
+  {
+    fills.map((fill) => (
+      <span class="relative shrink-0">
+        <svg
+          class="text-muted-foreground/40"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d={starPath} />
+        </svg>
+        {fill > 0 && (
+          <span
+            class="absolute inset-0 overflow-hidden"
+            style={`width: ${fill * 100}%`}
+          >
+            <svg
+              class="text-primary"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d={starPath} />
+            </svg>
+          </span>
+        )}
+      </span>
+    ))
+  }
+</div>

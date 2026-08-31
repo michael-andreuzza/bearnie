@@ -1,0 +1,113 @@
+---
+title: Banner
+description: An announcement banner with optional per-visitor dismissal.
+tagline: Site-wide announcements
+category: feedback
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Banner from "@/components/ui/banner/Banner.astro";
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<Banner>
+  <span>Bearnie 1.0 is out — 50+ Astro components, no framework runtime.</span>
+  <a href="/docs" class="font-medium underline underline-offset-2">Read the docs</a>
+</Banner>
+```
+  </Fragment>
+  <Banner>
+    <span>Bearnie 1.0 is out — 50+ Astro components, no framework runtime.</span>
+    <a href="/docs" class="font-medium underline underline-offset-2">Read the docs</a>
+  </Banner>
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="banner" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { Banner } from "@/components/bearnie/banner"
+```
+```html
+<Banner id="launch-2026" dismissible>
+  <span>We just launched!</span>
+  <a href="/blog/launch" class="font-medium underline underline-offset-2">Read more</a>
+</Banner>
+```
+
+Place it at the top of your layout, above the header. When both `id` and `dismissible` are set, dismissing is remembered in `localStorage` — the banner stays hidden on future page loads, without any flash before hiding.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Dismissible
+
+Without an `id` the dismissal lasts for the current page only — good for previews and testing. Add an `id` in production to persist it.
+</Prose>
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<Banner dismissible>
+  <span>Black Friday: 30% off all licenses with code BEAR30.</span>
+</Banner>
+```
+  </Fragment>
+  <Banner dismissible>
+    <span>Black Friday: 30% off all licenses with code BEAR30.</span>
+  </Banner>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Muted variant
+</Prose>
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<Banner variant="muted" dismissible>
+  <span>Scheduled maintenance on Sunday, 02:00–04:00 UTC.</span>
+</Banner>
+```
+  </Fragment>
+  <Banner variant="muted" dismissible>
+    <span>Scheduled maintenance on Sunday, 02:00–04:00 UTC.</span>
+  </Banner>
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| id | string | - | Unique id; when set, dismissal is persisted in localStorage |
+| dismissible | boolean | false | Show a dismiss button |
+| variant | "default" \| "muted" | "default" | Visual style |
+| class | string | - | Additional CSS classes |
+
+### Events
+
+The banner dispatches a bubbling `banner-dismiss` CustomEvent when dismissed.
+</Prose>

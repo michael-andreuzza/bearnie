@@ -1,0 +1,17 @@
+{
+  "name": "marquee",
+  "description": "An infinite CSS-only scrolling marquee for logos and testimonials",
+  "category": "display",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Marquee.astro",
+      "path": "marquee/Marquee.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  /** Seconds for one full loop. Lower is faster. */\n  duration?: number;\n  direction?: \"left\" | \"right\";\n  pauseOnHover?: boolean;\n  /** Fade the edges out with a mask. */\n  fade?: boolean;\n  /** Gap between items in px. */\n  gap?: number;\n}\n\nconst {\n  duration = 30,\n  direction = \"left\",\n  pauseOnHover = true,\n  fade = true,\n  gap = 32,\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<div\n  class={cn(\"relative flex overflow-hidden\", className)}\n  data-marquee\n  data-direction={direction}\n  data-pause-on-hover={pauseOnHover ? \"true\" : undefined}\n  data-fade={fade ? \"true\" : undefined}\n  style={`--marquee-duration: ${duration}s; --marquee-gap: ${gap}px`}\n  {...props}\n>\n  <div class=\"flex shrink-0 items-center\" data-marquee-track>\n    <div class=\"flex shrink-0 items-center\" data-marquee-group>\n      <slot />\n    </div>\n    {/* Duplicate for the seamless loop; hidden from assistive tech */}\n    <div class=\"flex shrink-0 items-center\" data-marquee-group aria-hidden=\"true\">\n      <slot />\n    </div>\n  </div>\n</div>\n\n<style>\n  [data-marquee-group] {\n    gap: var(--marquee-gap);\n    padding-right: var(--marquee-gap);\n  }\n\n  [data-marquee-track] {\n    animation: bearnie-marquee var(--marquee-duration) linear infinite;\n  }\n\n  [data-marquee][data-direction=\"right\"] [data-marquee-track] {\n    animation-direction: reverse;\n  }\n\n  [data-marquee][data-pause-on-hover]:hover [data-marquee-track] {\n    animation-play-state: paused;\n  }\n\n  [data-marquee][data-fade] {\n    mask-image: linear-gradient(\n      to right,\n      transparent,\n      black 10%,\n      black 90%,\n      transparent\n    );\n  }\n\n  /* The track is two identical groups, so -50% shifts exactly one group */\n  @keyframes bearnie-marquee {\n    to {\n      transform: translateX(-50%);\n    }\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    [data-marquee-track] {\n      animation: none;\n    }\n  }\n</style>\n"
+    }
+  ]
+}

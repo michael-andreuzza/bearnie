@@ -30,6 +30,8 @@ export { default as AvatarImage } from "./avatar/AvatarImage.astro";
 
 export { default as Badge } from "./badge/Badge.astro";
 
+export { default as Banner } from "./banner/Banner.astro";
+
 export { default as Breadcrumb } from "./breadcrumb/Breadcrumb.astro";
 export { default as BreadcrumbEllipsis } from "./breadcrumb/BreadcrumbEllipsis.astro";
 export { default as BreadcrumbItem } from "./breadcrumb/BreadcrumbItem.astro";
@@ -166,6 +168,8 @@ export { default as KbdGroup } from "./kbd/KbdGroup.astro";
 
 export { default as Label } from "./label/Label.astro";
 
+export { default as Marquee } from "./marquee/Marquee.astro";
+
 export { default as Menubar } from "./menubar/Menubar.astro";
 export { default as MenubarCheckboxItem } from "./menubar/MenubarCheckboxItem.astro";
 export { default as MenubarContent } from "./menubar/MenubarContent.astro";
@@ -199,6 +203,8 @@ export { default as Progress } from "./progress/Progress.astro";
 
 export { default as RadioGroup } from "./radio/RadioGroup.astro";
 export { default as RadioGroupItem } from "./radio/RadioGroupItem.astro";
+
+export { default as Rating } from "./rating/Rating.astro";
 
 export { default as ScrollArea } from "./scroll-area/ScrollArea.astro";
 
@@ -278,3 +284,5 @@ export { default as TreeItem } from "./tree/TreeItem.astro";
 export { default as TreeItemChildren } from "./tree/TreeItemChildren.astro";
 export { default as TreeItemContent } from "./tree/TreeItemContent.astro";
 export { default as TreeItemTrigger } from "./tree/TreeItemTrigger.astro";
+
+export { default as Video } from "./video/Video.astro";

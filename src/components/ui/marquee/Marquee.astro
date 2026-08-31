@@ -1,0 +1,87 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** Seconds for one full loop. Lower is faster. */
+  duration?: number;
+  direction?: "left" | "right";
+  pauseOnHover?: boolean;
+  /** Fade the edges out with a mask. */
+  fade?: boolean;
+  /** Gap between items in px. */
+  gap?: number;
+}
+
+const {
+  duration = 30,
+  direction = "left",
+  pauseOnHover = true,
+  fade = true,
+  gap = 32,
+  class: className,
+  ...props
+} = Astro.props;
+---
+
+<div
+  class={cn("relative flex overflow-hidden", className)}
+  data-marquee
+  data-direction={direction}
+  data-pause-on-hover={pauseOnHover ? "true" : undefined}
+  data-fade={fade ? "true" : undefined}
+  style={`--marquee-duration: ${duration}s; --marquee-gap: ${gap}px`}
+  {...props}
+>
+  <div class="flex shrink-0 items-center" data-marquee-track>
+    <div class="flex shrink-0 items-center" data-marquee-group>
+      <slot />
+    </div>
+    {/* Duplicate for the seamless loop; hidden from assistive tech */}
+    <div class="flex shrink-0 items-center" data-marquee-group aria-hidden="true">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  [data-marquee-group] {
+    gap: var(--marquee-gap);
+    padding-right: var(--marquee-gap);
+  }
+
+  [data-marquee-track] {
+    animation: bearnie-marquee var(--marquee-duration) linear infinite;
+  }
+
+  [data-marquee][data-direction="right"] [data-marquee-track] {
+    animation-direction: reverse;
+  }
+
+  [data-marquee][data-pause-on-hover]:hover [data-marquee-track] {
+    animation-play-state: paused;
+  }
+
+  [data-marquee][data-fade] {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  /* The track is two identical groups, so -50% shifts exactly one group */
+  @keyframes bearnie-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-marquee-track] {
+      animation: none;
+    }
+  }
+</style>

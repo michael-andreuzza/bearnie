@@ -1,0 +1,117 @@
+---
+title: Video
+description: A lazy video embed for YouTube and Vimeo — the player only loads when clicked.
+tagline: Performance-friendly embeds
+category: display
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Video from "@/components/ui/video/Video.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Video
+  src="https://www.youtube.com/watch?v=YE7VzlLtp-4"
+  title="Big Buck Bunny"
+/>
+```
+  </Fragment>
+  <Video
+    src="https://www.youtube.com/watch?v=YE7VzlLtp-4"
+    title="Big Buck Bunny"
+    class="w-full max-w-xl"
+  />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="video" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { Video } from "@/components/bearnie/video"
+```
+```html
+<Video src="https://www.youtube.com/watch?v=..." title="Product demo" />
+```
+
+A plain YouTube iframe loads roughly a megabyte of player JavaScript before anyone presses play. `Video` renders just a thumbnail and a play button instead; the iframe (via the cookie-free `youtube-nocookie.com` domain) is created only on click and starts playing immediately. Accepts YouTube watch/share/shorts/embed URLs, bare YouTube video ids, and Vimeo URLs.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Vimeo
+
+YouTube thumbnails are resolved automatically. Vimeo has no public thumbnail URL scheme, so pass your own `poster` (without one, the facade is a plain surface with a play button).
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Video
+  src="https://vimeo.com/1084537"
+  title="Big Buck Bunny on Vimeo"
+  poster="/thumbnails/big-buck-bunny.jpg"
+/>
+```
+  </Fragment>
+  <Video
+    src="https://vimeo.com/1084537"
+    title="Big Buck Bunny on Vimeo"
+    class="w-full max-w-xl"
+  />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Custom aspect ratio
+
+The default is `aspect-video` (16:9); override it with a class.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Video
+  src="YE7VzlLtp-4"
+  title="Big Buck Bunny, square crop"
+  class="aspect-square max-w-sm"
+/>
+```
+  </Fragment>
+  <Video
+    src="YE7VzlLtp-4"
+    title="Big Buck Bunny, square crop"
+    class="aspect-square w-full max-w-sm"
+  />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| src | string | required | YouTube/Vimeo URL or bare YouTube video id |
+| title | string | required | Accessible name; also the iframe title |
+| poster | string | YouTube thumbnail | Thumbnail image shown before load |
+| class | string | - | Additional CSS classes |
+</Prose>

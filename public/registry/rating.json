@@ -1,0 +1,17 @@
+{
+  "name": "rating",
+  "description": "A star rating display supporting fractional values",
+  "category": "display",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Rating.astro",
+      "path": "rating/Rating.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  /** Rating value; fractions render partially filled stars (e.g. 4.5). */\n  value: number;\n  max?: number;\n  /** Custom accessible label. Defaults to \"Rated {value} out of {max}\". */\n  label?: string;\n}\n\nconst { value, max = 5, label, class: className, ...props } = Astro.props;\n\nconst clamped = Math.max(0, Math.min(value, max));\n// Per-star fill fraction: 1 = full, 0 = empty, in between = partial\nconst fills = Array.from({ length: max }, (_, i) =>\n  Math.max(0, Math.min(1, clamped - i))\n);\n\nconst starPath =\n  \"M12 2l2.917 6.256 6.855.834-5.056 4.702 1.325 6.774L12 17.207l-6.041 3.359 1.325-6.774-5.056-4.702 6.855-.834L12 2z\";\n---\n\n<div\n  class={cn(\"inline-flex items-center gap-0.5 [&_svg]:size-4\", className)}\n  role=\"img\"\n  aria-label={label ?? `Rated ${clamped} out of ${max}`}\n  data-rating\n  {...props}\n>\n  {\n    fills.map((fill) => (\n      <span class=\"relative shrink-0\">\n        <svg\n          class=\"text-muted-foreground/40\"\n          aria-hidden=\"true\"\n          xmlns=\"http://www.w3.org/2000/svg\"\n          viewBox=\"0 0 24 24\"\n          fill=\"currentColor\"\n        >\n          <path d={starPath} />\n        </svg>\n        {fill > 0 && (\n          <span\n            class=\"absolute inset-0 overflow-hidden\"\n            style={`width: ${fill * 100}%`}\n          >\n            <svg\n              class=\"text-primary\"\n              aria-hidden=\"true\"\n              xmlns=\"http://www.w3.org/2000/svg\"\n              viewBox=\"0 0 24 24\"\n              fill=\"currentColor\"\n            >\n              <path d={starPath} />\n            </svg>\n          </span>\n        )}\n      </span>\n    ))\n  }\n</div>\n"
+    }
+  ]
+}

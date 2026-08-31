@@ -1,0 +1,119 @@
+---
+title: Rating
+description: A star rating display supporting fractional values.
+tagline: Star ratings
+category: display
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Rating from "@/components/ui/rating/Rating.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Rating value={4.5} />
+```
+  </Fragment>
+  <Rating value={4.5} />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="rating" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { Rating } from "@/components/bearnie/rating"
+```
+```html
+<Rating value={4.5} />
+```
+
+Purely static — no JavaScript. Fractional values render partially filled stars, and screen readers get a "Rated 4.5 out of 5" label instead of five decorative icons.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### With text
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<div class="flex items-center gap-2">
+  <Rating value={4.5} />
+  <span class="text-sm text-muted-foreground">4.5 · 1,238 reviews</span>
+</div>
+```
+  </Fragment>
+  <div class="flex items-center gap-2">
+    <Rating value={4.5} />
+    <span class="text-sm text-muted-foreground">4.5 · 1,238 reviews</span>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Sizes and color
+
+Stars inherit their size from the `[&_svg]` utility and their color from `text-primary` — override both with classes.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Rating value={3} class="[&_svg]:size-3" />
+<Rating value={3.7} />
+<Rating value={4.2} class="[&_svg]:size-6" />
+```
+  </Fragment>
+  <div class="flex flex-col items-center gap-3">
+    <Rating value={3} class="[&_svg]:size-3" />
+    <Rating value={3.7} />
+    <Rating value={4.2} class="[&_svg]:size-6" />
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Custom maximum
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Rating value={7.5} max={10} />
+```
+  </Fragment>
+  <Rating value={7.5} max={10} />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| value | number | required | Rating value; fractions render partial stars |
+| max | number | 5 | Number of stars |
+| label | string | `Rated 4.5 out of 5` | Custom accessible label |
+| class | string | - | Additional CSS classes |
+</Prose>

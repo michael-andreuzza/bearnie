@@ -38,6 +38,11 @@
       "category": "display"
     },
     {
+      "name": "banner",
+      "description": "An announcement banner with optional dismissal persisted per visitor",
+      "category": "feedback"
+    },
+    {
       "name": "breadcrumb",
       "description": "Navigation showing the current location within a hierarchy",
       "category": "navigation"
@@ -148,6 +153,11 @@
       "category": "form"
     },
     {
+      "name": "marquee",
+      "description": "An infinite CSS-only scrolling marquee for logos and testimonials",
+      "category": "display"
+    },
+    {
       "name": "menubar",
       "description": "A horizontal menu bar",
       "category": "navigation"
@@ -171,6 +181,11 @@
       "name": "radio",
       "description": "A set of checkable buttons where only one can be selected",
       "category": "form"
+    },
+    {
+      "name": "rating",
+      "description": "A star rating display supporting fractional values",
+      "category": "display"
     },
     {
       "name": "scroll-area",
@@ -261,6 +276,11 @@
       "name": "tree",
       "description": "A hierarchical tree view",
       "category": "navigation"
+    },
+    {
+      "name": "video",
+      "description": "A lazy video embed for YouTube and Vimeo — the player only loads on click",
+      "category": "display"
     },
     {
       "name": "toggle-group",

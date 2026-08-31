@@ -1,0 +1,119 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** YouTube/Vimeo URL (watch, shorts, share, or embed link) or a bare YouTube video id. */
+  src: string;
+  /** Accessible name for the video; also used as the iframe title. */
+  title: string;
+  /**
+   * Thumbnail shown before the video loads. Defaults to the YouTube
+   * thumbnail for YouTube videos; recommended for Vimeo (there is no
+   * public thumbnail URL scheme).
+   */
+  poster?: string;
+}
+
+const { src, title, poster, class: className, ...props } = Astro.props;
+
+function parseVideo(input: string): { provider: "youtube" | "vimeo"; id: string } | null {
+  const yt = input.match(
+    /(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{6,})/
+  );
+  if (yt) return { provider: "youtube", id: yt[1] };
+  const vimeo = input.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return { provider: "vimeo", id: vimeo[1] };
+  if (/^[\w-]{6,}$/.test(input)) return { provider: "youtube", id: input };
+  return null;
+}
+
+const video = parseVideo(src);
+if (!video) {
+  throw new Error(
+    `<Video src="${src}"> is not a recognizable YouTube/Vimeo URL or YouTube video id.`
+  );
+}
+
+// The iframe (with its ~1MB of player JavaScript) only loads when the
+// visitor clicks play. youtube-nocookie keeps the facade cookie-free too.
+const embedSrc =
+  video.provider === "youtube"
+    ? `https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1`
+    : `https://player.vimeo.com/video/${video.id}?autoplay=1`;
+
+const posterSrc =
+  poster ??
+  (video.provider === "youtube"
+    ? `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`
+    : undefined);
+---
+
+<div
+  class={cn(
+    "relative aspect-video w-full overflow-hidden rounded-lg bg-muted",
+    className
+  )}
+  data-video
+  data-embed-src={embedSrc}
+  data-title={title}
+  {...props}
+>
+  <button
+    type="button"
+    class="group absolute inset-0 flex w-full cursor-pointer items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    data-video-play
+    aria-label={`Play video: ${title}`}
+  >
+    {
+      posterSrc && (
+        <img
+          src={posterSrc}
+          alt=""
+          loading="lazy"
+          class="absolute inset-0 size-full object-cover"
+        />
+      )
+    }
+    <span
+      class="relative z-10 flex size-14 items-center justify-center rounded-full bg-black/60 text-white shadow-lg transition-transform duration-200 group-hover:scale-110"
+    >
+      <svg
+        class="ml-0.5 size-6"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d="M8 5.14v13.72a1 1 0 0 0 1.52.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z" />
+      </svg>
+    </span>
+  </button>
+</div>
+
+<script>
+  function initVideos() {
+    document.querySelectorAll("[data-video]").forEach((video) => {
+      if (video.hasAttribute("data-initialized")) return;
+      video.setAttribute("data-initialized", "true");
+
+      video.querySelector("[data-video-play]")?.addEventListener(
+        "click",
+        () => {
+          const iframe = document.createElement("iframe");
+          iframe.src = video.getAttribute("data-embed-src") ?? "";
+          iframe.title = video.getAttribute("data-title") ?? "Video";
+          iframe.allow =
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          iframe.allowFullscreen = true;
+          iframe.className = "absolute inset-0 size-full border-0";
+          video.replaceChildren(iframe);
+        },
+        { once: true }
+      );
+    });
+  }
+
+  initVideos();
+  document.addEventListener("astro:page-load", initVideos);
+</script>

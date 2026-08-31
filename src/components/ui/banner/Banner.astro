@@ -1,0 +1,103 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /**
+   * Unique id. When set, dismissing the banner is remembered in
+   * localStorage so it stays hidden on future page loads.
+   */
+  id?: string;
+  dismissible?: boolean;
+  variant?: "default" | "muted";
+}
+
+const {
+  id,
+  dismissible = false,
+  variant = "default",
+  class: className,
+  ...props
+} = Astro.props;
+
+const classes = cn(
+  "relative flex w-full items-center gap-3 px-4 py-2.5 text-sm",
+  variant === "default" && "bg-primary text-primary-foreground",
+  variant === "muted" && "border-b bg-muted text-foreground",
+  className
+);
+---
+
+<div class={classes} data-banner data-banner-id={id} id={id} {...props}>
+  {/* Runs before paint so returning visitors never see a dismissed banner flash */}
+  <script is:inline>
+    (() => {
+      var s = document.currentScript;
+      var el = s.parentElement;
+      var id = el.getAttribute("data-banner-id");
+      try {
+        if (id && localStorage.getItem("bearnie-banner-" + id) === "dismissed") {
+          el.hidden = true;
+        }
+      } catch (e) {}
+      s.remove();
+    })();
+  </script>
+  <div class="flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1">
+    <slot />
+  </div>
+  {
+    dismissible && (
+      <button
+        type="button"
+        class="shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+        data-banner-dismiss
+        aria-label="Dismiss banner"
+      >
+        <svg
+          class="size-4"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    )
+  }
+</div>
+
+<script>
+  function initBanners() {
+    document.querySelectorAll("[data-banner]").forEach((banner) => {
+      if (banner.hasAttribute("data-initialized")) return;
+      banner.setAttribute("data-initialized", "true");
+
+      banner
+        .querySelector("[data-banner-dismiss]")
+        ?.addEventListener("click", () => {
+          (banner as HTMLElement).hidden = true;
+          const id = banner.getAttribute("data-banner-id");
+          if (id) {
+            try {
+              localStorage.setItem(`bearnie-banner-${id}`, "dismissed");
+            } catch {
+              // Private browsing: dismissal just won't persist
+            }
+          }
+          banner.dispatchEvent(
+            new CustomEvent("banner-dismiss", { bubbles: true })
+          );
+        });
+    });
+  }
+
+  initBanners();
+  document.addEventListener("astro:page-load", initBanners);
+</script>

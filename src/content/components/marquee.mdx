@@ -1,0 +1,130 @@
+---
+title: Marquee
+description: An infinite scrolling marquee for logos, testimonials, and badges.
+tagline: Infinite scrolling content
+category: display
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Marquee from "@/components/ui/marquee/Marquee.astro";
+import Badge from "@/components/ui/badge/Badge.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Marquee>
+  <Badge variant="secondary">Astro</Badge>
+  <Badge variant="secondary">Tailwind CSS</Badge>
+  <Badge variant="secondary">TypeScript</Badge>
+  <Badge variant="secondary">Zero runtime</Badge>
+  <Badge variant="secondary">Accessible</Badge>
+  <Badge variant="secondary">Open source</Badge>
+</Marquee>
+```
+  </Fragment>
+  <Marquee class="w-full max-w-lg">
+    <Badge variant="secondary">Astro</Badge>
+    <Badge variant="secondary">Tailwind CSS</Badge>
+    <Badge variant="secondary">TypeScript</Badge>
+    <Badge variant="secondary">Zero runtime</Badge>
+    <Badge variant="secondary">Accessible</Badge>
+    <Badge variant="secondary">Open source</Badge>
+  </Marquee>
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="marquee" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { Marquee } from "@/components/bearnie/marquee"
+```
+```html
+<Marquee>
+  <img src="/logos/one.svg" alt="Company one" />
+  <img src="/logos/two.svg" alt="Company two" />
+</Marquee>
+```
+
+The children are duplicated once under the hood (hidden from screen readers) to make the loop seamless, and the animation is pure CSS — no JavaScript ships with this component. Scrolling pauses on hover and stops entirely for visitors with `prefers-reduced-motion`.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Reverse direction and speed
+
+Use `direction="right"` to reverse and `duration` (seconds per loop) to control speed.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Marquee direction="right" duration={15}>
+  <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+  <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+  <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+</Marquee>
+```
+  </Fragment>
+  <Marquee direction="right" duration={15} class="w-full max-w-lg">
+    <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+    <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+    <span class="text-sm text-muted-foreground">Fast and in reverse</span>
+  </Marquee>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Without edge fade
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Marquee fade={false}>
+  <Badge>One</Badge>
+  <Badge>Two</Badge>
+  <Badge>Three</Badge>
+  <Badge>Four</Badge>
+</Marquee>
+```
+  </Fragment>
+  <Marquee fade={false} class="w-full max-w-lg">
+    <Badge>One</Badge>
+    <Badge>Two</Badge>
+    <Badge>Three</Badge>
+    <Badge>Four</Badge>
+  </Marquee>
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| duration | number | 30 | Seconds for one full loop (lower is faster) |
+| direction | "left" \| "right" | "left" | Scroll direction |
+| pauseOnHover | boolean | true | Pause the animation while hovered |
+| fade | boolean | true | Fade the edges out with a mask |
+| gap | number | 32 | Gap between items in px |
+| class | string | - | Additional CSS classes |
+</Prose>

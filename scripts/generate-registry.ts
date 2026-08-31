@@ -155,6 +155,11 @@ const COMPONENT_META: Record<
     description: "A small status indicator for elements",
     category: "display",
   },
+  banner: {
+    description:
+      "An announcement banner with optional dismissal persisted per visitor",
+    category: "feedback",
+  },
   breadcrumb: {
     description: "Navigation showing the current location within a hierarchy",
     category: "navigation",
@@ -259,6 +264,11 @@ const COMPONENT_META: Record<
     description: "An accessible label for form controls",
     category: "form",
   },
+  marquee: {
+    description:
+      "An infinite CSS-only scrolling marquee for logos and testimonials",
+    category: "display",
+  },
   menubar: {
     description: "A horizontal menu bar",
     category: "navigation",
@@ -284,6 +294,10 @@ const COMPONENT_META: Record<
   radio: {
     description: "A set of checkable buttons where only one can be selected",
     category: "form",
+  },
+  rating: {
+    description: "A star rating display supporting fractional values",
+    category: "display",
   },
   "scroll-area": {
     description: "A scrollable area with custom scrollbars",
@@ -378,6 +392,11 @@ const COMPONENT_META: Record<
     description: "A hierarchical tree view",
     category: "navigation",
     registryDependencies: ["icon"],
+  },
+  video: {
+    description:
+      "A lazy video embed for YouTube and Vimeo — the player only loads on click",
+    category: "display",
   },
 };
 

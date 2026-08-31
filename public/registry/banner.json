@@ -1,0 +1,17 @@
+{
+  "name": "banner",
+  "description": "An announcement banner with optional dismissal persisted per visitor",
+  "category": "feedback",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Banner.astro",
+      "path": "banner/Banner.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  /**\n   * Unique id. When set, dismissing the banner is remembered in\n   * localStorage so it stays hidden on future page loads.\n   */\n  id?: string;\n  dismissible?: boolean;\n  variant?: \"default\" | \"muted\";\n}\n\nconst {\n  id,\n  dismissible = false,\n  variant = \"default\",\n  class: className,\n  ...props\n} = Astro.props;\n\nconst classes = cn(\n  \"relative flex w-full items-center gap-3 px-4 py-2.5 text-sm\",\n  variant === \"default\" && \"bg-primary text-primary-foreground\",\n  variant === \"muted\" && \"border-b bg-muted text-foreground\",\n  className\n);\n---\n\n<div class={classes} data-banner data-banner-id={id} id={id} {...props}>\n  {/* Runs before paint so returning visitors never see a dismissed banner flash */}\n  <script is:inline>\n    (() => {\n      var s = document.currentScript;\n      var el = s.parentElement;\n      var id = el.getAttribute(\"data-banner-id\");\n      try {\n        if (id && localStorage.getItem(\"bearnie-banner-\" + id) === \"dismissed\") {\n          el.hidden = true;\n        }\n      } catch (e) {}\n      s.remove();\n    })();\n  </script>\n  <div class=\"flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1\">\n    <slot />\n  </div>\n  {\n    dismissible && (\n      <button\n        type=\"button\"\n        class=\"shrink-0 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current\"\n        data-banner-dismiss\n        aria-label=\"Dismiss banner\"\n      >\n        <svg\n          class=\"size-4\"\n          aria-hidden=\"true\"\n          xmlns=\"http://www.w3.org/2000/svg\"\n          viewBox=\"0 0 24 24\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"2\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n        >\n          <path d=\"M18 6 6 18\" />\n          <path d=\"m6 6 12 12\" />\n        </svg>\n      </button>\n    )\n  }\n</div>\n\n<script>\n  function initBanners() {\n    document.querySelectorAll(\"[data-banner]\").forEach((banner) => {\n      if (banner.hasAttribute(\"data-initialized\")) return;\n      banner.setAttribute(\"data-initialized\", \"true\");\n\n      banner\n        .querySelector(\"[data-banner-dismiss]\")\n        ?.addEventListener(\"click\", () => {\n          (banner as HTMLElement).hidden = true;\n          const id = banner.getAttribute(\"data-banner-id\");\n          if (id) {\n            try {\n              localStorage.setItem(`bearnie-banner-${id}`, \"dismissed\");\n            } catch {\n              // Private browsing: dismissal just won't persist\n            }\n          }\n          banner.dispatchEvent(\n            new CustomEvent(\"banner-dismiss\", { bubbles: true })\n          );\n        });\n    });\n  }\n\n  initBanners();\n  document.addEventListener(\"astro:page-load\", initBanners);\n</script>\n"
+    }
+  ]
+}
