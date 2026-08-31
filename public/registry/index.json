@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "components": [
     {
       "name": "styles",
@@ -101,6 +101,11 @@
       "name": "empty",
       "description": "A placeholder for empty states",
       "category": "feedback"
+    },
+    {
+      "name": "field",
+      "description": "Form field primitives that wire labels, descriptions, and errors to controls with proper ARIA",
+      "category": "form"
     },
     {
       "name": "file-upload",
@@ -276,6 +281,10 @@
     {
       "name": "focus-trap",
       "description": "Focus trap utility for modal accessibility"
+    },
+    {
+      "name": "position",
+      "description": "Collision-aware floating positioning utility (flip + shift) for overlays"
     },
     {
       "name": "ui-runtime-loader",

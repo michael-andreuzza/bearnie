@@ -21,12 +21,14 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
 </div>
 
 <script>
+  import { positionFloating, type FloatingSide, type FloatingAlign } from '@/utils/position';
+
   function initHoverCards() {
     document.querySelectorAll('[data-hover-card]').forEach((card) => {
       if (card.hasAttribute('data-initialized')) return;
       card.setAttribute('data-initialized', 'true');
 
-      const trigger = card.querySelector('[data-hover-card-trigger]');
+      const trigger = card.querySelector('[data-hover-card-trigger]') as HTMLElement;
       const content = card.querySelector('[data-hover-card-content]') as HTMLElement;
 
       if (!trigger || !content) return;
@@ -36,11 +38,18 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
 
       let openTimeout: ReturnType<typeof setTimeout>;
       let closeTimeout: ReturnType<typeof setTimeout>;
+      let cleanupPosition: (() => void) | null = null;
 
       const showContent = () => {
         clearTimeout(closeTimeout);
         openTimeout = setTimeout(() => {
           content.hidden = false;
+          cleanupPosition?.();
+          cleanupPosition = positionFloating(trigger, content, {
+            side: (content.dataset.side as FloatingSide) || 'bottom',
+            align: (content.dataset.align as FloatingAlign) || 'center',
+            offset: Number(content.dataset.offset) || 4,
+          });
         }, openDelay);
       };
 
@@ -48,6 +57,8 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
         clearTimeout(openTimeout);
         closeTimeout = setTimeout(() => {
           content.hidden = true;
+          cleanupPosition?.();
+          cleanupPosition = null;
         }, closeDelay);
       };
 
@@ -55,6 +66,8 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
         clearTimeout(openTimeout);
         clearTimeout(closeTimeout);
         content.hidden = true;
+        cleanupPosition?.();
+        cleanupPosition = null;
       };
 
       trigger.addEventListener('mouseenter', showContent);

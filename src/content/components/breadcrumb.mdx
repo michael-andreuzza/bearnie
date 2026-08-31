@@ -20,6 +20,10 @@ import BreadcrumbLink from "@/components/ui/breadcrumb/BreadcrumbLink.astro";
 import BreadcrumbPage from "@/components/ui/breadcrumb/BreadcrumbPage.astro";
 import BreadcrumbSeparator from "@/components/ui/breadcrumb/BreadcrumbSeparator.astro";
 import BreadcrumbEllipsis from "@/components/ui/breadcrumb/BreadcrumbEllipsis.astro";
+import DropdownMenu from "@/components/ui/dropdown-menu/DropdownMenu.astro";
+import DropdownMenuTrigger from "@/components/ui/dropdown-menu/DropdownMenuTrigger.astro";
+import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuContent.astro";
+import DropdownMenuItem from "@/components/ui/dropdown-menu/DropdownMenuItem.astro";
 
 <ComponentPreview>
   <Fragment slot="code">
@@ -152,6 +156,8 @@ import {
 <div class="space-y-4">
 <Prose>
 #### Collapsed
+
+`BreadcrumbEllipsis` is a static indicator. To make the collapsed items clickable, compose it with `DropdownMenu`:
 </Prose>
 
 <ComponentPreview>
@@ -164,10 +170,15 @@ import {
     </BreadcrumbItem>
     <BreadcrumbSeparator />
     <BreadcrumbItem>
-      <BreadcrumbEllipsis>
-        <a href="#_" class="block px-3 py-1.5 text-sm hover:bg-accent rounded-md">Docs</a>
-        <a href="#_" class="block px-3 py-1.5 text-sm hover:bg-accent rounded-md">sponsors</a>
-      </BreadcrumbEllipsis>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <BreadcrumbEllipsis />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem href="/docs">Docs</DropdownMenuItem>
+          <DropdownMenuItem href="/docs/getting-started">Getting Started</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
     <BreadcrumbItem>
@@ -188,10 +199,15 @@ import {
       </BreadcrumbItem>
       <BreadcrumbSeparator />
       <BreadcrumbItem>
-        <BreadcrumbEllipsis>
-          <a href="/docs" class="block px-3 py-1.5 text-sm hover:bg-accent rounded-md">Docs</a>
-          <a href="/docs/getting-started" class="block px-3 py-1.5 text-sm hover:bg-accent rounded-md">Getting Started</a>
-        </BreadcrumbEllipsis>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <BreadcrumbEllipsis />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem href="/docs">Docs</DropdownMenuItem>
+            <DropdownMenuItem href="/docs/getting-started">Getting Started</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </BreadcrumbItem>
       <BreadcrumbSeparator />
       <BreadcrumbItem>
@@ -216,7 +232,7 @@ import {
 - `BreadcrumbLink` - Clickable navigation link
 - `BreadcrumbPage` - Current page indicator (not clickable)
 - `BreadcrumbSeparator` - Visual separator between items
-- `BreadcrumbEllipsis` - Collapsed items indicator
+- `BreadcrumbEllipsis` - Static collapsed-items indicator; compose with `DropdownMenu` to make it interactive
 </Prose>
 
 <Prose>

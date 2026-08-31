@@ -150,6 +150,29 @@ toast("Event has been created.")
 
 <div class="space-y-4">
 <Prose>
+#### Promise
+
+Shows a loading toast that turns into a success or error toast when the promise settles.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```js
+toast.promise(saveSettings(), {
+  loading: "Saving…",
+  success: "Settings saved.",
+  error: (err) => `Could not save: ${err.message}`,
+})
+```
+  </Fragment>
+  <Button variant="outline" onclick="toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), { loading: 'Saving…', success: 'Settings saved.', error: 'Could not save.' })">
+    Show Promise Toast
+  </Button>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
 #### With action
 </Prose>
 
@@ -182,6 +205,7 @@ toast("Event has been created.")
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | position | top-left \| top-center \| top-right \| bottom-left \| bottom-center \| bottom-right | bottom-right | Toast position |
+| max | number | 5 | Maximum toasts shown at once; the oldest is dismissed when exceeded |
 | class | string | - | Additional CSS classes |
 
 #### toast() function
@@ -191,6 +215,8 @@ toast("Event has been created.")
 | title | string | - | Toast heading |
 | description | string | - | Toast message |
 | type | default \| success \| destructive \| warning \| info | default | Toast variant |
-| duration | number | 4000 | Auto-dismiss time (ms) |
+| duration | number | 4000 | Auto-dismiss time (ms). Hovering a toast pauses the timer |
 | action | object | - | Action button config |
+
+Helpers: `toast.success()`, `toast.destructive()`, `toast.warning()`, `toast.info()`, `toast.promise(promise, { loading, success, error })`, and `toast.dismiss(el)`. The `success` and `error` messages accept a string, an options object, or a function receiving the resolved value / rejection reason.
 </Prose>

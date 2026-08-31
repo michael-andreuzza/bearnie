@@ -5,6 +5,8 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends HTMLAttributes<"label"> {
   id?: string;
   value: string;
+  /** Group name for standalone use outside a RadioGroup (which sets it automatically). */
+  name?: string;
   disabled?: boolean;
   checked?: boolean;
 }
@@ -12,6 +14,7 @@ export interface Props extends HTMLAttributes<"label"> {
 const {
   id,
   value,
+  name,
   disabled = false,
   checked = false,
   class: className,
@@ -37,6 +40,7 @@ const wrapperClasses = cn(
   <input
     type="radio"
     id={id}
+    name={name}
     value={value}
     checked={checked}
     disabled={disabled}

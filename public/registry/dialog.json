@@ -18,6 +18,11 @@
       "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst {\n  class: className,\n  ...props\n} = Astro.props;\n---\n\n<div data-dialog class={className} {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDialogs } from \"@/utils/runtime/dialog\";\n\n  registerUiInit(initDialogs);\n</script>\n"
     },
     {
+      "name": "DialogClose.astro",
+      "path": "dialog/DialogClose.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<button\n  type=\"button\"\n  data-dialog-close\n  class={cn(className)}\n  {...props}\n>\n  <slot />\n</button>\n"
+    },
+    {
       "name": "DialogContent.astro",
       "path": "dialog/DialogContent.astro",
       "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\nimport HugeIcon from \"../icon/HugeIcon.astro\";\nimport { Cancel01Icon } from \"../icon/icons\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200\",\n  \"sm:rounded-lg\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-dialog-content\n  hidden\n  role=\"dialog\"\n  aria-modal=\"true\"\n  {...props}\n>\n  <slot />\n  <button\n    type=\"button\"\n    class=\"absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none\"\n    data-dialog-close\n  >\n    <HugeIcon icon={Cancel01Icon} size={16} />\n    <span class=\"sr-only\">Close</span>\n  </button>\n</div>\n"

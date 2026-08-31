@@ -1,0 +1,84 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** Marks the field invalid: sets aria-invalid on the control and shows FieldError. */
+  invalid?: boolean;
+}
+
+const { invalid = false, class: className, ...props } = Astro.props;
+---
+
+<div
+  class={cn("grid gap-2", className)}
+  data-field
+  data-invalid={invalid ? "true" : undefined}
+  {...props}
+>
+  <slot />
+</div>
+
+<script>
+  import { generateId } from "@/utils/focus-trap";
+
+  // Wires label/description/error to the field's control: id/for linking,
+  // aria-describedby, and aria-invalid.
+  function wireField(field: Element) {
+    const control = field.querySelector(
+      'input:not([type="hidden"]), select, textarea'
+    ) as HTMLElement | null;
+    if (!control) return;
+
+    if (!control.id) control.id = generateId("field-control");
+
+    const label = field.querySelector("[data-field-label]") as HTMLLabelElement | null;
+    if (label && !label.htmlFor) label.htmlFor = control.id;
+
+    const describedBy: string[] = [];
+
+    const description = field.querySelector("[data-field-description]") as HTMLElement | null;
+    if (description) {
+      if (!description.id) description.id = generateId("field-description");
+      describedBy.push(description.id);
+    }
+
+    const error = field.querySelector("[data-field-error]") as HTMLElement | null;
+    const invalid = field.hasAttribute("data-invalid");
+
+    if (error) {
+      if (!error.id) error.id = generateId("field-error");
+      error.hidden = !invalid;
+      if (invalid) describedBy.push(error.id);
+    }
+
+    if (describedBy.length > 0) {
+      control.setAttribute("aria-describedby", describedBy.join(" "));
+    } else {
+      control.removeAttribute("aria-describedby");
+    }
+
+    if (invalid) {
+      control.setAttribute("aria-invalid", "true");
+    } else {
+      control.removeAttribute("aria-invalid");
+    }
+  }
+
+  function initFields() {
+    document.querySelectorAll("[data-field]").forEach((field) => {
+      if (field.hasAttribute("data-initialized")) return;
+      field.setAttribute("data-initialized", "true");
+
+      wireField(field);
+
+      // Re-wire when data-invalid is toggled at runtime (e.g. by user
+      // validation code), so aria attributes and error visibility follow.
+      const observer = new MutationObserver(() => wireField(field));
+      observer.observe(field, { attributes: true, attributeFilter: ["data-invalid"] });
+    });
+  }
+
+  initFields();
+  document.addEventListener("astro:page-load", initFields);
+</script>

@@ -18,23 +18,8 @@ const {
 
 const contentId = id ?? undefined;
 
-const sideStyles = {
-  top: 'bottom-full mb-2',
-  right: 'left-full ml-2',
-  bottom: 'top-full mt-2',
-  left: 'right-full mr-2',
-};
-
-const alignStyles = {
-  start: 'left-0',
-  center: 'left-1/2 -translate-x-1/2',
-  end: 'right-0',
-};
-
 const classes = cn(
-  'absolute z-50 w-72 rounded-lg border bg-popover p-4 text-popover-foreground shadow-md outline-none',
-  sideStyles[side],
-  side === 'top' || side === 'bottom' ? alignStyles[align] : '',
+  'z-50 w-72 rounded-lg border bg-popover p-4 text-popover-foreground shadow-md outline-none',
   className
 );
 ---
@@ -42,6 +27,8 @@ const classes = cn(
 <div
   class={classes}
   data-popover-content
+  data-side={side}
+  data-align={align}
   role="dialog"
   aria-modal="false"
   id={contentId}

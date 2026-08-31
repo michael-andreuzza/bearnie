@@ -394,4 +394,20 @@ You can pass custom content to the separator.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | class | string | - | Additional CSS classes |
+
+### Events
+
+The root element dispatches bubbling CustomEvents as the user types — no polling required:
+
+```js
+const otp = document.querySelector("[data-input-otp]");
+
+otp.addEventListener("otp-change", (e) => {
+  console.log(e.detail.value); // current value, e.g. "12"
+});
+
+otp.addEventListener("otp-complete", (e) => {
+  submitCode(e.detail.value); // fires when all slots are filled
+});
+```
 </Prose>

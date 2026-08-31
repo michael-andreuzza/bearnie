@@ -4,123 +4,17 @@ import type { HTMLAttributes } from 'astro/types';
 import HugeIcon from "../icon/HugeIcon.astro";
 import { MoreHorizontalIcon } from "../icon/icons";
 
-export interface Props extends HTMLAttributes<'div'> {}
+export interface Props extends HTMLAttributes<'span'> {}
 
 const { class: className, ...props } = Astro.props;
 ---
 
-<div class={cn('relative inline-flex', className)} data-breadcrumb-dropdown {...props}>
-  <button
-    type="button"
-    class="flex size-9 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-    data-breadcrumb-dropdown-trigger
-    aria-expanded="false"
-    aria-haspopup="true"
-    aria-label="Show more breadcrumb items"
-  >
-    <HugeIcon icon={MoreHorizontalIcon} class="size-4" />
-    <span class="sr-only">More</span>
-  </button>
-  <div
-    class="absolute left-1/2 -translate-x-1/2 bottom-0 z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-popover p-1 text-popover-foreground shadow-md"
-    data-breadcrumb-dropdown-content
-    role="menu"
-    hidden
-  >
-    <slot />
-  </div>
-</div>
-
-<script>
-  function closeBreadcrumbDropdown(dropdown: Element, restoreFocus = false) {
-    const trigger = dropdown.querySelector('[data-breadcrumb-dropdown-trigger]') as HTMLElement | null;
-    const content = dropdown.querySelector('[data-breadcrumb-dropdown-content]') as HTMLElement | null;
-    if (!content || content.hidden) return;
-    content.hidden = true;
-    trigger?.setAttribute('aria-expanded', 'false');
-    if (restoreFocus) trigger?.focus();
-  }
-
-  function getMenuItems(content: HTMLElement): HTMLElement[] {
-    return Array.from(content.querySelectorAll('a, button')) as HTMLElement[];
-  }
-
-  // Document listeners bound once; live dropdowns resolved at event time
-  // so they don't accumulate across view-transition navigations.
-  let documentListenersBound = false;
-
-  function bindDocumentListeners() {
-    if (documentListenersBound) return;
-    documentListenersBound = true;
-
-    document.addEventListener('click', (e) => {
-      document.querySelectorAll('[data-breadcrumb-dropdown]').forEach((dropdown) => {
-        if (!dropdown.contains(e.target as Node)) {
-          closeBreadcrumbDropdown(dropdown);
-        }
-      });
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-      document
-        .querySelectorAll('[data-breadcrumb-dropdown]')
-        .forEach((dropdown) => closeBreadcrumbDropdown(dropdown, true));
-    });
-  }
-
-  function initBreadcrumbDropdowns() {
-    bindDocumentListeners();
-
-    document.querySelectorAll('[data-breadcrumb-dropdown]').forEach((dropdown) => {
-      if (dropdown.hasAttribute('data-initialized')) return;
-      dropdown.setAttribute('data-initialized', 'true');
-
-      const trigger = dropdown.querySelector('[data-breadcrumb-dropdown-trigger]');
-      const content = dropdown.querySelector('[data-breadcrumb-dropdown-content]') as HTMLElement;
-
-      if (!trigger || !content) return;
-
-      const toggleDropdown = () => {
-        const isOpen = content.hidden === false;
-        content.hidden = isOpen;
-        trigger.setAttribute('aria-expanded', String(!isOpen));
-        if (!isOpen) getMenuItems(content)[0]?.focus();
-      };
-
-      trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleDropdown();
-      });
-
-      // Arrow-key navigation, matching the other role="menu" components
-      content.addEventListener('keydown', (e) => {
-        const items = getMenuItems(content);
-        if (items.length === 0) return;
-        const currentIndex = items.indexOf(document.activeElement as HTMLElement);
-
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          items[(currentIndex + 1) % items.length]?.focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          items[currentIndex > 0 ? currentIndex - 1 : items.length - 1]?.focus();
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          items[0]?.focus();
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          items[items.length - 1]?.focus();
-        }
-      });
-
-      // Handle item clicks
-      content.querySelectorAll('a').forEach((item) => {
-        item.addEventListener('click', () => closeBreadcrumbDropdown(dropdown));
-      });
-    });
-  }
-
-  initBreadcrumbDropdowns();
-  document.addEventListener('astro:page-load', initBreadcrumbDropdowns);
-</script>
+<span
+  role="presentation"
+  aria-hidden="true"
+  class={cn('flex size-9 items-center justify-center', className)}
+  {...props}
+>
+  <HugeIcon icon={MoreHorizontalIcon} class="size-4" />
+  <span class="sr-only">More</span>
+</span>

@@ -1,4 +1,11 @@
 import { generateId } from "@/utils/focus-trap";
+import {
+  positionFloating,
+  type FloatingSide,
+  type FloatingAlign,
+} from "@/utils/position";
+
+const positionCleanups = new WeakMap<Element, () => void>();
 
 function getParts(popover: Element) {
   return {
@@ -11,6 +18,8 @@ function closePopover(popover: Element, restoreFocus: boolean) {
   const { trigger, content } = getParts(popover);
   if (!content || content.hidden) return;
   content.hidden = true;
+  positionCleanups.get(popover)?.();
+  positionCleanups.delete(popover);
   trigger?.setAttribute("aria-expanded", "false");
   trigger?.setAttribute("data-state", "closed");
   if (restoreFocus) trigger?.focus();
@@ -64,6 +73,14 @@ export function initPopovers() {
 
     const openPopover = () => {
       content.hidden = false;
+      positionCleanups.get(popover)?.();
+      positionCleanups.set(
+        popover,
+        positionFloating(trigger, content, {
+          side: (content.dataset.side as FloatingSide) || "bottom",
+          align: (content.dataset.align as FloatingAlign) || "center",
+        }),
+      );
       trigger.setAttribute("aria-expanded", "true");
       trigger.setAttribute("data-state", "open");
       const firstFocusable = content.querySelector(

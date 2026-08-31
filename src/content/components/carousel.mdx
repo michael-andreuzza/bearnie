@@ -16,6 +16,8 @@ import CarouselItem from "@/components/ui/carousel/CarouselItem.astro";
 import CarouselPrevious from "@/components/ui/carousel/CarouselPrevious.astro";
 import CarouselNext from "@/components/ui/carousel/CarouselNext.astro";
 import CarouselDots from "@/components/ui/carousel/CarouselDots.astro";
+import CarouselThumbnails from "@/components/ui/carousel/CarouselThumbnails.astro";
+import CarouselThumbnail from "@/components/ui/carousel/CarouselThumbnail.astro";
 import Card from "@/components/ui/card/Card.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
 
@@ -179,6 +181,81 @@ import {
     <CarouselPrevious />
     <CarouselNext />
     <CarouselDots count={3} />
+  </Carousel>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### With thumbnails
+
+Clickable previews below the carousel; the active thumbnail is highlighted as slides change.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Carousel class="w-full max-w-md">
+  <CarouselContent>
+    <CarouselItem>
+      <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+        <span class="text-2xl font-semibold">Slide 1</span>
+      </div>
+    </CarouselItem>
+    <CarouselItem>
+      <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+        <span class="text-2xl font-semibold">Slide 2</span>
+      </div>
+    </CarouselItem>
+    <CarouselItem>
+      <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+        <span class="text-2xl font-semibold">Slide 3</span>
+      </div>
+    </CarouselItem>
+  </CarouselContent>
+  <CarouselThumbnails>
+    <CarouselThumbnail>
+      <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">1</div>
+    </CarouselThumbnail>
+    <CarouselThumbnail>
+      <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">2</div>
+    </CarouselThumbnail>
+    <CarouselThumbnail>
+      <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">3</div>
+    </CarouselThumbnail>
+  </CarouselThumbnails>
+</Carousel>
+```
+  </Fragment>
+  <Carousel class="w-full max-w-md mx-auto">
+    <CarouselContent>
+      <CarouselItem>
+        <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+          <span class="text-2xl font-semibold">Slide 1</span>
+        </div>
+      </CarouselItem>
+      <CarouselItem>
+        <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+          <span class="text-2xl font-semibold">Slide 2</span>
+        </div>
+      </CarouselItem>
+      <CarouselItem>
+        <div class="flex aspect-video items-center justify-center rounded-lg bg-muted">
+          <span class="text-2xl font-semibold">Slide 3</span>
+        </div>
+      </CarouselItem>
+    </CarouselContent>
+    <CarouselThumbnails>
+      <CarouselThumbnail>
+        <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">1</div>
+      </CarouselThumbnail>
+      <CarouselThumbnail>
+        <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">2</div>
+      </CarouselThumbnail>
+      <CarouselThumbnail>
+        <div class="flex h-12 w-20 items-center justify-center bg-muted text-xs">3</div>
+      </CarouselThumbnail>
+    </CarouselThumbnails>
   </Carousel>
 </ComponentPreview>
 </div>
@@ -407,6 +484,10 @@ import {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | count | number | required | Number of dots to display |
+
+#### CarouselThumbnails / CarouselThumbnail
+
+Container and clickable thumbnail buttons rendered below the carousel — one `CarouselThumbnail` per slide, in slide order. The active thumbnail gets a `data-active` attribute (styled with a primary border by default). Both accept `class` for additional CSS classes.
 
 ### Accessibility
 

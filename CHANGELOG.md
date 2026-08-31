@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (registry 0.8.0)
+
+- **`field` component.** New form primitives: `Field`, `FieldGroup`, `FieldLabel`, `FieldDescription`, `FieldError`. `Field` wires the label to the control, connects description/error via `aria-describedby`, and sets `aria-invalid` automatically (toggle `data-invalid` from your own validation code). `Input`, `Textarea`, `Select`, and `Checkbox` now style themselves when `aria-invalid` is set.
+- **Collision-aware positioning (`position` utility).** Tooltip, popover, hover-card, dropdown menu, and combobox now position with `position: fixed`, flip to the opposite side when there's no room, shift to stay inside the viewport, and are no longer clipped by `overflow` containers. Content elements expose `data-side`/`data-align` reflecting the resolved position, and a `--trigger-width` CSS variable.
+- **Toast upgrades.** Hovering a toast pauses its auto-dismiss timer; `Toaster` has a `max` prop (default 5) that dismisses the oldest toast when exceeded; new `toast.promise(promise, { loading, success, error })` and `toast.dismiss(el)`; toasts animate in.
+- **File-upload validation.** `accept` and `maxSize` are now enforced (previously advertised but never checked, and drag-and-drop bypassed the picker filter entirely). Rejected files show an error and are removed from the input; the root dispatches `file-upload-change` with `{ files, rejected }`.
+- **Command palette.** Typing now auto-selects the first result so Enter activates it immediately; Home/End navigation added.
+- `DialogClose` — wraps any element to close the dialog on click (parity with `SheetClose`).
+- `DropdownMenuItem` accepts `href` and renders a link.
+- InputOTP dispatches `otp-change` and `otp-complete` CustomEvents.
+- ScrollArea: standard `scrollbar-width`/`scrollbar-color` support (Firefox and Chromium 121+) and horizontal-scrollbar sizing.
+- `CarouselThumbnails`/`CarouselThumbnail` are now documented.
+
+### Removed (registry 0.8.0)
+
+- The undocumented declarative `Toast`, `ToastTitle`, and `ToastDescription` (the programmatic `toast()` API is the toast API), `StepperContent`, and `BreadcrumbDropdownItem`.
+- `Radio` — use `RadioGroupItem`, which now takes an optional `name` for standalone use.
+- `BreadcrumbEllipsis` is now a static indicator (as in shadcn); compose it with `DropdownMenu` for clickable collapsed crumbs.
+- 18 unused icon exports pruned from `icons.ts`.
+- The barrel `index.ts` is now auto-generated from folder contents by `generate-registry`, so it can't drift.
+
 ### Breaking (registry 0.7.0)
 
 API unifications from the consistency audit. If you installed components before this version, `bearnie diff` will show these renames; update your usage when you pull them:

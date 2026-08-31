@@ -187,10 +187,12 @@ Root container that manages the file upload state.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | multiple | boolean | false | Allow multiple file selection |
-| accept | string | - | Accepted file types (MIME types) |
-| maxSize | number | - | Maximum file size in bytes |
+| accept | string | - | Accepted file types (extensions, MIME types, or wildcards like `image/*`). Enforced on both picker selection and drag-and-drop |
+| maxSize | number | - | Maximum file size in bytes. Files over the limit are rejected with a visible error |
 | disabled | boolean | false | Disable the upload |
 | class | string | - | Additional CSS classes |
+
+Rejected files are removed from the input and listed in an error message below the upload (rendered into a `[data-file-upload-error]` element, created automatically if you don't provide one). If `accept` is only set on `FileUploadInput`, it's used for drag-and-drop validation too.
 
 #### FileUploadInput
 
@@ -213,4 +215,16 @@ Optional button to trigger file selection without the dropzone.
 #### FileUploadPreview
 
 Displays selected files with name, size, and remove button.
+
+### Events
+
+The root element dispatches a bubbling `file-upload-change` CustomEvent whenever the selection changes (picker, drop, or remove):
+
+```js
+document.querySelector("[data-file-upload]").addEventListener("file-upload-change", (e) => {
+  const { files, rejected } = e.detail;
+  // files: File[] currently selected
+  // rejected: { file: File, reason: "accept" | "maxSize" }[]
+});
+```
 </Prose>

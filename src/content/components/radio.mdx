@@ -10,7 +10,6 @@ order: 13
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
-import Radio from "@/components/ui/radio/Radio.astro";
 import RadioGroup from "@/components/ui/radio/RadioGroup.astro";
 import RadioGroupItem from "@/components/ui/radio/RadioGroupItem.astro";
 import Label from "@/components/ui/label/Label.astro";
@@ -264,7 +263,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/bearnie/radio"
 
 <div class="space-y-4">
 <Prose>
-#### Standalone Radio
+#### Standalone
+
+`RadioGroupItem` also works outside a `RadioGroup` — pass `name` yourself:
 </Prose>
 
 <ComponentPreview>
@@ -272,11 +273,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/bearnie/radio"
 ```html
 <div class="flex flex-col gap-2">
   <div class="flex items-center gap-2">
-    <Radio id="option-one" name="standalone" value="one" />
+    <RadioGroupItem id="option-one" name="standalone" value="one" />
     <Label for="option-one">Option One</Label>
   </div>
   <div class="flex items-center gap-2">
-    <Radio id="option-two" name="standalone" value="two" />
+    <RadioGroupItem id="option-two" name="standalone" value="two" />
     <Label for="option-two">Option Two</Label>
   </div>
 </div>
@@ -284,11 +285,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/bearnie/radio"
   </Fragment>
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2">
-      <Radio id="option-one" name="standalone" value="one" />
+      <RadioGroupItem id="option-one" name="standalone" value="one" />
       <Label for="option-one">Option One</Label>
     </div>
     <div class="flex items-center gap-2">
-      <Radio id="option-two" name="standalone" value="two" />
+      <RadioGroupItem id="option-two" name="standalone" value="two" />
       <Label for="option-two">Option Two</Label>
     </div>
   </div>
@@ -300,8 +301,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/bearnie/radio"
 ### Anatomy
 
 - `RadioGroup` - Container that manages the radio group state
-- `RadioGroupItem` - Individual radio button within a group
-- `Radio` - Standalone radio input for simple use cases
+- `RadioGroupItem` - Individual radio button; also usable standalone with a `name` prop
 </Prose>
 
 <Prose>
@@ -324,19 +324,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/bearnie/radio"
 |------|------|---------|-------------|
 | value | string | - | Required. Form value when selected |
 | id | string | - | Element ID for label association |
+| name | string | - | Group name for standalone use (set automatically inside a RadioGroup) |
 | disabled | boolean | false | Disables this item |
 | checked | boolean | false | Controlled checked state |
-| class | string | - | Additional CSS classes |
-
-#### Radio
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| id | string | - | Element ID for label association |
-| name | string | - | Groups radio buttons together |
-| value | string | - | Form value when selected |
-| checked | boolean | false | Default checked state |
-| disabled | boolean | false | Disables the radio |
-| required | boolean | false | Makes selection required |
 | class | string | - | Additional CSS classes |
 </Prose>

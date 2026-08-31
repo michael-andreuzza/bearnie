@@ -1,0 +1,213 @@
+---
+title: Field
+description: Form field primitives that wire labels, descriptions, and errors to controls with proper ARIA.
+tagline: Accessible form fields
+category: form
+status: stable
+order: 6
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import CodeBlock from "@/components/docs/CodeBlock.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Field from "@/components/ui/field/Field.astro";
+import FieldGroup from "@/components/ui/field/FieldGroup.astro";
+import FieldLabel from "@/components/ui/field/FieldLabel.astro";
+import FieldDescription from "@/components/ui/field/FieldDescription.astro";
+import FieldError from "@/components/ui/field/FieldError.astro";
+import Input from "@/components/ui/input/Input.astro";
+import Textarea from "@/components/ui/textarea/Textarea.astro";
+import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
+import Button from "@/components/ui/button/Button.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Field class="w-full max-w-sm">
+  <FieldLabel>Email</FieldLabel>
+  <Input type="email" placeholder="you@example.com" />
+  <FieldDescription>We'll never share your email.</FieldDescription>
+</Field>
+```
+  </Fragment>
+  <Field class="w-full max-w-sm">
+    <FieldLabel>Email</FieldLabel>
+    <Input type="email" placeholder="you@example.com" />
+    <FieldDescription>We'll never share your email.</FieldDescription>
+  </Field>
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="field" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+} from "@/components/bearnie/field"
+```
+```html
+<Field>
+  <FieldLabel>Email</FieldLabel>
+  <Input type="email" />
+  <FieldDescription>Helper text</FieldDescription>
+  <FieldError>Error message</FieldError>
+</Field>
+```
+
+`Field` automatically links its label to the control (`for`/`id`), connects the
+description and error via `aria-describedby`, and sets `aria-invalid` on the
+control when the field is invalid — no manual id wiring needed.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### With error
+
+Set `invalid` on the `Field` to show the `FieldError` and mark the control invalid.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Field invalid class="w-full max-w-sm">
+  <FieldLabel>Username</FieldLabel>
+  <Input value="a" />
+  <FieldError>Username must be at least 3 characters.</FieldError>
+</Field>
+```
+  </Fragment>
+  <Field invalid class="w-full max-w-sm">
+    <FieldLabel>Username</FieldLabel>
+    <Input value="a" />
+    <FieldError>Username must be at least 3 characters.</FieldError>
+  </Field>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Form with FieldGroup
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<form class="w-full max-w-sm">
+  <FieldGroup>
+    <Field>
+      <FieldLabel required>Name</FieldLabel>
+      <Input name="name" required />
+    </Field>
+    <Field>
+      <FieldLabel>Message</FieldLabel>
+      <Textarea name="message" placeholder="Tell us more…" />
+      <FieldDescription>Max 500 characters.</FieldDescription>
+    </Field>
+    <Field class="grid-flow-col items-center justify-start gap-2">
+      <Checkbox name="terms" />
+      <FieldLabel>I agree to the terms</FieldLabel>
+    </Field>
+    <Button type="submit">Submit</Button>
+  </FieldGroup>
+</form>
+```
+  </Fragment>
+  <form class="w-full max-w-sm">
+    <FieldGroup>
+      <Field>
+        <FieldLabel required>Name</FieldLabel>
+        <Input name="name" required />
+      </Field>
+      <Field>
+        <FieldLabel>Message</FieldLabel>
+        <Textarea name="message" placeholder="Tell us more…" />
+        <FieldDescription>Max 500 characters.</FieldDescription>
+      </Field>
+      <Field class="grid-flow-col items-center justify-start gap-2">
+        <Checkbox name="terms" />
+        <FieldLabel>I agree to the terms</FieldLabel>
+      </Field>
+      <Button type="submit">Submit</Button>
+    </FieldGroup>
+  </form>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Runtime validation
+
+Toggle `data-invalid` on the field element from your own validation code — ARIA
+attributes and error visibility update automatically:
+</Prose>
+
+<CodeBlock
+  lang="js"
+  code={`const field = input.closest("[data-field]");
+
+input.addEventListener("blur", () => {
+  if (input.value.length < 3) {
+    field.setAttribute("data-invalid", "true");
+  } else {
+    field.removeAttribute("data-invalid");
+  }
+});`}
+/>
+</div>
+</div>
+
+<Prose>
+### Anatomy
+
+- `Field` - Wraps one control with its label, description, and error; handles all ARIA wiring
+- `FieldGroup` - Spacing container for multiple fields in a form
+- `FieldLabel` - Label, automatically linked to the field's control
+- `FieldDescription` - Helper text, linked via `aria-describedby`
+- `FieldError` - Error message; hidden until the field is invalid
+</Prose>
+
+<Prose>
+### Props
+
+#### Field
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| invalid | boolean | false | Shows the error, sets `aria-invalid` on the control |
+| class | string | - | Additional CSS classes |
+
+#### FieldLabel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| for | string | - | Control ID (set automatically if omitted) |
+| required | boolean | false | Shows a required asterisk |
+| class | string | - | Additional CSS classes |
+
+`FieldGroup`, `FieldDescription`, and `FieldError` accept `class` for additional CSS classes.
+
+### Notes
+
+`Input`, `Textarea`, `Select`, and `Checkbox` style themselves automatically when
+`aria-invalid` is set (destructive border and focus ring), so invalid states work
+with no extra classes.
+</Prose>

@@ -13,6 +13,7 @@ const { class: className, ...props } = Astro.props;
 
 <script>
   import { generateId } from '@/utils/focus-trap';
+  import { positionFloating, type FloatingSide } from '@/utils/position';
 
   function initTooltips() {
     document.querySelectorAll('[data-tooltip]').forEach((tooltip) => {
@@ -32,12 +33,19 @@ const { class: className, ...props } = Astro.props;
       // Link trigger to content via aria-describedby
       trigger.setAttribute('aria-describedby', content.id);
 
+      let cleanupPosition: (() => void) | null = null;
+
       const showTooltip = () => {
         content.hidden = false;
+        cleanupPosition = positionFloating(trigger, content, {
+          side: (content.dataset.side as FloatingSide) || 'top',
+        });
       };
 
       const hideTooltip = () => {
         content.hidden = true;
+        cleanupPosition?.();
+        cleanupPosition = null;
       };
 
       trigger.addEventListener('mouseenter', showTooltip);

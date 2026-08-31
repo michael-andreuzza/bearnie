@@ -110,6 +110,7 @@ const BEARNIE_CONFIG = {
 const FALLBACK_UTILITY_NAMES = [
   "cn",
   "focus-trap",
+  "position",
   "ui-runtime-loader",
   "ui-runtime-dialog",
   "ui-runtime-disclosure-triggers",

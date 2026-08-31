@@ -91,11 +91,25 @@ const classes = cn(
         return;
       }
 
-      // Update hidden input with combined value
+      const maxLength = Number(container.getAttribute('data-max-length')) || slots.length;
+      let lastValue = '';
+
+      // Update hidden input with combined value and notify listeners
       const updateHiddenInput = () => {
+        const value = Array.from(slots).map(s => s.value).join('');
         if (hiddenInput) {
-          const value = Array.from(slots).map(s => s.value).join('');
           hiddenInput.value = value;
+        }
+        if (value !== lastValue) {
+          lastValue = value;
+          container.dispatchEvent(
+            new CustomEvent('otp-change', { detail: { value }, bubbles: true })
+          );
+          if (value.length === maxLength) {
+            container.dispatchEvent(
+              new CustomEvent('otp-complete', { detail: { value }, bubbles: true })
+            );
+          }
         }
       };
 
@@ -221,6 +235,7 @@ const classes = cn(
             slots[i].setAttribute('data-filled', 'true');
           }
         });
+        lastValue = initialValue.slice(0, slots.length);
       }
     });
   }

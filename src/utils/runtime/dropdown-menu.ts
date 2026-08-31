@@ -1,4 +1,11 @@
 import { generateId } from "@/utils/focus-trap";
+import {
+  positionFloating,
+  type FloatingSide,
+  type FloatingAlign,
+} from "@/utils/position";
+
+const positionCleanups = new WeakMap<Element, () => void>();
 
 function getParts(dropdown: Element) {
   return {
@@ -11,17 +18,10 @@ function closeDropdown(dropdown: Element, restoreFocus: boolean) {
   const { trigger, content } = getParts(dropdown);
   if (!content || content.hidden) return;
   content.hidden = true;
+  positionCleanups.get(dropdown)?.();
+  positionCleanups.delete(dropdown);
   trigger?.setAttribute("aria-expanded", "false");
   trigger?.setAttribute("data-state", "closed");
-
-  const side = content.dataset.side;
-  if (side === "left" || side === "right") {
-    content.style.position = "";
-    content.style.top = "";
-    content.style.left = "";
-    content.style.right = "";
-  }
-
   if (restoreFocus) trigger?.focus();
 }
 
@@ -82,20 +82,17 @@ export function initDropdowns() {
       trigger.setAttribute("aria-expanded", "true");
       trigger.setAttribute("data-state", "open");
 
-      const side = content.dataset.side;
-      if (side === "left" || side === "right") {
-        const triggerRect = trigger.getBoundingClientRect();
-        content.style.position = "fixed";
-        content.style.top = `${triggerRect.top}px`;
-
-        if (side === "left") {
-          content.style.right = `${window.innerWidth - triggerRect.left + 8}px`;
-          content.style.left = "auto";
-        } else {
-          content.style.left = `${triggerRect.right + 8}px`;
-          content.style.right = "auto";
-        }
-      }
+      const side = (content.dataset.side as FloatingSide) || "bottom";
+      // Side menus align their top edge with the trigger (previous behavior)
+      const align =
+        side === "left" || side === "right"
+          ? "start"
+          : (content.dataset.align as FloatingAlign) || "end";
+      positionCleanups.get(dropdown)?.();
+      positionCleanups.set(
+        dropdown,
+        positionFloating(trigger, content, { side, align }),
+      );
 
       const menuItems = items();
       if (menuItems.length > 0) {

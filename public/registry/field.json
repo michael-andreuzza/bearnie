@@ -1,0 +1,38 @@
+{
+  "name": "field",
+  "description": "Form field primitives that wire labels, descriptions, and errors to controls with proper ARIA",
+  "category": "form",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn",
+    "focus-trap"
+  ],
+  "files": [
+    {
+      "name": "Field.astro",
+      "path": "field/Field.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  /** Marks the field invalid: sets aria-invalid on the control and shows FieldError. */\n  invalid?: boolean;\n}\n\nconst { invalid = false, class: className, ...props } = Astro.props;\n---\n\n<div\n  class={cn(\"grid gap-2\", className)}\n  data-field\n  data-invalid={invalid ? \"true\" : undefined}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { generateId } from \"@/utils/focus-trap\";\n\n  // Wires label/description/error to the field's control: id/for linking,\n  // aria-describedby, and aria-invalid.\n  function wireField(field: Element) {\n    const control = field.querySelector(\n      'input:not([type=\"hidden\"]), select, textarea'\n    ) as HTMLElement | null;\n    if (!control) return;\n\n    if (!control.id) control.id = generateId(\"field-control\");\n\n    const label = field.querySelector(\"[data-field-label]\") as HTMLLabelElement | null;\n    if (label && !label.htmlFor) label.htmlFor = control.id;\n\n    const describedBy: string[] = [];\n\n    const description = field.querySelector(\"[data-field-description]\") as HTMLElement | null;\n    if (description) {\n      if (!description.id) description.id = generateId(\"field-description\");\n      describedBy.push(description.id);\n    }\n\n    const error = field.querySelector(\"[data-field-error]\") as HTMLElement | null;\n    const invalid = field.hasAttribute(\"data-invalid\");\n\n    if (error) {\n      if (!error.id) error.id = generateId(\"field-error\");\n      error.hidden = !invalid;\n      if (invalid) describedBy.push(error.id);\n    }\n\n    if (describedBy.length > 0) {\n      control.setAttribute(\"aria-describedby\", describedBy.join(\" \"));\n    } else {\n      control.removeAttribute(\"aria-describedby\");\n    }\n\n    if (invalid) {\n      control.setAttribute(\"aria-invalid\", \"true\");\n    } else {\n      control.removeAttribute(\"aria-invalid\");\n    }\n  }\n\n  function initFields() {\n    document.querySelectorAll(\"[data-field]\").forEach((field) => {\n      if (field.hasAttribute(\"data-initialized\")) return;\n      field.setAttribute(\"data-initialized\", \"true\");\n\n      wireField(field);\n\n      // Re-wire when data-invalid is toggled at runtime (e.g. by user\n      // validation code), so aria attributes and error visibility follow.\n      const observer = new MutationObserver(() => wireField(field));\n      observer.observe(field, { attributes: true, attributeFilter: [\"data-invalid\"] });\n    });\n  }\n\n  initFields();\n  document.addEventListener(\"astro:page-load\", initFields);\n</script>\n"
+    },
+    {
+      "name": "FieldDescription.astro",
+      "path": "field/FieldDescription.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"p\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<p\n  class={cn(\"text-sm text-muted-foreground\", className)}\n  data-field-description\n  {...props}\n>\n  <slot />\n</p>\n"
+    },
+    {
+      "name": "FieldError.astro",
+      "path": "field/FieldError.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"p\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n{/* Hidden until the parent Field is marked invalid */}\n<p\n  class={cn(\"text-sm font-medium text-destructive\", className)}\n  data-field-error\n  role=\"alert\"\n  hidden\n  {...props}\n>\n  <slot />\n</p>\n"
+    },
+    {
+      "name": "FieldGroup.astro",
+      "path": "field/FieldGroup.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn(\"grid gap-6\", className)} data-field-group {...props}>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "FieldLabel.astro",
+      "path": "field/FieldLabel.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"label\"> {\n  for?: string;\n  required?: boolean;\n}\n\nconst { for: htmlFor, required = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n  className\n);\n---\n\n<label for={htmlFor} class={classes} data-field-label {...props}>\n  <slot />\n  {required && <span class=\"text-destructive ml-1\">*</span>}\n</label>\n"
+    }
+  ]
+}

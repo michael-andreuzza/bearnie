@@ -21,7 +21,11 @@ const overflowStyles = {
 const classes = cn(
   'relative',
   overflowStyles[orientation],
+  // Standard properties (Firefox, Chromium 121+)
+  '[scrollbar-width:thin] [scrollbar-color:var(--border)_transparent]',
+  // WebKit fallback (Safari)
   '[&::-webkit-scrollbar]:w-2',
+  '[&::-webkit-scrollbar]:h-2',
   '[&::-webkit-scrollbar-track]:bg-transparent',
   '[&::-webkit-scrollbar-thumb]:bg-border',
   '[&::-webkit-scrollbar-thumb]:rounded-full',

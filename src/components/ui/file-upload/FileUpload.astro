@@ -50,6 +50,86 @@ const classes = cn(
 
       if (!input || isDisabled) return;
 
+      // accept can live on the root (data-accept) or the native input;
+      // drag-and-drop bypasses the native picker filter, so both need
+      // runtime validation.
+      const accept = upload.getAttribute('data-accept') || input.accept || '';
+      const maxSize = Number(upload.getAttribute('data-max-size')) || 0;
+
+      let errorEl = upload.querySelector('[data-file-upload-error]') as HTMLElement | null;
+
+      function showErrors(messages: string[]) {
+        if (messages.length === 0) {
+          errorEl?.remove();
+          errorEl = null;
+          return;
+        }
+        if (!errorEl) {
+          errorEl = document.createElement('div');
+          errorEl.setAttribute('data-file-upload-error', '');
+          errorEl.setAttribute('role', 'alert');
+          errorEl.className = 'space-y-1 text-sm text-destructive';
+          upload.appendChild(errorEl);
+        }
+        errorEl.textContent = '';
+        messages.forEach((message) => {
+          const line = document.createElement('p');
+          line.textContent = message;
+          errorEl!.appendChild(line);
+        });
+      }
+
+      function matchesAccept(file: File): boolean {
+        if (!accept) return true;
+        return accept.split(',').some((token) => {
+          const rule = token.trim().toLowerCase();
+          if (!rule) return false;
+          if (rule.startsWith('.')) {
+            return file.name.toLowerCase().endsWith(rule);
+          }
+          if (rule.endsWith('/*')) {
+            return file.type.toLowerCase().startsWith(rule.slice(0, -1));
+          }
+          return file.type.toLowerCase() === rule;
+        });
+      }
+
+      // Filters incoming files against accept/maxSize, keeps only valid
+      // ones in input.files, and reports rejections. Returns true if the
+      // valid set changed.
+      function applyFiles(candidates: FileList | File[]) {
+        const valid: File[] = [];
+        const errors: string[] = [];
+        const rejected: { file: File; reason: 'accept' | 'maxSize' }[] = [];
+
+        Array.from(candidates).forEach((file) => {
+          if (!matchesAccept(file)) {
+            errors.push(`${file.name} is not an accepted file type.`);
+            rejected.push({ file, reason: 'accept' });
+            return;
+          }
+          if (maxSize > 0 && file.size > maxSize) {
+            errors.push(`${file.name} exceeds the ${formatFileSize(maxSize)} limit.`);
+            rejected.push({ file, reason: 'maxSize' });
+            return;
+          }
+          valid.push(file);
+        });
+
+        const dt = new DataTransfer();
+        valid.forEach((file) => dt.items.add(file));
+        input.files = dt.files;
+        if (dt.files.length === 0) input.value = '';
+
+        showErrors(errors);
+        upload.dispatchEvent(
+          new CustomEvent('file-upload-change', {
+            detail: { files: valid, rejected },
+            bubbles: true,
+          })
+        );
+      }
+
       // Click to open file picker
       if (trigger) {
         trigger.addEventListener('click', () => input.click());
@@ -80,8 +160,17 @@ const classes = cn(
         });
       }
 
+      // Guard against re-entry when applyFiles rewrites input.files
+      let validating = false;
+
       // Handle file selection
       input.addEventListener('change', () => {
+        if (!validating) {
+          validating = true;
+          applyFiles(input.files || []);
+          validating = false;
+        }
+
         if (!preview) return;
 
         const files = input.files;
@@ -124,6 +213,12 @@ const classes = cn(
             if (dt.files.length === 0) {
               input.value = '';
             }
+            upload.dispatchEvent(
+              new CustomEvent('file-upload-change', {
+                detail: { files: Array.from(dt.files), rejected: [] },
+                bubbles: true,
+              })
+            );
           });
           
           item.appendChild(icon);

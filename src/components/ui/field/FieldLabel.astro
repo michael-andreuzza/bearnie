@@ -1,0 +1,21 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"label"> {
+  for?: string;
+  required?: boolean;
+}
+
+const { for: htmlFor, required = false, class: className, ...props } = Astro.props;
+
+const classes = cn(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+  className
+);
+---
+
+<label for={htmlFor} class={classes} data-field-label {...props}>
+  <slot />
+  {required && <span class="text-destructive ml-1">*</span>}
+</label>

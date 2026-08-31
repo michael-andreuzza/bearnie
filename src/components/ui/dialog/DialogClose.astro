@@ -1,0 +1,17 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"button"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<button
+  type="button"
+  data-dialog-close
+  class={cn(className)}
+  {...props}
+>
+  <slot />
+</button>

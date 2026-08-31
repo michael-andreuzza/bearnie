@@ -8,37 +8,26 @@ export interface Props extends HTMLAttributes<'div'> {
   sideOffset?: number;
 }
 
-const { 
-  align = 'center', 
-  side = 'bottom', 
+const {
+  align = 'center',
+  side = 'bottom',
   sideOffset = 4,
-  class: className, 
-  ...props 
+  class: className,
+  ...props
 } = Astro.props;
 
-const alignClasses = {
-  start: 'left-0',
-  center: 'left-1/2 -translate-x-1/2',
-  end: 'right-0',
-};
-
-const sideClasses = {
-  top: 'bottom-full mb-1',
-  bottom: 'top-full mt-1',
-};
-
 const classes = cn(
-  'absolute z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none',
-  alignClasses[align],
-  sideClasses[side],
+  'z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none',
   className
 );
 ---
 
 <div
   class={classes}
-  style={side === 'bottom' ? `margin-top: ${sideOffset}px` : `margin-bottom: ${sideOffset}px`}
   data-hover-card-content
+  data-side={side}
+  data-align={align}
+  data-offset={sideOffset}
   hidden
   {...props}
 >

@@ -14,26 +14,20 @@ const {
   ...props
 } = Astro.props;
 
-const alignStyles = {
-  start: 'left-0',
-  center: 'left-1/2 -translate-x-1/2',
-  end: 'right-0',
-};
-
-const sideStyles = {
-  bottom: 'top-full mt-2',
-  left: 'right-full top-0 mr-2',
-  right: 'left-full top-0 ml-2',
-};
-
 const classes = cn(
-  'absolute z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',
-  side === 'bottom' ? alignStyles[align] : '',
-  sideStyles[side],
+  'z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',
   className
 );
 ---
 
-<div class={classes} data-dropdown-content data-side={side} role="menu" hidden {...props}>
+<div
+  class={classes}
+  data-dropdown-content
+  data-side={side}
+  data-align={align}
+  role="menu"
+  hidden
+  {...props}
+>
   <slot />
 </div>

@@ -82,7 +82,9 @@ export function initCommands() {
         empty.hidden = visibleCount > 0 || query === "";
       }
 
-      selectedIndex = -1;
+      // Auto-select the first result while filtering so Enter activates it
+      // without an ArrowDown first.
+      selectedIndex = query !== "" && visibleCount > 0 ? 0 : -1;
       updateSelection();
     };
 
@@ -99,6 +101,16 @@ export function initCommands() {
         case "ArrowUp":
           e.preventDefault();
           selectedIndex = Math.max(selectedIndex - 1, 0);
+          updateSelection();
+          break;
+        case "Home":
+          e.preventDefault();
+          selectedIndex = 0;
+          updateSelection();
+          break;
+        case "End":
+          e.preventDefault();
+          selectedIndex = visibleItems.length - 1;
           updateSelection();
           break;
         case "Enter":

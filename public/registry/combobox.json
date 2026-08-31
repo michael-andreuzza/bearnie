@@ -22,7 +22,7 @@
     {
       "name": "ComboboxContent.astro",
       "path": "combobox/ComboboxContent.astro",
-      "content": "---\nimport Command from \"../command/Command.astro\";\nimport PopoverContent from \"../popover/PopoverContent.astro\";\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  align?: \"start\" | \"center\" | \"end\";\n  side?: \"top\" | \"right\" | \"bottom\" | \"left\";\n}\n\nconst {\n  align = \"start\",\n  side = \"bottom\",\n  class: className,\n  id,\n  ...props\n} = Astro.props;\n---\n\n<PopoverContent\n  align={align}\n  side={side}\n  id={id ?? undefined}\n  class={cn(\"w-full min-w-[220px] p-0\", className)}\n  {...props}\n>\n  <Command class=\"rounded-md border-0 shadow-none\">\n    <slot />\n  </Command>\n</PopoverContent>\n"
+      "content": "---\nimport Command from \"../command/Command.astro\";\nimport PopoverContent from \"../popover/PopoverContent.astro\";\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  align?: \"start\" | \"center\" | \"end\";\n  side?: \"top\" | \"right\" | \"bottom\" | \"left\";\n}\n\nconst {\n  align = \"start\",\n  side = \"bottom\",\n  class: className,\n  id,\n  ...props\n} = Astro.props;\n---\n\n<PopoverContent\n  align={align}\n  side={side}\n  id={id ?? undefined}\n  class={cn(\"w-[var(--trigger-width)] min-w-[220px] p-0\", className)}\n  {...props}\n>\n  <Command class=\"rounded-md border-0 shadow-none\">\n    <slot />\n  </Command>\n</PopoverContent>\n"
     },
     {
       "name": "ComboboxItem.astro",
