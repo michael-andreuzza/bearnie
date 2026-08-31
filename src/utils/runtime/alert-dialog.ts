@@ -9,6 +9,8 @@ function closeAlertDialog(dialog: Element) {
   if (overlay) overlay.hidden = true;
   if (content) content.hidden = true;
   document.body.style.overflow = "";
+  trigger?.setAttribute("aria-expanded", "false");
+  trigger?.setAttribute("data-state", "closed");
   focusTrapCleanups.get(dialog)?.();
   focusTrapCleanups.delete(dialog);
   trigger?.focus();
@@ -60,11 +62,17 @@ export function initAlertDialogs() {
       if (description?.id) content.setAttribute("aria-describedby", description.id);
     }
 
+    trigger.setAttribute("aria-haspopup", "dialog");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("data-state", "closed");
+
     trigger.addEventListener("click", () => {
       if (overlay) overlay.hidden = false;
       if (content) {
         content.hidden = false;
         document.body.style.overflow = "hidden";
+        trigger.setAttribute("aria-expanded", "true");
+        trigger.setAttribute("data-state", "open");
         focusTrapCleanups.set(dialog, trapFocus(content));
       }
     });

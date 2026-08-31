@@ -231,7 +231,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
   <MenubarMenu>
     <MenubarTrigger>Profiles</MenubarTrigger>
     <MenubarContent>
-      <MenubarRadioGroup value="personal">
+      <MenubarRadioGroup defaultValue="personal">
         <MenubarRadioItem value="personal">Personal</MenubarRadioItem>
         <MenubarRadioItem value="work">Work</MenubarRadioItem>
         <MenubarRadioItem value="team">Team</MenubarRadioItem>
@@ -245,7 +245,7 @@ Use `MenubarRadioGroup` and `MenubarRadioItem` for single-select options.
     <MenubarMenu>
       <MenubarTrigger>Profiles</MenubarTrigger>
       <MenubarContent>
-        <MenubarRadioGroup value="personal">
+        <MenubarRadioGroup defaultValue="personal">
           <MenubarRadioItem value="personal">Personal</MenubarRadioItem>
           <MenubarRadioItem value="work">Work</MenubarRadioItem>
           <MenubarRadioItem value="team">Team</MenubarRadioItem>
@@ -272,13 +272,13 @@ just want a compact icon list without the larger mega-menu layout.
     <MenubarTrigger>Status</MenubarTrigger>
     <MenubarContent class="w-56">
       <MenubarMegaItem variant="simple" title="Backlog">
-        <HugeIcon slot="icon" icon={Alert02Icon} />
+        <HugeIcon slot="left-icon" icon={Alert02Icon} />
       </MenubarMegaItem>
       <MenubarMegaItem variant="simple" title="To Do">
-        <HugeIcon slot="icon" icon={CircleIcon} />
+        <HugeIcon slot="left-icon" icon={CircleIcon} />
       </MenubarMegaItem>
       <MenubarMegaItem variant="simple" title="Done">
-        <HugeIcon slot="icon" icon={Tick02Icon} />
+        <HugeIcon slot="left-icon" icon={Tick02Icon} />
       </MenubarMegaItem>
     </MenubarContent>
   </MenubarMenu>
@@ -290,13 +290,13 @@ just want a compact icon list without the larger mega-menu layout.
       <MenubarTrigger>Status</MenubarTrigger>
       <MenubarContent class="w-56">
         <MenubarMegaItem variant="simple" title="Backlog">
-          <HugeIcon slot="icon" icon={Alert02Icon} />
+          <HugeIcon slot="left-icon" icon={Alert02Icon} />
         </MenubarMegaItem>
         <MenubarMegaItem variant="simple" title="To Do">
-          <HugeIcon slot="icon" icon={CircleIcon} />
+          <HugeIcon slot="left-icon" icon={CircleIcon} />
         </MenubarMegaItem>
         <MenubarMegaItem variant="simple" title="Done">
-          <HugeIcon slot="icon" icon={Tick02Icon} />
+          <HugeIcon slot="left-icon" icon={Tick02Icon} />
         </MenubarMegaItem>
       </MenubarContent>
     </MenubarMenu>
@@ -522,7 +522,7 @@ trigger needs grouped navigation links and descriptions.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| value | string | - | Initial selected value |
+| defaultValue | string | - | Initial selected value |
 | class | string | - | Additional CSS classes |
 
 #### MenubarRadioItem

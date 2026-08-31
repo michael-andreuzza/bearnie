@@ -5,7 +5,7 @@ import HugeIcon from "../icon/HugeIcon.astro";
 import { Cancel01Icon } from "../icon/icons";
 
 export interface Props extends HTMLAttributes<"div"> {
-  variant?: "default" | "destructive";
+  variant?: "default" | "destructive" | "success" | "warning" | "info";
 }
 
 const { variant = "default", class: className, ...props } = Astro.props;
@@ -17,6 +17,9 @@ const variantStyles = {
   default: "bg-background text-foreground border",
   destructive:
     "destructive group border-destructive bg-destructive text-destructive-foreground",
+  success: "border-success bg-success/5 text-foreground",
+  warning: "border-warning bg-warning/5 text-foreground",
+  info: "border-info bg-info/5 text-foreground",
 };
 
 const classes = cn(baseStyles, variantStyles[variant], className);

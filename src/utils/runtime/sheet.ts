@@ -47,12 +47,18 @@ export function initSheets() {
 
     let cleanupFocusTrap: (() => void) | null = null;
 
+    trigger.setAttribute("aria-haspopup", "dialog");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("data-state", "closed");
+
     // No-op when already closed so the shared Escape handler can call it blindly
     function closeSheet() {
       if ((overlay as HTMLElement).hidden) return;
       (overlay as HTMLElement).hidden = true;
       (content as HTMLElement).hidden = true;
       document.body.style.overflow = "";
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("data-state", "closed");
       cleanupFocusTrap?.();
       cleanupFocusTrap = null;
       trigger?.focus();
@@ -63,6 +69,8 @@ export function initSheets() {
       (overlay as HTMLElement).hidden = false;
       (content as HTMLElement).hidden = false;
       document.body.style.overflow = "hidden";
+      trigger.setAttribute("aria-expanded", "true");
+      trigger.setAttribute("data-state", "open");
       cleanupFocusTrap = trapFocus(content);
     });
 

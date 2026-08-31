@@ -82,7 +82,7 @@ import { Combobox } from "@/components/bearnie/combobox"
   <Fragment slot="code">
 ```html
 <Combobox
-  value="colors-fonts"
+  defaultValue="colors-fonts"
   clearable
   options={[
     { value: "lexington", label: "lexingtonthemes.com" },
@@ -95,7 +95,7 @@ import { Combobox } from "@/components/bearnie/combobox"
   </Fragment>
   <div class="w-[320px]">
     <Combobox
-      value="colors-fonts"
+      defaultValue="colors-fonts"
       clearable
       options={[
         { value: "lexington", label: "lexingtonthemes.com" },
@@ -246,7 +246,7 @@ import { Combobox } from "@/components/bearnie/combobox"
   </InputGroupAddon>
   <Combobox
     inputGroupControl
-    value="gmt-MinusSignIcon-5"
+    defaultValue="gmt-MinusSignIcon-5"
     options={[
       { value: "gmt-MinusSignIcon-8", label: "(GMT-8) Los Angeles" },
       { value: "gmt-MinusSignIcon-5", label: "(GMT-5) New York" },
@@ -265,7 +265,7 @@ import { Combobox } from "@/components/bearnie/combobox"
       </InputGroupAddon>
       <Combobox
         inputGroupControl
-        value="gmt-MinusSignIcon-5"
+        defaultValue="gmt-MinusSignIcon-5"
         options={[
           { value: "gmt-MinusSignIcon-8", label: "(GMT-8) Los Angeles" },
           { value: "gmt-MinusSignIcon-5", label: "(GMT-5) New York" },
@@ -298,7 +298,7 @@ import { Combobox } from "@/components/bearnie/combobox"
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | options | `ComboboxOption[] \| ComboboxGroup[]` | [] | Flat options or grouped options |
-| value | string | "" | Initial selected value |
+| defaultValue | string | "" | Initial selected value |
 | name | string | - | Hidden input name for form submissions |
 | placeholder | string | "Select an option" | Trigger placeholder text |
 | searchPlaceholder | string | "Search..." | Search input placeholder |

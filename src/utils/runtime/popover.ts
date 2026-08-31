@@ -12,6 +12,7 @@ function closePopover(popover: Element, restoreFocus: boolean) {
   if (!content || content.hidden) return;
   content.hidden = true;
   trigger?.setAttribute("aria-expanded", "false");
+  trigger?.setAttribute("data-state", "closed");
   if (restoreFocus) trigger?.focus();
 }
 
@@ -59,10 +60,12 @@ export function initPopovers() {
     trigger.setAttribute("aria-haspopup", "dialog");
     trigger.setAttribute("aria-controls", content.id);
     trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("data-state", "closed");
 
     const openPopover = () => {
       content.hidden = false;
       trigger.setAttribute("aria-expanded", "true");
+      trigger.setAttribute("data-state", "open");
       const firstFocusable = content.querySelector(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       ) as HTMLElement | null;

@@ -33,7 +33,7 @@ const {
   data-label={label}
   {...props}
 >
-  <slot name="leading" />
+  <slot name="left-icon" />
   <div class="flex min-w-0 flex-1 flex-col">
     <span class="truncate">{label || <slot />}</span>
     {description && (
@@ -41,7 +41,7 @@ const {
     )}
   </div>
   {meta && <span class="text-xs text-muted-foreground">{meta}</span>}
-  <slot name="trailing" />
+  <slot name="right-icon" />
   <HugeIcon
     icon={Tick02Icon}
     size="sm"

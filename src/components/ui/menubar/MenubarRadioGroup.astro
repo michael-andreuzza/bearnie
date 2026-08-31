@@ -3,10 +3,11 @@ import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
 
 export interface Props extends HTMLAttributes<"div"> {
-  value?: string;
+  /** Initially selected value (uncontrolled). */
+  defaultValue?: string;
 }
 
-const { value, class: className, ...props } = Astro.props;
+const { defaultValue, class: className, ...props } = Astro.props;
 
 const classes = cn("", className);
 ---
@@ -14,7 +15,7 @@ const classes = cn("", className);
 <div
   class={classes}
   data-menubar-radio-group
-  data-value={value}
+  data-value={defaultValue}
   role="group"
   {...props}
 >

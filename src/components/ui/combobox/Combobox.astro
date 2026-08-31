@@ -27,7 +27,8 @@ type ComboboxGroup = {
 
 export interface Props extends HTMLAttributes<"div"> {
   options: ComboboxOption[] | ComboboxGroup[];
-  value?: string;
+  /** Initial selected value (uncontrolled). */
+  defaultValue?: string;
   name?: string;
   placeholder?: string;
   searchPlaceholder?: string;
@@ -39,7 +40,7 @@ export interface Props extends HTMLAttributes<"div"> {
 
 const {
   options = [],
-  value = "",
+  defaultValue = "",
   id,
   name,
   placeholder = "Select an option",
@@ -64,13 +65,13 @@ const normalizedGroups = (isGrouped
 
 const selectedOption = normalizedGroups
   .flatMap((group) => group.options)
-  .find((option) => option.value === value);
+  .find((option) => option.value === defaultValue);
 ---
 
 <Popover
   class={cn("w-full", className)}
   data-combobox
-  data-combobox-value={value}
+  data-combobox-value={defaultValue}
   data-combobox-placeholder={placeholder}
   data-combobox-disabled={disabled ? "true" : "false"}
   data-combobox-clearable={clearable ? "true" : "false"}
@@ -138,7 +139,7 @@ const selectedOption = normalizedGroups
       }
     </CommandList>
   </ComboboxContent>
-  {name && <input type="hidden" name={name} value={value} data-combobox-input />}
+  {name && <input type="hidden" name={name} value={defaultValue} data-combobox-input />}
 </Popover>
 
 <script>

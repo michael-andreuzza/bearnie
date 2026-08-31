@@ -154,7 +154,7 @@ function isCommandDialogOpen(dialog: Element) {
 }
 
 function openCommandDialog(dialog: Element) {
-  const { overlay, content } = getCommandDialogParts(dialog);
+  const { trigger, overlay, content } = getCommandDialogParts(dialog);
   if (overlay) overlay.hidden = false;
   if (content) {
     content.hidden = false;
@@ -164,6 +164,8 @@ function openCommandDialog(dialog: Element) {
       | null;
     input?.focus();
   }
+  trigger?.setAttribute("aria-expanded", "true");
+  trigger?.setAttribute("data-state", "open");
   document.body.style.overflow = "hidden";
 }
 
@@ -171,6 +173,8 @@ function closeCommandDialog(dialog: Element) {
   const { trigger, overlay, content } = getCommandDialogParts(dialog);
   if (overlay) overlay.hidden = true;
   if (content) content.hidden = true;
+  trigger?.setAttribute("aria-expanded", "false");
+  trigger?.setAttribute("data-state", "closed");
   commandDialogFocusTraps.get(dialog)?.();
   commandDialogFocusTraps.delete(dialog);
   document.body.style.overflow = "";
@@ -225,6 +229,10 @@ export function initCommandDialogs() {
     dialog.setAttribute("data-dialog-initialized", "true");
 
     const { trigger, overlay } = getCommandDialogParts(dialog);
+
+    trigger?.setAttribute("aria-haspopup", "dialog");
+    trigger?.setAttribute("aria-expanded", "false");
+    trigger?.setAttribute("data-state", "closed");
 
     trigger?.addEventListener("click", () => openCommandDialog(dialog));
 

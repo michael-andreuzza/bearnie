@@ -315,7 +315,7 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroup>
     <InputGroupInput placeholder="Enter text to copy..." />
     <InputGroupAddon align="inline-end">
-      <InputGroupButton size="icon-xs" aria-label="Copy">
+      <InputGroupButton size="xs" iconOnly aria-label="Copy">
         <HugeIcon icon={Copy01Icon} class="size-3.5" />
       </InputGroupButton>
     </InputGroupAddon>
@@ -333,7 +333,7 @@ Use `align="block-end"` to position the addon below the input.
     <InputGroup>
       <InputGroupInput placeholder="Enter text to copy..." />
       <InputGroupAddon align="inline-end">
-        <InputGroupButton size="icon-xs" aria-label="Copy">
+        <InputGroupButton size="xs" iconOnly aria-label="Copy">
           <HugeIcon icon={Copy01Icon} class="size-3.5" />
         </InputGroupButton>
       </InputGroupAddon>
@@ -460,7 +460,7 @@ Use `align="block-end"` to position the addon below the input.
 <InputGroup>
   <InputGroupInput placeholder="Type something..." value="Hello World" />
   <InputGroupAddon align="inline-end">
-    <InputGroupButton size="icon-xs" aria-label="Clear">
+    <InputGroupButton size="xs" iconOnly aria-label="Clear">
       <HugeIcon icon={Cancel01Icon} class="size-3.5" />
     </InputGroupButton>
   </InputGroupAddon>
@@ -470,7 +470,7 @@ Use `align="block-end"` to position the addon below the input.
   <InputGroup class="w-full max-w-sm">
     <InputGroupInput placeholder="Type something..." value="Hello World" />
     <InputGroupAddon align="inline-end">
-      <InputGroupButton size="icon-xs" aria-label="Clear">
+      <InputGroupButton size="xs" iconOnly aria-label="Clear">
         <HugeIcon icon={Cancel01Icon} class="size-3.5" />
       </InputGroupButton>
     </InputGroupAddon>
@@ -579,7 +579,8 @@ Use `align="block-end"` to position the addon below the input.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| size | xs \| sm \| icon-xs \| icon-sm | xs | Button size |
+| size | xs \| sm | xs | Button size |
+| iconOnly | boolean | false | Square button sized for a single icon |
 | variant | default \| destructive \| outline \| secondary \| ghost \| link | ghost | Button variant |
 | disabled | boolean | false | Disabled state |
 | type | button \| submit \| reset | button | Button type |

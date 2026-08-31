@@ -40,8 +40,9 @@ const classes = cn(
 </div>
 
 <script>
-  // Toast types
-  type ToastType = "default" | "success" | "error" | "warning" | "info";
+  // Toast types — "destructive" matches the variant vocabulary used across
+  // the library (Button, Badge, Alert, the declarative Toast).
+  type ToastType = "default" | "success" | "destructive" | "warning" | "info";
 
   interface ToastOptions {
     title?: string;
@@ -65,7 +66,7 @@ const classes = cn(
       const icons = {
         default: "",
         success: `<svg class="size-5 text-success shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
-        error: `<svg class="size-5 text-destructive shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
+        destructive: `<svg class="size-5 text-destructive shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`,
         warning: `<svg class="size-5 text-warning shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
         info: `<svg class="size-5 text-info shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>`,
       };
@@ -156,10 +157,10 @@ const classes = cn(
       return this.show({ ...opts, type: "success" });
     }
 
-    error(options: Omit<ToastOptions, "type"> | string) {
+    destructive(options: Omit<ToastOptions, "type"> | string) {
       const opts =
         typeof options === "string" ? { description: options } : options;
-      return this.show({ ...opts, type: "error" });
+      return this.show({ ...opts, type: "destructive" });
     }
 
     warning(options: Omit<ToastOptions, "type"> | string) {
@@ -184,8 +185,8 @@ const classes = cn(
   window.toast.success = (options: Omit<ToastOptions, "type"> | string) =>
     toastManager.success(options);
   // @ts-ignore
-  window.toast.error = (options: Omit<ToastOptions, "type"> | string) =>
-    toastManager.error(options);
+  window.toast.destructive = (options: Omit<ToastOptions, "type"> | string) =>
+    toastManager.destructive(options);
   // @ts-ignore
   window.toast.warning = (options: Omit<ToastOptions, "type"> | string) =>
     toastManager.warning(options);

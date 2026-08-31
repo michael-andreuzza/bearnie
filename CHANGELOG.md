@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Breaking (registry 0.7.0)
+
+API unifications from the consistency audit. If you installed components before this version, `bearnie diff` will show these renames; update your usage when you pull them:
+
+- `Combobox`, `InputOTP`, and `MenubarRadioGroup`: the `value` prop is now `defaultValue`, matching Tabs, RadioGroup, ToggleGroup, and Slider
+- One icon-button convention everywhere: `PaginationLink` replaces `size="icon"` with `iconOnly` (default `true`, so bare usage is unchanged); `InputGroupButton` replaces `size="icon-xs" | "icon-sm"` with `size="xs" | "sm"` plus `iconOnly`
+- `ComboboxItem` slots renamed `leading`/`trailing` to `left-icon`/`right-icon`; `MenubarMegaItem` slot `icon` renamed to `left-icon` (matching Button)
+- Toaster: `toast.error()` is now `toast.destructive()` (`type: "destructive"`), matching the variant vocabulary used by Button, Badge, Alert, and the declarative Toast — which now also supports `success`, `warning`, and `info` variants
+- Overlay triggers (popover, dialog, alert dialog, sheet, command dialog) now expose `data-state="open|closed"` like dropdown and menubar, so `data-[state=open]:` styling works on all of them; the dialog-family triggers also gained `aria-haspopup`/`aria-expanded`
+
 ## [0.3.2 / 0.6.2 / 0.3.2] - 2026-08-31
 
 - See commit history for details.

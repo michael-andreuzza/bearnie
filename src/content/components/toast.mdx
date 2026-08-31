@@ -99,12 +99,12 @@ toast("Event has been created.")
 <ComponentPreview>
   <Fragment slot="code">
 ```html
-<Button onclick="toast.error('Something went wrong.')">
+<Button onclick="toast.destructive('Something went wrong.')">
   Show Error Toast
 </Button>
 ```
   </Fragment>
-  <Button variant="destructive" onclick="toast.error('Something went wrong.')">
+  <Button variant="destructive" onclick="toast.destructive('Something went wrong.')">
     Show Error Toast
   </Button>
 </ComponentPreview>
@@ -190,7 +190,7 @@ toast("Event has been created.")
 |--------|------|---------|-------------|
 | title | string | - | Toast heading |
 | description | string | - | Toast message |
-| type | default \| success \| error \| warning \| info | default | Toast variant |
+| type | default \| success \| destructive \| warning \| info | default | Toast variant |
 | duration | number | 4000 | Auto-dismiss time (ms) |
 | action | object | - | Action button config |
 </Prose>

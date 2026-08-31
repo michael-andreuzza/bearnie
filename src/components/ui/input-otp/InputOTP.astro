@@ -17,9 +17,9 @@ export interface Props extends HTMLAttributes<"div"> {
    */
   disabled?: boolean;
   /**
-   * Initial value
+   * Initial value (uncontrolled)
    */
-  value?: string;
+  defaultValue?: string;
   /**
    * Name attribute for form submission
    */
@@ -30,7 +30,7 @@ const {
   maxLength,
   pattern = "digits",
   disabled = false,
-  value = "",
+  defaultValue = "",
   name,
   class: className,
   ...props
@@ -67,7 +67,7 @@ const classes = cn(
     <input
       type="hidden"
       name={name}
-      value={value}
+      value={defaultValue}
       data-otp-hidden-input
     />
   )}

@@ -5,22 +5,30 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends HTMLAttributes<"a"> {
   href?: string;
   isActive?: boolean;
-  size?: "default" | "sm" | "lg" | "icon";
+  size?: "sm" | "default" | "lg";
+  /** Square link sized for a single icon or page number (matches Button's iconOnly). */
+  iconOnly?: boolean;
 }
 
 const {
   href = "#",
   isActive = false,
-  size = "icon",
+  size = "default",
+  iconOnly = true,
   class: className,
   ...props
 } = Astro.props;
 
 const sizeStyles = {
-  default: "h-9 px-4 py-2",
   sm: "h-8 px-3 text-xs",
+  default: "h-9 px-4 py-2",
   lg: "h-10 px-8",
-  icon: "size-9",
+};
+
+const iconOnlySizeStyles = {
+  sm: "size-8 text-xs",
+  default: "size-9",
+  lg: "size-10",
 };
 
 const classes = cn(
@@ -30,7 +38,7 @@ const classes = cn(
   isActive
     ? "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
     : "hover:bg-accent hover:text-accent-foreground",
-  sizeStyles[size],
+  iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
   className
 );
 ---
