@@ -46,6 +46,11 @@ export function positionFloating(
   const { side = "bottom", align = "center", offset = 8, padding = 8 } = options;
 
   const compute = () => {
+    // Take the content out of normal flow *before* measuring — while
+    // statically positioned it occupies flow space and can shift the
+    // trigger itself, skewing every measurement below.
+    content.style.position = "fixed";
+
     const rect = trigger.getBoundingClientRect();
 
     // Expose the trigger width so content can match it
@@ -81,7 +86,6 @@ export function positionFloating(
     left = Math.min(Math.max(left, padding), window.innerWidth - width - padding);
     top = Math.min(Math.max(top, padding), window.innerHeight - height - padding);
 
-    content.style.position = "fixed";
     content.style.top = `${top}px`;
     content.style.left = `${left}px`;
     content.style.right = "auto";
