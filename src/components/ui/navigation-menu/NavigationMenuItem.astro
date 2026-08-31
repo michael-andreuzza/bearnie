@@ -1,0 +1,12 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"li"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<li class={cn("relative", className)} data-navigation-menu-item {...props}>
+  <slot />
+</li>

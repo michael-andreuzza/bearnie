@@ -46,6 +46,8 @@ export { default as ButtonGroup } from "./button-group/ButtonGroup.astro";
 export { default as ButtonGroupSeparator } from "./button-group/ButtonGroupSeparator.astro";
 export { default as ButtonGroupText } from "./button-group/ButtonGroupText.astro";
 
+export { default as Calendar } from "./calendar/Calendar.astro";
+
 export { default as Card } from "./card/Card.astro";
 export { default as CardAction } from "./card/CardAction.astro";
 export { default as CardContent } from "./card/CardContent.astro";
@@ -186,6 +188,13 @@ export { default as MenubarSub } from "./menubar/MenubarSub.astro";
 export { default as MenubarSubContent } from "./menubar/MenubarSubContent.astro";
 export { default as MenubarSubTrigger } from "./menubar/MenubarSubTrigger.astro";
 export { default as MenubarTrigger } from "./menubar/MenubarTrigger.astro";
+
+export { default as NavigationMenu } from "./navigation-menu/NavigationMenu.astro";
+export { default as NavigationMenuContent } from "./navigation-menu/NavigationMenuContent.astro";
+export { default as NavigationMenuItem } from "./navigation-menu/NavigationMenuItem.astro";
+export { default as NavigationMenuLink } from "./navigation-menu/NavigationMenuLink.astro";
+export { default as NavigationMenuList } from "./navigation-menu/NavigationMenuList.astro";
+export { default as NavigationMenuTrigger } from "./navigation-menu/NavigationMenuTrigger.astro";
 
 export { default as Pagination } from "./pagination/Pagination.astro";
 export { default as PaginationContent } from "./pagination/PaginationContent.astro";

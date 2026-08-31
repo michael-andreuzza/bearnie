@@ -1,0 +1,17 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"ul"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn(
+  "flex flex-1 list-none items-center justify-center gap-1",
+  className
+);
+---
+
+<ul class={classes} data-navigation-menu-list {...props}>
+  <slot />
+</ul>

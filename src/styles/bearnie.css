@@ -233,6 +233,7 @@
   [data-context-menu-sub-content][data-state="open"],
   [data-tooltip-content][data-state="open"],
   [data-hover-card-content][data-state="open"],
+  [data-navigation-menu-content][data-state="open"],
   [data-dialog-content][data-state="open"],
   [data-alert-dialog-content][data-state="open"],
   [data-command-dialog-content][data-state="open"] {
@@ -245,6 +246,7 @@
   [data-context-menu-sub-content][data-state="closed"],
   [data-tooltip-content][data-state="closed"],
   [data-hover-card-content][data-state="closed"],
+  [data-navigation-menu-content][data-state="closed"],
   [data-dialog-content][data-state="closed"],
   [data-alert-dialog-content][data-state="closed"],
   [data-command-dialog-content][data-state="closed"] {

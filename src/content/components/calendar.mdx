@@ -1,0 +1,176 @@
+---
+title: Calendar
+description: A date picker calendar with keyboard navigation, range selection, and form integration.
+tagline: Date selection
+category: form
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Calendar from "@/components/ui/calendar/Calendar.astro";
+import Popover from "@/components/ui/popover/Popover.astro";
+import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
+import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
+import Button from "@/components/ui/button/Button.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Calendar />
+```
+  </Fragment>
+  <Calendar />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="calendar" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { Calendar } from "@/components/bearnie/calendar"
+```
+```html
+<Calendar defaultValue="2026-09-15" name="date" />
+```
+
+Clicking a day selects it (clicking again deselects). With a `name`, a hidden input carries the ISO date so the calendar works inside plain HTML forms. Navigate with the arrow keys, jump months with PageUp/PageDown, and select with Enter or Space.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Range selection
+
+`mode="range"` selects a from/to pair: the first click sets the start, the second sets the end, and a third starts over.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Calendar mode="range" defaultFrom="2026-09-07" defaultTo="2026-09-11" name="stay" />
+```
+  </Fragment>
+  <Calendar mode="range" defaultFrom="2026-09-07" defaultTo="2026-09-11" name="stay" />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Min and max
+
+Days outside the bounds are disabled, and month navigation stops at the edges.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Calendar min="2026-09-05" max="2026-10-20" defaultValue="2026-09-10" />
+```
+  </Fragment>
+  <Calendar min="2026-09-05" max="2026-10-20" defaultValue="2026-09-10" />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Date picker
+
+Compose with `Popover` for a date picker. Listen for `calendar-change` to update the trigger label.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Popover>
+  <PopoverTrigger>
+    <Button variant="outline" id="date-picker-label">Pick a date</Button>
+  </PopoverTrigger>
+  <PopoverContent class="w-auto p-0">
+    <Calendar class="border-0" id="date-picker-calendar" />
+  </PopoverContent>
+</Popover>
+
+<script>
+  document
+    .getElementById("date-picker-calendar")
+    ?.addEventListener("calendar-change", (e) => {
+      const { date } = (e as CustomEvent).detail;
+      const label = document.getElementById("date-picker-label");
+      if (label && date) label.textContent = new Date(date).toLocaleDateString();
+    });
+</script>
+```
+  </Fragment>
+  <Popover>
+    <PopoverTrigger>
+      <Button variant="outline" id="date-picker-label">Pick a date</Button>
+    </PopoverTrigger>
+    <PopoverContent class="w-auto p-0">
+      <Calendar class="border-0" id="date-picker-calendar" />
+    </PopoverContent>
+  </Popover>
+  <script is:inline set:html={`
+    document
+      .getElementById("date-picker-calendar")
+      ?.addEventListener("calendar-change", (e) => {
+        const date = e.detail.date;
+        const label = document.getElementById("date-picker-label");
+        if (label && date) label.textContent = new Date(date).toLocaleDateString();
+      });
+  `} />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Week starts on Sunday
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Calendar weekStartsOn={0} />
+```
+  </Fragment>
+  <Calendar weekStartsOn={0} />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| mode | "single" \| "range" | "single" | Select one date or a from/to pair |
+| defaultValue | string | - | Preselected date, ISO format `YYYY-MM-DD` (single mode) |
+| defaultFrom / defaultTo | string | - | Preselected range bounds, ISO format (range mode) |
+| min / max | string | - | Earliest/latest selectable date, ISO format |
+| weekStartsOn | 0 \| 1 | 1 | First day of the week (0 = Sunday, 1 = Monday) |
+| name | string | - | Form field name — renders hidden inputs (`name`, or `name-from`/`name-to` in range mode) |
+| class | string | - | Additional CSS classes |
+
+### Events
+
+The calendar dispatches a bubbling `calendar-change` CustomEvent on every selection: `detail` is `{ date }` in single mode and `{ from, to }` in range mode, all ISO strings (or `null`).
+
+### Accessibility
+
+- The grid uses `role="grid"` with labelled `gridcell` buttons and `aria-selected` on chosen days.
+- Roving tabindex: Tab enters the grid once, ArrowLeft/Right/Up/Down move by day and week, PageUp/PageDown by month, Home/End to the start/end of the week, Enter/Space selects.
+- Month and weekday names come from the visitor's locale, and the month label announces changes via `aria-live`.
+</Prose>

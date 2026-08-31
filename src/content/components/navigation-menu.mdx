@@ -1,0 +1,188 @@
+---
+title: Navigation Menu
+description: A site navigation bar with hoverable dropdown panels of links.
+tagline: Top navigation with panels
+category: navigation
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import NavigationMenu from "@/components/ui/navigation-menu/NavigationMenu.astro";
+import NavigationMenuList from "@/components/ui/navigation-menu/NavigationMenuList.astro";
+import NavigationMenuItem from "@/components/ui/navigation-menu/NavigationMenuItem.astro";
+import NavigationMenuTrigger from "@/components/ui/navigation-menu/NavigationMenuTrigger.astro";
+import NavigationMenuContent from "@/components/ui/navigation-menu/NavigationMenuContent.astro";
+import NavigationMenuLink from "@/components/ui/navigation-menu/NavigationMenuLink.astro";
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent class="grid w-96 grid-cols-2 gap-1">
+        <NavigationMenuLink href="#">
+          <div class="font-medium">Analytics</div>
+          <p class="mt-1 leading-snug text-muted-foreground">Understand your traffic.</p>
+        </NavigationMenuLink>
+        <NavigationMenuLink href="#">
+          <div class="font-medium">Automation</div>
+          <p class="mt-1 leading-snug text-muted-foreground">Put work on autopilot.</p>
+        </NavigationMenuLink>
+        <NavigationMenuLink href="#">
+          <div class="font-medium">Reports</div>
+          <p class="mt-1 leading-snug text-muted-foreground">Share results with the team.</p>
+        </NavigationMenuLink>
+        <NavigationMenuLink href="#">
+          <div class="font-medium">Integrations</div>
+          <p class="mt-1 leading-snug text-muted-foreground">Connect your stack.</p>
+        </NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+      <NavigationMenuContent class="w-56">
+        <NavigationMenuLink href="#">Documentation</NavigationMenuLink>
+        <NavigationMenuLink href="#">Blog</NavigationMenuLink>
+        <NavigationMenuLink href="#">Community</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="#" variant="trigger">Pricing</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+  </Fragment>
+  <NavigationMenu>
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+        <NavigationMenuContent class="grid w-96 grid-cols-2 gap-1">
+          <NavigationMenuLink href="#">
+            <div class="font-medium">Analytics</div>
+            <p class="mt-1 leading-snug text-muted-foreground">Understand your traffic.</p>
+          </NavigationMenuLink>
+          <NavigationMenuLink href="#">
+            <div class="font-medium">Automation</div>
+            <p class="mt-1 leading-snug text-muted-foreground">Put work on autopilot.</p>
+          </NavigationMenuLink>
+          <NavigationMenuLink href="#">
+            <div class="font-medium">Reports</div>
+            <p class="mt-1 leading-snug text-muted-foreground">Share results with the team.</p>
+          </NavigationMenuLink>
+          <NavigationMenuLink href="#">
+            <div class="font-medium">Integrations</div>
+            <p class="mt-1 leading-snug text-muted-foreground">Connect your stack.</p>
+          </NavigationMenuLink>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+        <NavigationMenuContent class="w-56">
+          <NavigationMenuLink href="#">Documentation</NavigationMenuLink>
+          <NavigationMenuLink href="#">Blog</NavigationMenuLink>
+          <NavigationMenuLink href="#">Community</NavigationMenuLink>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuLink href="#" variant="trigger">Pricing</NavigationMenuLink>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="navigation-menu" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/bearnie/navigation-menu"
+```
+
+Panels open on hover or click and close when the pointer or focus leaves. Items without a panel are plain links — use `variant="trigger"` on `NavigationMenuLink` so they match the trigger styling. Mark the current page with `active` to get `aria-current="page"` and a highlighted state.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Centered panel
+
+`align="center"` centers the panel under its trigger; `align="end"` right-aligns it — useful for the last item so the panel doesn't overflow the viewport.
+</Prose>
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<NavigationMenuContent align="center" class="w-64">
+  <NavigationMenuLink href="#">Getting started</NavigationMenuLink>
+  <NavigationMenuLink href="#">Components</NavigationMenuLink>
+  <NavigationMenuLink href="#">Themes</NavigationMenuLink>
+</NavigationMenuContent>
+```
+  </Fragment>
+  <NavigationMenu>
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+        <NavigationMenuContent align="center" class="w-64">
+          <NavigationMenuLink href="#">Getting started</NavigationMenuLink>
+          <NavigationMenuLink href="#">Components</NavigationMenuLink>
+          <NavigationMenuLink href="#">Themes</NavigationMenuLink>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Anatomy
+
+- **NavigationMenu** — the `<nav>` root; owns the open/close behavior.
+- **NavigationMenuList** — a `<ul>` holding the items.
+- **NavigationMenuItem** — a `<li>`; contains either a trigger + content pair or a plain link.
+- **NavigationMenuTrigger** — the button with a rotating chevron.
+- **NavigationMenuContent** — the panel, hidden until its trigger is hovered, clicked, or focused.
+- **NavigationMenuLink** — a styled link for panels (`variant="default"`) or the top bar (`variant="trigger"`).
+
+### Props
+
+| Component | Prop | Type | Default | Description |
+|-----------|------|------|---------|-------------|
+| NavigationMenuContent | align | "start" \| "center" \| "end" | "start" | Panel alignment relative to the item |
+| NavigationMenuLink | href | string | - | Link destination (required) |
+| NavigationMenuLink | variant | "default" \| "trigger" | "default" | Panel link or top-bar link styling |
+| NavigationMenuLink | active | boolean | false | Sets `aria-current="page"` and a highlighted state |
+
+All components accept `class` and forward standard HTML attributes.
+
+### Accessibility
+
+- Triggers expose `aria-expanded` and `data-state="open|closed"` for styling.
+- ArrowDown on a trigger opens the panel and focuses the first link; ArrowUp/ArrowDown cycle links inside a panel; Escape closes and restores trigger focus.
+- Panels stay open while focus is inside them, so keyboard users can Tab through the links.
+</Prose>

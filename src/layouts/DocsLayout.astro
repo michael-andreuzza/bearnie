@@ -201,7 +201,7 @@ const isDocsPage = currentPath.startsWith("/docs");
         <div class="flex-1 min-w-0">
           <div class="max-w-3xl 2xl:max-w-5xl mx-auto">
             <!-- Main Content -->
-            <main class="py-12 px-8 lg:px-12">
+            <main class="pb-12 pt-6 px-8 lg:px-12">
               <div class="mx-auto min-w-0" id="docs-content">
                 {
                   showHeader && (
@@ -332,8 +332,10 @@ const isDocsPage = currentPath.startsWith("/docs");
       const rightKey = document.querySelector('[data-key="right"]');
 
       document.addEventListener("keydown", (e) => {
-        // Don't navigate if user is typing in an input
+        // Don't navigate if a component already handled the key (e.g. the
+        // calendar grid) or the user is typing in an input
         if (
+          e.defaultPrevented ||
           e.target instanceof HTMLInputElement ||
           e.target instanceof HTMLTextAreaElement ||
           (e.target as HTMLElement)?.isContentEditable

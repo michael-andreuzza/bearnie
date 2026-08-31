@@ -1,0 +1,37 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"a"> {
+  href: string;
+  /** Top-level style matching NavigationMenuTrigger, for items without a panel */
+  variant?: "default" | "trigger";
+  active?: boolean;
+}
+
+const {
+  href,
+  variant = "default",
+  active = false,
+  class: className,
+  ...props
+} = Astro.props;
+
+const classes = cn(
+  variant === "trigger"
+    ? "inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    : "block select-none rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground",
+  active && "bg-accent/50",
+  className
+);
+---
+
+<a
+  href={href}
+  class={classes}
+  data-navigation-menu-link
+  aria-current={active ? "page" : undefined}
+  {...props}
+>
+  <slot />
+</a>

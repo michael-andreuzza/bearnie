@@ -1,0 +1,159 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn(
+  "relative z-10 flex max-w-max flex-1 items-center justify-center",
+  className
+);
+---
+
+<nav class={classes} data-navigation-menu {...props}>
+  <slot />
+</nav>
+
+<script>
+  import { showOverlay, hideOverlay } from "@/utils/overlay";
+
+  const CLOSE_DELAY = 150;
+
+  let documentListenersBound = false;
+
+  function bindDocumentListeners() {
+    if (documentListenersBound) return;
+    documentListenersBound = true;
+
+    document.addEventListener("click", (e) => {
+      document.querySelectorAll("[data-navigation-menu]").forEach((menu) => {
+        if (!menu.contains(e.target as Node)) {
+          (menu as any).__closeAll?.();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      document.querySelectorAll("[data-navigation-menu]").forEach((menu) => {
+        (menu as any).__closeAll?.(true);
+      });
+    });
+  }
+
+  function isOpen(content: HTMLElement) {
+    return !content.hidden && content.getAttribute("data-state") !== "closed";
+  }
+
+  function initNavigationMenus() {
+    bindDocumentListeners();
+
+    document
+      .querySelectorAll<HTMLElement>("[data-navigation-menu]")
+      .forEach((menu) => {
+        if (menu.hasAttribute("data-initialized")) return;
+        menu.setAttribute("data-initialized", "true");
+
+        const items = Array.from(
+          menu.querySelectorAll<HTMLElement>("[data-navigation-menu-item]"),
+        );
+        let activeItem: HTMLElement | null = null;
+        let closeTimer: ReturnType<typeof setTimeout> | undefined;
+
+        const partsOf = (item: HTMLElement) => ({
+          trigger: item.querySelector<HTMLElement>(
+            "[data-navigation-menu-trigger]",
+          ),
+          content: item.querySelector<HTMLElement>(
+            "[data-navigation-menu-content]",
+          ),
+        });
+
+        function closeItem(item: HTMLElement, restoreFocus = false) {
+          const { trigger, content } = partsOf(item);
+          if (!content || !isOpen(content)) return;
+          hideOverlay(content);
+          trigger?.setAttribute("aria-expanded", "false");
+          trigger?.setAttribute("data-state", "closed");
+          if (restoreFocus) trigger?.focus();
+          if (activeItem === item) activeItem = null;
+        }
+
+        function closeAll(restoreFocus = false) {
+          items.forEach((item) =>
+            closeItem(item, restoreFocus && item === activeItem),
+          );
+        }
+
+        function openItem(item: HTMLElement) {
+          clearTimeout(closeTimer);
+          if (activeItem && activeItem !== item) closeItem(activeItem);
+          const { trigger, content } = partsOf(item);
+          if (!content || isOpen(content)) return;
+          showOverlay(content);
+          trigger?.setAttribute("aria-expanded", "true");
+          trigger?.setAttribute("data-state", "open");
+          activeItem = item;
+        }
+
+        function scheduleClose() {
+          clearTimeout(closeTimer);
+          closeTimer = setTimeout(() => closeAll(), CLOSE_DELAY);
+        }
+
+        items.forEach((item) => {
+          const { trigger, content } = partsOf(item);
+          if (!trigger || !content) return; // plain link item
+
+          item.addEventListener("mouseenter", () => openItem(item));
+          item.addEventListener("mouseleave", scheduleClose);
+
+          trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (isOpen(content)) closeItem(item);
+            else openItem(item);
+          });
+
+          trigger.addEventListener("keydown", (e) => {
+            const key = (e as KeyboardEvent).key;
+            if (key === "ArrowDown") {
+              e.preventDefault();
+              openItem(item);
+              content
+                .querySelector<HTMLElement>("a, button, [tabindex]")
+                ?.focus();
+            }
+          });
+
+          content.addEventListener("keydown", (e) => {
+            const key = (e as KeyboardEvent).key;
+            if (key !== "ArrowDown" && key !== "ArrowUp") return;
+            e.preventDefault();
+            const links = Array.from(
+              content.querySelectorAll<HTMLElement>("a, button"),
+            );
+            const index = links.indexOf(document.activeElement as HTMLElement);
+            const next =
+              key === "ArrowDown"
+                ? links[(index + 1) % links.length]
+                : links[(index - 1 + links.length) % links.length];
+            next?.focus();
+          });
+
+          // Keep the panel open while focus is inside; close when it leaves
+          item.addEventListener("focusout", (e) => {
+            const next = (e as FocusEvent).relatedTarget as Node | null;
+            if (next && item.contains(next)) return;
+            scheduleClose();
+          });
+        });
+
+        (menu as any).__closeAll = closeAll;
+      });
+  }
+
+  initNavigationMenus();
+  document.addEventListener("astro:page-load", initNavigationMenus);
+</script>

@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "components": [
     {
       "name": "styles",
@@ -55,6 +55,11 @@
     {
       "name": "button-group",
       "description": "Groups related buttons together",
+      "category": "form"
+    },
+    {
+      "name": "calendar",
+      "description": "A date picker calendar with keyboard navigation and range selection",
       "category": "form"
     },
     {
@@ -160,6 +165,11 @@
     {
       "name": "menubar",
       "description": "A horizontal menu bar",
+      "category": "navigation"
+    },
+    {
+      "name": "navigation-menu",
+      "description": "A site navigation bar with hoverable dropdown panels of links",
       "category": "navigation"
     },
     {

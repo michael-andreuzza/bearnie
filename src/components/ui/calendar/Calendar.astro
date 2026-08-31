@@ -1,0 +1,349 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** "single" selects one date, "range" selects a from/to pair */
+  mode?: "single" | "range";
+  /** Preselected date (single mode), ISO format YYYY-MM-DD */
+  defaultValue?: string;
+  /** Preselected range start/end (range mode), ISO format YYYY-MM-DD */
+  defaultFrom?: string;
+  defaultTo?: string;
+  /** Earliest/latest selectable date, ISO format YYYY-MM-DD */
+  min?: string;
+  max?: string;
+  /** First day of the week: 0 = Sunday, 1 = Monday */
+  weekStartsOn?: 0 | 1;
+  /**
+   * Form field name. Single mode renders one hidden input; range mode
+   * renders `<name>-from` and `<name>-to`.
+   */
+  name?: string;
+}
+
+const {
+  mode = "single",
+  defaultValue,
+  defaultFrom,
+  defaultTo,
+  min,
+  max,
+  weekStartsOn = 1,
+  name,
+  class: className,
+  ...props
+} = Astro.props;
+
+const classes = cn("w-fit rounded-lg border bg-background p-3", className);
+
+const chevron = (d: string) =>
+  `<svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}" /></svg>`;
+---
+
+<div
+  class={classes}
+  data-calendar
+  data-mode={mode}
+  data-default-value={defaultValue}
+  data-default-from={defaultFrom}
+  data-default-to={defaultTo}
+  data-min={min}
+  data-max={max}
+  data-week-starts-on={weekStartsOn}
+  {...props}
+>
+  <div class="flex items-center justify-between gap-2 pb-3">
+    <button
+      type="button"
+      data-calendar-prev
+      aria-label="Previous month"
+      class="inline-flex size-7 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+      set:html={chevron("m15 18-6-6 6-6")}
+    />
+    <div
+      data-calendar-label
+      aria-live="polite"
+      class="text-sm font-medium"
+    >
+    </div>
+    <button
+      type="button"
+      data-calendar-next
+      aria-label="Next month"
+      class="inline-flex size-7 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+      set:html={chevron("m9 18 6-6-6-6")}
+    />
+  </div>
+  <div data-calendar-grid role="grid"></div>
+  {name && mode === "single" && (
+    <input type="hidden" name={name} value={defaultValue ?? ""} data-calendar-input />
+  )}
+  {name && mode === "range" && (
+    <>
+      <input type="hidden" name={`${name}-from`} value={defaultFrom ?? ""} data-calendar-input-from />
+      <input type="hidden" name={`${name}-to`} value={defaultTo ?? ""} data-calendar-input-to />
+    </>
+  )}
+</div>
+
+<script>
+  const DAY_BASE =
+    "inline-flex size-8 items-center justify-center rounded-md text-sm font-normal transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+  function parseISO(value: string | null | undefined): Date | null {
+    if (!value) return null;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    if (!m) return null;
+    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function toISO(d: Date): string {
+    const p = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+
+  function sameDay(a: Date | null, b: Date | null): boolean {
+    return !!a && !!b && a.getTime() === b.getTime();
+  }
+
+  function initCalendars() {
+    document.querySelectorAll<HTMLElement>("[data-calendar]").forEach((root) => {
+      if (root.hasAttribute("data-initialized")) return;
+      root.setAttribute("data-initialized", "true");
+
+      const mode = root.getAttribute("data-mode") === "range" ? "range" : "single";
+      const weekStartsOn = root.getAttribute("data-week-starts-on") === "0" ? 0 : 1;
+      const min = parseISO(root.getAttribute("data-min"));
+      const max = parseISO(root.getAttribute("data-max"));
+
+      let selected = parseISO(root.getAttribute("data-default-value"));
+      let from = parseISO(root.getAttribute("data-default-from"));
+      let to = parseISO(root.getAttribute("data-default-to"));
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const initial = mode === "range" ? from : selected;
+      let viewMonth = new Date(
+        (initial ?? today).getFullYear(),
+        (initial ?? today).getMonth(),
+        1,
+      );
+      // Day that holds the roving tabindex (focus target for keyboard nav)
+      let focusDate = initial ?? today;
+
+      const grid = root.querySelector("[data-calendar-grid]") as HTMLElement;
+      const label = root.querySelector("[data-calendar-label]") as HTMLElement;
+      const prevBtn = root.querySelector("[data-calendar-prev]") as HTMLButtonElement;
+      const nextBtn = root.querySelector("[data-calendar-next]") as HTMLButtonElement;
+
+      const isDisabled = (d: Date) => (min && d < min) || (max && d > max);
+
+      function dispatch() {
+        const detail =
+          mode === "range"
+            ? { from: from ? toISO(from) : null, to: to ? toISO(to) : null }
+            : { date: selected ? toISO(selected) : null };
+        root.dispatchEvent(
+          new CustomEvent("calendar-change", { bubbles: true, detail }),
+        );
+      }
+
+      function syncInputs() {
+        if (mode === "single") {
+          const input = root.querySelector("[data-calendar-input]") as HTMLInputElement | null;
+          if (input) input.value = selected ? toISO(selected) : "";
+        } else {
+          const inputFrom = root.querySelector("[data-calendar-input-from]") as HTMLInputElement | null;
+          const inputTo = root.querySelector("[data-calendar-input-to]") as HTMLInputElement | null;
+          if (inputFrom) inputFrom.value = from ? toISO(from) : "";
+          if (inputTo) inputTo.value = to ? toISO(to) : "";
+        }
+      }
+
+      function select(d: Date) {
+        if (isDisabled(d)) return;
+        if (mode === "single") {
+          selected = sameDay(selected, d) ? null : d;
+        } else if (!from || (from && to) || d < from) {
+          from = d;
+          to = null;
+        } else {
+          to = d;
+        }
+        focusDate = d;
+        syncInputs();
+        dispatch();
+        // Re-render replaces the buttons; keep focus on the selected day
+        render(document.activeElement instanceof HTMLElement &&
+          grid.contains(document.activeElement));
+      }
+
+      function render(focusAfter = false) {
+        label.textContent = viewMonth.toLocaleDateString(undefined, {
+          month: "long",
+          year: "numeric",
+        });
+
+        // Disable nav that would move entirely outside min/max
+        prevBtn.disabled = !!(
+          min && new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0) < min
+        );
+        nextBtn.disabled = !!(
+          max && new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1) > max
+        );
+
+        grid.innerHTML = "";
+
+        const headerRow = document.createElement("div");
+        headerRow.setAttribute("role", "row");
+        headerRow.className = "flex";
+        for (let i = 0; i < 7; i++) {
+          const day = new Date(2024, 0, 1 + ((i + weekStartsOn) % 7)); // 2024-01-01 is a Monday
+          const cell = document.createElement("div");
+          cell.setAttribute("role", "columnheader");
+          cell.className =
+            "flex size-8 items-center justify-center text-xs font-normal text-muted-foreground";
+          cell.textContent = day.toLocaleDateString(undefined, { weekday: "narrow" });
+          cell.setAttribute(
+            "aria-label",
+            day.toLocaleDateString(undefined, { weekday: "long" }),
+          );
+          headerRow.appendChild(cell);
+        }
+        grid.appendChild(headerRow);
+
+        // First visible cell: back up from the 1st to the week start
+        const first = new Date(viewMonth);
+        const offset = (first.getDay() - weekStartsOn + 7) % 7;
+        first.setDate(first.getDate() - offset);
+
+        // If the focused day isn't visible this month, park focus on the 1st
+        const visibleEnd = new Date(first);
+        visibleEnd.setDate(visibleEnd.getDate() + 41);
+        if (focusDate < first || focusDate > visibleEnd) focusDate = new Date(viewMonth);
+
+        let focusTarget: HTMLButtonElement | null = null;
+
+        for (let week = 0; week < 6; week++) {
+          const row = document.createElement("div");
+          row.setAttribute("role", "row");
+          row.className = "flex";
+          for (let i = 0; i < 7; i++) {
+            const d = new Date(first);
+            d.setDate(d.getDate() + week * 7 + i);
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.setAttribute("role", "gridcell");
+            btn.setAttribute("data-calendar-day", toISO(d));
+            btn.setAttribute(
+              "aria-label",
+              d.toLocaleDateString(undefined, {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }),
+            );
+            btn.textContent = String(d.getDate());
+
+            const outside = d.getMonth() !== viewMonth.getMonth();
+            const isToday = sameDay(d, today);
+            const isStart = mode === "range" ? sameDay(d, from) : sameDay(d, selected);
+            const isEnd = mode === "range" && sameDay(d, to);
+            const inRange =
+              mode === "range" && from && to && d > from && d < to;
+
+            let cls = DAY_BASE;
+            if (isStart || isEnd) {
+              cls +=
+                " bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground";
+              btn.setAttribute("aria-selected", "true");
+            } else if (inRange) {
+              cls += " rounded-none bg-accent text-accent-foreground";
+              btn.setAttribute("aria-selected", "true");
+            } else if (isToday) {
+              cls += " bg-accent text-accent-foreground";
+            } else if (outside) {
+              cls += " text-muted-foreground opacity-50";
+            }
+            if (mode === "range" && isStart && to) cls += " rounded-r-none";
+            if (mode === "range" && isEnd) cls += " rounded-l-none";
+            btn.className = cls;
+
+            if (isDisabled(d)) {
+              btn.disabled = true;
+              btn.classList.add("pointer-events-none", "opacity-30");
+            }
+
+            const focusable = sameDay(d, focusDate);
+            btn.tabIndex = focusable ? 0 : -1;
+            if (focusable) focusTarget = btn;
+
+            btn.addEventListener("click", () => {
+              if (outside) viewMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+              select(d);
+            });
+
+            row.appendChild(btn);
+          }
+          grid.appendChild(row);
+        }
+
+        if (focusAfter) focusTarget?.focus();
+      }
+
+      function moveFocus(days: number, months = 0) {
+        const next = new Date(focusDate);
+        if (months !== 0) next.setMonth(next.getMonth() + months);
+        else next.setDate(next.getDate() + days);
+        if ((min && next < min) || (max && next > max)) return;
+        focusDate = next;
+        if (
+          next.getMonth() !== viewMonth.getMonth() ||
+          next.getFullYear() !== viewMonth.getFullYear()
+        ) {
+          viewMonth = new Date(next.getFullYear(), next.getMonth(), 1);
+        }
+        render(true);
+      }
+
+      grid.addEventListener("keydown", (e) => {
+        const key = (e as KeyboardEvent).key;
+        const handlers: Record<string, () => void> = {
+          ArrowLeft: () => moveFocus(-1),
+          ArrowRight: () => moveFocus(1),
+          ArrowUp: () => moveFocus(-7),
+          ArrowDown: () => moveFocus(7),
+          PageUp: () => moveFocus(0, -1),
+          PageDown: () => moveFocus(0, 1),
+          Home: () => moveFocus(-((focusDate.getDay() - weekStartsOn + 7) % 7)),
+          End: () => moveFocus(6 - ((focusDate.getDay() - weekStartsOn + 7) % 7)),
+        };
+        if (handlers[key]) {
+          e.preventDefault();
+          handlers[key]();
+        } else if (key === "Enter" || key === " ") {
+          e.preventDefault();
+          select(new Date(focusDate));
+        }
+      });
+
+      prevBtn.addEventListener("click", () => {
+        viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1);
+        render();
+      });
+      nextBtn.addEventListener("click", () => {
+        viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1);
+        render();
+      });
+
+      render();
+    });
+  }
+
+  initCalendars();
+  document.addEventListener("astro:page-load", initCalendars);
+</script>

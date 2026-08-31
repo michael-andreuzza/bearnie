@@ -1,0 +1,27 @@
+---
+title: "Calendar and Navigation Menu"
+description: "A date picker calendar with range selection and keyboard navigation, and a site navigation bar with hoverable dropdown panels."
+date: 2026-08-31
+version: "registry 0.11.0"
+order: 5
+---
+
+### Calendar
+
+A date picker calendar in plain Astro + vanilla JS — no date library, no framework runtime:
+
+- Single or `mode="range"` selection, with `defaultValue` / `defaultFrom` / `defaultTo` presets.
+- `min`/`max` bounds disable out-of-range days and stop month navigation at the edges.
+- `name` renders hidden inputs so the calendar works inside plain HTML forms.
+- Full keyboard support: a roving-tabindex `role="grid"` where arrows move by day and week, PageUp/PageDown by month, Home/End to the week edges, and Enter/Space selects.
+- Month and weekday names follow the visitor's locale; a bubbling `calendar-change` CustomEvent reports every selection.
+- Compose it with `Popover` for a date picker — there's an example in the docs.
+
+### Navigation Menu
+
+The shadcn-style top navigation for marketing sites:
+
+- `NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, and `NavigationMenuLink`.
+- Panels open on hover, click, or ArrowDown, switch as you move between triggers, stay open while keyboard focus is inside, and close on Escape or outside click.
+- `NavigationMenuContent` aligns `start`/`center`/`end` under its item; panels animate with the shared overlay enter/exit states.
+- `NavigationMenuLink` styles panel links by default, matches trigger styling with `variant="trigger"` for plain top-bar items, and marks the current page with `active` (`aria-current="page"`).

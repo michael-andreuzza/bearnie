@@ -1,0 +1,39 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"button"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn(
+  "group inline-flex h-9 w-max items-center justify-center gap-1 rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors",
+  "hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+  "data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground",
+  className
+);
+---
+
+<button
+  type="button"
+  class={classes}
+  data-navigation-menu-trigger
+  data-state="closed"
+  aria-expanded="false"
+  {...props}
+>
+  <slot />
+  <svg
+    class="size-3 transition-transform duration-200 group-data-[state=open]:rotate-180"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="m6 9 6 6 6-6"></path>
+  </svg>
+</button>

@@ -173,6 +173,11 @@ const COMPONENT_META: Record<
     description: "Groups related buttons together",
     category: "form",
   },
+  calendar: {
+    description:
+      "A date picker calendar with keyboard navigation and range selection",
+    category: "form",
+  },
   card: {
     description: "A container for grouping related content",
     category: "layout",
@@ -272,6 +277,12 @@ const COMPONENT_META: Record<
   menubar: {
     description: "A horizontal menu bar",
     category: "navigation",
+  },
+  "navigation-menu": {
+    description:
+      "A site navigation bar with hoverable dropdown panels of links",
+    category: "navigation",
+    registryDependencies: ["overlay"],
   },
   pagination: {
     description: "Navigation for paginated content",
