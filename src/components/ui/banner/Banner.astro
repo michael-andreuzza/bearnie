@@ -10,20 +10,55 @@ export interface Props extends HTMLAttributes<"div"> {
   id?: string;
   dismissible?: boolean;
   variant?: "default" | "muted";
+  /**
+   * "static" renders in flow where placed; "top"/"bottom" pin the banner
+   * to the viewport edge.
+   */
+  position?: "static" | "top" | "bottom";
+  /** Detach from the edge: margins, rounded corners, and a shadow. */
+  floating?: boolean;
+  /**
+   * Floating only. "stretch" spans the viewport width (minus margins);
+   * "start"/"center"/"end" shrink the banner to its content and place it.
+   */
+  align?: "stretch" | "start" | "center" | "end";
 }
 
 const {
   id,
   dismissible = false,
   variant = "default",
+  position = "static",
+  floating = false,
+  align = "stretch",
   class: className,
   ...props
 } = Astro.props;
 
+// Floating implies pinned; default to the bottom like most floating banners
+const edge = floating && position === "static" ? "bottom" : position;
+
+const positionClasses = floating
+  ? cn(
+      "fixed z-50 rounded-lg shadow-lg",
+      edge === "top" ? "top-4" : "bottom-4",
+      // w-auto: the width must come from inset-x-4, not the base w-full
+      align === "stretch" && "inset-x-4 w-auto",
+      align === "start" && "left-4 w-max max-w-[calc(100vw-2rem)]",
+      align === "center" &&
+        "left-1/2 w-max max-w-[calc(100vw-2rem)] -translate-x-1/2",
+      align === "end" && "right-4 w-max max-w-[calc(100vw-2rem)]"
+    )
+  : cn(
+      edge === "top" && "fixed inset-x-0 top-0 z-50",
+      edge === "bottom" && "fixed inset-x-0 bottom-0 z-50"
+    );
+
 const classes = cn(
-  "relative flex w-full items-center gap-3 px-4 py-2.5 text-sm",
+  "flex w-full flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5 text-sm",
   variant === "default" && "bg-primary text-primary-foreground",
-  variant === "muted" && "border-b bg-muted text-foreground",
+  variant === "muted" && "bg-muted text-foreground",
+  positionClasses,
   className
 );
 ---
@@ -43,9 +78,28 @@ const classes = cn(
       s.remove();
     })();
   </script>
-  <div class="flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1">
+  <div
+    class={cn(
+      "flex flex-1 flex-wrap items-center gap-x-3 gap-y-1",
+      // Shrink-to-fit floating banners read better left-aligned
+      floating && align !== "stretch" ? "justify-start" : "justify-center"
+    )}
+  >
     <slot />
   </div>
+  {
+    Astro.slots.has("actions") && (
+      <div
+        class={cn(
+          "flex shrink-0 items-center gap-2",
+          // Corner notices read like a card: actions go on their own row
+          floating && (align === "start" || align === "end") && "basis-full"
+        )}
+      >
+        <slot name="actions" />
+      </div>
+    )
+  }
   {
     dismissible && (
       <button

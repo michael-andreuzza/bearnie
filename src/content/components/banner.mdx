@@ -1,6 +1,6 @@
 ---
 title: Banner
-description: An announcement banner with optional per-visitor dismissal.
+description: An announcement banner with floating layouts, action buttons, and per-visitor dismissal.
 tagline: Site-wide announcements
 category: feedback
 status: stable
@@ -9,6 +9,7 @@ status: stable
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import Prose from "@/components/docs/Prose.astro";
 import Banner from "@/components/ui/banner/Banner.astro";
+import Button from "@/components/ui/button/Button.astro";
 
 <ComponentPreview fullWidth>
   <Fragment slot="code">
@@ -47,7 +48,7 @@ import { Banner } from "@/components/bearnie/banner"
 </Banner>
 ```
 
-Place it at the top of your layout, above the header. When both `id` and `dismissible` are set, dismissing is remembered in `localStorage` — the banner stays hidden on future page loads, without any flash before hiding.
+By default the banner renders in flow — place it at the top of your layout, above the header. Use `position` and `floating` for viewport-pinned layouts. When both `id` and `dismissible` are set, dismissing is remembered in `localStorage` — the banner stays hidden on future page loads, without any flash before hiding.
 </Prose>
 </div>
 
@@ -95,6 +96,122 @@ Without an `id` the dismissal lasts for the current page only — good for previ
   </Banner>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Floating at the bottom
+
+`floating` detaches the banner from the viewport edge with margins, rounded corners, and a shadow. It pins to the bottom by default; the previews below contain it in a frame, but on your site it pins to the browser viewport.
+</Prose>
+
+<ComponentPreview fullWidth code={`<div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+  <Banner floating dismissible>
+    <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
+  </Banner>
+</div>`}
+displayCode={`<Banner floating dismissible>
+  <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
+</Banner>`}>
+  <div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+    <Banner floating dismissible>
+      <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
+    </Banner>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Floating centered
+
+With `align="center"` the banner shrinks to its content and centers itself — a pill instead of a bar.
+</Prose>
+
+<ComponentPreview fullWidth code={`<div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+  <Banner floating align="center" dismissible class="rounded-full">
+    <span><strong>BearConf 2026</strong> · Tickets are live →</span>
+  </Banner>
+</div>`}
+displayCode={`<Banner floating align="center" dismissible class="rounded-full">
+  <span><strong>BearConf 2026</strong> · Tickets are live →</span>
+</Banner>`}>
+  <div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+    <Banner floating align="center" dismissible class="rounded-full">
+      <span><strong>BearConf 2026</strong> · Tickets are live →</span>
+    </Banner>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Privacy notice with actions
+
+Use the `actions` slot for button rows. With `align="end"` (or `"start"`) the banner becomes a corner notice; constrain the width with a class so the text wraps.
+</Prose>
+
+<ComponentPreview fullWidth code={`<div class="relative h-64 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+  <Banner floating align="end" variant="muted" class="max-w-sm border">
+    <p>
+      This website uses cookies to supplement a balanced diet and provide a much
+      deserved reward after consuming bland but nutritious meals. See our
+      <a href="#" class="font-medium underline underline-offset-2">cookie policy</a>.
+    </p>
+    <Fragment slot="actions">
+      <Button size="sm">Accept all</Button>
+      <Button size="sm" variant="ghost">Reject all</Button>
+    </Fragment>
+  </Banner>
+</div>`}
+displayCode={`<Banner floating align="end" variant="muted" class="max-w-sm border">
+  <p>
+    This website uses cookies to supplement a balanced diet and provide a much
+    deserved reward after consuming bland but nutritious meals. See our
+    <a href="#" class="font-medium underline underline-offset-2">cookie policy</a>.
+  </p>
+  <Fragment slot="actions">
+    <Button size="sm">Accept all</Button>
+    <Button size="sm" variant="ghost">Reject all</Button>
+  </Fragment>
+</Banner>`}>
+  <div class="relative h-64 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+    <Banner floating align="end" variant="muted" class="max-w-sm border">
+      <p>
+        This website uses cookies to supplement a balanced diet and provide a much
+        deserved reward after consuming bland but nutritious meals. See our
+        <a href="#" class="font-medium underline underline-offset-2">cookie policy</a>.
+      </p>
+      <Fragment slot="actions">
+        <Button size="sm">Accept all</Button>
+        <Button size="sm" variant="ghost">Reject all</Button>
+      </Fragment>
+    </Banner>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Pinned to the top
+
+`position="top"` (or `"bottom"`) pins the full-width bar to the viewport edge without floating.
+</Prose>
+
+<ComponentPreview fullWidth code={`<div class="relative h-40 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+  <Banner position="top" dismissible>
+    <span>We use minimal analytics. No cookies, no tracking.</span>
+  </Banner>
+</div>`}
+displayCode={`<Banner position="top" dismissible>
+  <span>We use minimal analytics. No cookies, no tracking.</span>
+</Banner>`}>
+  <div class="relative h-40 w-full translate-0 overflow-hidden rounded-lg border bg-background">
+    <Banner position="top" dismissible>
+      <span>We use minimal analytics. No cookies, no tracking.</span>
+    </Banner>
+  </div>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -105,7 +222,17 @@ Without an `id` the dismissal lasts for the current page only — good for previ
 | id | string | - | Unique id; when set, dismissal is persisted in localStorage |
 | dismissible | boolean | false | Show a dismiss button |
 | variant | "default" \| "muted" | "default" | Visual style |
+| position | "static" \| "top" \| "bottom" | "static" | In flow, or pinned to a viewport edge |
+| floating | boolean | false | Detach from the edge with margins, rounded corners, and a shadow (pins to the bottom unless `position="top"`) |
+| align | "stretch" \| "start" \| "center" \| "end" | "stretch" | Floating only: span the width, or shrink to content and place it |
 | class | string | - | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| default | Banner content |
+| actions | Button row, e.g. accept/reject for privacy notices |
 
 ### Events
 
