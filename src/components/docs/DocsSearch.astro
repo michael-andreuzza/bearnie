@@ -49,33 +49,62 @@ const allDocs = [...docs, ...components];
 
 <script is:inline define:vars={{ allDocs }}>
   (function () {
-    // Wait for DOM
-    function init() {
-      // Only create the modal once
-      if (document.getElementById("docs-search-modal")) {
-        // Modal exists, just attach click handlers to any new triggers
-        document
-          .querySelectorAll("[data-docs-search-trigger]")
-          .forEach(function (trigger) {
-            if (!trigger.hasAttribute("data-initialized")) {
-              trigger.setAttribute("data-initialized", "true");
-              trigger.addEventListener("click", function () {
-                var modal = document.getElementById("docs-search-modal");
-                if (modal) {
-                  modal.classList.remove("hidden");
-                  document.body.style.overflow = "hidden";
-                  var input = modal.querySelector("[data-search-input]");
-                  setTimeout(function () {
-                    if (input) input.focus();
-                  }, 50);
-                }
-              });
-            }
-          });
-        return;
-      }
+    // Document-level listeners survive view-transition swaps, so attach them
+    // exactly once per hard load. The modal itself lives in <body> and gets
+    // removed on every swap — it is rebuilt lazily by ensureModal().
+    if (window.__docsSearchInit) return;
+    window.__docsSearchInit = true;
 
-      // Create global modal
+    var selectedIndex = -1;
+
+    function getHref(doc) {
+      if (doc.type === "component") {
+        return "/docs/components/" + doc.slug;
+      }
+      return doc.slug ? "/docs/" + doc.slug : "/docs";
+    }
+
+    function filterDocs(query) {
+      if (!query.trim()) return [];
+      var q = query.toLowerCase();
+
+      // First tier: pages whose title or description match
+      var pages = allDocs
+        .filter(function (doc) {
+          return (
+            doc.title.toLowerCase().includes(q) ||
+            doc.description.toLowerCase().includes(q)
+          );
+        })
+        .map(function (doc) {
+          return {
+            title: doc.title,
+            description: doc.description,
+            href: getHref(doc),
+          };
+        });
+
+      // Second tier: examples/variants inside component pages
+      var sections = [];
+      allDocs.forEach(function (doc) {
+        (doc.sections || []).forEach(function (section) {
+          if (section.title.toLowerCase().includes(q)) {
+            sections.push({
+              title: doc.title + " › " + section.title,
+              description: "Example on the " + doc.title + " page",
+              href: getHref(doc) + "/#" + section.anchor,
+            });
+          }
+        });
+      });
+
+      return pages.concat(sections).slice(0, 25);
+    }
+
+    function ensureModal() {
+      var existing = document.getElementById("docs-search-modal");
+      if (existing) return existing;
+
       var modal = document.createElement("div");
       modal.id = "docs-search-modal";
       modal.className = "fixed inset-0 z-[100] hidden";
@@ -85,58 +114,11 @@ const allDocs = [...docs, ...components];
         '<div class="absolute inset-0 bg-overlay/10 backdrop-blur-sm" data-search-backdrop></div><div class="relative flex items-start justify-center pt-[20vh] px-4"><div class="w-full max-w-md bg-popover border border-border rounded-xl shadow-xl overflow-hidden"><div class="flex items-center gap-3 px-3 border-b border-border"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Search documentation..." class="flex-1 h-12 text-sm bg-transparent border-0 outline-none focus:outline-none focus:ring-0 shadow-none placeholder:text-muted-foreground text-foreground" data-search-input /><button type="button" class="text-[10px] text-muted-foreground px-1.5 py-1 rounded border border-border bg-muted hover:bg-muted/80" data-search-close>ESC</button></div><div class="max-h-[50vh] overflow-y-auto" data-search-results><div class="py-12 text-sm text-muted-foreground text-center" data-search-hint>Type to search...</div><div class="py-12 text-sm text-muted-foreground text-center hidden" data-search-empty>No results found</div></div></div></div>';
       document.body.appendChild(modal);
 
-      var backdrop = modal.querySelector("[data-search-backdrop]");
       var input = modal.querySelector("[data-search-input]");
       var results = modal.querySelector("[data-search-results]");
       var emptyState = modal.querySelector("[data-search-empty]");
       var hint = modal.querySelector("[data-search-hint]");
       var closeBtn = modal.querySelector("[data-search-close]");
-
-      function getHref(doc) {
-        if (doc.type === "component") {
-          return "/docs/components/" + doc.slug;
-        }
-        return doc.slug ? "/docs/" + doc.slug : "/docs";
-      }
-
-      function filterDocs(query) {
-        if (!query.trim()) return [];
-        var q = query.toLowerCase();
-
-        // First tier: pages whose title or description match
-        var pages = allDocs
-          .filter(function (doc) {
-            return (
-              doc.title.toLowerCase().includes(q) ||
-              doc.description.toLowerCase().includes(q)
-            );
-          })
-          .map(function (doc) {
-            return {
-              title: doc.title,
-              description: doc.description,
-              href: getHref(doc),
-            };
-          });
-
-        // Second tier: examples/variants inside component pages
-        var sections = [];
-        allDocs.forEach(function (doc) {
-          (doc.sections || []).forEach(function (section) {
-            if (section.title.toLowerCase().includes(q)) {
-              sections.push({
-                title: doc.title + " › " + section.title,
-                description: "Example on the " + doc.title + " page",
-                href: getHref(doc) + "/#" + section.anchor,
-              });
-            }
-          });
-        });
-
-        return pages.concat(sections).slice(0, 25);
-      }
-
-      var selectedIndex = -1;
 
       function updateSelection() {
         var items = results.querySelectorAll("[data-result-item]");
@@ -195,36 +177,10 @@ const allDocs = [...docs, ...components];
         });
       }
 
-      function openModal() {
-        modal.classList.remove("hidden");
-        document.body.style.overflow = "hidden";
-        selectedIndex = -1;
-        setTimeout(function () {
-          input.focus();
-        }, 50);
-      }
-
-      function closeModal() {
-        modal.classList.add("hidden");
-        document.body.style.overflow = "";
-        input.value = "";
-        selectedIndex = -1;
-        renderResults([]);
-      }
-
-      // Attach to all trigger buttons
-      document
-        .querySelectorAll("[data-docs-search-trigger]")
-        .forEach(function (trigger) {
-          trigger.setAttribute("data-initialized", "true");
-          trigger.addEventListener("click", openModal);
-        });
-
       if (closeBtn) closeBtn.addEventListener("click", closeModal);
 
       // Close when clicking outside the modal content (on backdrop or empty space)
       modal.addEventListener("click", function (e) {
-        // Check if click is directly on the modal or backdrop (not on the dialog content)
         var dialogContent = modal.querySelector(".max-w-md");
         if (dialogContent && !dialogContent.contains(e.target)) {
           closeModal();
@@ -232,8 +188,7 @@ const allDocs = [...docs, ...components];
       });
 
       input.addEventListener("input", function (e) {
-        var docs = filterDocs(e.target.value);
-        renderResults(docs);
+        renderResults(filterDocs(e.target.value));
       });
 
       // Keyboard navigation within search results
@@ -261,37 +216,71 @@ const allDocs = [...docs, ...components];
         }
       });
 
-      // Global keyboard shortcuts
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "f" || e.key === "F") {
-          // Leave browser find (Cmd/Ctrl+F) and typing in fields alone
-          if (e.metaKey || e.ctrlKey || e.altKey) return;
-          var t = e.target;
-          if (
-            t instanceof HTMLInputElement ||
-            t instanceof HTMLTextAreaElement ||
-            (t && t.isContentEditable)
-          ) {
-            return;
-          }
-          e.preventDefault();
-          if (modal.classList.contains("hidden")) {
-            openModal();
-          } else {
-            closeModal();
-          }
-        }
-        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-          closeModal();
-        }
-      });
+      return modal;
     }
 
-    // Run when DOM is ready
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
+    function openModal() {
+      var modal = ensureModal();
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      selectedIndex = -1;
+      var input = modal.querySelector("[data-search-input]");
+      setTimeout(function () {
+        if (input) input.focus();
+      }, 50);
     }
+
+    function closeModal() {
+      var modal = document.getElementById("docs-search-modal");
+      if (!modal) return;
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+      var input = modal.querySelector("[data-search-input]");
+      if (input) {
+        input.value = "";
+        input.dispatchEvent(new Event("input"));
+      }
+    }
+
+    // Delegated so triggers rendered after a view-transition swap still work
+    document.addEventListener("click", function (e) {
+      var trigger =
+        e.target && e.target.closest
+          ? e.target.closest("[data-docs-search-trigger]")
+          : null;
+      if (trigger) {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    // Global keyboard shortcuts
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "f" || e.key === "F") {
+        // Leave browser find (Cmd/Ctrl+F) and typing in fields alone
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        var t = e.target;
+        if (
+          t instanceof HTMLInputElement ||
+          t instanceof HTMLTextAreaElement ||
+          (t && t.isContentEditable)
+        ) {
+          return;
+        }
+        e.preventDefault();
+        var modal = document.getElementById("docs-search-modal");
+        if (!modal || modal.classList.contains("hidden")) {
+          openModal();
+        } else {
+          closeModal();
+        }
+      }
+      if (e.key === "Escape") {
+        var open = document.getElementById("docs-search-modal");
+        if (open && !open.classList.contains("hidden")) {
+          closeModal();
+        }
+      }
+    });
   })();
 </script>
