@@ -425,6 +425,80 @@ A right sheet with a pinned summary and checkout button.
 
 <div class="space-y-4">
 <Prose>
+#### Floating
+
+`floating` detaches the panel from the screen edges with a margin, rounded corners, and a full border. Works with every `side`.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Sheet>
+  <SheetTrigger>
+    <Button variant="outline">Floating right</Button>
+  </SheetTrigger>
+  <SheetOverlay />
+  <SheetContent floating>
+    <SheetHeader>
+      <SheetTitle>Floating panel</SheetTitle>
+      <SheetDescription>
+        Detached from the edges with rounded corners.
+      </SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+
+<Sheet>
+  <SheetTrigger>
+    <Button variant="outline">Floating bottom</Button>
+  </SheetTrigger>
+  <SheetOverlay />
+  <SheetContent side="bottom" floating>
+    <SheetHeader>
+      <SheetTitle>Floating bottom panel</SheetTitle>
+      <SheetDescription>
+        The same treatment works on any side.
+      </SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+```
+  </Fragment>
+  <div class="flex flex-wrap gap-2">
+    <Sheet>
+      <SheetTrigger>
+        <Button variant="outline">Floating right</Button>
+      </SheetTrigger>
+      <SheetOverlay />
+      <SheetContent floating>
+        <SheetHeader>
+          <SheetTitle>Floating panel</SheetTitle>
+          <SheetDescription>
+            Detached from the edges with rounded corners.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+    <Sheet>
+      <SheetTrigger>
+        <Button variant="outline">Floating bottom</Button>
+      </SheetTrigger>
+      <SheetOverlay />
+      <SheetContent side="bottom" floating>
+        <SheetHeader>
+          <SheetTitle>Floating bottom panel</SheetTitle>
+          <SheetDescription>
+            The same treatment works on any side.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
 #### Without close button
 </Prose>
 
@@ -488,6 +562,7 @@ A right sheet with a pinned summary and checkout button.
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | side | "top" \| "right" \| "bottom" \| "left" | "right" | Edge of screen to slide from |
+| floating | boolean | false | Detach the panel from the edges with margins and rounded corners |
 | showCloseButton | boolean | true | Show the X close button |
 | class | string | - | Additional CSS classes |
 </Prose>

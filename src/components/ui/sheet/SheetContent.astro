@@ -6,11 +6,14 @@ import { Cancel01Icon } from "../icon/icons";
 
 export interface Props extends HTMLAttributes<"div"> {
   side?: "top" | "right" | "bottom" | "left";
+  /** Detach the panel from the screen edges with margins and rounded corners */
+  floating?: boolean;
   showCloseButton?: boolean;
 }
 
 const {
   side = "right",
+  floating = false,
   showCloseButton = true,
   class: className,
   ...props
@@ -23,9 +26,17 @@ const sideStyles = {
   left: "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
 };
 
+// Insets define the size, so no h-full; border wraps all edges
+const floatingSideStyles = {
+  top: "inset-x-2 top-2 rounded-lg border",
+  right: "inset-y-2 right-2 w-3/4 rounded-lg border sm:max-w-sm",
+  bottom: "inset-x-2 bottom-2 rounded-lg border",
+  left: "inset-y-2 left-2 w-3/4 rounded-lg border sm:max-w-sm",
+};
+
 const classes = cn(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg",
-  sideStyles[side],
+  floating ? floatingSideStyles[side] : sideStyles[side],
   className
 );
 ---

@@ -23,6 +23,10 @@ A date picker calendar in plain Astro + vanilla JS — no date library, no frame
 
 - Panels now animate open and closed (smooth height transition, skipped for `prefers-reduced-motion`), matching the chevron rotation that was already there.
 
+### Sheet
+
+- New `floating` prop on `SheetContent` detaches the panel from the screen edges with a margin, rounded corners, and a full border — works with every `side`.
+
 ### Fixed
 
 - `SheetClose` and `DialogClose` are now layout-neutral wrappers instead of buttons. Composing `<SheetClose><Button/></SheetClose>` used to produce nested buttons, which browsers split apart while parsing — so the styled button never actually closed anything. `SheetFooter`/`DialogFooter` switched from `space-x` to `gap` so spacing works through the wrappers.
