@@ -1,0 +1,103 @@
+---
+title: Image Compare
+description: A before/after image slider with a draggable handle.
+tagline: Before and after
+category: display
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import ImageCompare from "@/components/ui/image-compare/ImageCompare.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<ImageCompare
+  before="/images/docs/landscape-bw.jpg"
+  after="/images/docs/landscape.jpg"
+  beforeAlt="Landscape in black and white"
+  afterAlt="Landscape in color"
+/>
+```
+  </Fragment>
+  <ImageCompare
+    before="/images/docs/landscape-bw.jpg"
+    after="/images/docs/landscape.jpg"
+    beforeAlt="Landscape in black and white"
+    afterAlt="Landscape in color"
+    class="max-w-lg"
+  />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="image-compare" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { ImageCompare } from "@/components/bearnie/image-compare"
+```
+```html
+<ImageCompare before="/before.jpg" after="/after.jpg" />
+```
+
+Drag anywhere on the image (or the handle) to move the divider. The handle is a `role="slider"` button: arrow keys nudge it, Shift-arrow moves in bigger steps, Home/End jump to the edges. Use two images with the same dimensions.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Starting position
+
+`defaultPosition` sets where the divider starts, 0–100.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<ImageCompare
+  before="/images/docs/landscape-bw.jpg"
+  after="/images/docs/landscape.jpg"
+  defaultPosition={25}
+/>
+```
+  </Fragment>
+  <ImageCompare
+    before="/images/docs/landscape-bw.jpg"
+    after="/images/docs/landscape.jpg"
+    defaultPosition={25}
+    class="max-w-lg"
+  />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| before | string | - | Image shown on the left of the handle |
+| after | string | - | Image shown on the right of the handle |
+| beforeAlt / afterAlt | string | "Before" / "After" | Alt text for each image |
+| defaultPosition | number | 50 | Initial divider position, 0–100 |
+| class | string | - | Additional CSS classes |
+
+### Accessibility
+
+- The handle is a `role="slider"` button with `aria-valuenow` kept in sync while dragging.
+- Keyboard: ArrowLeft/ArrowRight move by 2, Shift-arrow by 10, Home/End jump to either edge.
+</Prose>

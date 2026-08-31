@@ -151,6 +151,8 @@ export { default as HoverCardTrigger } from "./hover-card/HoverCardTrigger.astro
 
 export { default as HugeIcon } from "./icon/HugeIcon.astro";
 
+export { default as ImageCompare } from "./image-compare/ImageCompare.astro";
+
 export { default as Input } from "./input/Input.astro";
 
 export { default as InputGroup } from "./input-group/InputGroup.astro";
@@ -195,6 +197,8 @@ export { default as NavigationMenuItem } from "./navigation-menu/NavigationMenuI
 export { default as NavigationMenuLink } from "./navigation-menu/NavigationMenuLink.astro";
 export { default as NavigationMenuList } from "./navigation-menu/NavigationMenuList.astro";
 export { default as NavigationMenuTrigger } from "./navigation-menu/NavigationMenuTrigger.astro";
+
+export { default as NumberInput } from "./number-input/NumberInput.astro";
 
 export { default as Pagination } from "./pagination/Pagination.astro";
 export { default as PaginationContent } from "./pagination/PaginationContent.astro";
@@ -274,9 +278,17 @@ export { default as TabsContent } from "./tabs/TabsContent.astro";
 export { default as TabsList } from "./tabs/TabsList.astro";
 export { default as TabsTrigger } from "./tabs/TabsTrigger.astro";
 
+export { default as TagsInput } from "./tags-input/TagsInput.astro";
+
 export { default as Textarea } from "./textarea/Textarea.astro";
 
 export { default as ThemeToggle } from "./theme-toggle/ThemeToggle.astro";
+
+export { default as Timeline } from "./timeline/Timeline.astro";
+export { default as TimelineDescription } from "./timeline/TimelineDescription.astro";
+export { default as TimelineItem } from "./timeline/TimelineItem.astro";
+export { default as TimelineTime } from "./timeline/TimelineTime.astro";
+export { default as TimelineTitle } from "./timeline/TimelineTitle.astro";
 
 export { default as Toaster } from "./toast/Toaster.astro";
 

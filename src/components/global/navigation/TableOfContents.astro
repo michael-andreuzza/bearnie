@@ -52,9 +52,10 @@ const { contentId = "docs-content" } = Astro.props;
     const content = document.getElementById(contentId);
     if (!content) return;
 
+    // Skip headings rendered inside component previews (e.g. Timeline examples)
     const headings = Array.from(
       content.querySelectorAll<HTMLElement>("h2, h3, h4"),
-    );
+    ).filter((h) => !h.closest("[data-component-preview]"));
     if (headings.length === 0) {
       toc.innerHTML =
         '<p class="text-muted-foreground text-sm">No sections</p>';

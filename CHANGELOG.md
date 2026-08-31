@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (registry 0.12.0)
+
+- **`tags-input` component.** A type-and-enter chips input: Enter/comma adds, Backspace removes the last tag, labelled remove buttons per chip, case-insensitive de-duplication, optional `max`, hidden comma-separated input via `name`, and a bubbling `tags-change` event.
+- **`number-input` component.** A native `input[type=number]` with browser spinners hidden and proper increment/decrement buttons that respect `min`/`max`/`step` and disable at the bounds; dispatches `number-change`.
+- **`timeline` component.** `Timeline`, `TimelineItem` (with `active`), `TimelineTime`, `TimelineTitle`, `TimelineDescription` — a pure HTML/CSS vertical event list for changelogs, roadmaps, and order tracking.
+- **`image-compare` component.** A before/after image slider: pointer dragging anywhere on the image, a `role="slider"` handle with arrow/Home/End keyboard support, and `clip-path`-based clipping.
+
+### Added (registry 0.11.x)
+
+- **Calendar `calendar-set` event.** Set the selection programmatically (preset buttons like "Last 7 days") — the view jumps to keep the selection visible and `calendar-change` fires in response.
+- **Accordion animation.** Panels animate open/closed with a smooth height transition (skipped for `prefers-reduced-motion`).
+- **Sheet `floating` prop.** Detaches the panel from the screen edges with margins, rounded corners, and a full border, on every `side`.
+
+### Fixed (registry 0.11.x)
+
+- **`SheetClose` / `DialogClose` nested buttons.** Both are now layout-neutral wrappers (`display: contents`) instead of buttons, so composing `<SheetClose><Button/></SheetClose>` is valid HTML and the styled button actually closes the overlay. `SheetFooter`/`DialogFooter` use `gap` instead of `space-x` so spacing works through the wrappers.
+
 ### Added (registry 0.11.0)
 
 - **`calendar` component.** A date picker calendar: single or `mode="range"` selection, `months` side-by-side linked months for booking-style ranges, `min`/`max` bounds, `weekStartsOn`, hidden form inputs via `name`, a bubbling `calendar-change` event, and full keyboard navigation (arrows, PageUp/PageDown, Home/End) with a roving-tabindex `role="grid"`. Compose it with `Popover` for a date picker.

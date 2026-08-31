@@ -284,6 +284,22 @@ const COMPONENT_META: Record<
     category: "navigation",
     registryDependencies: ["overlay"],
   },
+  "number-input": {
+    description: "A numeric input with increment and decrement steppers",
+    category: "form",
+  },
+  "image-compare": {
+    description: "A before/after image slider with a draggable handle",
+    category: "display",
+  },
+  "tags-input": {
+    description: "Type-and-enter chips input for topics, emails, and keywords",
+    category: "form",
+  },
+  timeline: {
+    description: "A vertical list of dated events connected by a line",
+    category: "display",
+  },
   pagination: {
     description: "Navigation for paginated content",
     category: "navigation",

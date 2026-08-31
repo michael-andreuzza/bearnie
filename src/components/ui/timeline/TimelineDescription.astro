@@ -1,0 +1,14 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"p"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn("text-sm text-muted-foreground", className);
+---
+
+<p class={classes} data-timeline-description {...props}>
+  <slot />
+</p>

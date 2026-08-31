@@ -1,0 +1,39 @@
+---
+title: "Tags Input, Number Input, Timeline, and Image Compare"
+description: "Two form controls that plain HTML never had, and two display components for content sites — all zero-dependency vanilla JS."
+date: 2026-08-31
+version: "registry 0.12.0"
+order: 6
+---
+
+### Tags Input
+
+A type-and-enter chips input for topics, emails, and keywords:
+
+- Enter or comma adds a tag, Backspace on an empty field removes the last one, and each chip has a labelled remove button.
+- Case-insensitive de-duplication, an optional `max` cap, and pending text committed on blur.
+- With a `name`, a hidden input submits the tags comma-separated, so it works in plain HTML forms.
+- A bubbling `tags-change` CustomEvent reports every add and remove.
+
+### Number Input
+
+A numeric input with proper increment/decrement steppers:
+
+- Built on a native `input[type=number]` with the browser spinners hidden — typing, arrow keys, and form submission work as usual.
+- The buttons respect `min`, `max`, and `step`, and disable themselves at the bounds.
+- A bubbling `number-change` CustomEvent reports the parsed value.
+
+### Timeline
+
+A vertical list of dated events connected by a line — changelogs, roadmaps, order tracking:
+
+- `Timeline`, `TimelineItem`, `TimelineTime`, `TimelineTitle`, and `TimelineDescription`.
+- Pure HTML and CSS, zero JavaScript; the line stops at the last item automatically.
+- `active` fills an item's dot with the primary color to mark the current step.
+
+### Image Compare
+
+A before/after image slider with a draggable handle:
+
+- Drag anywhere on the image to move the divider; the before image is clipped with `clip-path`, so there's no layout trickery.
+- The handle is a `role="slider"` button — arrow keys nudge it, Shift-arrow moves in bigger steps, Home/End jump to the edges.

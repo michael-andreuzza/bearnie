@@ -1,0 +1,30 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"li"> {
+  /** Marks the current step — fills the dot with the primary color */
+  active?: boolean;
+}
+
+const { active = false, class: className, ...props } = Astro.props;
+
+const classes = cn(
+  // The ::before line connects dots; the last item hides it
+  "relative flex gap-4 pb-8 last:pb-0",
+  "before:absolute before:left-[5px] before:top-4 before:h-full before:w-px before:bg-border last:before:hidden",
+  className,
+);
+
+const dotClasses = cn(
+  "relative mt-1.5 size-[11px] shrink-0 rounded-full border-2",
+  active ? "border-primary bg-primary" : "border-border bg-background",
+);
+---
+
+<li class={classes} data-timeline-item data-active={active ? "" : undefined} {...props}>
+  <span class={dotClasses} aria-hidden="true"></span>
+  <div class="flex min-w-0 flex-col gap-1">
+    <slot />
+  </div>
+</li>

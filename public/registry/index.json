@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "components": [
     {
       "name": "styles",
@@ -133,6 +133,11 @@
       "category": "display"
     },
     {
+      "name": "image-compare",
+      "description": "A before/after image slider with a draggable handle",
+      "category": "display"
+    },
+    {
       "name": "input",
       "description": "A text input field for forms",
       "category": "form"
@@ -171,6 +176,11 @@
       "name": "navigation-menu",
       "description": "A site navigation bar with hoverable dropdown panels of links",
       "category": "navigation"
+    },
+    {
+      "name": "number-input",
+      "description": "A numeric input with increment and decrement steppers",
+      "category": "form"
     },
     {
       "name": "pagination",
@@ -258,6 +268,11 @@
       "category": "navigation"
     },
     {
+      "name": "tags-input",
+      "description": "Type-and-enter chips input for topics, emails, and keywords",
+      "category": "form"
+    },
+    {
       "name": "textarea",
       "description": "A multi-line text input field",
       "category": "form"
@@ -266,6 +281,11 @@
       "name": "theme-toggle",
       "description": "A light/dark theme toggle button",
       "category": "theme"
+    },
+    {
+      "name": "timeline",
+      "description": "A vertical list of dated events connected by a line",
+      "category": "display"
     },
     {
       "name": "toast",

@@ -1,0 +1,14 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"h3"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn("text-sm font-medium leading-snug", className);
+---
+
+<h3 class={classes} data-timeline-title {...props}>
+  <slot />
+</h3>

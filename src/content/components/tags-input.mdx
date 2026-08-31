@@ -1,0 +1,103 @@
+---
+title: Tags Input
+description: Type-and-enter chips input for topics, emails, and keywords.
+tagline: Multi-value input
+category: form
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import TagsInput from "@/components/ui/tags-input/TagsInput.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<TagsInput name="topics" defaultValue={["astro", "tailwind"]} placeholder="Add topic…" />
+```
+  </Fragment>
+  <TagsInput name="topics" defaultValue={["astro", "tailwind"]} placeholder="Add topic…" class="max-w-sm" />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="tags-input" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { TagsInput } from "@/components/bearnie/tags-input"
+```
+```html
+<TagsInput name="tags" placeholder="Add tag…" />
+```
+
+Type and press Enter (or comma) to add a tag, Backspace on an empty field removes the last one, and the X on each chip removes it. Duplicates are ignored (case-insensitive), and pending text is committed when the field loses focus. With a `name`, a hidden input submits the tags as a comma-separated string.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Maximum tags
+
+`max` caps how many tags can be added — the field disables itself when the limit is reached.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<TagsInput name="team" defaultValue={["ana", "marcus"]} max={3} placeholder="Add member…" />
+```
+  </Fragment>
+  <TagsInput name="team" defaultValue={["ana", "marcus"]} max={3} placeholder="Add member…" class="max-w-sm" />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Disabled
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<TagsInput defaultValue={["read-only"]} disabled />
+```
+  </Fragment>
+  <TagsInput defaultValue={["read-only"]} disabled class="max-w-sm" />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| name | string | - | Form field name — a hidden input submits the tags comma-separated |
+| defaultValue | string[] | [] | Initial tags |
+| placeholder | string | "Add tag…" | Placeholder for the text field |
+| max | number | - | Maximum number of tags |
+| disabled | boolean | false | Disable the whole control |
+| class | string | - | Additional CSS classes |
+
+### Events
+
+Dispatches a bubbling `tags-change` CustomEvent whenever tags are added or removed: `detail` is `{ tags: string[] }`.
+
+### Accessibility
+
+- Each chip's remove button has an `aria-label` naming the tag it removes.
+- The text field is a regular input: Enter and comma add, Backspace removes the last tag when the field is empty.
+</Prose>

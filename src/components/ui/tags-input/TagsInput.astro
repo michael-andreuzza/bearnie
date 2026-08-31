@@ -1,0 +1,156 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"div"> {
+  /** Form field name — a hidden input carries the comma-separated values */
+  name?: string;
+  /** Initial tags */
+  defaultValue?: string[];
+  placeholder?: string;
+  /** Maximum number of tags */
+  max?: number;
+  disabled?: boolean;
+}
+
+const {
+  name,
+  defaultValue = [],
+  placeholder = "Add tag…",
+  max,
+  disabled = false,
+  class: className,
+  ...props
+} = Astro.props;
+
+const classes = cn(
+  "flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-2 py-1.5 text-sm",
+  "transition duration-300 ease-in-out",
+  "focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/5",
+  "aria-invalid:border-destructive",
+  disabled && "pointer-events-none cursor-not-allowed bg-input/50 opacity-50",
+  className,
+);
+---
+
+<div
+  class={classes}
+  data-tags-input
+  data-default-value={JSON.stringify(defaultValue)}
+  data-max={max}
+  {...props}
+>
+  <input
+    type="text"
+    data-tags-input-field
+    class="min-w-24 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+    placeholder={placeholder}
+    disabled={disabled}
+  />
+  {name && (
+    <input type="hidden" name={name} value={defaultValue.join(",")} data-tags-input-value />
+  )}
+</div>
+
+<script>
+  const TAG_CLASSES =
+    "inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground";
+  const REMOVE_CLASSES =
+    "inline-flex items-center justify-center rounded-sm text-secondary-foreground/70 transition-colors hover:text-secondary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+  function initTagsInputs() {
+    document.querySelectorAll<HTMLElement>("[data-tags-input]").forEach((root) => {
+      if (root.hasAttribute("data-initialized")) return;
+      root.setAttribute("data-initialized", "true");
+
+      const field = root.querySelector("[data-tags-input-field]") as HTMLInputElement;
+      const hidden = root.querySelector("[data-tags-input-value]") as HTMLInputElement | null;
+      const max = Number(root.getAttribute("data-max")) || Infinity;
+      const initiallyDisabled = field.disabled;
+
+      let tags: string[] = [];
+      try {
+        tags = JSON.parse(root.getAttribute("data-default-value") || "[]");
+      } catch (_) {}
+
+      function dispatch() {
+        if (hidden) hidden.value = tags.join(",");
+        root.dispatchEvent(
+          new CustomEvent("tags-change", { bubbles: true, detail: { tags: [...tags] } }),
+        );
+      }
+
+      function render() {
+        root.querySelectorAll("[data-tags-input-tag]").forEach((el) => el.remove());
+        tags.forEach((tag, index) => {
+          const chip = document.createElement("span");
+          chip.className = TAG_CLASSES;
+          chip.setAttribute("data-tags-input-tag", "");
+
+          const label = document.createElement("span");
+          label.textContent = tag;
+          chip.appendChild(label);
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = REMOVE_CLASSES;
+          remove.setAttribute("aria-label", `Remove ${tag}`);
+          remove.innerHTML =
+            '<svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+          remove.addEventListener("click", () => {
+            tags.splice(index, 1);
+            render();
+            dispatch();
+            field.focus();
+          });
+          chip.appendChild(remove);
+
+          field.before(chip);
+        });
+        field.disabled = initiallyDisabled || tags.length >= max;
+        field.placeholder = tags.length >= max ? "" : field.getAttribute("data-placeholder") || field.placeholder;
+      }
+
+      field.setAttribute("data-placeholder", field.placeholder);
+
+      function addTag(raw: string) {
+        const value = raw.trim();
+        if (!value || tags.length >= max) return;
+        if (tags.some((t) => t.toLowerCase() === value.toLowerCase())) return;
+        tags.push(value);
+        render();
+        dispatch();
+      }
+
+      field.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === ",") {
+          e.preventDefault();
+          addTag(field.value);
+          field.value = "";
+        } else if (e.key === "Backspace" && field.value === "" && tags.length > 0) {
+          tags.pop();
+          render();
+          dispatch();
+        }
+      });
+
+      // Commit pending text when leaving the field
+      field.addEventListener("blur", () => {
+        if (field.value.trim()) {
+          addTag(field.value);
+          field.value = "";
+        }
+      });
+
+      // Clicking anywhere in the frame focuses the text field
+      root.addEventListener("click", (e) => {
+        if (e.target === root) field.focus();
+      });
+
+      render();
+    });
+  }
+
+  initTagsInputs();
+  document.addEventListener("astro:page-load", initTagsInputs);
+</script>

@@ -1,0 +1,16 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"time"> {
+  datetime?: string;
+}
+
+const { datetime, class: className, ...props } = Astro.props;
+
+const classes = cn("text-xs text-muted-foreground", className);
+---
+
+<time class={classes} datetime={datetime} data-timeline-time {...props}>
+  <slot />
+</time>

@@ -1,0 +1,37 @@
+{
+  "name": "timeline",
+  "description": "A vertical list of dated events connected by a line",
+  "category": "display",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Timeline.astro",
+      "path": "timeline/Timeline.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"ol\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\"flex flex-col\", className);\n---\n\n<ol class={classes} data-timeline {...props}>\n  <slot />\n</ol>\n"
+    },
+    {
+      "name": "TimelineDescription.astro",
+      "path": "timeline/TimelineDescription.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"p\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\"text-sm text-muted-foreground\", className);\n---\n\n<p class={classes} data-timeline-description {...props}>\n  <slot />\n</p>\n"
+    },
+    {
+      "name": "TimelineItem.astro",
+      "path": "timeline/TimelineItem.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"li\"> {\n  /** Marks the current step — fills the dot with the primary color */\n  active?: boolean;\n}\n\nconst { active = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  // The ::before line connects dots; the last item hides it\n  \"relative flex gap-4 pb-8 last:pb-0\",\n  \"before:absolute before:left-[5px] before:top-4 before:h-full before:w-px before:bg-border last:before:hidden\",\n  className,\n);\n\nconst dotClasses = cn(\n  \"relative mt-1.5 size-[11px] shrink-0 rounded-full border-2\",\n  active ? \"border-primary bg-primary\" : \"border-border bg-background\",\n);\n---\n\n<li class={classes} data-timeline-item data-active={active ? \"\" : undefined} {...props}>\n  <span class={dotClasses} aria-hidden=\"true\"></span>\n  <div class=\"flex min-w-0 flex-col gap-1\">\n    <slot />\n  </div>\n</li>\n"
+    },
+    {
+      "name": "TimelineTime.astro",
+      "path": "timeline/TimelineTime.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"time\"> {\n  datetime?: string;\n}\n\nconst { datetime, class: className, ...props } = Astro.props;\n\nconst classes = cn(\"text-xs text-muted-foreground\", className);\n---\n\n<time class={classes} datetime={datetime} data-timeline-time {...props}>\n  <slot />\n</time>\n"
+    },
+    {
+      "name": "TimelineTitle.astro",
+      "path": "timeline/TimelineTitle.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"h3\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\"text-sm font-medium leading-snug\", className);\n---\n\n<h3 class={classes} data-timeline-title {...props}>\n  <slot />\n</h3>\n"
+    }
+  ]
+}

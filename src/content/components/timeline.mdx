@@ -1,0 +1,173 @@
+---
+title: Timeline
+description: A vertical list of dated events connected by a line — changelogs, roadmaps, order tracking.
+tagline: Chronological events
+category: display
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Timeline from "@/components/ui/timeline/Timeline.astro";
+import TimelineItem from "@/components/ui/timeline/TimelineItem.astro";
+import TimelineTime from "@/components/ui/timeline/TimelineTime.astro";
+import TimelineTitle from "@/components/ui/timeline/TimelineTitle.astro";
+import TimelineDescription from "@/components/ui/timeline/TimelineDescription.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Timeline>
+  <TimelineItem>
+    <TimelineTime datetime="2026-08-02">Aug 2</TimelineTime>
+    <TimelineTitle>Order placed</TimelineTitle>
+    <TimelineDescription>We've received your order and sent a confirmation email.</TimelineDescription>
+  </TimelineItem>
+  <TimelineItem>
+    <TimelineTime datetime="2026-08-03">Aug 3</TimelineTime>
+    <TimelineTitle>Shipped</TimelineTitle>
+    <TimelineDescription>Your package left the warehouse.</TimelineDescription>
+  </TimelineItem>
+  <TimelineItem active>
+    <TimelineTime datetime="2026-08-05">Aug 5</TimelineTime>
+    <TimelineTitle>Out for delivery</TimelineTitle>
+    <TimelineDescription>Arriving today between 9:00 and 17:00.</TimelineDescription>
+  </TimelineItem>
+</Timeline>
+```
+  </Fragment>
+  <Timeline class="max-w-sm">
+    <TimelineItem>
+      <TimelineTime datetime="2026-08-02">Aug 2</TimelineTime>
+      <TimelineTitle>Order placed</TimelineTitle>
+      <TimelineDescription>We've received your order and sent a confirmation email.</TimelineDescription>
+    </TimelineItem>
+    <TimelineItem>
+      <TimelineTime datetime="2026-08-03">Aug 3</TimelineTime>
+      <TimelineTitle>Shipped</TimelineTitle>
+      <TimelineDescription>Your package left the warehouse.</TimelineDescription>
+    </TimelineItem>
+    <TimelineItem active>
+      <TimelineTime datetime="2026-08-05">Aug 5</TimelineTime>
+      <TimelineTitle>Out for delivery</TimelineTitle>
+      <TimelineDescription>Arriving today between 9:00 and 17:00.</TimelineDescription>
+    </TimelineItem>
+  </Timeline>
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="timeline" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import {
+  Timeline,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+  TimelineDescription
+} from "@/components/bearnie/timeline"
+```
+```html
+<Timeline>
+  <TimelineItem>
+    <TimelineTime datetime="2026-01-15">Jan 15</TimelineTime>
+    <TimelineTitle>Something happened</TimelineTitle>
+    <TimelineDescription>More detail about it.</TimelineDescription>
+  </TimelineItem>
+</Timeline>
+```
+
+Pure HTML and CSS — no JavaScript. The connecting line is drawn per item, so it works with any number of entries and stops at the last one.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Rich content
+
+Items are containers — put anything below the title, like buttons or version badges.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Timeline>
+  <TimelineItem active>
+    <TimelineTime datetime="2026-08-31">August 31, 2026</TimelineTime>
+    <TimelineTitle>Calendar and Navigation Menu</TimelineTitle>
+    <TimelineDescription>
+      A date picker calendar with range selection, and a site navigation bar
+      with hoverable panels.
+    </TimelineDescription>
+    <a href="/docs/changelog/" class="text-sm font-medium text-primary hover:underline">Read the changelog →</a>
+  </TimelineItem>
+  <TimelineItem>
+    <TimelineTime datetime="2026-08-30">August 30, 2026</TimelineTime>
+    <TimelineTitle>New components: Marquee, Banner, Rating, Video</TimelineTitle>
+    <TimelineDescription>
+      Plus sidebar persistence, sortable tables, and stepper gating.
+    </TimelineDescription>
+  </TimelineItem>
+</Timeline>
+```
+  </Fragment>
+  <Timeline class="max-w-md">
+    <TimelineItem active>
+      <TimelineTime datetime="2026-08-31">August 31, 2026</TimelineTime>
+      <TimelineTitle>Calendar and Navigation Menu</TimelineTitle>
+      <TimelineDescription>
+        A date picker calendar with range selection, and a site navigation bar
+        with hoverable panels.
+      </TimelineDescription>
+      <a href="/docs/changelog/" class="text-sm font-medium text-primary hover:underline">Read the changelog →</a>
+    </TimelineItem>
+    <TimelineItem>
+      <TimelineTime datetime="2026-08-30">August 30, 2026</TimelineTime>
+      <TimelineTitle>New components: Marquee, Banner, Rating, Video</TimelineTitle>
+      <TimelineDescription>
+        Plus sidebar persistence, sortable tables, and stepper gating.
+      </TimelineDescription>
+    </TimelineItem>
+  </Timeline>
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Anatomy
+
+- `Timeline` - The `<ol>` list container
+- `TimelineItem` - One event: draws the dot and the connecting line
+- `TimelineTime` - A `<time>` element for the date
+- `TimelineTitle` - The event heading
+- `TimelineDescription` - Muted supporting text
+
+### Props
+
+#### TimelineItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| active | boolean | false | Fill the dot with the primary color to mark the current step |
+| class | string | - | Additional CSS classes |
+
+#### TimelineTime
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| datetime | string | - | Machine-readable date for the `<time>` element |
+</Prose>

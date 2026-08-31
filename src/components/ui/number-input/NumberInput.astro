@@ -1,0 +1,120 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends Omit<HTMLAttributes<"input">, "type"> {
+  name?: string;
+  id?: string;
+  defaultValue?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  disabled?: boolean;
+}
+
+const {
+  name,
+  id,
+  defaultValue,
+  min,
+  max,
+  step = 1,
+  disabled = false,
+  class: className,
+  ...props
+} = Astro.props;
+
+const classes = cn(
+  "flex h-9 w-fit items-stretch overflow-hidden rounded-md border border-input",
+  "transition duration-300 ease-in-out",
+  "focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/5",
+  disabled && "pointer-events-none cursor-not-allowed bg-input/50 opacity-50",
+  className,
+);
+
+const buttonClasses =
+  "flex w-8 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40";
+
+const chevron = (d: string) =>
+  `<svg class="size-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}" /></svg>`;
+---
+
+<div class={classes} data-number-input {...props}>
+  <button
+    type="button"
+    data-number-input-decrement
+    aria-label="Decrease"
+    tabindex="-1"
+    class={cn(buttonClasses, "border-r border-input")}
+    disabled={disabled}
+    set:html={chevron("M5 12h14")}
+  />
+  <input
+    type="number"
+    class="w-16 bg-transparent text-center text-sm outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+    name={name}
+    id={id}
+    value={defaultValue}
+    min={min}
+    max={max}
+    step={step}
+    disabled={disabled}
+    data-number-input-field
+  />
+  <button
+    type="button"
+    data-number-input-increment
+    aria-label="Increase"
+    tabindex="-1"
+    class={cn(buttonClasses, "border-l border-input")}
+    disabled={disabled}
+    set:html={chevron("M12 5v14M5 12h14")}
+  />
+</div>
+
+<script>
+  function initNumberInputs() {
+    document.querySelectorAll<HTMLElement>("[data-number-input]").forEach((root) => {
+      if (root.hasAttribute("data-initialized")) return;
+      root.setAttribute("data-initialized", "true");
+
+      const field = root.querySelector("[data-number-input-field]") as HTMLInputElement;
+      const decrement = root.querySelector("[data-number-input-decrement]") as HTMLButtonElement;
+      const increment = root.querySelector("[data-number-input-increment]") as HTMLButtonElement;
+      const initiallyDisabled = field.disabled;
+
+      function sync() {
+        if (initiallyDisabled) return;
+        const value = field.valueAsNumber;
+        decrement.disabled = !isNaN(value) && field.min !== "" && value <= Number(field.min);
+        increment.disabled = !isNaN(value) && field.max !== "" && value >= Number(field.max);
+        root.dispatchEvent(
+          new CustomEvent("number-change", {
+            bubbles: true,
+            detail: { value: isNaN(value) ? null : value },
+          }),
+        );
+      }
+
+      decrement.addEventListener("click", () => {
+        field.stepDown();
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      increment.addEventListener("click", () => {
+        field.stepUp();
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      field.addEventListener("input", sync);
+
+      // Set initial button states without firing a change event
+      const value = field.valueAsNumber;
+      decrement.disabled =
+        initiallyDisabled || (!isNaN(value) && field.min !== "" && value <= Number(field.min));
+      increment.disabled =
+        initiallyDisabled || (!isNaN(value) && field.max !== "" && value >= Number(field.max));
+    });
+  }
+
+  initNumberInputs();
+  document.addEventListener("astro:page-load", initNumberInputs);
+</script>

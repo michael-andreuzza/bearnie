@@ -1,0 +1,121 @@
+---
+title: Number Input
+description: A numeric input with increment and decrement steppers.
+tagline: Stepped numeric input
+category: form
+status: stable
+---
+
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import Prose from "@/components/docs/Prose.astro";
+import NumberInput from "@/components/ui/number-input/NumberInput.astro";
+import Label from "@/components/ui/label/Label.astro";
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<NumberInput name="quantity" defaultValue={1} min={1} max={10} />
+```
+  </Fragment>
+  <NumberInput name="quantity" defaultValue={1} min={1} max={10} />
+</ComponentPreview>
+
+<div class="space-y-4">
+<Prose>
+### Installation
+</Prose>
+
+<ComponentPreview component="number-input" />
+</div>
+
+<div class="space-y-4">
+<Prose>
+### Usage
+
+```ts
+import { NumberInput } from "@/components/bearnie/number-input"
+```
+```html
+<NumberInput name="quantity" defaultValue={1} min={0} max={99} />
+```
+
+A native `input[type=number]` with the browser spinners hidden and proper buttons instead, so typing, arrow keys, and form submission all work as usual. The buttons respect `min`, `max`, and `step`, and disable themselves at the bounds.
+</Prose>
+</div>
+
+<div class="space-y-8">
+<Prose>
+### Examples
+</Prose>
+
+<div class="space-y-4">
+<Prose>
+#### Step
+
+`step` controls the increment — arrow keys and buttons both use it.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<NumberInput name="price" defaultValue={2.5} min={0} step={0.5} />
+```
+  </Fragment>
+  <NumberInput name="price" defaultValue={2.5} min={0} step={0.5} />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### With a label
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<div class="grid gap-2">
+  <Label for="guests">Guests</Label>
+  <NumberInput id="guests" name="guests" defaultValue={2} min={1} max={8} />
+</div>
+```
+  </Fragment>
+  <div class="grid gap-2">
+    <Label for="guests">Guests</Label>
+    <NumberInput id="guests" name="guests" defaultValue={2} min={1} max={8} />
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Disabled
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<NumberInput defaultValue={3} disabled />
+```
+  </Fragment>
+  <NumberInput defaultValue={3} disabled />
+</ComponentPreview>
+</div>
+</div>
+
+<Prose>
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| name | string | - | Form field name |
+| id | string | - | Id for pairing with a `Label` |
+| defaultValue | number | - | Initial value |
+| min / max | number | - | Bounds — the matching button disables at the edge |
+| step | number | 1 | Increment used by the buttons and arrow keys |
+| disabled | boolean | false | Disable the control |
+| class | string | - | Additional CSS classes |
+
+### Events
+
+Dispatches a bubbling `number-change` CustomEvent on every change: `detail` is `{ value }` (a number, or `null` while the field is empty).
+</Prose>
