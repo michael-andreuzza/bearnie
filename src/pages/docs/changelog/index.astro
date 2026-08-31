@@ -26,11 +26,8 @@ const formatDate = (date: Date) =>
   <ul class="divide-y divide-border">
     {
       entries.map((entry) => (
-        <li>
-          <a
-            href={`/docs/changelog/${entry.id}/`}
-            class="group block py-6 first:pt-0"
-          >
+        <li class="py-6 first:pt-0 last:pb-0">
+          <a href={`/docs/changelog/${entry.id}/`} class="group block">
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
               <time datetime={entry.data.date.toISOString().slice(0, 10)}>
                 {formatDate(entry.data.date)}
