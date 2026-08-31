@@ -3,13 +3,24 @@ import { getCollection } from "astro:content";
 import HugeIcon from "@/components/ui/icon/HugeIcon.astro";
 import { Search01Icon } from "@/components/ui/icon/icons";
 
-// Get all docs content
+// Mirrors github-slugger enough for our heading anchors
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+
+// Get all docs content; #### headings are the examples/variants on each page
 const components = await Promise.all(
   (await getCollection("components")).map(async (component) => ({
     title: component.data.title,
     description: component.data.description,
     slug: component.id,
     type: "component",
+    sections: [...(component.body ?? "").matchAll(/^#### (.+)$/gm)].map(
+      (m) => ({ title: m[1].trim(), anchor: slugify(m[1]) }),
+    ),
   })),
 );
 
@@ -81,22 +92,48 @@ const allDocs = [...docs, ...components];
       var hint = modal.querySelector("[data-search-hint]");
       var closeBtn = modal.querySelector("[data-search-close]");
 
-      function filterDocs(query) {
-        if (!query.trim()) return [];
-        var q = query.toLowerCase();
-        return allDocs.filter(function (doc) {
-          return (
-            doc.title.toLowerCase().includes(q) ||
-            doc.description.toLowerCase().includes(q)
-          );
-        });
-      }
-
       function getHref(doc) {
         if (doc.type === "component") {
           return "/docs/components/" + doc.slug;
         }
         return doc.slug ? "/docs/" + doc.slug : "/docs";
+      }
+
+      function filterDocs(query) {
+        if (!query.trim()) return [];
+        var q = query.toLowerCase();
+
+        // First tier: pages whose title or description match
+        var pages = allDocs
+          .filter(function (doc) {
+            return (
+              doc.title.toLowerCase().includes(q) ||
+              doc.description.toLowerCase().includes(q)
+            );
+          })
+          .map(function (doc) {
+            return {
+              title: doc.title,
+              description: doc.description,
+              href: getHref(doc),
+            };
+          });
+
+        // Second tier: examples/variants inside component pages
+        var sections = [];
+        allDocs.forEach(function (doc) {
+          (doc.sections || []).forEach(function (section) {
+            if (section.title.toLowerCase().includes(q)) {
+              sections.push({
+                title: doc.title + " › " + section.title,
+                description: "Example on the " + doc.title + " page",
+                href: getHref(doc) + "/#" + section.anchor,
+              });
+            }
+          });
+        });
+
+        return pages.concat(sections).slice(0, 25);
       }
 
       var selectedIndex = -1;
@@ -140,7 +177,7 @@ const allDocs = [...docs, ...components];
           var item = document.createElement("a");
           item.setAttribute("data-result-item", "");
           item.setAttribute("data-result-index", index);
-          item.href = getHref(doc);
+          item.href = doc.href;
           item.className =
             "flex flex-col gap-0.5 px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b border-border last:border-0";
           item.innerHTML =
