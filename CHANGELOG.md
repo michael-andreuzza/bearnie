@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added (registry 0.11.0)
 
-- **`calendar` component.** A date picker calendar: single or `mode="range"` selection, `min`/`max` bounds, `weekStartsOn`, hidden form inputs via `name`, a bubbling `calendar-change` event, and full keyboard navigation (arrows, PageUp/PageDown, Home/End) with a roving-tabindex `role="grid"`. Compose it with `Popover` for a date picker.
+- **`calendar` component.** A date picker calendar: single or `mode="range"` selection, `months` side-by-side linked months for booking-style ranges, `min`/`max` bounds, `weekStartsOn`, hidden form inputs via `name`, a bubbling `calendar-change` event, and full keyboard navigation (arrows, PageUp/PageDown, Home/End) with a roving-tabindex `role="grid"`. Compose it with `Popover` for a date picker.
 - **`navigation-menu` component.** Site navigation with hoverable dropdown panels: `NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent` (with `align`), and `NavigationMenuLink` (panel or `variant="trigger"` top-bar styling, `active` for `aria-current`). Panels open on hover, click, or ArrowDown, stay open while focus is inside, animate via the shared overlay states, and close on Escape or outside click.
 
 ### Added (registry 0.10.0)

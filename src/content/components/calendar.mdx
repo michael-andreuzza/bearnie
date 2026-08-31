@@ -70,6 +70,23 @@ Clicking a day selects it (clicking again deselects). With a `name`, a hidden in
 
 <div class="space-y-4">
 <Prose>
+#### Two months side by side
+
+`months={2}` shows linked months next to each other (stacked on small screens) — the booking-site layout for picking a stay.
+</Prose>
+
+<ComponentPreview fullWidth>
+  <Fragment slot="code">
+```html
+<Calendar mode="range" months={2} defaultFrom="2026-09-24" defaultTo="2026-10-02" name="trip" />
+```
+  </Fragment>
+  <Calendar mode="range" months={2} defaultFrom="2026-09-24" defaultTo="2026-10-02" name="trip" />
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
 #### Min and max
 
 Days outside the bounds are disabled, and month navigation stops at the edges.
@@ -157,6 +174,7 @@ Compose with `Popover` for a date picker. Listen for `calendar-change` to update
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | mode | "single" \| "range" | "single" | Select one date or a from/to pair |
+| months | number | 1 | Months shown side by side (stacked on small screens) |
 | defaultValue | string | - | Preselected date, ISO format `YYYY-MM-DD` (single mode) |
 | defaultFrom / defaultTo | string | - | Preselected range bounds, ISO format (range mode) |
 | min / max | string | - | Earliest/latest selectable date, ISO format |

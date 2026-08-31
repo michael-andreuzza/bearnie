@@ -5,6 +5,8 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends HTMLAttributes<"div"> {
   /** "single" selects one date, "range" selects a from/to pair */
   mode?: "single" | "range";
+  /** Number of months shown side by side (stacked on small screens) */
+  months?: number;
   /** Preselected date (single mode), ISO format YYYY-MM-DD */
   defaultValue?: string;
   /** Preselected range start/end (range mode), ISO format YYYY-MM-DD */
@@ -24,6 +26,7 @@ export interface Props extends HTMLAttributes<"div"> {
 
 const {
   mode = "single",
+  months = 1,
   defaultValue,
   defaultFrom,
   defaultTo,
@@ -35,7 +38,10 @@ const {
   ...props
 } = Astro.props;
 
-const classes = cn("w-fit rounded-lg border bg-background p-3", className);
+const classes = cn("relative w-fit rounded-lg border bg-background p-3", className);
+
+const navButton =
+  "absolute top-3 z-10 inline-flex size-7 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
 const chevron = (d: string) =>
   `<svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}" /></svg>`;
@@ -45,6 +51,7 @@ const chevron = (d: string) =>
   class={classes}
   data-calendar
   data-mode={mode}
+  data-months={months}
   data-default-value={defaultValue}
   data-default-from={defaultFrom}
   data-default-to={defaultTo}
@@ -53,29 +60,26 @@ const chevron = (d: string) =>
   data-week-starts-on={weekStartsOn}
   {...props}
 >
-  <div class="flex items-center justify-between gap-2 pb-3">
-    <button
-      type="button"
-      data-calendar-prev
-      aria-label="Previous month"
-      class="inline-flex size-7 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-      set:html={chevron("m15 18-6-6 6-6")}
-    />
-    <div
-      data-calendar-label
-      aria-live="polite"
-      class="text-sm font-medium"
-    >
-    </div>
-    <button
-      type="button"
-      data-calendar-next
-      aria-label="Next month"
-      class="inline-flex size-7 items-center justify-center rounded-md border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-      set:html={chevron("m9 18 6-6-6-6")}
-    />
+  <button
+    type="button"
+    data-calendar-prev
+    aria-label="Previous month"
+    class={cn(navButton, "left-3")}
+    set:html={chevron("m15 18-6-6 6-6")}
+  />
+  <button
+    type="button"
+    data-calendar-next
+    aria-label="Next month"
+    class={cn(navButton, "right-3")}
+    set:html={chevron("m9 18 6-6-6-6")}
+  />
+  <span class="sr-only" aria-live="polite" data-calendar-live></span>
+  <div
+    data-calendar-months
+    class="flex flex-col gap-6 sm:flex-row"
+  >
   </div>
-  <div data-calendar-grid role="grid"></div>
   {name && mode === "single" && (
     <input type="hidden" name={name} value={defaultValue ?? ""} data-calendar-input />
   )}
@@ -114,6 +118,7 @@ const chevron = (d: string) =>
       root.setAttribute("data-initialized", "true");
 
       const mode = root.getAttribute("data-mode") === "range" ? "range" : "single";
+      const monthCount = Math.max(1, Number(root.getAttribute("data-months")) || 1);
       const weekStartsOn = root.getAttribute("data-week-starts-on") === "0" ? 0 : 1;
       const min = parseISO(root.getAttribute("data-min"));
       const max = parseISO(root.getAttribute("data-max"));
@@ -126,6 +131,7 @@ const chevron = (d: string) =>
       today.setHours(0, 0, 0, 0);
 
       const initial = mode === "range" ? from : selected;
+      // First visible month; up to monthCount - 1 more render after it
       let viewMonth = new Date(
         (initial ?? today).getFullYear(),
         (initial ?? today).getMonth(),
@@ -134,10 +140,13 @@ const chevron = (d: string) =>
       // Day that holds the roving tabindex (focus target for keyboard nav)
       let focusDate = initial ?? today;
 
-      const grid = root.querySelector("[data-calendar-grid]") as HTMLElement;
-      const label = root.querySelector("[data-calendar-label]") as HTMLElement;
+      const monthsEl = root.querySelector("[data-calendar-months]") as HTMLElement;
+      const liveEl = root.querySelector("[data-calendar-live]") as HTMLElement;
       const prevBtn = root.querySelector("[data-calendar-prev]") as HTMLButtonElement;
       const nextBtn = root.querySelector("[data-calendar-next]") as HTMLButtonElement;
+
+      const monthStart = (offset: number) =>
+        new Date(viewMonth.getFullYear(), viewMonth.getMonth() + offset, 1);
 
       const isDisabled = (d: Date) => (min && d < min) || (max && d > max);
 
@@ -178,30 +187,36 @@ const chevron = (d: string) =>
         dispatch();
         // Re-render replaces the buttons; keep focus on the selected day
         render(document.activeElement instanceof HTMLElement &&
-          grid.contains(document.activeElement));
+          monthsEl.contains(document.activeElement));
       }
 
-      function render(focusAfter = false) {
-        label.textContent = viewMonth.toLocaleDateString(undefined, {
+      function firstVisible(monthDate: Date): Date {
+        const first = new Date(monthDate);
+        first.setDate(first.getDate() - ((first.getDay() - weekStartsOn + 7) % 7));
+        return first;
+      }
+
+      function renderMonth(monthDate: Date, outsideClickable: boolean) {
+        const block = document.createElement("div");
+
+        const label = document.createElement("div");
+        label.className = "flex h-7 items-center justify-center text-sm font-medium";
+        label.textContent = monthDate.toLocaleDateString(undefined, {
           month: "long",
           year: "numeric",
         });
+        block.appendChild(label);
 
-        // Disable nav that would move entirely outside min/max
-        prevBtn.disabled = !!(
-          min && new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0) < min
-        );
-        nextBtn.disabled = !!(
-          max && new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1) > max
-        );
-
-        grid.innerHTML = "";
+        const grid = document.createElement("div");
+        grid.setAttribute("role", "grid");
+        grid.className = "mt-3";
 
         const headerRow = document.createElement("div");
         headerRow.setAttribute("role", "row");
         headerRow.className = "flex";
         for (let i = 0; i < 7; i++) {
-          const day = new Date(2024, 0, 1 + ((i + weekStartsOn) % 7)); // 2024-01-01 is a Monday
+          // 2024-01-01 is a Monday; +6 keeps the offset positive for weekStartsOn=0
+          const day = new Date(2024, 0, 1 + ((i + weekStartsOn + 6) % 7));
           const cell = document.createElement("div");
           cell.setAttribute("role", "columnheader");
           cell.className =
@@ -215,16 +230,7 @@ const chevron = (d: string) =>
         }
         grid.appendChild(headerRow);
 
-        // First visible cell: back up from the 1st to the week start
-        const first = new Date(viewMonth);
-        const offset = (first.getDay() - weekStartsOn + 7) % 7;
-        first.setDate(first.getDate() - offset);
-
-        // If the focused day isn't visible this month, park focus on the 1st
-        const visibleEnd = new Date(first);
-        visibleEnd.setDate(visibleEnd.getDate() + 41);
-        if (focusDate < first || focusDate > visibleEnd) focusDate = new Date(viewMonth);
-
+        const first = firstVisible(monthDate);
         let focusTarget: HTMLButtonElement | null = null;
 
         for (let week = 0; week < 6; week++) {
@@ -249,7 +255,17 @@ const chevron = (d: string) =>
             );
             btn.textContent = String(d.getDate());
 
-            const outside = d.getMonth() !== viewMonth.getMonth();
+            const outside = d.getMonth() !== monthDate.getMonth();
+            // In multi-month view, hide outside days entirely so dates
+            // never appear twice across adjacent grids
+            if (outside && !outsideClickable) {
+              btn.className = DAY_BASE + " invisible";
+              btn.tabIndex = -1;
+              btn.disabled = true;
+              row.appendChild(btn);
+              continue;
+            }
+
             const isToday = sameDay(d, today);
             const isStart = mode === "range" ? sameDay(d, from) : sameDay(d, selected);
             const isEnd = mode === "range" && sameDay(d, to);
@@ -292,6 +308,53 @@ const chevron = (d: string) =>
           grid.appendChild(row);
         }
 
+        block.appendChild(grid);
+        return { block, focusTarget };
+      }
+
+      function render(focusAfter = false) {
+        // Disable nav that would move entirely outside min/max
+        prevBtn.disabled = !!(
+          min && new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0) < min
+        );
+        nextBtn.disabled = !!(
+          max && monthStart(monthCount) > max
+        );
+
+        // If the focused day isn't visible, park focus on the first month
+        const visibleStart = firstVisible(viewMonth);
+        const lastMonth = monthStart(monthCount - 1);
+        const visibleEnd = new Date(firstVisible(lastMonth));
+        visibleEnd.setDate(visibleEnd.getDate() + 41);
+        if (focusDate < visibleStart || focusDate > visibleEnd) {
+          focusDate = new Date(viewMonth);
+        }
+        // In multi-month view outside days are hidden, so clamp focus into
+        // the months themselves
+        if (monthCount > 1) {
+          if (focusDate < viewMonth) focusDate = new Date(viewMonth);
+          const end = new Date(monthStart(monthCount).getTime() - 86400000);
+          if (focusDate > end) focusDate = end;
+        }
+
+        monthsEl.innerHTML = "";
+        let focusTarget: HTMLButtonElement | null = null;
+        const labels: string[] = [];
+
+        for (let offset = 0; offset < monthCount; offset++) {
+          const monthDate = monthStart(offset);
+          labels.push(
+            monthDate.toLocaleDateString(undefined, { month: "long", year: "numeric" }),
+          );
+          const { block, focusTarget: target } = renderMonth(
+            monthDate,
+            monthCount === 1,
+          );
+          monthsEl.appendChild(block);
+          if (target) focusTarget = target;
+        }
+
+        liveEl.textContent = labels.join(" – ");
         if (focusAfter) focusTarget?.focus();
       }
 
@@ -301,16 +364,20 @@ const chevron = (d: string) =>
         else next.setDate(next.getDate() + days);
         if ((min && next < min) || (max && next > max)) return;
         focusDate = next;
-        if (
-          next.getMonth() !== viewMonth.getMonth() ||
-          next.getFullYear() !== viewMonth.getFullYear()
-        ) {
+        // Shift the view only when focus leaves the visible months
+        if (next < viewMonth) {
           viewMonth = new Date(next.getFullYear(), next.getMonth(), 1);
+        } else if (next >= monthStart(monthCount)) {
+          viewMonth = new Date(
+            next.getFullYear(),
+            next.getMonth() - (monthCount - 1),
+            1,
+          );
         }
         render(true);
       }
 
-      grid.addEventListener("keydown", (e) => {
+      monthsEl.addEventListener("keydown", (e) => {
         const key = (e as KeyboardEvent).key;
         const handlers: Record<string, () => void> = {
           ArrowLeft: () => moveFocus(-1),
