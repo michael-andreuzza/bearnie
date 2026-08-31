@@ -20,7 +20,7 @@
     {
       "name": "DialogClose.astro",
       "path": "dialog/DialogClose.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<button\n  type=\"button\"\n  data-dialog-close\n  class={cn(className)}\n  {...props}\n>\n  <slot />\n</button>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"span\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n{/*\n  Layout-neutral wrapper: any element inside closes the dialog on click.\n  A wrapper (not a button) so composing `<DialogClose><Button/></DialogClose>`\n  stays valid HTML — nested buttons get split apart by the parser.\n*/}\n<span data-dialog-close class={cn(\"contents\", className)} {...props}>\n  <slot />\n</span>\n"
     },
     {
       "name": "DialogContent.astro",
@@ -35,7 +35,7 @@
     {
       "name": "DialogFooter.astro",
       "path": "dialog/DialogFooter.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className);\n---\n\n<div class={classes} {...props}>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className);\n---\n\n<div class={classes} {...props}>\n  <slot />\n</div>\n"
     },
     {
       "name": "DialogHeader.astro",

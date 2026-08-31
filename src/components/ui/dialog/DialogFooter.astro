@@ -6,7 +6,7 @@ export interface Props extends HTMLAttributes<'div'> {}
 
 const { class: className, ...props } = Astro.props;
 
-const classes = cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className);
+const classes = cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className);
 ---
 
 <div class={classes} {...props}>

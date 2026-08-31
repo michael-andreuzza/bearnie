@@ -2,16 +2,16 @@
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
 
-export interface Props extends HTMLAttributes<"button"> {}
+export interface Props extends HTMLAttributes<"span"> {}
 
 const { class: className, ...props } = Astro.props;
 ---
 
-<button
-  type="button"
-  data-sheet-close
-  class={cn(className)}
-  {...props}
->
+{/*
+  Layout-neutral wrapper: any element inside closes the sheet on click.
+  A wrapper (not a button) so composing `<SheetClose><Button/></SheetClose>`
+  stays valid HTML — nested buttons get split apart by the parser.
+*/}
+<span data-sheet-close class={cn("contents", className)} {...props}>
   <slot />
-</button>
+</span>
