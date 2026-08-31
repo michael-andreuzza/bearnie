@@ -9,7 +9,10 @@ export interface Props extends HTMLAttributes<'div'> {
 const { step, class: className, ...props } = Astro.props;
 
 const classes = cn(
-  'stepper-item flex items-center gap-2 shrink-0',
+  // min-w-0 (here and on children other than the circle trigger) lets items
+  // shrink so long titles/descriptions wrap instead of overflowing the row
+  'stepper-item flex min-w-0 items-center gap-2',
+  '[&>:not([data-stepper-trigger])]:min-w-0',
   className
 );
 ---

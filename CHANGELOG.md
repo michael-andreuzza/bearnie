@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Stepper gating.** New `linear` prop blocks clicking steps beyond the furthest step reached (locked triggers get `aria-disabled` styling). Buttons with `data-stepper-next`/`data-stepper-prev` placed next to the stepper advance or rewind it, and the stepper dispatches a bubbling `stepper-change` CustomEvent with `{ step }`.
 - **Carousel breakpoints.** New `breakpoints` prop maps media queries to `slidesPerView`/`spacing` overrides, e.g. `{ "(min-width: 1024px)": { slidesPerView: 3 } }`.
 
+### Fixed (registry 0.10.0)
+
+- Horizontal steppers no longer overflow their container: `StepperItem` lost its `shrink-0` so long titles/descriptions wrap, and `StepperSeparator` compresses (down to `min-w-2`) before the row overflows.
+
 ### Added (registry 0.9.0)
 
 - **Dropdown menu submenus + checkbox/radio items.** New `DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, and `DropdownMenuRadioItem`. Submenus open on hover, click, or ArrowRight and close with ArrowLeft/Escape; checkbox/radio items keep the menu open and dispatch `dropdown-checkbox-change` / `dropdown-radio-change` CustomEvents.

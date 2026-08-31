@@ -22,12 +22,12 @@
     {
       "name": "StepperItem.astro",
       "path": "stepper/StepperItem.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  step: number;\n}\n\nconst { step, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'stepper-item flex items-center gap-2 shrink-0',\n  className\n);\n---\n\n<div\n  class={classes}\n  data-stepper-item\n  data-step={step}\n  data-state=\"upcoming\"\n  {...props}\n>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  step: number;\n}\n\nconst { step, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  // min-w-0 (here and on children other than the circle trigger) lets items\n  // shrink so long titles/descriptions wrap instead of overflowing the row\n  'stepper-item flex min-w-0 items-center gap-2',\n  '[&>:not([data-stepper-trigger])]:min-w-0',\n  className\n);\n---\n\n<div\n  class={classes}\n  data-stepper-item\n  data-step={step}\n  data-state=\"upcoming\"\n  {...props}\n>\n  <slot />\n</div>\n"
     },
     {
       "name": "StepperSeparator.astro",
       "path": "stepper/StepperSeparator.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'bg-muted data-[state=completed]:bg-primary transition-colors',\n  'h-0.5 w-6 shrink-0 mx-4',\n  '[[data-orientation=vertical]_&]:h-6 [[data-orientation=vertical]_&]:w-0.5 [[data-orientation=vertical]_&]:mx-0 [[data-orientation=vertical]_&]:ml-4',\n  className\n);\n---\n\n<div class={classes} data-stepper-separator aria-hidden=\"true\" {...props} />\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'bg-muted data-[state=completed]:bg-primary transition-colors',\n  // shrink + min-w: separators give up width before the row overflows\n  'h-0.5 w-6 min-w-2 shrink mx-4',\n  '[[data-orientation=vertical]_&]:h-6 [[data-orientation=vertical]_&]:w-0.5 [[data-orientation=vertical]_&]:mx-0 [[data-orientation=vertical]_&]:ml-4',\n  className\n);\n---\n\n<div class={classes} data-stepper-separator aria-hidden=\"true\" {...props} />\n"
     },
     {
       "name": "StepperTitle.astro",

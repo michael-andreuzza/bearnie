@@ -8,7 +8,8 @@ const { class: className, ...props } = Astro.props;
 
 const classes = cn(
   'bg-muted data-[state=completed]:bg-primary transition-colors',
-  'h-0.5 w-6 shrink-0 mx-4',
+  // shrink + min-w: separators give up width before the row overflows
+  'h-0.5 w-6 min-w-2 shrink mx-4',
   '[[data-orientation=vertical]_&]:h-6 [[data-orientation=vertical]_&]:w-0.5 [[data-orientation=vertical]_&]:mx-0 [[data-orientation=vertical]_&]:ml-4',
   className
 );
