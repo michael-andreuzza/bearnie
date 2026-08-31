@@ -42,6 +42,11 @@ const UTILITY_META: Record<
       "Collision-aware floating positioning utility (flip + shift) for overlays",
     file: "position.ts",
   },
+  overlay: {
+    description:
+      "Overlay helpers: data-state enter/exit animations, refcounted scroll lock, and a modal stack",
+    file: "overlay.ts",
+  },
   "ui-runtime-loader": {
     description:
       "Registers per-feature UI runtime initializers (runs on load and after view transitions)",
@@ -50,7 +55,7 @@ const UTILITY_META: Record<
   "ui-runtime-dialog": {
     description: "Shared dialog initialization runtime",
     file: "runtime/dialog.ts",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "overlay"],
   },
   "ui-runtime-disclosure-triggers": {
     description: "Shared keyboard trigger handlers for disclosure controls",
@@ -59,17 +64,17 @@ const UTILITY_META: Record<
   "ui-runtime-dropdown-menu": {
     description: "Shared dropdown menu initialization runtime",
     file: "runtime/dropdown-menu.ts",
-    registryDependencies: ["focus-trap", "position"],
+    registryDependencies: ["focus-trap", "position", "overlay"],
   },
   "ui-runtime-popover": {
     description: "Shared popover initialization runtime",
     file: "runtime/popover.ts",
-    registryDependencies: ["focus-trap", "position"],
+    registryDependencies: ["focus-trap", "position", "overlay"],
   },
   "ui-runtime-command": {
     description: "Shared command and command dialog initialization runtime",
     file: "runtime/command.ts",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "overlay"],
   },
   "ui-runtime-tabs": {
     description: "Shared tabs initialization runtime",
@@ -83,16 +88,17 @@ const UTILITY_META: Record<
   "ui-runtime-alert-dialog": {
     description: "Shared alert dialog initialization runtime",
     file: "runtime/alert-dialog.ts",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "overlay"],
   },
   "ui-runtime-sheet": {
     description: "Shared sheet initialization runtime",
     file: "runtime/sheet.ts",
-    registryDependencies: ["focus-trap"],
+    registryDependencies: ["focus-trap", "overlay"],
   },
   "ui-runtime-context-menu": {
     description: "Shared context menu initialization runtime",
     file: "runtime/context-menu.ts",
+    registryDependencies: ["focus-trap", "overlay"],
   },
 };
 
@@ -230,7 +236,7 @@ const COMPONENT_META: Record<
   "hover-card": {
     description: "A card that appears on hover",
     category: "display",
-    registryDependencies: ["position"],
+    registryDependencies: ["position", "overlay"],
   },
   input: {
     description: "A text input field for forms",
@@ -366,7 +372,7 @@ const COMPONENT_META: Record<
   tooltip: {
     description: "A popup that displays information on hover or focus",
     category: "display",
-    registryDependencies: ["focus-trap", "position"],
+    registryDependencies: ["focus-trap", "position", "overlay"],
   },
   tree: {
     description: "A hierarchical tree view",

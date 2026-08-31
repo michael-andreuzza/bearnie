@@ -1,0 +1,46 @@
+---
+import { cn } from '@/utils/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export interface Props extends HTMLAttributes<'button'> {
+  value: string;
+  disabled?: boolean;
+}
+
+const { value, disabled = false, class: className, ...props } = Astro.props;
+
+const classes = cn(
+  'relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors',
+  'focus:bg-accent focus:text-accent-foreground',
+  'hover:bg-accent hover:text-accent-foreground',
+  disabled && 'pointer-events-none opacity-50',
+  className
+);
+---
+
+<button
+  type="button"
+  class={classes}
+  role="menuitemradio"
+  disabled={disabled}
+  tabindex="-1"
+  data-dropdown-item
+  data-dropdown-radio-item
+  data-value={value}
+  data-checked="false"
+  aria-checked="false"
+  {...props}
+>
+  <span class="absolute left-2 flex size-3.5 items-center justify-center">
+    <svg
+      class="size-2 fill-current hidden"
+      aria-hidden="true"
+      data-radio-icon
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  </span>
+  <slot />
+</button>

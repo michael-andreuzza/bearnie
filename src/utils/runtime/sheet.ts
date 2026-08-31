@@ -1,4 +1,13 @@
 import { trapFocus, generateId } from "@/utils/focus-trap";
+import {
+  showOverlay,
+  hideOverlay,
+  lockScroll,
+  unlockScroll,
+  pushModal,
+  removeModal,
+  isTopModal,
+} from "@/utils/overlay";
 
 // Bound once per session; resolves live sheets at event time so
 // listeners don't accumulate across view-transition navigations.
@@ -11,7 +20,7 @@ function bindDocumentListeners() {
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     document.querySelectorAll("[data-sheet]").forEach((sheet) => {
-      (sheet as any).__closeSheet?.();
+      if (isTopModal(sheet)) (sheet as any).__closeSheet?.();
     });
   });
 }
@@ -24,7 +33,7 @@ export function initSheets() {
     sheet.setAttribute("data-initialized", "true");
 
     const trigger = sheet.querySelector("[data-sheet-trigger]") as HTMLElement;
-    const overlay = sheet.querySelector("[data-sheet-overlay]");
+    const overlay = sheet.querySelector("[data-sheet-overlay]") as HTMLElement;
     const content = sheet.querySelector("[data-sheet-content]") as HTMLElement;
     const title = sheet.querySelector("[data-sheet-title]") as HTMLElement;
     const description = sheet.querySelector("[data-sheet-description]") as HTMLElement;
@@ -51,12 +60,14 @@ export function initSheets() {
     trigger.setAttribute("aria-expanded", "false");
     trigger.setAttribute("data-state", "closed");
 
-    // No-op when already closed so the shared Escape handler can call it blindly
+    // No-op when already closed (or mid-exit-animation) so the shared Escape
+    // handler can call it blindly without double-releasing the scroll lock
     function closeSheet() {
-      if ((overlay as HTMLElement).hidden) return;
-      (overlay as HTMLElement).hidden = true;
-      (content as HTMLElement).hidden = true;
-      document.body.style.overflow = "";
+      if (overlay.hidden || overlay.getAttribute("data-state") === "closed") return;
+      removeModal(sheet);
+      hideOverlay(overlay);
+      hideOverlay(content);
+      unlockScroll();
       trigger.setAttribute("aria-expanded", "false");
       trigger.setAttribute("data-state", "closed");
       cleanupFocusTrap?.();
@@ -66,9 +77,10 @@ export function initSheets() {
     (sheet as any).__closeSheet = closeSheet;
 
     trigger.addEventListener("click", () => {
-      (overlay as HTMLElement).hidden = false;
-      (content as HTMLElement).hidden = false;
-      document.body.style.overflow = "hidden";
+      showOverlay(overlay);
+      showOverlay(content);
+      lockScroll();
+      pushModal(sheet);
       trigger.setAttribute("aria-expanded", "true");
       trigger.setAttribute("data-state", "open");
       cleanupFocusTrap = trapFocus(content);

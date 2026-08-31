@@ -20,6 +20,12 @@ import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuConte
 import DropdownMenuItem from "@/components/ui/dropdown-menu/DropdownMenuItem.astro";
 import DropdownMenuLabel from "@/components/ui/dropdown-menu/DropdownMenuLabel.astro";
 import DropdownMenuSeparator from "@/components/ui/dropdown-menu/DropdownMenuSeparator.astro";
+import DropdownMenuSub from "@/components/ui/dropdown-menu/DropdownMenuSub.astro";
+import DropdownMenuSubTrigger from "@/components/ui/dropdown-menu/DropdownMenuSubTrigger.astro";
+import DropdownMenuSubContent from "@/components/ui/dropdown-menu/DropdownMenuSubContent.astro";
+import DropdownMenuCheckboxItem from "@/components/ui/dropdown-menu/DropdownMenuCheckboxItem.astro";
+import DropdownMenuRadioGroup from "@/components/ui/dropdown-menu/DropdownMenuRadioGroup.astro";
+import DropdownMenuRadioItem from "@/components/ui/dropdown-menu/DropdownMenuRadioItem.astro";
 
 
 
@@ -300,6 +306,114 @@ import {
   </DropdownMenu>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Submenu
+
+Nest `DropdownMenuSub` inside the content to open a second-level menu on
+hover, click, or <kbd>ArrowRight</kbd>. <kbd>ArrowLeft</kbd> or
+<kbd>Escape</kbd> returns to the parent menu.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<DropdownMenu>
+  <DropdownMenuTrigger>
+    <Button variant="outline">Share</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Copy link</DropdownMenuItem>
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>Invite people</DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuItem>Email</DropdownMenuItem>
+        <DropdownMenuItem>Message</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>More options</DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Download</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+  </Fragment>
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      <Button variant="outline">Share</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuItem>Copy link</DropdownMenuItem>
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>Invite people</DropdownMenuSubTrigger>
+        <DropdownMenuSubContent>
+          <DropdownMenuItem>Email</DropdownMenuItem>
+          <DropdownMenuItem>Message</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>More options</DropdownMenuItem>
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>Download</DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Checkbox and radio items
+
+Checkbox and radio items keep the menu open so several can be toggled in
+one visit. They emit `dropdown-checkbox-change` and `dropdown-radio-change`
+custom events (both bubble) when the selection changes.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<DropdownMenu>
+  <DropdownMenuTrigger>
+    <Button variant="outline">View</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuCheckboxItem checked>Status bar</DropdownMenuCheckboxItem>
+    <DropdownMenuCheckboxItem>Activity bar</DropdownMenuCheckboxItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+    <DropdownMenuRadioGroup defaultValue="bottom">
+      <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+    </DropdownMenuRadioGroup>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+  </Fragment>
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      <Button variant="outline">View</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuCheckboxItem checked>Status bar</DropdownMenuCheckboxItem>
+      <DropdownMenuCheckboxItem>Activity bar</DropdownMenuCheckboxItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>Panel position</DropdownMenuLabel>
+      <DropdownMenuRadioGroup defaultValue="bottom">
+        <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -311,6 +425,12 @@ import {
 - `DropdownMenuItem` - Individual menu items
 - `DropdownMenuLabel` - Non-interactive label text
 - `DropdownMenuSeparator` - Visual divider between items
+- `DropdownMenuSub` - Wraps a submenu trigger and its content
+- `DropdownMenuSubTrigger` - Item that opens the submenu
+- `DropdownMenuSubContent` - The nested submenu panel
+- `DropdownMenuCheckboxItem` - Toggleable item with a check indicator
+- `DropdownMenuRadioGroup` - Groups radio items with a single selection
+- `DropdownMenuRadioItem` - Selectable item within a radio group
 </Prose>
 
 <Prose>
@@ -332,5 +452,48 @@ import {
 | destructive | boolean | false | Destructive styling |
 | class | string | - | Additional CSS classes |
 
+#### DropdownMenuSubTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| disabled | boolean | false | Disables the submenu trigger |
+| inset | boolean | false | Indents the trigger to align with checkbox/radio items |
+| class | string | - | Additional CSS classes |
+
+#### DropdownMenuCheckboxItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| checked | boolean | false | Initial checked state |
+| disabled | boolean | false | Disables the item |
+| class | string | - | Additional CSS classes |
+
+#### DropdownMenuRadioGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| defaultValue | string | - | Initially selected value |
+| class | string | - | Additional CSS classes |
+
+#### DropdownMenuRadioItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| value | string | - | The value this item represents (required) |
+| disabled | boolean | false | Disables the item |
+| class | string | - | Additional CSS classes |
+
 All other DropdownMenu components accept `class` for additional CSS classes.
+</Prose>
+
+<Prose>
+### Events
+
+| Event | Target | Detail | Description |
+|------|------|---------|-------------|
+| dropdown-checkbox-change | DropdownMenuCheckboxItem | `{ checked: boolean }` | Fired when a checkbox item is toggled |
+| dropdown-radio-change | DropdownMenuRadioGroup | `{ value: string }` | Fired when the radio selection changes |
+
+Both events bubble, so a single listener on the menu (or document) can
+observe every change.
 </Prose>

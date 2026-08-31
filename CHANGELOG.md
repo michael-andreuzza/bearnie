@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added (registry 0.9.0)
+
+- **Dropdown menu submenus + checkbox/radio items.** New `DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, and `DropdownMenuRadioItem`. Submenus open on hover, click, or ArrowRight and close with ArrowLeft/Escape; checkbox/radio items keep the menu open and dispatch `dropdown-checkbox-change` / `dropdown-radio-change` CustomEvents.
+- **Context menu submenus + checkbox/radio items.** The same six sub-components for `ContextMenu` (`ContextMenuSub`, `ContextMenuSubTrigger`, `ContextMenuSubContent`, `ContextMenuCheckboxItem`, `ContextMenuRadioGroup`, `ContextMenuRadioItem`), with `context-menu-checkbox-change` / `context-menu-radio-change` events.
+- **Enter/exit animation system (`overlay` utility).** Popover, dropdown menu, context menu, tooltip, hover card, dialog, alert dialog, sheet, and the command dialog now animate open and closed, driven by `data-state` and keyframes in `bearnie.css`. Exit animations complete before the element is hidden, sheets slide from their edge, backdrops fade, and everything is disabled under `prefers-reduced-motion`. Override or remove the animations by targeting the `[data-*-content][data-state]` selectors in your own CSS.
+- **Nested modal support.** Body scroll lock is now reference-counted across dialogs, alert dialogs, sheets, and the command dialog — closing a nested modal no longer unlocks scrolling while the outer one is open — and Escape closes only the topmost open modal instead of all of them.
+- **Tabs URL sync.** New `syncKey` prop: selecting a tab updates a `?<syncKey>=` URL param via `history.replaceState`, and links with the param activate that tab on load.
+
+### Changed (registry 0.9.0)
+
+- `DropdownMenuContent` and `ContextMenuContent` no longer set `overflow-hidden` (submenus must overflow the panel); `ContextMenuContent` also dropped inert `animate-in fade-in-0 zoom-in-95` classes that referenced undefined utilities.
+- The `position` utility's cleanup no longer clears inline coordinates, so closing overlays hold their place while the exit animation plays.
+
 ### Added (registry 0.8.0)
 
 - **`field` component.** New form primitives: `Field`, `FieldGroup`, `FieldLabel`, `FieldDescription`, `FieldError`. `Field` wires the label to the control, connects description/error via `aria-describedby`, and sets `aria-invalid` automatically (toggle `data-invalid` from your own validation code). `Input`, `Textarea`, `Select`, and `Checkbox` now style themselves when `aria-invalid` is set.

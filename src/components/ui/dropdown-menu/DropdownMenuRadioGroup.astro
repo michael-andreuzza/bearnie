@@ -1,0 +1,21 @@
+---
+import { cn } from '@/utils/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export interface Props extends HTMLAttributes<'div'> {
+  /** Initially selected value (uncontrolled). */
+  defaultValue?: string;
+}
+
+const { defaultValue, class: className, ...props } = Astro.props;
+---
+
+<div
+  class={cn('', className)}
+  data-dropdown-radio-group
+  data-value={defaultValue}
+  role="group"
+  {...props}
+>
+  <slot />
+</div>

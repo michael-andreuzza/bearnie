@@ -14,6 +14,7 @@ const { class: className, ...props } = Astro.props;
 <script>
   import { generateId } from '@/utils/focus-trap';
   import { positionFloating, type FloatingSide } from '@/utils/position';
+  import { showOverlay, hideOverlay } from '@/utils/overlay';
 
   function initTooltips() {
     document.querySelectorAll('[data-tooltip]').forEach((tooltip) => {
@@ -36,16 +37,17 @@ const { class: className, ...props } = Astro.props;
       let cleanupPosition: (() => void) | null = null;
 
       const showTooltip = () => {
-        content.hidden = false;
+        showOverlay(content);
+        cleanupPosition?.();
         cleanupPosition = positionFloating(trigger, content, {
           side: (content.dataset.side as FloatingSide) || 'top',
         });
       };
 
       const hideTooltip = () => {
-        content.hidden = true;
         cleanupPosition?.();
         cleanupPosition = null;
+        hideOverlay(content);
       };
 
       trigger.addEventListener('mouseenter', showTooltip);

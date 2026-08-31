@@ -1,0 +1,17 @@
+---
+import { cn } from '@/utils/cn';
+import type { HTMLAttributes } from 'astro/types';
+
+export interface Props extends HTMLAttributes<'div'> {}
+
+const { class: className, ...props } = Astro.props;
+
+const classes = cn(
+  'absolute left-full top-0 z-50 ml-1 min-w-[8rem] rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',
+  className
+);
+---
+
+<div class={classes} data-dropdown-sub-content role="menu" hidden {...props}>
+  <slot />
+</div>

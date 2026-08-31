@@ -86,11 +86,17 @@ export { default as CommandSeparator } from "./command/CommandSeparator.astro";
 export { default as CommandShortcut } from "./command/CommandShortcut.astro";
 
 export { default as ContextMenu } from "./context-menu/ContextMenu.astro";
+export { default as ContextMenuCheckboxItem } from "./context-menu/ContextMenuCheckboxItem.astro";
 export { default as ContextMenuContent } from "./context-menu/ContextMenuContent.astro";
 export { default as ContextMenuItem } from "./context-menu/ContextMenuItem.astro";
 export { default as ContextMenuLabel } from "./context-menu/ContextMenuLabel.astro";
+export { default as ContextMenuRadioGroup } from "./context-menu/ContextMenuRadioGroup.astro";
+export { default as ContextMenuRadioItem } from "./context-menu/ContextMenuRadioItem.astro";
 export { default as ContextMenuSeparator } from "./context-menu/ContextMenuSeparator.astro";
 export { default as ContextMenuShortcut } from "./context-menu/ContextMenuShortcut.astro";
+export { default as ContextMenuSub } from "./context-menu/ContextMenuSub.astro";
+export { default as ContextMenuSubContent } from "./context-menu/ContextMenuSubContent.astro";
+export { default as ContextMenuSubTrigger } from "./context-menu/ContextMenuSubTrigger.astro";
 export { default as ContextMenuTrigger } from "./context-menu/ContextMenuTrigger.astro";
 
 export { default as Dialog } from "./dialog/Dialog.astro";
@@ -104,10 +110,16 @@ export { default as DialogTitle } from "./dialog/DialogTitle.astro";
 export { default as DialogTrigger } from "./dialog/DialogTrigger.astro";
 
 export { default as DropdownMenu } from "./dropdown-menu/DropdownMenu.astro";
+export { default as DropdownMenuCheckboxItem } from "./dropdown-menu/DropdownMenuCheckboxItem.astro";
 export { default as DropdownMenuContent } from "./dropdown-menu/DropdownMenuContent.astro";
 export { default as DropdownMenuItem } from "./dropdown-menu/DropdownMenuItem.astro";
 export { default as DropdownMenuLabel } from "./dropdown-menu/DropdownMenuLabel.astro";
+export { default as DropdownMenuRadioGroup } from "./dropdown-menu/DropdownMenuRadioGroup.astro";
+export { default as DropdownMenuRadioItem } from "./dropdown-menu/DropdownMenuRadioItem.astro";
 export { default as DropdownMenuSeparator } from "./dropdown-menu/DropdownMenuSeparator.astro";
+export { default as DropdownMenuSub } from "./dropdown-menu/DropdownMenuSub.astro";
+export { default as DropdownMenuSubContent } from "./dropdown-menu/DropdownMenuSubContent.astro";
+export { default as DropdownMenuSubTrigger } from "./dropdown-menu/DropdownMenuSubTrigger.astro";
 export { default as DropdownMenuTrigger } from "./dropdown-menu/DropdownMenuTrigger.astro";
 
 export { default as Empty } from "./empty/Empty.astro";

@@ -1,0 +1,51 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"button"> {
+  disabled?: boolean;
+  inset?: boolean;
+}
+
+const { disabled = false, inset = false, class: className, ...props } = Astro.props;
+
+const classes = cn(
+  "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
+  "focus:bg-accent focus:text-accent-foreground",
+  "hover:bg-accent hover:text-accent-foreground",
+  "data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+  "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  disabled && "pointer-events-none opacity-50",
+  inset && "pl-8",
+  className
+);
+---
+
+<button
+  type="button"
+  class={classes}
+  role="menuitem"
+  disabled={disabled}
+  tabindex="-1"
+  data-context-menu-item
+  data-context-menu-sub-trigger
+  data-state="closed"
+  aria-haspopup="menu"
+  aria-expanded="false"
+  {...props}
+>
+  <slot />
+  <svg
+    class="ml-auto size-4"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</button>

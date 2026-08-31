@@ -4,6 +4,7 @@ import {
   type FloatingSide,
   type FloatingAlign,
 } from "@/utils/position";
+import { showOverlay, hideOverlay } from "@/utils/overlay";
 
 const positionCleanups = new WeakMap<Element, () => void>();
 
@@ -14,12 +15,20 @@ function getParts(popover: Element) {
   };
 }
 
+// "Open" means visible and not mid-exit-animation, so a click during the
+// exit reopens instead of double-closing.
+function isOpen(content: HTMLElement) {
+  return !content.hidden && content.getAttribute("data-state") !== "closed";
+}
+
 function closePopover(popover: Element, restoreFocus: boolean) {
   const { trigger, content } = getParts(popover);
-  if (!content || content.hidden) return;
-  content.hidden = true;
+  if (!content || !isOpen(content)) return;
+  // Stop repositioning immediately; inline coordinates stay put so the
+  // exit animation plays in place.
   positionCleanups.get(popover)?.();
   positionCleanups.delete(popover);
+  hideOverlay(content);
   trigger?.setAttribute("aria-expanded", "false");
   trigger?.setAttribute("data-state", "closed");
   if (restoreFocus) trigger?.focus();
@@ -72,7 +81,7 @@ export function initPopovers() {
     trigger.setAttribute("data-state", "closed");
 
     const openPopover = () => {
-      content.hidden = false;
+      showOverlay(content);
       positionCleanups.get(popover)?.();
       positionCleanups.set(
         popover,
@@ -90,10 +99,10 @@ export function initPopovers() {
     };
 
     trigger.addEventListener("click", () => {
-      if (content.hidden) {
-        openPopover();
-      } else {
+      if (isOpen(content)) {
         closePopover(popover, true);
+      } else {
+        openPopover();
       }
     });
   });

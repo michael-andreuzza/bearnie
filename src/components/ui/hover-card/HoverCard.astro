@@ -22,6 +22,7 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
 
 <script>
   import { positionFloating, type FloatingSide, type FloatingAlign } from '@/utils/position';
+  import { showOverlay, hideOverlay } from '@/utils/overlay';
 
   function initHoverCards() {
     document.querySelectorAll('[data-hover-card]').forEach((card) => {
@@ -43,7 +44,7 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
       const showContent = () => {
         clearTimeout(closeTimeout);
         openTimeout = setTimeout(() => {
-          content.hidden = false;
+          showOverlay(content);
           cleanupPosition?.();
           cleanupPosition = positionFloating(trigger, content, {
             side: (content.dataset.side as FloatingSide) || 'bottom',
@@ -56,18 +57,18 @@ const { openDelay = 200, closeDelay = 300, class: className, ...props } = Astro.
       const hideContent = () => {
         clearTimeout(openTimeout);
         closeTimeout = setTimeout(() => {
-          content.hidden = true;
           cleanupPosition?.();
           cleanupPosition = null;
+          hideOverlay(content);
         }, closeDelay);
       };
 
       const hideImmediately = () => {
         clearTimeout(openTimeout);
         clearTimeout(closeTimeout);
-        content.hidden = true;
         cleanupPosition?.();
         cleanupPosition = null;
+        hideOverlay(content);
       };
 
       trigger.addEventListener('mouseenter', showContent);

@@ -16,9 +16,14 @@
       "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn(\"relative\", className)} data-context-menu {...props}>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initContextMenus } from \"@/utils/runtime/context-menu\";\n\n  registerUiInit(initContextMenus);\n</script>\n"
     },
     {
+      "name": "ContextMenuCheckboxItem.astro",
+      "path": "context-menu/ContextMenuCheckboxItem.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {\n  checked?: boolean;\n  disabled?: boolean;\n}\n\nconst { checked = false, disabled = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors\",\n  \"focus:bg-accent focus:text-accent-foreground\",\n  \"hover:bg-accent hover:text-accent-foreground\",\n  disabled && \"pointer-events-none opacity-50\",\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitemcheckbox\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-context-menu-item\n  data-context-menu-checkbox-item\n  data-checked={checked ? \"true\" : \"false\"}\n  aria-checked={checked}\n  {...props}\n>\n  <span class=\"absolute left-2 flex size-3.5 items-center justify-center\">\n    <svg\n      class:list={[\"size-4\", !checked && \"hidden\"]}\n      aria-hidden=\"true\"\n      data-check-icon\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      stroke-width=\"2\"\n      stroke-linecap=\"round\"\n      stroke-linejoin=\"round\"\n    >\n      <polyline points=\"20 6 9 17 4 12\"></polyline>\n    </svg>\n  </span>\n  <slot />\n</button>\n"
+    },
+    {
       "name": "ContextMenuContent.astro",
       "path": "context-menu/ContextMenuContent.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md\",\n  \"animate-in fade-in-0 zoom-in-95\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-context-menu-content\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"z-50 min-w-[8rem] rounded-md border bg-popover p-1 text-popover-foreground shadow-md\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-context-menu-content\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
     },
     {
       "name": "ContextMenuItem.astro",
@@ -31,6 +36,16 @@
       "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  inset?: boolean;\n}\n\nconst { inset = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"px-2 py-1.5 text-xs font-semibold text-muted-foreground\",\n  inset && \"pl-8\",\n  className\n);\n---\n\n<div class={classes} {...props}>\n  <slot />\n</div>\n"
     },
     {
+      "name": "ContextMenuRadioGroup.astro",
+      "path": "context-menu/ContextMenuRadioGroup.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {\n  /** Initially selected value (uncontrolled). */\n  defaultValue?: string;\n}\n\nconst { defaultValue, class: className, ...props } = Astro.props;\n---\n\n<div\n  class={cn(\"\", className)}\n  data-context-menu-radio-group\n  data-value={defaultValue}\n  role=\"group\"\n  {...props}\n>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "ContextMenuRadioItem.astro",
+      "path": "context-menu/ContextMenuRadioItem.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {\n  value: string;\n  disabled?: boolean;\n}\n\nconst { value, disabled = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors\",\n  \"focus:bg-accent focus:text-accent-foreground\",\n  \"hover:bg-accent hover:text-accent-foreground\",\n  disabled && \"pointer-events-none opacity-50\",\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitemradio\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-context-menu-item\n  data-context-menu-radio-item\n  data-value={value}\n  data-checked=\"false\"\n  aria-checked=\"false\"\n  {...props}\n>\n  <span class=\"absolute left-2 flex size-3.5 items-center justify-center\">\n    <svg\n      class=\"size-2 fill-current hidden\"\n      aria-hidden=\"true\"\n      data-radio-icon\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 24 24\"\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n    </svg>\n  </span>\n  <slot />\n</button>\n"
+    },
+    {
       "name": "ContextMenuSeparator.astro",
       "path": "context-menu/ContextMenuSeparator.astro",
       "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div\n  class={cn(\"-mx-1 my-1 h-px bg-border\", className)}\n  role=\"separator\"\n  {...props}\n/>\n"
@@ -39,6 +54,21 @@
       "name": "ContextMenuShortcut.astro",
       "path": "context-menu/ContextMenuShortcut.astro",
       "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"span\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  class={cn(\"ml-auto text-xs tracking-widest text-muted-foreground\", className)}\n  {...props}\n>\n  <slot />\n</span>\n"
+    },
+    {
+      "name": "ContextMenuSub.astro",
+      "path": "context-menu/ContextMenuSub.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn(\"relative\", className)} data-context-menu-sub {...props}>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "ContextMenuSubContent.astro",
+      "path": "context-menu/ContextMenuSubContent.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"absolute left-full top-0 z-50 ml-1 min-w-[8rem] rounded-md border bg-popover p-1 text-popover-foreground shadow-md\",\n  className\n);\n---\n\n<div class={classes} data-context-menu-sub-content role=\"menu\" hidden {...props}>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "ContextMenuSubTrigger.astro",
+      "path": "context-menu/ContextMenuSubTrigger.astro",
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"button\"> {\n  disabled?: boolean;\n  inset?: boolean;\n}\n\nconst { disabled = false, inset = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors\",\n  \"focus:bg-accent focus:text-accent-foreground\",\n  \"hover:bg-accent hover:text-accent-foreground\",\n  \"data-[state=open]:bg-accent data-[state=open]:text-accent-foreground\",\n  \"[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0\",\n  disabled && \"pointer-events-none opacity-50\",\n  inset && \"pl-8\",\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitem\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-context-menu-item\n  data-context-menu-sub-trigger\n  data-state=\"closed\"\n  aria-haspopup=\"menu\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n  <svg\n    class=\"ml-auto size-4\"\n    aria-hidden=\"true\"\n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 24 24\"\n    fill=\"none\"\n    stroke=\"currentColor\"\n    stroke-width=\"2\"\n    stroke-linecap=\"round\"\n    stroke-linejoin=\"round\"\n  >\n    <polyline points=\"9 18 15 12 9 6\"></polyline>\n  </svg>\n</button>\n"
     },
     {
       "name": "ContextMenuTrigger.astro",

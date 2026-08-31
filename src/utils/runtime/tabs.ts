@@ -5,7 +5,7 @@ export function initTabs() {
     if (tabs.hasAttribute("data-initialized")) return;
     tabs.setAttribute("data-initialized", "true");
 
-    const defaultValue = tabs.getAttribute("data-default-value");
+    const syncKey = tabs.getAttribute("data-sync-key");
     const orientation =
       tabs.getAttribute("data-orientation") || "horizontal";
 
@@ -16,6 +16,18 @@ export function initTabs() {
     const contents = Array.from(
       tabs.querySelectorAll("[data-tabs-content]"),
     ) as HTMLElement[];
+
+    // A URL param (?<syncKey>=value) wins over the declared default, so
+    // shared links restore the tab the sender was looking at. Ignored when
+    // it doesn't match any tab.
+    const urlValue = syncKey
+      ? new URLSearchParams(window.location.search).get(syncKey)
+      : null;
+    const defaultValue =
+      urlValue &&
+      triggers.some((t) => t.getAttribute("data-value") === urlValue)
+        ? urlValue
+        : tabs.getAttribute("data-default-value");
 
     if (tabsList) {
       tabsList.setAttribute("data-orientation", orientation);
@@ -70,6 +82,12 @@ export function initTabs() {
 
     const activateTab = (trigger: HTMLElement) => {
       const value = trigger.getAttribute("data-value");
+
+      if (syncKey && value) {
+        const url = new URL(window.location.href);
+        url.searchParams.set(syncKey, value);
+        history.replaceState(history.state, "", url);
+      }
 
       triggers.forEach((t) => {
         const isActive = t.getAttribute("data-value") === value;

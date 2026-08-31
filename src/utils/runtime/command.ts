@@ -1,4 +1,13 @@
 import { trapFocus, generateId } from "@/utils/focus-trap";
+import {
+  showOverlay,
+  hideOverlay,
+  lockScroll,
+  unlockScroll,
+  pushModal,
+  removeModal,
+  isTopModal,
+} from "@/utils/overlay";
 
 export function initCommands() {
   document.querySelectorAll("[data-command]").forEach((command) => {
@@ -160,16 +169,19 @@ function getCommandDialogParts(dialog: Element) {
   };
 }
 
+// "Open" means visible and not mid-exit-animation, so the ⌘K toggle reopens
+// during the exit instead of double-closing.
 function isCommandDialogOpen(dialog: Element) {
   const { overlay } = getCommandDialogParts(dialog);
-  return overlay ? !overlay.hidden : false;
+  if (!overlay) return false;
+  return !overlay.hidden && overlay.getAttribute("data-state") !== "closed";
 }
 
 function openCommandDialog(dialog: Element) {
   const { trigger, overlay, content } = getCommandDialogParts(dialog);
-  if (overlay) overlay.hidden = false;
+  if (overlay) showOverlay(overlay);
   if (content) {
-    content.hidden = false;
+    showOverlay(content);
     commandDialogFocusTraps.set(dialog, trapFocus(content));
     const input = content.querySelector("[data-command-input]") as
       | HTMLInputElement
@@ -178,18 +190,23 @@ function openCommandDialog(dialog: Element) {
   }
   trigger?.setAttribute("aria-expanded", "true");
   trigger?.setAttribute("data-state", "open");
-  document.body.style.overflow = "hidden";
+  lockScroll();
+  pushModal(dialog);
 }
 
 function closeCommandDialog(dialog: Element) {
   const { trigger, overlay, content } = getCommandDialogParts(dialog);
-  if (overlay) overlay.hidden = true;
-  if (content) content.hidden = true;
+  // Skip when already closed or mid-exit-animation, so a second close can't
+  // release the scroll lock twice.
+  if (!content || !isCommandDialogOpen(dialog)) return;
+  removeModal(dialog);
+  if (overlay) hideOverlay(overlay);
+  hideOverlay(content);
   trigger?.setAttribute("aria-expanded", "false");
   trigger?.setAttribute("data-state", "closed");
   commandDialogFocusTraps.get(dialog)?.();
   commandDialogFocusTraps.delete(dialog);
-  document.body.style.overflow = "";
+  unlockScroll();
 
   const input = content?.querySelector("[data-command-input]") as
     | HTMLInputElement
@@ -228,7 +245,9 @@ function bindCommandDialogListeners() {
     }
 
     if (e.key === "Escape") {
-      dialogs.filter(isCommandDialogOpen).forEach(closeCommandDialog);
+      dialogs
+        .filter((d) => isCommandDialogOpen(d) && isTopModal(d))
+        .forEach(closeCommandDialog);
     }
   });
 }

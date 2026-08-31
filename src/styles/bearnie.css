@@ -253,6 +253,140 @@
     rgba(0, 0, 0, 0.3) 0px 64px 64px -32px;
 }
 
+/* Overlay enter/exit animations, driven by the [data-state] attribute the
+   component runtimes toggle. Exits keep their final frame (`both`) until the
+   runtime sets `hidden` on animation end. */
+@keyframes bearnie-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes bearnie-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes bearnie-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes bearnie-pop-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes bearnie-slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes bearnie-slide-out-to-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes bearnie-slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@keyframes bearnie-slide-out-to-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes bearnie-slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+  }
+}
+@keyframes bearnie-slide-out-to-top {
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes bearnie-slide-in-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes bearnie-slide-out-to-bottom {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Floating menus, cards, and dialog panels: quick fade + scale */
+  [data-popover-content][data-state="open"],
+  [data-dropdown-content][data-state="open"],
+  [data-dropdown-sub-content][data-state="open"],
+  [data-context-menu-content][data-state="open"],
+  [data-context-menu-sub-content][data-state="open"],
+  [data-tooltip-content][data-state="open"],
+  [data-hover-card-content][data-state="open"],
+  [data-dialog-content][data-state="open"],
+  [data-alert-dialog-content][data-state="open"],
+  [data-command-dialog-content][data-state="open"] {
+    animation: bearnie-pop-in 150ms ease-out;
+  }
+  [data-popover-content][data-state="closed"],
+  [data-dropdown-content][data-state="closed"],
+  [data-dropdown-sub-content][data-state="closed"],
+  [data-context-menu-content][data-state="closed"],
+  [data-context-menu-sub-content][data-state="closed"],
+  [data-tooltip-content][data-state="closed"],
+  [data-hover-card-content][data-state="closed"],
+  [data-dialog-content][data-state="closed"],
+  [data-alert-dialog-content][data-state="closed"],
+  [data-command-dialog-content][data-state="closed"] {
+    animation: bearnie-pop-out 120ms ease-in both;
+  }
+
+  /* Modal backdrops: fade */
+  [data-dialog-overlay][data-state="open"],
+  [data-alert-dialog-overlay][data-state="open"],
+  [data-sheet-overlay][data-state="open"],
+  [data-command-dialog-overlay][data-state="open"] {
+    animation: bearnie-fade-in 150ms ease-out;
+  }
+  [data-dialog-overlay][data-state="closed"],
+  [data-alert-dialog-overlay][data-state="closed"],
+  [data-sheet-overlay][data-state="closed"],
+  [data-command-dialog-overlay][data-state="closed"] {
+    animation: bearnie-fade-out 120ms ease-in both;
+  }
+
+  /* Sheets: slide from their edge */
+  [data-sheet-content][data-side="right"][data-state="open"] {
+    animation: bearnie-slide-in-from-right 250ms ease-out;
+  }
+  [data-sheet-content][data-side="right"][data-state="closed"] {
+    animation: bearnie-slide-out-to-right 200ms ease-in both;
+  }
+  [data-sheet-content][data-side="left"][data-state="open"] {
+    animation: bearnie-slide-in-from-left 250ms ease-out;
+  }
+  [data-sheet-content][data-side="left"][data-state="closed"] {
+    animation: bearnie-slide-out-to-left 200ms ease-in both;
+  }
+  [data-sheet-content][data-side="top"][data-state="open"] {
+    animation: bearnie-slide-in-from-top 250ms ease-out;
+  }
+  [data-sheet-content][data-side="top"][data-state="closed"] {
+    animation: bearnie-slide-out-to-top 200ms ease-in both;
+  }
+  [data-sheet-content][data-side="bottom"][data-state="open"] {
+    animation: bearnie-slide-in-from-bottom 250ms ease-out;
+  }
+  [data-sheet-content][data-side="bottom"][data-state="closed"] {
+    animation: bearnie-slide-out-to-bottom 200ms ease-in both;
+  }
+}
+
 /* Base styles */
 * {
   border-color: var(--border);

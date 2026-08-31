@@ -101,13 +101,11 @@ export function positionFloating(
   window.addEventListener("scroll", compute, scrollOptions);
   window.addEventListener("resize", compute);
 
+  // Inline positioning styles are intentionally left in place: they're
+  // inert once the element is hidden, compute() rewrites them on the next
+  // open, and clearing them here would make exit animations jump.
   return () => {
     window.removeEventListener("scroll", compute, scrollOptions);
     window.removeEventListener("resize", compute);
-    content.style.position = "";
-    content.style.top = "";
-    content.style.left = "";
-    content.style.right = "";
-    content.style.bottom = "";
   };
 }

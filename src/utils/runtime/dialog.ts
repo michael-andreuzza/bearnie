@@ -1,4 +1,13 @@
 import { trapFocus, generateId } from "@/utils/focus-trap";
+import {
+  showOverlay,
+  hideOverlay,
+  lockScroll,
+  unlockScroll,
+  pushModal,
+  removeModal,
+  isTopModal,
+} from "@/utils/overlay";
 
 const focusTrapCleanups = new WeakMap<Element, () => void>();
 
@@ -6,9 +15,13 @@ function closeDialog(dialog: Element) {
   const trigger = dialog.querySelector("[data-dialog-trigger]") as HTMLElement | null;
   const overlay = dialog.querySelector("[data-dialog-overlay]") as HTMLElement | null;
   const content = dialog.querySelector("[data-dialog-content]") as HTMLElement | null;
-  if (overlay) overlay.hidden = true;
-  if (content) content.hidden = true;
-  document.body.style.overflow = "";
+  // Skip when already closed or mid-exit-animation, so a second close can't
+  // release the scroll lock twice.
+  if (!content || content.hidden || content.getAttribute("data-state") === "closed") return;
+  removeModal(dialog);
+  if (overlay) hideOverlay(overlay);
+  hideOverlay(content);
+  unlockScroll();
   trigger?.setAttribute("aria-expanded", "false");
   trigger?.setAttribute("data-state", "closed");
   focusTrapCleanups.get(dialog)?.();
@@ -29,10 +42,12 @@ function bindDocumentListeners() {
   if (documentListenersBound) return;
   documentListenersBound = true;
 
+  // Close only the topmost open dialog, so nested dialogs unwind one
+  // Escape press at a time.
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     document.querySelectorAll("[data-dialog]").forEach((dialog) => {
-      if (isOpen(dialog)) closeDialog(dialog);
+      if (isOpen(dialog) && isTopModal(dialog)) closeDialog(dialog);
     });
   });
 }
@@ -79,10 +94,11 @@ export function initDialogs() {
     trigger.setAttribute("data-state", "closed");
 
     trigger.addEventListener("click", () => {
-      if (overlay) overlay.hidden = false;
+      if (overlay) showOverlay(overlay);
       if (content) {
-        content.hidden = false;
-        document.body.style.overflow = "hidden";
+        showOverlay(content);
+        lockScroll();
+        pushModal(dialog);
         trigger.setAttribute("aria-expanded", "true");
         trigger.setAttribute("data-state", "open");
         focusTrapCleanups.set(dialog, trapFocus(content));

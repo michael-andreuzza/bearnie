@@ -288,7 +288,13 @@ import {
 |------|------|---------|-------------|
 | defaultValue | string | - | Initially active tab value |
 | orientation | horizontal \| vertical | horizontal | Tab layout direction |
+| syncKey | string | - | Sync the active tab with a `?<syncKey>=` URL param |
 | class | string | - | Additional CSS classes |
+
+With `syncKey` set (e.g. `syncKey="tab"`), selecting a tab updates the URL
+via `history.replaceState`, and visiting a link like `?tab=password`
+activates that tab on load — so tab state survives reloads and can be
+shared. A param that matches no tab falls back to `defaultValue`.
 
 #### TabsTrigger
 

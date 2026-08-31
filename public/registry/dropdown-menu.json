@@ -16,9 +16,14 @@
       "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  /** When true, selecting an item does not close the menu (e.g. color pickers). */\n  keepOpen?: boolean;\n}\n\nconst { class: className, keepOpen = false, ...props } = Astro.props;\n---\n\n<div\n  class={cn('relative inline-block text-left', className)}\n  data-dropdown\n  data-dropdown-keep-open={keepOpen ? 'true' : undefined}\n  {...props}\n>\n  <slot />\n</div>\n\n<script>\n  import { registerUiInit } from \"@/utils/runtime/loader\";\n  import { initDropdowns } from \"@/utils/runtime/dropdown-menu\";\n\n  registerUiInit(initDropdowns);\n</script>\n"
     },
     {
+      "name": "DropdownMenuCheckboxItem.astro",
+      "path": "dropdown-menu/DropdownMenuCheckboxItem.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'button'> {\n  checked?: boolean;\n  disabled?: boolean;\n}\n\nconst { checked = false, disabled = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors',\n  'focus:bg-accent focus:text-accent-foreground',\n  'hover:bg-accent hover:text-accent-foreground',\n  disabled && 'pointer-events-none opacity-50',\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitemcheckbox\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-dropdown-item\n  data-dropdown-checkbox-item\n  data-checked={checked ? 'true' : 'false'}\n  aria-checked={checked}\n  {...props}\n>\n  <span class=\"absolute left-2 flex size-3.5 items-center justify-center\">\n    <svg\n      class:list={['size-4', !checked && 'hidden']}\n      aria-hidden=\"true\"\n      data-check-icon\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      stroke-width=\"2\"\n      stroke-linecap=\"round\"\n      stroke-linejoin=\"round\"\n    >\n      <polyline points=\"20 6 9 17 4 12\"></polyline>\n    </svg>\n  </span>\n  <slot />\n</button>\n"
+    },
+    {
       "name": "DropdownMenuContent.astro",
       "path": "dropdown-menu/DropdownMenuContent.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  align?: 'start' | 'center' | 'end';\n  side?: 'bottom' | 'left' | 'right';\n}\n\nconst {\n  align = 'end',\n  side = 'bottom',\n  class: className,\n  ...props\n} = Astro.props;\n\nconst classes = cn(\n  'z-50 min-w-[8rem] overflow-hidden rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',\n  className\n);\n---\n\n<div\n  class={classes}\n  data-dropdown-content\n  data-side={side}\n  data-align={align}\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  align?: 'start' | 'center' | 'end';\n  side?: 'bottom' | 'left' | 'right';\n}\n\nconst {\n  align = 'end',\n  side = 'bottom',\n  class: className,\n  ...props\n} = Astro.props;\n\nconst classes = cn(\n  'z-50 min-w-[8rem] rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',\n  className\n);\n---\n\n<div\n  class={classes}\n  data-dropdown-content\n  data-side={side}\n  data-align={align}\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
     },
     {
       "name": "DropdownMenuItem.astro",
@@ -31,9 +36,34 @@
       "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn('px-2 py-1.5 text-sm font-semibold', className);\n---\n\n<div class={classes} {...props}>\n  <slot />\n</div>\n"
     },
     {
+      "name": "DropdownMenuRadioGroup.astro",
+      "path": "dropdown-menu/DropdownMenuRadioGroup.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {\n  /** Initially selected value (uncontrolled). */\n  defaultValue?: string;\n}\n\nconst { defaultValue, class: className, ...props } = Astro.props;\n---\n\n<div\n  class={cn('', className)}\n  data-dropdown-radio-group\n  data-value={defaultValue}\n  role=\"group\"\n  {...props}\n>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "DropdownMenuRadioItem.astro",
+      "path": "dropdown-menu/DropdownMenuRadioItem.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'button'> {\n  value: string;\n  disabled?: boolean;\n}\n\nconst { value, disabled = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors',\n  'focus:bg-accent focus:text-accent-foreground',\n  'hover:bg-accent hover:text-accent-foreground',\n  disabled && 'pointer-events-none opacity-50',\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitemradio\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-dropdown-item\n  data-dropdown-radio-item\n  data-value={value}\n  data-checked=\"false\"\n  aria-checked=\"false\"\n  {...props}\n>\n  <span class=\"absolute left-2 flex size-3.5 items-center justify-center\">\n    <svg\n      class=\"size-2 fill-current hidden\"\n      aria-hidden=\"true\"\n      data-radio-icon\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 24 24\"\n    >\n      <circle cx=\"12\" cy=\"12\" r=\"10\" />\n    </svg>\n  </span>\n  <slot />\n</button>\n"
+    },
+    {
       "name": "DropdownMenuSeparator.astro",
       "path": "dropdown-menu/DropdownMenuSeparator.astro",
       "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn('-mx-1 my-1 h-px bg-muted', className);\n---\n\n<div class={classes} role=\"separator\" {...props} />\n"
+    },
+    {
+      "name": "DropdownMenuSub.astro",
+      "path": "dropdown-menu/DropdownMenuSub.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<div class={cn('relative', className)} data-dropdown-sub {...props}>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "DropdownMenuSubContent.astro",
+      "path": "dropdown-menu/DropdownMenuSubContent.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'absolute left-full top-0 z-50 ml-1 min-w-[8rem] rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',\n  className\n);\n---\n\n<div class={classes} data-dropdown-sub-content role=\"menu\" hidden {...props}>\n  <slot />\n</div>\n"
+    },
+    {
+      "name": "DropdownMenuSubTrigger.astro",
+      "path": "dropdown-menu/DropdownMenuSubTrigger.astro",
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'button'> {\n  disabled?: boolean;\n  inset?: boolean;\n}\n\nconst { disabled = false, inset = false, class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors',\n  'focus:bg-accent focus:text-accent-foreground',\n  'hover:bg-accent hover:text-accent-foreground',\n  'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',\n  disabled && 'pointer-events-none opacity-50',\n  inset && 'pl-8',\n  className\n);\n---\n\n<button\n  type=\"button\"\n  class={classes}\n  role=\"menuitem\"\n  disabled={disabled}\n  tabindex=\"-1\"\n  data-dropdown-item\n  data-dropdown-sub-trigger\n  data-state=\"closed\"\n  aria-haspopup=\"menu\"\n  aria-expanded=\"false\"\n  {...props}\n>\n  <slot />\n  <svg\n    class=\"ml-auto size-4\"\n    aria-hidden=\"true\"\n    xmlns=\"http://www.w3.org/2000/svg\"\n    viewBox=\"0 0 24 24\"\n    fill=\"none\"\n    stroke=\"currentColor\"\n    stroke-width=\"2\"\n    stroke-linecap=\"round\"\n    stroke-linejoin=\"round\"\n  >\n    <polyline points=\"9 18 15 12 9 6\"></polyline>\n  </svg>\n</button>\n"
     },
     {
       "name": "DropdownMenuTrigger.astro",

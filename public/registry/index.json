@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "components": [
     {
       "name": "styles",
@@ -285,6 +285,10 @@
     {
       "name": "position",
       "description": "Collision-aware floating positioning utility (flip + shift) for overlays"
+    },
+    {
+      "name": "overlay",
+      "description": "Overlay helpers: data-state enter/exit animations, refcounted scroll lock, and a modal stack"
     },
     {
       "name": "ui-runtime-loader",

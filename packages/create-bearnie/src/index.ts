@@ -111,6 +111,7 @@ const FALLBACK_UTILITY_NAMES = [
   "cn",
   "focus-trap",
   "position",
+  "overlay",
   "ui-runtime-loader",
   "ui-runtime-dialog",
   "ui-runtime-disclosure-triggers",
