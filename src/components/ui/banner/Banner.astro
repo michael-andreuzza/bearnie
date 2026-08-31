@@ -9,7 +9,11 @@ export interface Props extends HTMLAttributes<"div"> {
    */
   id?: string;
   dismissible?: boolean;
-  variant?: "default" | "muted";
+  /**
+   * "dark" inverts the theme tokens (near-black in light mode);
+   * "outline" is a clean bordered card on the page background.
+   */
+  variant?: "default" | "muted" | "dark" | "outline";
   /**
    * "static" renders in flow where placed; "top"/"bottom" pin the banner
    * to the viewport edge.
@@ -58,6 +62,8 @@ const classes = cn(
   "flex w-full flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5 text-sm",
   variant === "default" && "bg-primary text-primary-foreground",
   variant === "muted" && "bg-muted text-foreground",
+  variant === "dark" && "bg-foreground text-background",
+  variant === "outline" && "border bg-background text-foreground",
   positionClasses,
   className
 );

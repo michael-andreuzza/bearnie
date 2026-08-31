@@ -105,15 +105,15 @@ Without an `id` the dismissal lasts for the current page only — good for previ
 </Prose>
 
 <ComponentPreview fullWidth code={`<div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-  <Banner floating dismissible>
+  <Banner variant="dark" floating dismissible>
     <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
   </Banner>
 </div>`}
-displayCode={`<Banner floating dismissible>
+displayCode={`<Banner variant="dark" floating dismissible>
   <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
 </Banner>`}>
   <div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-    <Banner floating dismissible>
+    <Banner variant="dark" floating dismissible>
       <span><strong>BearConf 2026</strong> · Join us in Stockholm from June 7 – 9 to see what's coming next →</span>
     </Banner>
   </div>
@@ -124,19 +124,19 @@ displayCode={`<Banner floating dismissible>
 <Prose>
 #### Floating centered
 
-With `align="center"` the banner shrinks to its content and centers itself — a pill instead of a bar.
+With `align="center"` the banner shrinks to its content and centers itself.
 </Prose>
 
 <ComponentPreview fullWidth code={`<div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-  <Banner floating align="center" dismissible class="rounded-full">
+  <Banner variant="dark" floating align="center" dismissible>
     <span><strong>BearConf 2026</strong> · Tickets are live →</span>
   </Banner>
 </div>`}
-displayCode={`<Banner floating align="center" dismissible class="rounded-full">
+displayCode={`<Banner variant="dark" floating align="center" dismissible>
   <span><strong>BearConf 2026</strong> · Tickets are live →</span>
 </Banner>`}>
   <div class="relative h-48 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-    <Banner floating align="center" dismissible class="rounded-full">
+    <Banner variant="dark" floating align="center" dismissible>
       <span><strong>BearConf 2026</strong> · Tickets are live →</span>
     </Banner>
   </div>
@@ -147,11 +147,11 @@ displayCode={`<Banner floating align="center" dismissible class="rounded-full">
 <Prose>
 #### Privacy notice with actions
 
-Use the `actions` slot for button rows. With `align="end"` (or `"start"`) the banner becomes a corner notice; constrain the width with a class so the text wraps.
+Use the `actions` slot for button rows. With `align="end"` (or `"start"`) and the `outline` variant the banner becomes a corner notice card; constrain the width with a class so the text wraps.
 </Prose>
 
 <ComponentPreview fullWidth code={`<div class="relative h-64 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-  <Banner floating align="end" variant="muted" class="max-w-sm border">
+  <Banner floating align="end" variant="outline" class="max-w-sm">
     <p>
       This website uses cookies to supplement a balanced diet and provide a much
       deserved reward after consuming bland but nutritious meals. See our
@@ -163,7 +163,7 @@ Use the `actions` slot for button rows. With `align="end"` (or `"start"`) the ba
     </Fragment>
   </Banner>
 </div>`}
-displayCode={`<Banner floating align="end" variant="muted" class="max-w-sm border">
+displayCode={`<Banner floating align="end" variant="outline" class="max-w-sm">
   <p>
     This website uses cookies to supplement a balanced diet and provide a much
     deserved reward after consuming bland but nutritious meals. See our
@@ -175,7 +175,7 @@ displayCode={`<Banner floating align="end" variant="muted" class="max-w-sm borde
   </Fragment>
 </Banner>`}>
   <div class="relative h-64 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-    <Banner floating align="end" variant="muted" class="max-w-sm border">
+    <Banner floating align="end" variant="outline" class="max-w-sm">
       <p>
         This website uses cookies to supplement a balanced diet and provide a much
         deserved reward after consuming bland but nutritious meals. See our
@@ -198,15 +198,15 @@ displayCode={`<Banner floating align="end" variant="muted" class="max-w-sm borde
 </Prose>
 
 <ComponentPreview fullWidth code={`<div class="relative h-40 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-  <Banner position="top" dismissible>
+  <Banner variant="dark" position="top" dismissible>
     <span>We use minimal analytics. No cookies, no tracking.</span>
   </Banner>
 </div>`}
-displayCode={`<Banner position="top" dismissible>
+displayCode={`<Banner variant="dark" position="top" dismissible>
   <span>We use minimal analytics. No cookies, no tracking.</span>
 </Banner>`}>
   <div class="relative h-40 w-full translate-0 overflow-hidden rounded-lg border bg-background">
-    <Banner position="top" dismissible>
+    <Banner variant="dark" position="top" dismissible>
       <span>We use minimal analytics. No cookies, no tracking.</span>
     </Banner>
   </div>
@@ -221,7 +221,7 @@ displayCode={`<Banner position="top" dismissible>
 |------|------|---------|-------------|
 | id | string | - | Unique id; when set, dismissal is persisted in localStorage |
 | dismissible | boolean | false | Show a dismiss button |
-| variant | "default" \| "muted" | "default" | Visual style |
+| variant | "default" \| "muted" \| "dark" \| "outline" | "default" | Visual style — `dark` inverts the theme tokens, `outline` is a bordered card on the page background |
 | position | "static" \| "top" \| "bottom" | "static" | In flow, or pinned to a viewport edge |
 | floating | boolean | false | Detach from the edge with margins, rounded corners, and a shadow (pins to the bottom unless `position="top"`) |
 | align | "stretch" \| "start" \| "center" \| "end" | "stretch" | Floating only: span the width, or shrink to content and place it |
