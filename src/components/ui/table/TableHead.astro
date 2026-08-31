@@ -2,9 +2,12 @@
 import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
 
-export interface Props extends HTMLAttributes<'th'> {}
+export interface Props extends HTMLAttributes<'th'> {
+  /** Render a sort button; clicking cycles ascending/descending. */
+  sortable?: boolean;
+}
 
-const { class: className, ...props } = Astro.props;
+const { sortable = false, class: className, ...props } = Astro.props;
 
 const classes = cn(
   'h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
@@ -12,6 +15,63 @@ const classes = cn(
 );
 ---
 
-<th class={classes} {...props}>
-  <slot />
+<th class={classes} data-sortable={sortable ? 'true' : undefined} {...props}>
+  {
+    sortable ? (
+      <button
+        type="button"
+        data-table-sort
+        class="inline-flex items-center gap-1.5 rounded-md transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <slot />
+        <svg
+          data-sort-icon="none"
+          class="size-3.5 opacity-50"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m7 15 5 5 5-5" />
+          <path d="m7 9 5-5 5 5" />
+        </svg>
+        <svg
+          data-sort-icon="asc"
+          class="hidden size-3.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m5 12 7-7 7 7" />
+          <path d="M12 19V5" />
+        </svg>
+        <svg
+          data-sort-icon="desc"
+          class="hidden size-3.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 5v14" />
+          <path d="m19 12-7 7-7-7" />
+        </svg>
+      </button>
+    ) : (
+      <slot />
+    )
+  }
 </th>

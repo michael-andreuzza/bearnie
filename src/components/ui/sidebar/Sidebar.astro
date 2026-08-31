@@ -4,16 +4,26 @@ import type { HTMLAttributes } from "astro/types";
 
 export interface Props extends HTMLAttributes<"aside"> {
   side?: "left" | "right";
-  collapsible?: boolean;
+  /**
+   * true: collapses off-canvas (width 0). "icon": collapses to a 3rem icon
+   * rail on desktop (labels hidden). false: cannot collapse.
+   */
+  collapsible?: boolean | "icon";
   defaultOpen?: boolean;
+  /**
+   * localStorage key. When set, the open/collapsed state survives page
+   * loads (desktop only; mobile always starts closed).
+   */
+  persist?: string;
 }
 
-const { 
-  side = "left", 
+const {
+  side = "left",
   collapsible = true,
   defaultOpen = true,
-  class: className, 
-  ...props 
+  persist,
+  class: className,
+  ...props
 } = Astro.props;
 
 const classes = cn(
@@ -28,7 +38,8 @@ const classes = cn(
   data-sidebar
   data-side={side}
   data-state={defaultOpen ? "open" : "closed"}
-  data-collapsible={collapsible ? "true" : "false"}
+  data-collapsible={collapsible === "icon" ? "icon" : collapsible ? "true" : "false"}
+  data-persist={persist}
   {...props}
 >
   <slot />
@@ -65,6 +76,51 @@ const classes = cn(
       if (sidebar.hasAttribute("data-initialized")) return;
       sidebar.setAttribute("data-initialized", "true");
       checkMobile(sidebar);
+
+      // Restore persisted state (desktop only; mobile always starts closed)
+      const persistKey = sidebar.getAttribute("data-persist");
+      if (persistKey && sidebar.getAttribute("data-mobile") !== "true") {
+        const stored = localStorage.getItem(persistKey);
+        if (stored === "open" || stored === "closed") {
+          sidebar.setAttribute("data-state", stored);
+        }
+      }
+
+      // Save state on toggle (only desktop states are worth restoring)
+      if (persistKey) {
+        sidebar.addEventListener("sidebar-toggle", () => {
+          if (sidebar.getAttribute("data-mobile") === "true") return;
+          localStorage.setItem(
+            persistKey,
+            sidebar.getAttribute("data-state") === "open" ? "open" : "closed"
+          );
+        });
+      }
+
+      // Backdrop behind the sidebar when it overlays content on mobile
+      const backdrop = document.createElement("div");
+      backdrop.setAttribute("data-sidebar-backdrop", "");
+      backdrop.setAttribute("aria-hidden", "true");
+      backdrop.hidden = true;
+      sidebar.insertAdjacentElement("beforebegin", backdrop);
+      backdrop.addEventListener("click", () => {
+        sidebar.setAttribute("data-state", "closed");
+        sidebar.dispatchEvent(
+          new CustomEvent("sidebar-toggle", { detail: { open: false } })
+        );
+      });
+
+      const syncBackdrop = () => {
+        backdrop.hidden = !(
+          sidebar.getAttribute("data-mobile") === "true" &&
+          sidebar.getAttribute("data-state") === "open"
+        );
+      };
+      syncBackdrop();
+      new MutationObserver(syncBackdrop).observe(sidebar, {
+        attributes: true,
+        attributeFilter: ["data-state", "data-mobile"],
+      });
     });
   }
 
@@ -80,6 +136,33 @@ const classes = cn(
   [data-sidebar][data-state="closed"][data-collapsible="true"] {
     width: 0;
     overflow: hidden;
+  }
+
+  :global([data-sidebar-backdrop]) {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  /* Icon rail: on desktop, collapsing keeps a narrow strip of icons */
+  @media (min-width: 768px) {
+    [data-sidebar][data-state="closed"][data-collapsible="icon"] {
+      width: 3rem;
+      overflow: hidden;
+    }
+
+    [data-sidebar][data-state="closed"][data-collapsible="icon"]
+      :global([data-sidebar-group-label]),
+    [data-sidebar][data-state="closed"][data-collapsible="icon"]
+      :global([data-sidebar-menu-button] span) {
+      display: none;
+    }
+
+    [data-sidebar][data-state="closed"][data-collapsible="icon"]
+      :global([data-sidebar-menu-button]) {
+      justify-content: center;
+    }
   }
 
   /* Mobile styles */

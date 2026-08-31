@@ -14,3 +14,66 @@ const classes = cn('w-full caption-bottom text-sm', className);
     <slot />
   </table>
 </div>
+
+<script>
+  // Client-side sorting for tables that contain <TableHead sortable> cells.
+  // Compares cell text, numerically when both values are plain numbers
+  // (currency/percent formatting stripped), alphabetically otherwise.
+
+  const NUMERIC = /^-?\d+(\.\d+)?$/;
+
+  function cellValue(row: HTMLTableRowElement, index: number): string {
+    return row.cells[index]?.textContent?.trim() ?? "";
+  }
+
+  function sortTable(th: HTMLTableCellElement, direction: "ascending" | "descending") {
+    const table = th.closest("table");
+    const body = table?.tBodies[0];
+    if (!table || !body) return;
+
+    // One sorted column at a time
+    table.querySelectorAll("th[data-sortable]").forEach((other) => {
+      other.removeAttribute("aria-sort");
+      other.querySelector('[data-sort-icon="none"]')?.classList.remove("hidden");
+      other.querySelector('[data-sort-icon="asc"]')?.classList.add("hidden");
+      other.querySelector('[data-sort-icon="desc"]')?.classList.add("hidden");
+    });
+
+    th.setAttribute("aria-sort", direction);
+    th.querySelector('[data-sort-icon="none"]')?.classList.add("hidden");
+    th.querySelector(`[data-sort-icon="${direction === "ascending" ? "asc" : "desc"}"]`)?.classList.remove("hidden");
+
+    const index = th.cellIndex;
+    const rows = Array.from(body.rows);
+    const factor = direction === "ascending" ? 1 : -1;
+
+    rows.sort((a, b) => {
+      const rawA = cellValue(a, index);
+      const rawB = cellValue(b, index);
+      const numA = rawA.replace(/[$,%\s]/g, "");
+      const numB = rawB.replace(/[$,%\s]/g, "");
+      if (NUMERIC.test(numA) && NUMERIC.test(numB)) {
+        return (parseFloat(numA) - parseFloat(numB)) * factor;
+      }
+      return rawA.localeCompare(rawB) * factor;
+    });
+
+    rows.forEach((row) => body.appendChild(row));
+  }
+
+  function initSortableTables() {
+    document.querySelectorAll<HTMLTableCellElement>("th[data-sortable]").forEach((th) => {
+      if (th.hasAttribute("data-sort-initialized")) return;
+      th.setAttribute("data-sort-initialized", "true");
+
+      th.querySelector("[data-table-sort]")?.addEventListener("click", () => {
+        const next =
+          th.getAttribute("aria-sort") === "ascending" ? "descending" : "ascending";
+        sortTable(th, next);
+      });
+    });
+  }
+
+  initSortableTables();
+  document.addEventListener("astro:page-load", initSortableTables);
+</script>

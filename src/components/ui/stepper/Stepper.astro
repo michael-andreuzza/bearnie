@@ -5,11 +5,17 @@ import type { HTMLAttributes } from 'astro/types';
 export interface Props extends HTMLAttributes<'div'> {
   orientation?: 'horizontal' | 'vertical';
   activeStep?: number;
+  /**
+   * Gate navigation: steps beyond the furthest step reached so far can't be
+   * clicked. Advance with a [data-stepper-next] button instead.
+   */
+  linear?: boolean;
 }
 
 const { 
   orientation = 'horizontal', 
   activeStep = 0,
+  linear = false,
   class: className, 
   ...props 
 } = Astro.props;
@@ -26,6 +32,7 @@ const classes = cn(
   data-stepper
   data-orientation={orientation}
   data-active-step={activeStep}
+  data-linear={linear ? 'true' : undefined}
   role="navigation"
   aria-label="Progress"
   {...props}
@@ -40,9 +47,13 @@ const classes = cn(
       stepper.setAttribute('data-initialized', 'true');
 
       const activeStep = parseInt(stepper.getAttribute('data-active-step') || '0');
+      const linear = stepper.getAttribute('data-linear') === 'true';
       const items = Array.from(stepper.querySelectorAll('[data-stepper-item]')) as HTMLElement[];
       const separators = stepper.querySelectorAll('[data-stepper-separator]');
       const totalSteps = items.length;
+
+      // In linear mode, the furthest step the user has unlocked so far
+      let maxReached = activeStep;
 
       // Content panels live next to the stepper, matched by data-step
       const contents = Array.from(
@@ -89,6 +100,28 @@ const classes = cn(
           const step = parseInt(content.getAttribute('data-step') || '0');
           content.hidden = step !== currentStep;
         });
+
+        // In linear mode, mark locked steps so triggers can style themselves
+        if (linear) {
+          items.forEach((item, index) => {
+            const trigger = item.querySelector('[data-stepper-trigger]');
+            if (index > maxReached) {
+              trigger?.setAttribute('aria-disabled', 'true');
+            } else {
+              trigger?.removeAttribute('aria-disabled');
+            }
+          });
+        }
+      };
+
+      const goToStep = (step: number) => {
+        if (step < 0 || step >= totalSteps) return;
+        maxReached = Math.max(maxReached, step);
+        updateAriaStates(step);
+        stepper.setAttribute('data-active-step', String(step));
+        stepper.dispatchEvent(
+          new CustomEvent('stepper-change', { detail: { step }, bubbles: true })
+        );
       };
 
       // Initialize states
@@ -99,13 +132,31 @@ const classes = cn(
         const trigger = item.querySelector('[data-stepper-trigger]');
         
         if (trigger) {
-          trigger.addEventListener('click', () => {
+          trigger.addEventListener('click', (e) => {
             const clickedIndex = parseInt(item.getAttribute('data-step') || '0');
-            updateAriaStates(clickedIndex);
-            stepper.setAttribute('data-active-step', String(clickedIndex));
+            // Linear: only already-reached steps are clickable
+            if (linear && clickedIndex > maxReached) {
+              e.preventDefault();
+              return;
+            }
+            goToStep(clickedIndex);
           });
         }
       });
+
+      // Next/prev buttons living next to the stepper (e.g. inside content
+      // panels). This is how linear flows unlock the following step.
+      (stepper.parentElement ?? document)
+        .querySelectorAll('[data-stepper-next], [data-stepper-prev]')
+        .forEach((button) => {
+          if (button.hasAttribute('data-stepper-nav-initialized')) return;
+          button.setAttribute('data-stepper-nav-initialized', 'true');
+          button.addEventListener('click', () => {
+            const current = parseInt(stepper.getAttribute('data-active-step') || '0');
+            const delta = button.hasAttribute('data-stepper-next') ? 1 : -1;
+            goToStep(current + delta);
+          });
+        });
     });
   }
 

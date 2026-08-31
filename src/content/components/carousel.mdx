@@ -462,6 +462,87 @@ Clickable previews below the carousel; the active thumbnail is highlighted as sl
   </Carousel>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Responsive breakpoints
+
+Override `slidesPerView` and `spacing` per media query with the `breakpoints` prop. This example shows one slide on mobile, two from `768px`, and three from `1024px` — resize the window to see it change.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Carousel
+  slidesPerView={1}
+  breakpoints={{
+    "(min-width: 768px)": { slidesPerView: 2 },
+    "(min-width: 1024px)": { slidesPerView: 3, spacing: 24 },
+  }}
+  class="w-full max-w-2xl"
+>
+  <CarouselContent>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+    <CarouselItem>...</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+  </Fragment>
+  <Carousel
+    slidesPerView={1}
+    breakpoints={{
+      "(min-width: 768px)": { slidesPerView: 2 },
+      "(min-width: 1024px)": { slidesPerView: 3, spacing: 24 },
+    }}
+    class="w-full max-w-2xl mx-auto"
+  >
+    <CarouselContent>
+      <CarouselItem>
+        <Card>
+          <CardContent class="flex aspect-square items-center justify-center p-6">
+            <span class="text-2xl font-semibold">1</span>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+      <CarouselItem>
+        <Card>
+          <CardContent class="flex aspect-square items-center justify-center p-6">
+            <span class="text-2xl font-semibold">2</span>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+      <CarouselItem>
+        <Card>
+          <CardContent class="flex aspect-square items-center justify-center p-6">
+            <span class="text-2xl font-semibold">3</span>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+      <CarouselItem>
+        <Card>
+          <CardContent class="flex aspect-square items-center justify-center p-6">
+            <span class="text-2xl font-semibold">4</span>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+      <CarouselItem>
+        <Card>
+          <CardContent class="flex aspect-square items-center justify-center p-6">
+            <span class="text-2xl font-semibold">5</span>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+  </Carousel>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -478,6 +559,7 @@ Clickable previews below the carousel; the active thumbnail is highlighted as sl
 | slidesPerView | number \| "auto" | 1 | Slides visible at once |
 | spacing | number | 16 | Gap between slides in px |
 | orientation | "horizontal" \| "vertical" | "horizontal" | Slide direction |
+| breakpoints | Record\<string, \{ slidesPerView?, spacing? \}\> | - | Per-media-query overrides, e.g. `{ "(min-width: 768px)": { slidesPerView: 2 } }` |
 
 #### CarouselDots
 

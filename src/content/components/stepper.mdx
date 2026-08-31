@@ -19,6 +19,7 @@ import StepperTrigger from "@/components/ui/stepper/StepperTrigger.astro";
 import StepperTitle from "@/components/ui/stepper/StepperTitle.astro";
 import StepperDescription from "@/components/ui/stepper/StepperDescription.astro";
 import StepperSeparator from "@/components/ui/stepper/StepperSeparator.astro";
+import Button from "@/components/ui/button/Button.astro";
 
 
 
@@ -606,6 +607,87 @@ A complete vertical stepper with icons and detailed descriptions.
   </Stepper>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Linear (gated)
+
+With `linear`, users can't jump ahead by clicking steps — only steps they've already reached are clickable. Advance with a button carrying `data-stepper-next` (and go back with `data-stepper-prev`). Panels with `data-stepper-content` and a `data-step` index show the active step's content.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<div class="space-y-6">
+  <Stepper linear activeStep={0}>
+    <StepperItem step={0}>
+      <StepperTrigger>1</StepperTrigger>
+      <StepperTitle>Details</StepperTitle>
+    </StepperItem>
+    <StepperSeparator />
+    <StepperItem step={1}>
+      <StepperTrigger>2</StepperTrigger>
+      <StepperTitle>Payment</StepperTitle>
+    </StepperItem>
+    <StepperSeparator />
+    <StepperItem step={2}>
+      <StepperTrigger>3</StepperTrigger>
+      <StepperTitle>Confirm</StepperTitle>
+    </StepperItem>
+  </Stepper>
+
+  <div data-stepper-content data-step="0" class="text-sm text-muted-foreground">
+    Fill in your details, then continue.
+  </div>
+  <div data-stepper-content data-step="1" class="text-sm text-muted-foreground" hidden>
+    Enter payment information.
+  </div>
+  <div data-stepper-content data-step="2" class="text-sm text-muted-foreground" hidden>
+    Review everything and finish.
+  </div>
+
+  <div class="flex gap-2">
+    <Button variant="outline" data-stepper-prev>Back</Button>
+    <Button data-stepper-next>Next</Button>
+  </div>
+</div>
+```
+  </Fragment>
+  <div class="space-y-6">
+    <Stepper linear activeStep={0}>
+      <StepperItem step={0}>
+        <StepperTrigger>1</StepperTrigger>
+        <StepperTitle>Details</StepperTitle>
+      </StepperItem>
+      <StepperSeparator />
+      <StepperItem step={1}>
+        <StepperTrigger>2</StepperTrigger>
+        <StepperTitle>Payment</StepperTitle>
+      </StepperItem>
+      <StepperSeparator />
+      <StepperItem step={2}>
+        <StepperTrigger>3</StepperTrigger>
+        <StepperTitle>Confirm</StepperTitle>
+      </StepperItem>
+    </Stepper>
+
+    <div data-stepper-content data-step="0" class="text-sm text-muted-foreground">
+      Fill in your details, then continue.
+    </div>
+    <div data-stepper-content data-step="1" class="text-sm text-muted-foreground" hidden>
+      Enter payment information.
+    </div>
+    <div data-stepper-content data-step="2" class="text-sm text-muted-foreground" hidden>
+      Review everything and finish.
+    </div>
+
+    <div class="flex gap-2">
+      <Button variant="outline" data-stepper-prev>Back</Button>
+      <Button data-stepper-next>Next</Button>
+    </div>
+  </div>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -617,6 +699,7 @@ A complete vertical stepper with icons and detailed descriptions.
 |------|------|---------|-------------|
 | orientation | "horizontal" \| "vertical" | "horizontal" | Layout direction |
 | activeStep | number | 0 | Current active step (0-indexed) |
+| linear | boolean | false | Block clicking steps beyond the furthest step reached |
 | class | string | - | Additional CSS classes |
 
 #### StepperItem
@@ -642,4 +725,16 @@ Style components for step labels.
 #### StepperSeparator
 
 Visual connector between steps. Place between StepperItem components. Automatically adapts to orientation.
+</Prose>
+
+<Prose>
+### Events
+
+The stepper dispatches a bubbling `stepper-change` custom event whenever the active step changes:
+
+```ts
+document.querySelector("[data-stepper]")?.addEventListener("stepper-change", (e) => {
+  console.log((e as CustomEvent).detail.step); // new step index
+});
+```
 </Prose>

@@ -21,9 +21,11 @@ import SidebarMenuItem from "@/components/ui/sidebar/SidebarMenuItem.astro";
 import SidebarMenuButton from "@/components/ui/sidebar/SidebarMenuButton.astro";
 import SidebarTrigger from "@/components/ui/sidebar/SidebarTrigger.astro";
 import SidebarSeparator from "@/components/ui/sidebar/SidebarSeparator.astro";
+import HugeIcon from "@/components/ui/icon/HugeIcon.astro";
+import { Home01Icon, InboxIcon, Calendar03Icon, Settings01Icon } from "@/components/ui/icon/icons";
 
 <Prose>
-**Note:** The sidebar is hidden by default on mobile. View these examples on desktop or use the SidebarTrigger to toggle visibility.
+**Note:** The sidebar is hidden by default on mobile — it slides in over the content with a backdrop when toggled. View these examples on desktop or use the SidebarTrigger to toggle visibility.
 </Prose>
 
 <ComponentPreview fullWidth>
@@ -253,6 +255,132 @@ displayCode={`<Sidebar defaultOpen={true}>
 
 <div class="space-y-4">
 <Prose>
+#### Icon rail
+
+With `collapsible="icon"`, collapsing the sidebar on desktop keeps a narrow rail showing just the icons — labels (any `span` inside a menu button) and group labels are hidden. Toggle it with the trigger to see it in action.
+</Prose>
+
+<ComponentPreview fullWidth code={`<div class="flex h-[400px] w-full border rounded-lg overflow-hidden">
+  <Sidebar class="w-64 shrink-0" collapsible="icon">
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="#" isActive>
+              <HugeIcon icon={Home01Icon} />
+              <span>Home</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="#">
+              <HugeIcon icon={InboxIcon} />
+              <span>Inbox</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="#">
+              <HugeIcon icon={Calendar03Icon} />
+              <span>Calendar</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton href="#">
+            <HugeIcon icon={Settings01Icon} />
+            <span>Settings</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
+  </Sidebar>
+  <main class="flex-1 p-4">
+    <SidebarTrigger />
+  </main>
+</div>`}
+displayCode={`<Sidebar collapsible="icon">
+  <SidebarContent>
+    <SidebarGroup>
+      <SidebarGroupLabel>Application</SidebarGroupLabel>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton href="#" isActive>
+            <HomeIcon />
+            <span>Home</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarGroup>
+  </SidebarContent>
+</Sidebar>
+
+<!-- In your main content -->
+<SidebarTrigger />`}>
+  <div class="flex h-[400px] w-full border rounded-lg overflow-hidden">
+    <Sidebar class="w-64 shrink-0" collapsible="icon">
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#" isActive>
+                <HugeIcon icon={Home01Icon} />
+                <span>Home</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#">
+                <HugeIcon icon={InboxIcon} />
+                <span>Inbox</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#">
+                <HugeIcon icon={Calendar03Icon} />
+                <span>Calendar</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton href="#">
+              <HugeIcon icon={Settings01Icon} />
+              <span>Settings</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+    <main class="flex-1 p-4">
+      <SidebarTrigger />
+    </main>
+  </div>
+</ComponentPreview>
+</div>
+
+<div class="space-y-4">
+<Prose>
+#### Persistent state
+
+Give the sidebar a `persist` key and its open/collapsed state is saved to `localStorage` and restored on the next page load (desktop only — mobile always starts closed).
+
+```html
+<Sidebar persist="app-sidebar" collapsible="icon">
+  ...
+</Sidebar>
+```
+</Prose>
+</div>
+
+<div class="space-y-4">
+<Prose>
 #### Multiple groups
 </Prose>
 
@@ -403,8 +531,9 @@ displayCode={`<Sidebar>
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | side | "left" \| "right" | "left" | Side of the screen |
-| collapsible | boolean | true | Whether sidebar can collapse |
+| collapsible | boolean \| "icon" | true | `true` collapses off-canvas; `"icon"` collapses to an icon rail on desktop; `false` disables collapsing |
 | defaultOpen | boolean | true | Initial open state |
+| persist | string | - | localStorage key; saves and restores the open/collapsed state across page loads (desktop only) |
 | class | string | - | Additional CSS classes |
 
 #### SidebarMenuButton

@@ -286,6 +286,64 @@ import {
   </Table>
 </ComponentPreview>
 </div>
+
+<div class="space-y-4">
+<Prose>
+#### Sortable
+
+Add `sortable` to a `TableHead` to make its column sortable. Clicking cycles ascending and descending. Values that look like numbers (including `$1,200.50` or `45%`) sort numerically, everything else alphabetically.
+</Prose>
+
+<ComponentPreview>
+  <Fragment slot="code">
+```html
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead sortable>Name</TableHead>
+      <TableHead sortable>Amount</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Charlie</TableCell>
+      <TableCell>$1,200.50</TableCell>
+      <TableCell>Paid</TableCell>
+    </TableRow>
+    ...
+  </TableBody>
+</Table>
+```
+  </Fragment>
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead sortable>Name</TableHead>
+        <TableHead sortable>Amount</TableHead>
+        <TableHead>Status</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Charlie</TableCell>
+        <TableCell>$1,200.50</TableCell>
+        <TableCell>Paid</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Alice</TableCell>
+        <TableCell>$250.00</TableCell>
+        <TableCell>Paid</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Bob</TableCell>
+        <TableCell>$875.00</TableCell>
+        <TableCell>Pending</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</ComponentPreview>
+</div>
 </div>
 
 <Prose>
@@ -305,4 +363,10 @@ import {
 ### Props
 
 All Table components accept `class` for additional CSS classes. They are structural components wrapping native HTML table elements.
+
+#### TableHead
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| sortable | boolean | false | Render a sort button; clicking sorts the column ascending/descending |
 </Prose>

@@ -10,6 +10,11 @@ export interface Props extends HTMLAttributes<'div'> {
   slidesPerView?: number | 'auto';
   spacing?: number;
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * Responsive overrides keyed by media query, e.g.
+   * { "(min-width: 768px)": { slidesPerView: 2 }, "(min-width: 1024px)": { slidesPerView: 3, spacing: 24 } }
+   */
+  breakpoints?: Record<string, { slidesPerView?: number | 'auto'; spacing?: number }>;
 }
 
 const {
@@ -20,6 +25,7 @@ const {
   slidesPerView = 1,
   spacing = 16,
   orientation = 'horizontal',
+  breakpoints,
   class: className,
   ...props
 } = Astro.props;
@@ -40,6 +46,7 @@ const classes = cn('relative', className);
   data-slides-per-view={slidesPerView}
   data-spacing={spacing}
   data-orientation={orientation}
+  data-breakpoints={breakpoints ? JSON.stringify(breakpoints) : undefined}
   {...props}
 >
   <slot />
@@ -66,6 +73,29 @@ const classes = cn('relative', className);
 
       const perView = slidesPerView === 'auto' ? 'auto' : parseInt(slidesPerView || '1');
 
+      // Map the breakpoints prop to KeenSlider's media-query keyed options
+      let breakpoints: Record<string, { slides: { perView: number | 'auto'; spacing: number } }> | undefined;
+      const rawBreakpoints = carousel.getAttribute('data-breakpoints');
+      if (rawBreakpoints) {
+        try {
+          const parsed = JSON.parse(rawBreakpoints) as Record<
+            string,
+            { slidesPerView?: number | 'auto'; spacing?: number }
+          >;
+          breakpoints = {};
+          for (const [query, options] of Object.entries(parsed)) {
+            breakpoints[query] = {
+              slides: {
+                perView: options.slidesPerView ?? perView,
+                spacing: options.spacing ?? spacing,
+              },
+            };
+          }
+        } catch {
+          // Malformed JSON in data-breakpoints: fall back to base options
+        }
+      }
+
       let autoplayInterval: ReturnType<typeof setInterval> | null = null;
 
       const slider = new KeenSlider(content, {
@@ -75,6 +105,7 @@ const classes = cn('relative', className);
           perView,
           spacing,
         },
+        breakpoints,
         vertical: orientation === 'vertical',
         created(s) {
           // Update dots
