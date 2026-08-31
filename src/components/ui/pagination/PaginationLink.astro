@@ -2,7 +2,8 @@
 import { cn } from "@/utils/cn";
 import type { HTMLAttributes } from "astro/types";
 
-export interface Props extends HTMLAttributes<"a"> {
+export interface Props extends Omit<HTMLAttributes<"a">, "type"> {
+  /** Renders an anchor when set, a button otherwise (matches Button). */
   href?: string;
   isActive?: boolean;
   size?: "sm" | "default" | "lg";
@@ -11,7 +12,7 @@ export interface Props extends HTMLAttributes<"a"> {
 }
 
 const {
-  href = "#",
+  href,
   isActive = false,
   size = "default",
   iconOnly = true,
@@ -32,7 +33,7 @@ const iconOnlySizeStyles = {
 };
 
 const classes = cn(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium cursor-pointer",
   "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   "disabled:pointer-events-none disabled:opacity-50",
   isActive
@@ -43,11 +44,24 @@ const classes = cn(
 );
 ---
 
-<a
-  href={href}
-  aria-current={isActive ? "page" : undefined}
-  class={classes}
-  {...props}
->
-  <slot />
-</a>
+{
+  href ? (
+    <a
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      class={classes}
+      {...props}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      type="button"
+      aria-current={isActive ? "page" : undefined}
+      class={classes}
+      {...props}
+    >
+      <slot />
+    </button>
+  )
+}

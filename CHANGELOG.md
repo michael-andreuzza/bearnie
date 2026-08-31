@@ -15,6 +15,7 @@ API unifications from the consistency audit. If you installed components before 
 - `ComboboxItem` slots renamed `leading`/`trailing` to `left-icon`/`right-icon`; `MenubarMegaItem` slot `icon` renamed to `left-icon` (matching Button)
 - Toaster: `toast.error()` is now `toast.destructive()` (`type: "destructive"`), matching the variant vocabulary used by Button, Badge, Alert, and the declarative Toast — which now also supports `success`, `warning`, and `info` variants
 - Overlay triggers (popover, dialog, alert dialog, sheet, command dialog) now expose `data-state="open|closed"` like dropdown and menubar, so `data-[state=open]:` styling works on all of them; the dialog-family triggers also gained `aria-haspopup`/`aria-expanded`
+- `PaginationLink`, `PaginationPrevious`, and `PaginationNext` no longer default `href` to `"#"`: with an `href` they render an anchor, without one they render a `<button type="button">`, matching Button, SidebarMenuButton, and StepperTrigger
 
 ## [0.3.2 / 0.6.2 / 0.3.2] - 2026-08-31
 

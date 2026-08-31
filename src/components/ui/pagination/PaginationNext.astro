@@ -4,12 +4,13 @@ import type { HTMLAttributes } from "astro/types";
 import HugeIcon from "../icon/HugeIcon.astro";
 import { ArrowRight01Icon } from "../icon/icons";
 
-export interface Props extends HTMLAttributes<"a"> {
+export interface Props extends Omit<HTMLAttributes<"a">, "type"> {
+  /** Renders an anchor when set, a button otherwise (matches Button). */
   href?: string;
 }
 
 const {
-  href = "#",
+  href,
   class: className,
   ...props
 } = Astro.props;
@@ -22,7 +23,16 @@ const classes = cn(
 );
 ---
 
-<a href={href} aria-label="Go to next page" class={classes} {...props}>
-  <span><slot>Next</slot></span>
-  <HugeIcon icon={ArrowRight01Icon} class="size-4" />
-</a>
+{
+  href ? (
+    <a href={href} aria-label="Go to next page" class={classes} {...props}>
+      <span><slot>Next</slot></span>
+      <HugeIcon icon={ArrowRight01Icon} class="size-4" />
+    </a>
+  ) : (
+    <button type="button" aria-label="Go to next page" class={classes} {...props}>
+      <span><slot>Next</slot></span>
+      <HugeIcon icon={ArrowRight01Icon} class="size-4" />
+    </button>
+  )
+}
