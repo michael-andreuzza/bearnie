@@ -118,6 +118,9 @@ const FALLBACK_UTILITY_NAMES = [
   "ui-runtime-command",
   "ui-runtime-combobox",
   "ui-runtime-tabs",
+  "ui-runtime-alert-dialog",
+  "ui-runtime-sheet",
+  "ui-runtime-context-menu",
 ];
 
 // Known version ranges for component npm dependencies; anything not listed

@@ -13,6 +13,13 @@ const classes = cn(
 );
 ---
 
-<div class={classes} data-command-dialog-content hidden {...props}>
+<div
+  class={classes}
+  role="dialog"
+  aria-modal="true"
+  data-command-dialog-content
+  hidden
+  {...props}
+>
   <slot />
 </div>

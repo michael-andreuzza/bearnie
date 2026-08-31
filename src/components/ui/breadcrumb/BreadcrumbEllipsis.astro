@@ -32,12 +32,17 @@ const { class: className, ...props } = Astro.props;
 </div>
 
 <script>
-  function closeBreadcrumbDropdown(dropdown: Element) {
-    const trigger = dropdown.querySelector('[data-breadcrumb-dropdown-trigger]');
+  function closeBreadcrumbDropdown(dropdown: Element, restoreFocus = false) {
+    const trigger = dropdown.querySelector('[data-breadcrumb-dropdown-trigger]') as HTMLElement | null;
     const content = dropdown.querySelector('[data-breadcrumb-dropdown-content]') as HTMLElement | null;
     if (!content || content.hidden) return;
     content.hidden = true;
     trigger?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger?.focus();
+  }
+
+  function getMenuItems(content: HTMLElement): HTMLElement[] {
+    return Array.from(content.querySelectorAll('a, button')) as HTMLElement[];
   }
 
   // Document listeners bound once; live dropdowns resolved at event time
@@ -58,7 +63,9 @@ const { class: className, ...props } = Astro.props;
 
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
-      document.querySelectorAll('[data-breadcrumb-dropdown]').forEach(closeBreadcrumbDropdown);
+      document
+        .querySelectorAll('[data-breadcrumb-dropdown]')
+        .forEach((dropdown) => closeBreadcrumbDropdown(dropdown, true));
     });
   }
 
@@ -78,11 +85,33 @@ const { class: className, ...props } = Astro.props;
         const isOpen = content.hidden === false;
         content.hidden = isOpen;
         trigger.setAttribute('aria-expanded', String(!isOpen));
+        if (!isOpen) getMenuItems(content)[0]?.focus();
       };
 
       trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleDropdown();
+      });
+
+      // Arrow-key navigation, matching the other role="menu" components
+      content.addEventListener('keydown', (e) => {
+        const items = getMenuItems(content);
+        if (items.length === 0) return;
+        const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          items[(currentIndex + 1) % items.length]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          items[currentIndex > 0 ? currentIndex - 1 : items.length - 1]?.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          items[0]?.focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          items[items.length - 1]?.focus();
+        }
       });
 
       // Handle item clicks

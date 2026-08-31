@@ -8,6 +8,7 @@ function closeDialog(dialog: Element) {
   const content = dialog.querySelector("[data-dialog-content]") as HTMLElement | null;
   if (overlay) overlay.hidden = true;
   if (content) content.hidden = true;
+  document.body.style.overflow = "";
   focusTrapCleanups.get(dialog)?.();
   focusTrapCleanups.delete(dialog);
   trigger?.focus();
@@ -75,6 +76,7 @@ export function initDialogs() {
       if (overlay) overlay.hidden = false;
       if (content) {
         content.hidden = false;
+        document.body.style.overflow = "hidden";
         focusTrapCleanups.set(dialog, trapFocus(content));
       }
     });

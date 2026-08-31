@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Consistency pass (registry 0.6.0).** Findings from a full component consistency audit:
+  - `AlertDialogAction`, `AlertDialogCancel`, and `ThemeToggle` now forward `class`, `id`, `aria-*`, and `data-*` attributes like every other component
+  - Dialog and alert dialog now lock body scroll while open, matching sheet and command dialog
+  - `CommandDialogContent` declares `role="dialog"` and `aria-modal="true"`
+  - Context menu moves focus into the menu on open and restores it on close; theme toggle and breadcrumb ellipsis menus gained arrow-key/Home/End navigation and focus restore, matching the other `role="menu"` components
+  - Dropdown menu Escape now works at document level (previously only when focus was inside the menu); menubar's document-level Escape restores trigger focus
+  - Decorative SVGs in menubar items, toaster, and file-upload previews are now `aria-hidden`; the toaster close button has an accessible label
+  - `AlertDialog`, `Sheet`, and `ContextMenu` scripts moved into shared runtime modules (`ui-runtime-alert-dialog`, `ui-runtime-sheet`, `ui-runtime-context-menu`) loaded via `registerUiInit`, removing the duplicated inline copies. Run `bearnie update` to pull the new modules with the updated components.
+
 ## [0.3.1 / 0.6.1 / 0.3.1] - 2026-08-30
 
 - See commit history for details.

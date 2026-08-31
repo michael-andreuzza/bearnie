@@ -1,13 +1,17 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
 import Button from '../button/Button.astro';
 
-export interface Props {
-  class?: string;
+export interface Props extends HTMLAttributes<'button'> {
   disabled?: boolean;
-  type?: "button" | "submit" | "reset";
 }
 
-const { class: className, disabled, type = "button" } = Astro.props;
+const {
+  class: className,
+  disabled = false,
+  type = "button",
+  ...props
+} = Astro.props;
 ---
 
 <Button
@@ -17,6 +21,7 @@ const { class: className, disabled, type = "button" } = Astro.props;
   disabled={disabled}
   type={type}
   data-alert-dialog-cancel
+  {...props}
 >
   <slot />
 </Button>

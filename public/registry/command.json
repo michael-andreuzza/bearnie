@@ -25,7 +25,7 @@
     {
       "name": "CommandDialogContent.astro",
       "path": "command/CommandDialogContent.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2',\n  'overflow-hidden rounded-lg border bg-popover shadow-lg',\n  className\n);\n---\n\n<div class={classes} data-command-dialog-content hidden {...props}>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'div'> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  'fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2',\n  'overflow-hidden rounded-lg border bg-popover shadow-lg',\n  className\n);\n---\n\n<div\n  class={classes}\n  role=\"dialog\"\n  aria-modal=\"true\"\n  data-command-dialog-content\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
     },
     {
       "name": "CommandDialogOverlay.astro",

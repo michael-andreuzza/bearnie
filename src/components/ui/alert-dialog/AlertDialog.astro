@@ -1,5 +1,4 @@
 ---
-import { cn } from '@/utils/cn';
 import type { HTMLAttributes } from 'astro/types';
 
 export interface Props extends HTMLAttributes<'div'> {}
@@ -12,88 +11,8 @@ const { class: className, ...props } = Astro.props;
 </div>
 
 <script>
-  import { trapFocus, generateId } from '@/utils/focus-trap';
+  import { registerUiInit } from "@/utils/runtime/loader";
+  import { initAlertDialogs } from "@/utils/runtime/alert-dialog";
 
-  const focusTrapCleanups = new WeakMap<Element, () => void>();
-
-  function closeAlertDialog(dialog: Element) {
-    const trigger = dialog.querySelector('[data-alert-dialog-trigger]') as HTMLElement | null;
-    const overlay = dialog.querySelector('[data-alert-dialog-overlay]') as HTMLElement | null;
-    const content = dialog.querySelector('[data-alert-dialog-content]') as HTMLElement | null;
-    if (overlay) overlay.hidden = true;
-    if (content) content.hidden = true;
-    focusTrapCleanups.get(dialog)?.();
-    focusTrapCleanups.delete(dialog);
-    trigger?.focus();
-  }
-
-  // Single document listener, bound once; resolves live dialogs at event
-  // time so it doesn't accumulate across view-transition navigations.
-  let escapeListenerBound = false;
-
-  function bindEscapeListener() {
-    if (escapeListenerBound) return;
-    escapeListenerBound = true;
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-      document.querySelectorAll('[data-alert-dialog]').forEach((dialog) => {
-        const overlay = dialog.querySelector('[data-alert-dialog-overlay]') as HTMLElement | null;
-        if (overlay && !overlay.hidden) closeAlertDialog(dialog);
-      });
-    });
-  }
-
-  function initAlertDialogs() {
-    bindEscapeListener();
-    document.querySelectorAll('[data-alert-dialog]').forEach((dialog) => {
-      if (dialog.hasAttribute('data-initialized')) return;
-      dialog.setAttribute('data-initialized', 'true');
-
-      const trigger = dialog.querySelector('[data-alert-dialog-trigger]') as HTMLElement;
-      const overlay = dialog.querySelector('[data-alert-dialog-overlay]') as HTMLElement;
-      const content = dialog.querySelector('[data-alert-dialog-content]') as HTMLElement;
-      const cancelButtons = dialog.querySelectorAll('[data-alert-dialog-cancel]');
-      const actionButtons = dialog.querySelectorAll('[data-alert-dialog-action]');
-      const title = dialog.querySelector('[data-alert-dialog-title]') as HTMLElement;
-      const description = dialog.querySelector('[data-alert-dialog-description]') as HTMLElement;
-
-      if (!trigger) return;
-
-      // Generate IDs for ARIA relationships
-      if (title && !title.id) {
-        title.id = generateId('alert-dialog-title');
-      }
-      if (description && !description.id) {
-        description.id = generateId('alert-dialog-desc');
-      }
-
-      // Set ARIA attributes on content
-      if (content) {
-        if (title?.id) content.setAttribute('aria-labelledby', title.id);
-        if (description?.id) content.setAttribute('aria-describedby', description.id);
-      }
-
-      // Open dialog
-      trigger.addEventListener('click', () => {
-        if (overlay) overlay.hidden = false;
-        if (content) {
-          content.hidden = false;
-          focusTrapCleanups.set(dialog, trapFocus(content));
-        }
-      });
-
-      // Cancel and action buttons close the dialog
-      cancelButtons.forEach((btn) => {
-        btn.addEventListener('click', () => closeAlertDialog(dialog));
-      });
-      actionButtons.forEach((btn) => {
-        btn.addEventListener('click', () => closeAlertDialog(dialog));
-      });
-
-      // Note: No close on overlay click for alert dialogs (intentional)
-    });
-  }
-
-  initAlertDialogs();
-  document.addEventListener('astro:page-load', initAlertDialogs);
+  registerUiInit(initAlertDialogs);
 </script>

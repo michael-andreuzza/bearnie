@@ -75,6 +75,20 @@ const UTILITY_META: Record<
     description: "Shared combobox initialization runtime",
     file: "runtime/combobox.ts",
   },
+  "ui-runtime-alert-dialog": {
+    description: "Shared alert dialog initialization runtime",
+    file: "runtime/alert-dialog.ts",
+    registryDependencies: ["focus-trap"],
+  },
+  "ui-runtime-sheet": {
+    description: "Shared sheet initialization runtime",
+    file: "runtime/sheet.ts",
+    registryDependencies: ["focus-trap"],
+  },
+  "ui-runtime-context-menu": {
+    description: "Shared context menu initialization runtime",
+    file: "runtime/context-menu.ts",
+  },
 };
 
 // Component metadata - defines dependencies and categories
@@ -114,6 +128,7 @@ const COMPONENT_META: Record<
       "focus-trap",
       "button",
       "ui-runtime-loader",
+      "ui-runtime-alert-dialog",
       "ui-runtime-disclosure-triggers",
     ],
   },
@@ -175,6 +190,7 @@ const COMPONENT_META: Record<
   "context-menu": {
     description: "A menu triggered by right-click",
     category: "navigation",
+    registryDependencies: ["ui-runtime-loader", "ui-runtime-context-menu"],
   },
   dialog: {
     description: "A modal dialog that appears on top of the page",
@@ -282,6 +298,7 @@ const COMPONENT_META: Record<
       "focus-trap",
       "icon",
       "ui-runtime-loader",
+      "ui-runtime-sheet",
       "ui-runtime-disclosure-triggers",
     ],
   },

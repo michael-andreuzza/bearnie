@@ -41,6 +41,16 @@ function bindDocumentListeners() {
       }
     });
   });
+
+  // Document-level so Escape works even when focus never entered the menu
+  // (e.g. an empty menu), matching the other overlay components.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll("[data-dropdown]").forEach((dropdown) => {
+      const { content } = getParts(dropdown);
+      if (content && !content.hidden) closeDropdown(dropdown, true);
+    });
+  });
 }
 
 export function initDropdowns() {

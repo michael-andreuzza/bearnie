@@ -1,6 +1,6 @@
 {
   "name": "bearnie",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "components": [
     {
       "name": "styles",
@@ -308,6 +308,18 @@
     {
       "name": "ui-runtime-combobox",
       "description": "Shared combobox initialization runtime"
+    },
+    {
+      "name": "ui-runtime-alert-dialog",
+      "description": "Shared alert dialog initialization runtime"
+    },
+    {
+      "name": "ui-runtime-sheet",
+      "description": "Shared sheet initialization runtime"
+    },
+    {
+      "name": "ui-runtime-context-menu",
+      "description": "Shared context menu initialization runtime"
     }
   ],
   "themes": [

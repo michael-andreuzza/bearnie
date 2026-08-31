@@ -37,7 +37,7 @@ const classes = cn(
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       document.querySelectorAll("[data-menubar]").forEach((menubar) => {
-        (menubar as any).__closeAllMenus?.();
+        (menubar as any).__closeAllMenus?.(true);
       });
     });
   }
@@ -55,7 +55,10 @@ const classes = cn(
       let activeMenu: Element | null = null;
       let isMenubarActive = false;
 
-      function closeAllMenus() {
+      function closeAllMenus(restoreFocus = false) {
+        const activeTrigger = activeMenu?.querySelector(
+          "[data-menubar-trigger]",
+        ) as HTMLElement | null;
         menus.forEach((menu) => {
           const content = menu.querySelector("[data-menubar-content]");
           const trigger = menu.querySelector("[data-menubar-trigger]");
@@ -65,6 +68,7 @@ const classes = cn(
             trigger.setAttribute("data-state", "closed");
           }
         });
+        if (restoreFocus) activeTrigger?.focus();
         activeMenu = null;
         isMenubarActive = false;
       }

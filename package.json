@@ -6,7 +6,7 @@
   ],
   "type": "module",
   "version": "0.1.0",
-  "registryVersion": "0.5.1",
+  "registryVersion": "0.6.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
