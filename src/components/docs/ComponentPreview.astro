@@ -195,7 +195,7 @@ const normalizedCode = displayCode
         <>
           <div
             class={cn(
-              "min-h-30 rounded-lg overflow-x-auto lg:overflow-visible bg-muted/50",
+              "min-h-30 rounded-lg overflow-x-auto lg:overflow-visible border",
               fullWidth ? "p-0" : "p-8 lg:p-20",
             )}
             data-preview-panel="preview"
@@ -211,7 +211,7 @@ const normalizedCode = displayCode
           </div>
 
           <div
-            class="hidden  rounded-lg overflow-hidden max-h-[400px] overflow-y-auto w-full max-w-full min-w-0 scrollbar-hide bg-muted/50"
+            class="hidden rounded-lg overflow-hidden max-h-[400px] overflow-y-auto w-full max-w-full min-w-0 scrollbar-hide border"
             data-preview-panel="code"
           >
             <span class="sr-only" data-code-content>
