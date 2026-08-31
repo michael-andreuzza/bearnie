@@ -19,6 +19,10 @@ A date picker calendar in plain Astro + vanilla JS — no date library, no frame
 - Compose it with `Popover` for a date picker — there's an example in the docs.
 - A `calendar-set` CustomEvent sets the selection programmatically, so preset buttons ("Last 7 days", "Month to date"…) can drive the range from outside — the docs show the full analytics-style picker with a presets sidebar, two months, and an Apply footer.
 
+### Accordion
+
+- Panels now animate open and closed (smooth height transition, skipped for `prefers-reduced-motion`), matching the chevron rotation that was already there.
+
 ### Navigation Menu
 
 The shadcn-style top navigation for marketing sites:

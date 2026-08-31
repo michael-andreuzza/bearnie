@@ -22,6 +22,48 @@ const classes = cn('w-full', className);
 <script>
   import { generateId } from '@/utils/focus-trap';
 
+  const running = new WeakMap<HTMLElement, Animation>();
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function openContent(content: HTMLElement) {
+    // If an animation is in flight, continue from its current height
+    const prev = running.get(content);
+    const startHeight = prev ? content.getBoundingClientRect().height : 0;
+    prev?.cancel();
+    content.hidden = false;
+    content.setAttribute('data-state', 'open');
+    if (prefersReducedMotion()) return;
+    const anim = content.animate(
+      [{ height: `${startHeight}px` }, { height: `${content.scrollHeight}px` }],
+      { duration: 200, easing: 'ease-out' },
+    );
+    running.set(content, anim);
+  }
+
+  function closeContent(content: HTMLElement) {
+    const prev = running.get(content);
+    const startHeight = prev
+      ? content.getBoundingClientRect().height
+      : content.scrollHeight;
+    prev?.cancel();
+    content.setAttribute('data-state', 'closed');
+    if (prefersReducedMotion()) {
+      content.hidden = true;
+      return;
+    }
+    const anim = content.animate(
+      [{ height: `${startHeight}px` }, { height: '0px' }],
+      { duration: 200, easing: 'ease-out' },
+    );
+    anim.onfinish = () => {
+      content.hidden = true;
+    };
+    running.set(content, anim);
+  }
+
   function initAccordions() {
     document.querySelectorAll('[data-accordion]').forEach((accordion) => {
       if (accordion.hasAttribute('data-initialized')) return;
@@ -74,9 +116,8 @@ const classes = cn('w-full', className);
                 t.setAttribute('aria-expanded', 'false');
                 const otherItem = t.closest('[data-accordion-item]');
                 const otherContent = otherItem?.querySelector(':scope > [data-accordion-content]') as HTMLElement;
-                if (otherContent) {
-                  otherContent.setAttribute('data-state', 'closed');
-                  otherContent.hidden = true;
+                if (otherContent && !otherContent.hidden) {
+                  closeContent(otherContent);
                 }
               }
             });
@@ -88,8 +129,8 @@ const classes = cn('w-full', className);
           trigger.setAttribute('aria-expanded', String(!isOpen));
 
           if (content) {
-            content.setAttribute('data-state', newState);
-            content.hidden = isOpen;
+            if (isOpen) closeContent(content);
+            else openContent(content);
           }
         });
       });
