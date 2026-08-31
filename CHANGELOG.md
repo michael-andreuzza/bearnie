@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.2 / 0.6.2 / 0.3.2] - 2026-08-31
+
+- See commit history for details.
+
+
 ### Changed
 
 - **Consistency pass (registry 0.6.0).** Findings from a full component consistency audit:
