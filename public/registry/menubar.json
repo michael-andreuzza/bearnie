@@ -76,7 +76,7 @@
     {
       "name": "MenubarSubContent.astro",
       "path": "menubar/MenubarSubContent.astro",
-      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"absolute left-full top-0 ml-1 z-[60] min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-menubar-sub-content\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
+      "content": "---\nimport { cn } from \"@/utils/cn\";\nimport type { HTMLAttributes } from \"astro/types\";\n\nexport interface Props extends HTMLAttributes<\"div\"> {}\n\nconst { class: className, ...props } = Astro.props;\n\nconst classes = cn(\n  \"absolute left-full top-0 ml-1 z-[60] w-max min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg\",\n  className\n);\n---\n\n<div\n  class={classes}\n  data-menubar-sub-content\n  role=\"menu\"\n  hidden\n  {...props}\n>\n  <slot />\n</div>\n"
     },
     {
       "name": "MenubarSubTrigger.astro",

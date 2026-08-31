@@ -10,7 +10,7 @@ export interface Props extends HTMLAttributes<"button"> {
 const { value, disabled = false, class: className, ...props } = Astro.props;
 
 const classes = cn(
-  "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors",
+  "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-left text-sm outline-none transition-colors",
   "focus:bg-accent focus:text-accent-foreground",
   "hover:bg-accent hover:text-accent-foreground",
   disabled && "pointer-events-none opacity-50",

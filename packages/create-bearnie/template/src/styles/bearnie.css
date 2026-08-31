@@ -318,6 +318,12 @@
     transform: translateY(100%);
   }
 }
+@keyframes bearnie-tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
   /* Floating menus, cards, and dialog panels: quick fade + scale */
@@ -384,6 +390,11 @@
   }
   [data-sheet-content][data-side="bottom"][data-state="closed"] {
     animation: bearnie-slide-out-to-bottom 200ms ease-in both;
+  }
+
+  /* Tabs: gentle fade + rise when a panel becomes active */
+  [data-tabs-content][data-state="active"] {
+    animation: bearnie-tab-in 200ms ease-out;
   }
 }
 

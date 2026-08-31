@@ -7,7 +7,9 @@ export interface Props extends HTMLAttributes<'div'> {}
 const { class: className, ...props } = Astro.props;
 
 const classes = cn(
-  'absolute left-full top-0 z-50 ml-1 min-w-[8rem] rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',
+  // w-max: absolutely-positioned panels shrink-to-fit against the parent
+  // menu's width, which would wrap long labels
+  'absolute left-full top-0 z-50 ml-1 w-max min-w-[8rem] rounded-lg border bg-popover p-1 text-popover-foreground shadow-md',
   className
 );
 ---

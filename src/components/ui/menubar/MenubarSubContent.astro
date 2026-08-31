@@ -7,7 +7,7 @@ export interface Props extends HTMLAttributes<"div"> {}
 const { class: className, ...props } = Astro.props;
 
 const classes = cn(
-  "absolute left-full top-0 ml-1 z-[60] min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg",
+  "absolute left-full top-0 ml-1 z-[60] w-max min-w-32 rounded-md border bg-popover p-1 text-popover-foreground shadow-lg",
   className
 );
 ---
