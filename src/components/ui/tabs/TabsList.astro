@@ -10,7 +10,8 @@ const {
 } = Astro.props;
 
 const classes = cn(
-  "flex w-fit h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground gap-1",
+  // relative: anchors the sliding [data-tabs-indicator] pill the runtime adds
+  "relative flex w-fit h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground gap-1",
   className
 );
 ---

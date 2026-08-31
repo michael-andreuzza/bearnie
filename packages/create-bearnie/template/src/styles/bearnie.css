@@ -318,12 +318,6 @@
     transform: translateY(100%);
   }
 }
-@keyframes bearnie-tab-in {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-}
 
 @media (prefers-reduced-motion: no-preference) {
   /* Floating menus, cards, and dialog panels: quick fade + scale */
@@ -391,10 +385,26 @@
   [data-sheet-content][data-side="bottom"][data-state="closed"] {
     animation: bearnie-slide-out-to-bottom 200ms ease-in both;
   }
+}
 
-  /* Tabs: gentle fade + rise when a panel becomes active */
-  [data-tabs-content][data-state="active"] {
-    animation: bearnie-tab-in 200ms ease-out;
+/* Tabs: the active-tab pill (created by the tabs runtime) slides between
+   triggers. Geometry is set inline by the runtime; look and motion live here. */
+[data-tabs-indicator] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0.375rem;
+  background: var(--background);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition:
+    transform 200ms ease,
+    width 200ms ease,
+    height 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tabs-indicator] {
+    transition: none;
   }
 }
 

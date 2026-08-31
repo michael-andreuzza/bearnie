@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed (registry 0.9.0)
 
-- Tab panels get a gentle fade + rise when activated (also under `prefers-reduced-motion: no-preference`).
+- The active-tab pill now slides between tab triggers: the tabs runtime renders a single `[data-tabs-indicator]` element (styled in `bearnie.css`, motion disabled under reduced motion) instead of each trigger painting its own background, and repositions it on activation and layout changes.
 - Submenu panels (`DropdownMenuSubContent`, `ContextMenuSubContent`, `MenubarSubContent`) now use `w-max` so long labels don't wrap — absolutely-positioned panels otherwise shrink-to-fit against the parent menu's width — and button-based menu items set `text-left` so wrapped text can't center.
 - `DropdownMenuContent` and `ContextMenuContent` no longer set `overflow-hidden` (submenus must overflow the panel); `ContextMenuContent` also dropped inert `animate-in fade-in-0 zoom-in-95` classes that referenced undefined utilities.
 - The `position` utility's cleanup no longer clears inline coordinates, so closing overlays hold their place while the exit animation plays.

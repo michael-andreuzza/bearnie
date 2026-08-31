@@ -34,6 +34,41 @@ export function initTabs() {
       tabsList.setAttribute("aria-orientation", orientation);
     }
 
+    // Sliding pill behind the active trigger (styled in bearnie.css)
+    let indicator: HTMLElement | null = null;
+    if (tabsList) {
+      indicator = document.createElement("span");
+      indicator.setAttribute("data-tabs-indicator", "");
+      indicator.setAttribute("aria-hidden", "true");
+      indicator.hidden = true;
+      tabsList.prepend(indicator);
+    }
+
+    const positionIndicator = (trigger: HTMLElement, animate: boolean) => {
+      if (!indicator) return;
+      indicator.hidden = false;
+      if (!animate) indicator.style.transition = "none";
+      indicator.style.width = `${trigger.offsetWidth}px`;
+      indicator.style.height = `${trigger.offsetHeight}px`;
+      indicator.style.transform = `translate(${trigger.offsetLeft}px, ${trigger.offsetTop}px)`;
+      if (!animate) {
+        // Restore the CSS transition after the jump has painted
+        requestAnimationFrame(() => {
+          if (indicator) indicator.style.transition = "";
+        });
+      }
+    };
+
+    // Track layout changes (font loading, container resizes) without animating
+    if (tabsList && indicator) {
+      new ResizeObserver(() => {
+        const active = triggers.find(
+          (t) => t.getAttribute("data-state") === "active",
+        );
+        if (active) positionIndicator(active, false);
+      }).observe(tabsList);
+    }
+
     triggers.forEach((trigger) => {
       trigger.setAttribute("data-orientation", orientation);
       const value = trigger.getAttribute("data-value");
@@ -78,6 +113,11 @@ export function initTabs() {
           content.hidden = true;
         }
       });
+
+      const activeTrigger = triggers.find(
+        (t) => t.getAttribute("data-value") === defaultValue,
+      );
+      if (activeTrigger) positionIndicator(activeTrigger, false);
     }
 
     const activateTab = (trigger: HTMLElement) => {
@@ -102,6 +142,7 @@ export function initTabs() {
         content.hidden = !isActive;
       });
 
+      positionIndicator(trigger, true);
       trigger.focus();
     };
 
