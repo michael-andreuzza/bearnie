@@ -398,6 +398,44 @@ const chevron = (d: string) =>
         }
       });
 
+      // Programmatic API: set the selection from outside (e.g. preset buttons)
+      root.addEventListener("calendar-set", (e) => {
+        const detail = ((e as CustomEvent).detail ?? {}) as {
+          date?: string | null;
+          from?: string | null;
+          to?: string | null;
+        };
+        if (mode === "single") {
+          selected = parseISO(detail.date);
+          if (selected) focusDate = selected;
+        } else {
+          from = parseISO(detail.from);
+          to = parseISO(detail.to);
+          if (from && to && to < from) [from, to] = [to, from];
+          if (from) focusDate = from;
+        }
+        const anchor = mode === "range" ? from : selected;
+        if (anchor) {
+          viewMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+          // If the range spans more months than are visible, keep the end in view
+          if (mode === "range" && to) {
+            const span =
+              (to.getFullYear() - viewMonth.getFullYear()) * 12 +
+              (to.getMonth() - viewMonth.getMonth());
+            if (span >= monthCount) {
+              viewMonth = new Date(
+                to.getFullYear(),
+                to.getMonth() - (monthCount - 1),
+                1,
+              );
+            }
+          }
+        }
+        syncInputs();
+        dispatch();
+        render();
+      });
+
       prevBtn.addEventListener("click", () => {
         viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1);
         render();

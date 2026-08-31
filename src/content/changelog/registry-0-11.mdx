@@ -17,6 +17,7 @@ A date picker calendar in plain Astro + vanilla JS — no date library, no frame
 - Full keyboard support: a roving-tabindex `role="grid"` where arrows move by day and week, PageUp/PageDown by month, Home/End to the week edges, and Enter/Space selects.
 - Month and weekday names follow the visitor's locale; a bubbling `calendar-change` CustomEvent reports every selection.
 - Compose it with `Popover` for a date picker — there's an example in the docs.
+- A `calendar-set` CustomEvent sets the selection programmatically, so preset buttons ("Last 7 days", "Month to date"…) can drive the range from outside — the docs show the full analytics-style picker with a presets sidebar, two months, and an Apply footer.
 
 ### Navigation Menu
 
