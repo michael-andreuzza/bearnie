@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **`rating` component.** Static star rating with fractional values (`value={4.5}`), custom `max`, and a proper `role="img"` label for screen readers.
 - **`video` component.** Lazy YouTube/Vimeo embed: renders a thumbnail facade and only creates the player iframe (via `youtube-nocookie.com`) when clicked, saving ~1MB of player JavaScript on page load. Accepts watch/share/shorts/embed URLs or bare YouTube ids.
 
+### Changed (registry 0.10.0)
+
+- **Removed custom elevation shadows.** `bearnie.css` no longer remaps Tailwind's `--shadow-*` tokens to layered `--elevation-*` values; components use Tailwind's default shadow scale. The old shadows included a 1px ring layer that doubled up with component borders. If you liked them, define your own `--shadow-*` overrides in your `@theme` block.
+
 ### Fixed (registry 0.10.0)
 
 - Horizontal steppers no longer overflow their container: `StepperItem` lost its `shrink-0` so long titles/descriptions wrap, and `StepperSeparator` compresses (down to `min-w-2`) before the row overflows.
