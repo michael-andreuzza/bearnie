@@ -1,0 +1,16 @@
+---
+title: "Breaking: unified component APIs"
+description: "One vocabulary across the library — defaultValue everywhere, one icon-button convention, consistent slot names, and data-state on every overlay trigger."
+date: 2026-08-31
+version: "registry 0.7.0"
+order: 1
+---
+
+API unifications from a full consistency audit. If you installed components before this version, `bearnie diff` will show these renames — update your usage when you pull them:
+
+- `Combobox`, `InputOTP`, and `MenubarRadioGroup`: the `value` prop is now `defaultValue`, matching Tabs, RadioGroup, ToggleGroup, and Slider.
+- One icon-button convention everywhere: `PaginationLink` replaces `size="icon"` with `iconOnly` (default `true`, so bare usage is unchanged); `InputGroupButton` replaces `size="icon-xs" | "icon-sm"` with `size="xs" | "sm"` plus `iconOnly`.
+- `ComboboxItem` slots renamed `leading`/`trailing` to `left-icon`/`right-icon`; `MenubarMegaItem` slot `icon` renamed to `left-icon`, matching Button.
+- Toaster: `toast.error()` is now `toast.destructive()`, matching the variant vocabulary used by Button, Badge, and Alert.
+- Overlay triggers (popover, dialog, alert dialog, sheet, command dialog) now expose `data-state="open|closed"` like dropdown and menubar, so `data-[state=open]:` styling works on all of them; the dialog-family triggers also gained `aria-haspopup`/`aria-expanded`.
+- `PaginationLink`, `PaginationPrevious`, and `PaginationNext` no longer default `href` to `"#"`: with an `href` they render an anchor, without one a `<button type="button">`, matching Button, SidebarMenuButton, and StepperTrigger.

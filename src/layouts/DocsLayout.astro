@@ -36,6 +36,8 @@ componentEntries.forEach((entry) => {
   taglineMap.set(href, entry.data.tagline || entry.data.description);
 });
 
+taglineMap.set("/docs/changelog", "What's new in every release");
+
 export interface Props {
   title: string;
   description?: string;
@@ -83,6 +85,7 @@ const navigation = [
         title: entry.data.title,
         href: entry.id === "introduction" ? "/docs" : `/docs/${entry.id}`,
       })),
+      { title: "Changelog", href: "/docs/changelog" },
     ],
   },
   {

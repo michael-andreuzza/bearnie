@@ -39,6 +39,7 @@ Key facts:
 ## Docs
 
 ${docLines.join("\n")}
+- [Changelog](${siteConfig.url}/docs/changelog/): What's new in every release of the registry, CLI, and MCP server
 
 ## Components
 

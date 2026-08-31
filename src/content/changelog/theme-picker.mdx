@@ -1,0 +1,20 @@
+---
+title: "161 themes and a per-feature runtime"
+description: "Every Tailwind base color × accent color combination as an installable theme, plus component scripts that load only what each component actually uses."
+date: 2026-08-30
+version: "registry 0.5.0"
+order: 1
+---
+
+### Theme picker
+
+- Every Tailwind base color (9 gray scales) × accent color (17 colors plus a neutral default) combination — 161 themes generated from Tailwind's official oklch palette as registry entries (`styles-blue`, `styles-slate`, `styles-slate-blue`, ...).
+- `bearnie init` and `create-bearnie` ask for base and accent; `create-bearnie --theme=<name>` skips the prompts.
+- Switching themes via `bearnie add styles-<name> --overwrite` records the choice in `bearnie.json`, keeping `diff`/`update` and the MCP `list_installed` tool comparing against the active palette.
+
+### Per-feature UI runtime
+
+- The monolithic `ui-boot.ts` is gone; components register only the runtime modules they use via `registerUiInit()`. Installing e.g. `tabs` no longer pulls in popover, dialog, command, combobox, and dropdown code.
+- Component script fixes along the way: stepper content panels show/hide with the active step, tree folder icons swap open/closed, buttons default to `type="button"`, file-upload removes files from `input.files`, sliders no longer scroll the page during touch drag, toasts escape user-provided strings, and document-level listeners no longer leak across view-transition navigations.
+
+Run `bearnie update` to pull the new loader and component scripts together. A leftover `src/utils/runtime/ui-boot.ts` from older installs is orphaned and safe to delete.

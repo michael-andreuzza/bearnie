@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from "astro:content";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Badge from "@/components/ui/badge/Badge.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("changelog");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  keywords={["astro components changelog", "bearnie release notes"]}
+>
+  <div class="-mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+    <time datetime={entry.data.date.toISOString().slice(0, 10)}>
+      {formatDate(entry.data.date)}
+    </time>
+    {entry.data.version && <Badge variant="secondary">{entry.data.version}</Badge>}
+    <a
+      href="/docs/changelog/"
+      class="underline underline-offset-2 hover:text-foreground transition-colors"
+    >
+      All releases
+    </a>
+  </div>
+  <Prose>
+    <Content />
+  </Prose>
+</DocsLayout>

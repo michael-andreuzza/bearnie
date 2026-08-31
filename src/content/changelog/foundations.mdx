@@ -1,0 +1,17 @@
+---
+title: "Monorepo, release automation, and MCP batch installs"
+description: "npm workspaces, a coordinated registry version, CI with smoke tests, and an MCP server that installs components with dependency resolution."
+date: 2026-08-05
+version: "bearnie 0.1.6–0.1.7"
+order: 0
+---
+
+Two releases that laid the groundwork for everything since:
+
+- npm workspaces monorepo with unified `build:packages` and `build:all` scripts.
+- Release automation script with changelog, tagging, and optional npm publish; CI workflow with build, smoke tests, and a registry drift check.
+- Coordinated registry versioning via a single `registryVersion` field.
+- MCP `add_components` batch tool with dependency resolution and barrel-last ordering; local registry path support.
+- Barrel export via `bearnie add barrel` for `import { ... } from "@/components/bearnie"`.
+- `create-bearnie` writes `bearnie.json` on all scaffolds so projects are CLI-ready; template bumped to Astro 7 with Tailwind v4.
+- Restored TypeScript declaration builds for `bearnie`, `create-bearnie`, and `@bearnie/mcp`.

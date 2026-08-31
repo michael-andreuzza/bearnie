@@ -1,0 +1,18 @@
+---
+title: "bearnie diff and update"
+description: "Pull registry fixes into existing projects, package-manager detection across all tools, overwrite prompts, a richer init, and automated npm publishing."
+date: 2026-08-30
+version: "bearnie 0.2.0"
+order: 0
+---
+
+The biggest gap versus shadcn closed: users can now pull component fixes after installing.
+
+- **`bearnie diff`** compares installed components against the registry with per-file colored diffs (`--name-only` for a summary).
+- **`bearnie update`** pulls the latest registry version of installed components, warns when you have local edits, asks for confirmation (`--yes` to skip), and installs any new npm packages the updated components need.
+- `bearnie add` now asks before overwriting existing files; new `--overwrite` flag.
+- Richer `init`: adds the `@/*` tsconfig path alias, wires `@tailwindcss/vite` into simple Astro configs, and installs `bearnie.css` and the `cn` utility from the registry so fresh projects start clean in `bearnie diff`.
+- Package-manager detection (npm, pnpm, yarn, bun) across the CLI, create-bearnie, and the MCP server.
+- MCP `list_installed` tool: reports each installed component as up to date, modified locally, or missing files.
+- Tag-triggered npm publish workflow using trusted publishing (OIDC) — releases are no longer manual.
+- Dependency majors: chalk 6, commander 15, diff 9, execa 10, ora 9; Node ≥22.12 now required, matching Astro 7.

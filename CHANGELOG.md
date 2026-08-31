@@ -1,5 +1,7 @@
 # Changelog
 
+A readable, curated version of this changelog lives at [bearnie.dev/docs/changelog](https://bearnie.dev/docs/changelog/).
+
 All notable changes to Bearnie publishable packages and the component registry are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).

@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from "astro:content";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import Prose from "@/components/docs/Prose.astro";
+import Badge from "@/components/ui/badge/Badge.astro";
+import Text from "@/components/fundations/elements/Text.astro";
+
+const entries = (await getCollection("changelog")).sort(
+  (a, b) =>
+    b.data.date.getTime() - a.data.date.getTime() ||
+    b.data.order - a.data.order,
+);
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+---
+
+<DocsLayout
+  title="Changelog"
+  description="New components, upgrades, and fixes across the Bearnie registry, CLI, and MCP server."
+  keywords={["astro components changelog", "bearnie releases", "astro ui library updates"]}
+>
+  <div class="space-y-16">
+    {
+      rendered.map(({ entry, Content }) => (
+        <section class="scroll-mt-24" id={entry.id}>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+            <time datetime={entry.data.date.toISOString().slice(0, 10)}>
+              {formatDate(entry.data.date)}
+            </time>
+            {entry.data.version && (
+              <Badge variant="secondary">{entry.data.version}</Badge>
+            )}
+          </div>
+          <Text
+            tag="h2"
+            variant="textXL"
+            class="mt-2 font-semibold tracking-tight"
+          >
+            <a
+              href={`/docs/changelog/${entry.id}/`}
+              class="hover:text-muted-foreground transition-colors"
+            >
+              {entry.data.title}
+            </a>
+          </Text>
+          <div class="mt-4">
+            <Prose>
+              <Content />
+            </Prose>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</DocsLayout>
