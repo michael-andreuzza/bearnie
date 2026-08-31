@@ -20,40 +20,50 @@ import SheetDescription from "@/components/ui/sheet/SheetDescription.astro";
 import SheetFooter from "@/components/ui/sheet/SheetFooter.astro";
 import SheetClose from "@/components/ui/sheet/SheetClose.astro";
 import Button from "@/components/ui/button/Button.astro";
-import Input from "@/components/ui/input/Input.astro";
 import Label from "@/components/ui/label/Label.astro";
+import Switch from "@/components/ui/switch/Switch.astro";
 
 <ComponentPreview>
   <Fragment slot="code">
 ```html
 <Sheet>
   <SheetTrigger>
-    <Button variant="outline">Edit profile</Button>
+    <Button variant="outline">Notification settings</Button>
   </SheetTrigger>
   <SheetOverlay />
   <SheetContent>
     <SheetHeader>
-      <SheetTitle>Edit profile</SheetTitle>
+      <SheetTitle>Notifications</SheetTitle>
       <SheetDescription>
-        Make changes to your profile here. Click save when you're done.
+        Choose what you want to hear about. Changes apply right away.
       </SheetDescription>
     </SheetHeader>
-    <div class="grid gap-4 py-4">
-      <div class="grid gap-2">
-        <Label for="profile-name">Name</Label>
-        <Input id="profile-name" value="Michael Andreuzza" />
+    <div class="grid gap-5 py-5">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <Label for="notify-comments">Comments</Label>
+          <p class="text-sm text-muted-foreground">When someone replies to you.</p>
+        </div>
+        <Switch id="notify-comments" checked />
       </div>
-      <div class="grid gap-2">
-        <Label for="profile-username">Username</Label>
-        <Input id="profile-username" value="@michael" />
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <Label for="notify-mentions">Mentions</Label>
+          <p class="text-sm text-muted-foreground">When someone mentions you.</p>
+        </div>
+        <Switch id="notify-mentions" checked />
+      </div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <Label for="notify-digest">Weekly digest</Label>
+          <p class="text-sm text-muted-foreground">A summary every Monday.</p>
+        </div>
+        <Switch id="notify-digest" />
       </div>
     </div>
     <SheetFooter>
       <SheetClose>
-        <Button variant="outline">Cancel</Button>
-      </SheetClose>
-      <SheetClose>
-        <Button>Save changes</Button>
+        <Button>Done</Button>
       </SheetClose>
     </SheetFooter>
   </SheetContent>
@@ -62,32 +72,42 @@ import Label from "@/components/ui/label/Label.astro";
   </Fragment>
   <Sheet>
     <SheetTrigger>
-      <Button variant="outline">Edit profile</Button>
+      <Button variant="outline">Notification settings</Button>
     </SheetTrigger>
     <SheetOverlay />
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Edit profile</SheetTitle>
+        <SheetTitle>Notifications</SheetTitle>
         <SheetDescription>
-          Make changes to your profile here. Click save when you're done.
+          Choose what you want to hear about. Changes apply right away.
         </SheetDescription>
       </SheetHeader>
-      <div class="grid gap-4 py-4">
-        <div class="grid gap-2">
-          <Label for="profile-name">Name</Label>
-          <Input id="profile-name" value="Michael Andreuzza" />
+      <div class="grid gap-5 py-5">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <Label for="notify-comments">Comments</Label>
+            <p class="text-sm text-muted-foreground">When someone replies to you.</p>
+          </div>
+          <Switch id="notify-comments" checked />
         </div>
-        <div class="grid gap-2">
-          <Label for="profile-username">Username</Label>
-          <Input id="profile-username" value="@michael" />
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <Label for="notify-mentions">Mentions</Label>
+            <p class="text-sm text-muted-foreground">When someone mentions you.</p>
+          </div>
+          <Switch id="notify-mentions" checked />
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <Label for="notify-digest">Weekly digest</Label>
+            <p class="text-sm text-muted-foreground">A summary every Monday.</p>
+          </div>
+          <Switch id="notify-digest" />
         </div>
       </div>
       <SheetFooter>
         <SheetClose>
-          <Button variant="outline">Cancel</Button>
-        </SheetClose>
-        <SheetClose>
-          <Button>Save changes</Button>
+          <Button>Done</Button>
         </SheetClose>
       </SheetFooter>
     </SheetContent>
