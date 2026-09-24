@@ -6,6 +6,7 @@
   "devDependencies": [],
   "registryDependencies": [
     "cn",
+    "button",
     "ui-runtime-loader",
     "ui-runtime-dropdown-menu"
   ],
@@ -68,7 +69,7 @@
     {
       "name": "DropdownMenuTrigger.astro",
       "path": "dropdown-menu/DropdownMenuTrigger.astro",
-      "content": "---\nimport { cn } from '@/utils/cn';\nimport type { HTMLAttributes } from 'astro/types';\n\nexport interface Props extends HTMLAttributes<'span'> {}\n\nconst { class: className, ...props } = Astro.props;\n---\n\n<span\n  role=\"button\"\n  tabindex=\"0\"\n  class={cn(\"inline-flex cursor-pointer\", className)}\n  data-dropdown-trigger\n  data-state=\"closed\"\n  aria-expanded=\"false\"\n  aria-haspopup=\"true\"\n  {...props}\n>\n  <slot />\n</span>\n"
+      "content": "---\nimport Button, { type Props as ButtonProps } from '@/components/ui/button/Button.astro';\n\nexport interface Props extends Omit<ButtonProps, 'href'> {}\n\nconst {\n  type: _type,\n  role: _role,\n  tabindex: _tabindex,\n  'aria-expanded': _expanded,\n  'aria-controls': _controls,\n  'aria-haspopup': _haspopup,\n  'data-dropdown-trigger': _trigger,\n  'data-state': _state,\n  ...props\n} = Astro.props;\n---\n\n<Button\n  {...props}\n  type=\"button\"\n  data-dropdown-trigger\n  data-state=\"closed\"\n  aria-expanded=\"false\"\n  aria-haspopup=\"menu\"\n>\n  <slot name=\"left-icon\" slot=\"left-icon\" />\n  <slot />\n  <slot name=\"right-icon\" slot=\"right-icon\" />\n</Button>\n"
     }
   ]
 }

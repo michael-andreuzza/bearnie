@@ -17,6 +17,8 @@ export interface Props {
   component?: string;
   // Full width preview without padding/max-width (for sidebars, etc.)
   fullWidth?: boolean;
+  // Unique ID for the component preview container
+  id?: string;
   class?: string;
 }
 
@@ -25,6 +27,7 @@ const {
   displayCode,
   component,
   fullWidth = false,
+  id,
   class: className,
 } = Astro.props;
 
@@ -53,7 +56,7 @@ if (Astro.slots.has("code")) {
 }
 
 // Generate a unique ID for this preview
-const id = `preview-${Math.random().toString(36).substring(2, 9)}`;
+const uniqueId = `preview-${id ?? Math.random().toString(36).substring(2, 9)}`;
 
 // Package manager commands
 const packageManagers = component
@@ -99,7 +102,7 @@ const normalizedCode = displayCode
 
 <div
   class={cn("not-prose w-full max-w-full min-w-0", className)}
-  data-component-preview={id}
+  data-component-preview={uniqueId}
   data-mode={isInstallMode ? "install" : "preview"}
 >
   {

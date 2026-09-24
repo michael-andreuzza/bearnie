@@ -13,7 +13,6 @@ import { CreditCardIcon, MoreHorizontalIcon, Logout01Icon, Settings01Icon, UserI
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/docs/CodeBlock.astro";
 import Prose from "@/components/docs/Prose.astro";
-import Button from "@/components/ui/button/Button.astro";
 import DropdownMenu from "@/components/ui/dropdown-menu/DropdownMenu.astro";
 import DropdownMenuTrigger from "@/components/ui/dropdown-menu/DropdownMenuTrigger.astro";
 import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuContent.astro";
@@ -35,9 +34,7 @@ import DropdownMenuRadioItem from "@/components/ui/dropdown-menu/DropdownMenuRad
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">Open Menu</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">Open Menu</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
@@ -49,9 +46,7 @@ import DropdownMenuRadioItem from "@/components/ui/dropdown-menu/DropdownMenuRad
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">Open Menu</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">Open Menu</DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
@@ -86,9 +81,7 @@ import {
 ```
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button>Open</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuItem>Item 1</DropdownMenuItem>
     <DropdownMenuItem>Item 2</DropdownMenuItem>
@@ -113,9 +106,7 @@ import {
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">Align Start</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">Align Start</DropdownMenuTrigger>
   <DropdownMenuContent align="start">
     <DropdownMenuItem>Profile</DropdownMenuItem>
     <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -125,9 +116,7 @@ import {
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">Align Start</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">Align Start</DropdownMenuTrigger>
     <DropdownMenuContent align="start">
       <DropdownMenuItem>Profile</DropdownMenuItem>
       <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -146,9 +135,7 @@ import {
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">Align Center</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">Align Center</DropdownMenuTrigger>
   <DropdownMenuContent align="center">
     <DropdownMenuItem>Profile</DropdownMenuItem>
     <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -158,9 +145,7 @@ import {
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">Align Center</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">Align Center</DropdownMenuTrigger>
     <DropdownMenuContent align="center">
       <DropdownMenuItem>Profile</DropdownMenuItem>
       <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -179,9 +164,7 @@ import {
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">Align End</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">Align End</DropdownMenuTrigger>
   <DropdownMenuContent align="end">
     <DropdownMenuItem>Profile</DropdownMenuItem>
     <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -191,9 +174,7 @@ import {
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">Align End</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">Align End</DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem>Profile</DropdownMenuItem>
       <DropdownMenuItem>Settings</DropdownMenuItem>
@@ -212,9 +193,7 @@ import {
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">My Account</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">My Account</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
@@ -240,9 +219,7 @@ import {
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">My Account</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">My Account</DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
@@ -277,10 +254,8 @@ import {
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="ghost" iconOnly>
-      <HugeIcon icon={MoreHorizontalIcon} />
-    </Button>
+  <DropdownMenuTrigger variant="ghost" iconOnly aria-label="More actions">
+    <HugeIcon icon={MoreHorizontalIcon} />
   </DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuItem>Edit</DropdownMenuItem>
@@ -292,10 +267,8 @@ import {
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="ghost" iconOnly>
-        <HugeIcon icon={MoreHorizontalIcon} />
-      </Button>
+    <DropdownMenuTrigger variant="ghost" iconOnly aria-label="More actions">
+      <HugeIcon icon={MoreHorizontalIcon} />
     </DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem>Edit</DropdownMenuItem>
@@ -320,9 +293,7 @@ hover, click, or <kbd>ArrowRight</kbd>. <kbd>ArrowLeft</kbd> or
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">Share</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">Share</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuItem>Copy link</DropdownMenuItem>
     <DropdownMenuSub>
@@ -341,9 +312,7 @@ hover, click, or <kbd>ArrowRight</kbd>. <kbd>ArrowLeft</kbd> or
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">Share</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">Share</DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuItem>Copy link</DropdownMenuItem>
       <DropdownMenuSub>
@@ -375,9 +344,7 @@ custom events (both bubble) when the selection changes.
   <Fragment slot="code">
 ```html
 <DropdownMenu>
-  <DropdownMenuTrigger>
-    <Button variant="outline">View</Button>
-  </DropdownMenuTrigger>
+  <DropdownMenuTrigger variant="outline">View</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>Appearance</DropdownMenuLabel>
     <DropdownMenuSeparator />
@@ -395,9 +362,7 @@ custom events (both bubble) when the selection changes.
 ```
   </Fragment>
   <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="outline">View</Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuTrigger variant="outline">View</DropdownMenuTrigger>
     <DropdownMenuContent>
       <DropdownMenuLabel>Appearance</DropdownMenuLabel>
       <DropdownMenuSeparator />

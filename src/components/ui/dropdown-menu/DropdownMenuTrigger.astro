@@ -1,21 +1,28 @@
 ---
-import { cn } from '@/utils/cn';
-import type { HTMLAttributes } from 'astro/types';
+import Button, { type Props as ButtonProps } from '@/components/ui/button/Button.astro';
 
-export interface Props extends HTMLAttributes<'span'> {}
+export interface Props extends Omit<ButtonProps, 'href'> {}
 
-const { class: className, ...props } = Astro.props;
+const {
+  // These attributes belong to the dropdown runtime and must not be overridden.
+  'aria-expanded': _expanded,
+  'aria-controls': _controls,
+  'aria-haspopup': _haspopup,
+  'data-dropdown-trigger': _trigger,
+  'data-state': _state,
+  ...props
+} = Astro.props;
 ---
 
-<span
-  role="button"
-  tabindex="0"
-  class={cn("inline-flex cursor-pointer", className)}
+<Button
+  {...props}
+  type="button"
   data-dropdown-trigger
   data-state="closed"
   aria-expanded="false"
-  aria-haspopup="true"
-  {...props}
+  aria-haspopup="menu"
 >
+  <slot name="left-icon" slot="left-icon" />
   <slot />
-</span>
+  <slot name="right-icon" slot="right-icon" />
+</Button>

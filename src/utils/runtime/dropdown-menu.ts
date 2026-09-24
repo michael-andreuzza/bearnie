@@ -254,8 +254,12 @@ export function initDropdowns() {
       content.id = generateId("dropdown-menu");
     }
 
-    trigger.setAttribute("aria-haspopup", "true");
+    trigger.setAttribute("aria-haspopup", "menu");
     trigger.setAttribute("aria-controls", content.id);
+
+    const isDisabled = () =>
+      trigger.hasAttribute("disabled") ||
+      (trigger instanceof HTMLButtonElement && trigger.disabled);
 
     // Top-level items only; submenu contents run their own navigation
     const items = () =>
@@ -267,7 +271,8 @@ export function initDropdowns() {
         ) as HTMLElement[]
       ).filter((item) => !item.closest("[data-dropdown-sub-content]"));
 
-    const openDropdown = () => {
+    const openDropdown = (focusLast = false) => {
+      if (isDisabled()) return;
       showOverlay(content);
       trigger.setAttribute("aria-expanded", "true");
       trigger.setAttribute("data-state", "open");
@@ -284,7 +289,8 @@ export function initDropdowns() {
         positionFloating(trigger, content, { side, align }),
       );
 
-      items()[0]?.focus();
+      const availableItems = items();
+      (focusLast ? availableItems.at(-1) : availableItems[0])?.focus();
     };
 
     const toggleDropdown = () => {
@@ -295,16 +301,20 @@ export function initDropdowns() {
       }
     };
 
-    trigger.addEventListener("click", toggleDropdown);
+    trigger.addEventListener("click", (e) => {
+      if (e.defaultPrevented || isDisabled()) return;
+      toggleDropdown();
+    });
 
     trigger.addEventListener("keydown", (e) => {
       const event = e as KeyboardEvent;
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        toggleDropdown();
-      } else if (event.key === "ArrowDown" && !isOpen(content)) {
+      if (event.defaultPrevented || isDisabled()) return;
+      if (event.key === "ArrowDown" && !isOpen(content)) {
         event.preventDefault();
         openDropdown();
+      } else if (event.key === "ArrowUp" && !isOpen(content)) {
+        event.preventDefault();
+        openDropdown(true);
       }
     });
 

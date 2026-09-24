@@ -226,7 +226,7 @@ const COMPONENT_META: Record<
   "dropdown-menu": {
     description: "A menu that appears when triggered by a button",
     category: "navigation",
-    registryDependencies: ["ui-runtime-loader", "ui-runtime-dropdown-menu"],
+    registryDependencies: ["button", "ui-runtime-loader", "ui-runtime-dropdown-menu"],
   },
   empty: {
     description: "A placeholder for empty states",

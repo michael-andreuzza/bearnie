@@ -23,6 +23,8 @@
     "build:all": "npm run build:packages && npm run build",
     "release": "npx tsx scripts/release.ts",
     "test:smoke": "npm run build:packages && npx tsx scripts/smoke-test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "cli:dev": "npm run dev -w bearnie",
     "cli:build": "npm run build -w bearnie",
     "cli:link": "npm link -w bearnie",
@@ -44,6 +46,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.52.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^26.1.2",

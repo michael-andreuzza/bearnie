@@ -32,7 +32,7 @@ import Button from "@/components/ui/button/Button.astro";
 
 
 
-<ComponentPreview>
+<ComponentPreview id="single">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
@@ -113,7 +113,7 @@ import {
 Multiple items can be open simultaneously. Useful when users may need to compare content across sections.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="multiple">
   <Fragment slot="code">
 ```html
 <Accordion type="multiple">
@@ -156,7 +156,7 @@ Multiple items can be open simultaneously. Useful when users may need to compare
 Add icons to accordion triggers to provide visual context for each section.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="with-icon">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
@@ -243,7 +243,7 @@ Add a subtitle or description below the main trigger text for additional context
 Use `AccordionLabel` for the main trigger text and `AccordionDescription` for the supporting text. The components also provide the appropriate accessible name and description for the trigger.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="with-description">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
@@ -340,7 +340,7 @@ Use `AccordionLabel` for the main trigger text and `AccordionDescription` for th
 Combine icons with descriptions for a rich, informative accordion header.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="with-icon-description">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
@@ -455,7 +455,7 @@ Combine icons with descriptions for a rich, informative accordion header.
 Accordions can be nested inside each other for hierarchical content organization.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="nested">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
@@ -570,7 +570,7 @@ Accordions can be nested inside each other for hierarchical content organization
 Accordion content can contain any elements including lists, badges, buttons, and more.
 </Prose>
 
-<ComponentPreview>
+<ComponentPreview id="rich-content">
   <Fragment slot="code">
 ```html
 <Accordion type="single">
